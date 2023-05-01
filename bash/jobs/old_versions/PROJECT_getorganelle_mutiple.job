@@ -1,0 +1,24 @@
+#!/bin/sh
+# ----------------Parameters---------------------- #
+#$ -S /bin/sh
+#$ -pe mthread 16
+#$ -q mThM.q
+#$ -l mres=192G,h_data=12G,h_vmem=12G,himem
+#$ -cwd
+#$ -j y
+#$ -N PROJECT_getorganelle
+#$ -o logs/PROJECT_getorganelle.log
+#
+# ----------------Modules------------------------- #
+ module load ~/modulefiles/miniconda
+ source activate getorganelle
+# ----------------Your Commands------------------- #
+#
+echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
+echo + NSLOTS = $NSLOTS
+#
+sh getorganelle_genomeskimming_multi_hydra.sh
+#
+echo = `date` job $JOB_NAME done
+
+

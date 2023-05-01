@@ -1,0 +1,24 @@
+#!/bin/sh
+# ----------------Parameters---------------------- #
+#$ -S /bin/sh
+#$ -q sThC.q
+#$ -l mres=6G,h_data=6G,h_vmem=6G
+#$ -cwd
+#$ -j y
+#$ -N PROJECT_fastqc_v2
+#$ -o logs/PROJECT_fastqc_v2.log
+#
+# ----------------Modules------------------------- #
+ module load ~/modulefiles/miniconda
+ source activate fastqc
+# ----------------Your Commands------------------- #
+#
+echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
+echo + NSLOTS = $NSLOTS
+#
+sh fastqc_v2_genomeskimming_multi_hydra.sh
+#
+echo = `date` job $JOB_NAME done
+
+# This job file loads the conda module, and activates the fastqc
+# environment. Before using, change -N and -o under Parameters. 
