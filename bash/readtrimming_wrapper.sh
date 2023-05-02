@@ -1,15 +1,16 @@
 #!/bin/bash
-#./bash/tagseq/readtrimming_wrapper.sh
-#purpose: create wrapper scripts for read trimming using bbduk from BBtools suite
+#./bash/readtrimming_wrapper.sh
+#purpose: create wrapper scripts for read trimming using trimmomatic
 
 #specify variable containing sequence file prefixes and directory paths
 mcs="/scratch/nmnh_corals/connellym"
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 
 # making a list of sample names
+set=$1
 #files=$(ls /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/data/raw/)
 #samples=$(echo "$files" | cut -d . -f 1 | sort -u)
-samples=$(cat ${prodir}/data/rsmas_samples.txt)
+samples=$(cat ${prodir}/data/${set}_samples.txt)
 
 #lets me know which files are being processed
 echo "These are the samples to be trimmed:"
