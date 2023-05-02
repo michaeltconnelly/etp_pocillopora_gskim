@@ -42,7 +42,7 @@ echo 'echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTN
 echo 'echo + NSLOTS = $NSLOTS' >> ${prodir}/bash/jobs/${sample}_bwa_align.job
 
   #   input bwa mem alignment command
-echo "bwa mem ${mcs}/sequences/pdam_genome.fasta \
+echo "bwa mem ${mcs}/sequences/pdam/pdam_genome.fasta \
 ${prodir}/data/trimmed/${sample}_R1_PE_trimmed.fastq.gz \
 ${prodir}/data/trimmed/${sample}_R2_PE_trimmed.fastq.gz \
 > ${prodir}/outputs/alignments/${sample}.sam" >> "${prodir}"/bash/jobs/${sample}_bwa_align.job
