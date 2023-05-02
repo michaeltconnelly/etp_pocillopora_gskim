@@ -44,7 +44,7 @@ echo 'echo + NSLOTS = $NSLOTS' >> ${prodir}/bash/jobs/${sample}_trim.job
 #   input command to trim raw reads
 echo 'echo 'Trimming ${sample}'' >> "${prodir}"/bash/jobs/${sample}_trim.job
 #
-echo 'trimmomatic \
+echo "java -jar /share/apps/bioinformatics/trimmomatic/0.39/trimmomatic-0.39.jar \
 PE \
 ${prodir}/data/raw/${sample}_R1_001.fastq.gz \
 ${prodir}/data/raw/${sample}_R2_001.fastq.gz \
@@ -56,7 +56,7 @@ ILLUMINACLIP:${prodir}/data/itru_adapters_trimmomatic.fa:2:20:5:3:keepBothReads 
 CROP:150 \
 HEADCROP:3 \
 SLIDINGWINDOW:5:15 \
-MINLEN:30' >> ${prodir}/bash/jobs/${sample}_trim.job
+MINLEN:30" >> ${prodir}/bash/jobs/${sample}_trim.job
 #
 echo 'echo '${sample}' successfully trimmed' >> "${prodir}"/bash/jobs/${sample}_trim.job
 #
