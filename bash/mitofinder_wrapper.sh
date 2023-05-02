@@ -56,6 +56,6 @@ echo 'echo '${sample}' successfully processed' >> "${prodir}"/bash/jobs/${sample
 #
 echo 'echo = `date` job $JOB_NAME done' >> ${prodir}/bash/jobs/${sample}_mitofinder.job
 # submit job
-qsub ${prodir}/bash/jobs/${sample}_mitofinder.job -wd ${prodir}/outputs/mitofinder
+qsub -wd ${prodir}/outputs/mitofinder ${prodir}/bash/jobs/${sample}_mitofinder.job
 #
 done
