@@ -1,0 +1,47 @@
+#!/bin/sh
+# ----------------Parameters---------------------- #
+#$ -S /bin/sh
+#$ -pe mthread 16
+#$ -q mThM.q
+#$ -l mres=192G,h_data=12G,h_vmem=12G,himem
+#$ -cwd
+#$ -j y
+#$ -N phyluce_assembly_get_matches_fastas
+#$ -o phyluce_assembly_get_matches_fastas.log
+#
+# ----------------Modules------------------------- #
+ module load bioinformatics/phyluce
+# ----------------Your Commands------------------- #
+#
+echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
+echo + NSLOTS = $NSLOTS
+
+#specify variable containing sequence file prefixes and directory paths
+mcs="/scratch/nmnh_corals/connellym"
+prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
+
+# making a list of sample names
+set=$1
+#files=$(ls /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/data/raw/)
+#samples=$(echo "$files" | cut -d . -f 1 | sort -u)
+samples=$(cat ${prodir}/data/${set}_samples.txt)
+#
+
+# create the data matrix configuration file
+phyluce_assembly_get_match_counts \
+    --locus-db ${prodir}/outputs/uce-search-results/probe.matches.sqlite \
+    --taxon-list-config ${prodir}/data/${set}.conf \
+    --taxon-group 'all' \
+    --incomplete-matrix \
+    --output ${prodir}/outputs/taxon-sets/all/all-taxa-incomplete.conf
+
+# get FASTA data for taxa in our taxon set
+phyluce_assembly_get_fastas_from_match_counts \
+    --contigs ${prodir}/outputs/spades/contigs/${set}/ \
+    --locus-db ${prodir}/outputs/uce-search-results/probe.matches.sqlite \
+    --match-count-output ${prodir}/outputs/taxon-sets/all/all-taxa-incomplete.conf \
+    --output ${prodir}/outputs/taxon-sets/all-taxa-incomplete.fasta \
+    --incomplete-matrix ${prodir}/outputs/taxon-sets/all-taxa-incomplete.incomplete \
+    --log-path ${prodir}/outputs/taxon-sets/log
+
+echo = `date` job $JOB_NAME done
