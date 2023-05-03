@@ -13,7 +13,7 @@ set=$1
 samples=$(cat ${prodir}/data/${set}_samples.txt)
 
 #lets me know which files are being processed
-echo "These are the samples to be trimmed:"
+echo "These are the samples to be processed:"
 echo $samples
 
 #loop to automate generation of scripts to direct sequence file trimming
