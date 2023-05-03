@@ -25,8 +25,8 @@ echo "# /bin/sh" > ${prodir}/bash/jobs/${sample}_samtools_picard.job
 echo "# ----------------Parameters---------------------- #" >> ${prodir}/bash/jobs/${sample}_samtools_picard.job
 echo "#$  -S /bin/sh
 $ -pe mthread 8
-#$ -q sThC.q
-#$ -l mres=32G,h_data=4G,h_vmem=4G" >> ${prodir}/bash/jobs/${sample}_samtools_picard.job
+#$ -q mThC.q
+#$ -l mres=64G,h_data=8G,h_vmem=8G,himem" >> ${prodir}/bash/jobs/${sample}_samtools_picard.job
 echo "#$ -j y
 #$ -N ${sample}_samtools_picard
 #$ -o ${prodir}/bash/jobs/${sample}_samtools_picard.log
@@ -45,10 +45,10 @@ echo 'echo + NSLOTS = $NSLOTS' >> ${prodir}/bash/jobs/${sample}_samtools_picard.
 echo 'echo "Starting samtools bam conversion, sort and index steps"' >> $prodir/bash/jobs/${sample}_samtools_picard.job
 #   input command for samtools conversion
 echo "samtools view -b ${prodir}/outputs/alignments/${sample}.sam \
--o ${prodir}/outputs/alignments/${sample}.bam"  >> ${prodir}/bash/jobs/${sample}_samtools_picard.job
+-o ${prodir}/outputs/alignments/${sample}.bam -@ 8"  >> ${prodir}/bash/jobs/${sample}_samtools_picard.job
 #
 echo "samtools sort \
-${prodir}/outputs/alignments/${sample}.bam \
+${prodir}/outputs/alignments/${sample}.bam -@ 8 \
 > ${prodir}/outputs/alignments/${sample}.sorted.bam" >> $prodir/bash/jobs/${sample}_samtools_picard.job
 echo "#" >> $prodir/bash/jobs/${sample}_samtools_picard.job
 #
