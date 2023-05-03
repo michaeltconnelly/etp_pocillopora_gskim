@@ -1,9 +1,9 @@
 #!/bin/sh
 # ----------------Parameters---------------------- #
 #$ -S /bin/sh
-#$ -pe mthread 16
+#$ -pe mthread 8
 #$ -q mThM.q
-#$ -l mres=192G,h_data=12G,h_vmem=12G,himem
+#$ -l mres=96G,h_data=12G,h_vmem=12G,himem
 #$ -cwd
 #$ -j y
 #$ -N angsd_docounts
@@ -35,6 +35,6 @@ angsd -b ${prodir}/outputs/alignments/bamfile.txt \
  -doCounts \
  -minMapQ 30 \
  -minQ 30 \
- -threads $NSLOTS
+ -out ${prodir}/outputs/angsd/angsdput 
 
 echo = `date` job $JOB_NAME done
