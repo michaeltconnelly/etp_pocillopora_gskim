@@ -1,0 +1,40 @@
+#!/bin/sh
+# ----------------Parameters---------------------- #
+#$ -S /bin/sh
+#$ -pe mthread 16
+#$ -q mThM.q
+#$ -l mres=192G,h_data=12G,h_vmem=12G,himem
+#$ -cwd
+#$ -j y
+#$ -N angsd_docounts
+#$ -o angsd_docounts.log
+#
+# ----------------Modules------------------------- #
+ module load bioinformatics/angsd
+# ----------------Your Commands------------------- #
+#
+echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
+echo + NSLOTS = $NSLOTS
+
+#specify variable containing sequence file prefixes and directory paths
+mcs="/scratch/nmnh_corals/connellym"
+prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
+
+# making a list of sample names
+#set=$1
+#files=$(ls /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/data/raw/)
+#samples=$(echo "$files" | cut -d . -f 1 | sort -u)
+#samples=$(cat ${prodir}/data/${set}_samples.txt)
+
+# making a list of bam file paths
+#
+ls ${prodir}/outputs/alignments/*.sorted.md.rg.bam > ${prodir}/outputs/alignments/bamfile.txt
+
+# call ANGSD analysis commands
+angsd -b ${prodir}/outputs/alignments/bamfile.txt \
+ -doCounts \
+ -minMapQ 30 \
+ -minQ 30 \
+ -threads $NSLOTS
+
+echo = `date` job $JOB_NAME done
