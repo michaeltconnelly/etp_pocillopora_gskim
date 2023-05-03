@@ -24,9 +24,9 @@ echo "Preparing script for ${sample}"
 echo "# /bin/sh" > ${prodir}/bash/jobs/${sample}_samtools_picard.job
 echo "# ----------------Parameters---------------------- #" >> ${prodir}/bash/jobs/${sample}_samtools_picard.job
 echo "#$  -S /bin/sh
-$ -pe mthread 8
-#$ -q mThC.q
-#$ -l mres=64G,h_data=8G,h_vmem=8G,himem" >> ${prodir}/bash/jobs/${sample}_samtools_picard.job
+#$ -pe mthread 8
+#$ -q mThM.q
+#$ -l mres=96G,h_data=12G,h_vmem=12G,himem" >> ${prodir}/bash/jobs/${sample}_samtools_picard.job
 echo "#$ -j y
 #$ -N ${sample}_samtools_picard
 #$ -o ${prodir}/bash/jobs/${sample}_samtools_picard.log
