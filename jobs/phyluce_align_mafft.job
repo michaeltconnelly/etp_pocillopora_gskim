@@ -30,7 +30,7 @@ samples=$(cat ${prodir}/data/${set}_samples.txt)
 
 # align the data
 phyluce_align_seqcap_align \
-    --input ${prodir}/outputs/taxon-sets/all-taxa-incomplete.fasta \
+    --fasta ${prodir}/outputs/taxon-sets/all-taxa-incomplete.fasta \
     --output ${prodir}/outputs/taxon-sets/mafft-nexus-edge-trimmed \
     --taxa 14 \
     --aligner mafft \
