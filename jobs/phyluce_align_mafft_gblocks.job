@@ -6,8 +6,8 @@
 #$ -l mres=192G,h_data=12G,h_vmem=12G,himem
 #$ -cwd
 #$ -j y
-#$ -N phyluce_align_mafft
-#$ -o phyluce_align_mafft.log
+#$ -N phyluce_align_mafft_gblocks
+#$ -o phyluce_align_mafft_gblocks.log
 #$ -M connellym@si.edu
 #
 # ----------------Modules------------------------- #
@@ -26,22 +26,30 @@ set=$1
 #files=$(ls /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/data/raw/)
 #samples=$(echo "$files" | cut -d . -f 1 | sort -u)
 samples=$(cat ${prodir}/data/${set}_samples.txt)
-#
 
-# align the data
+# align the data - turn off trimming and output FASTA
 phyluce_align_seqcap_align \
-    --fasta ${prodir}/outputs/taxon-sets/all-taxa-incomplete.fasta \
-    --output ${prodir}/outputs/taxon-sets/mafft-nexus-edge-trimmed \
+    --input ${prodir}/outputs/taxon-sets/all-taxa-incomplete.fasta \
+    --output ${prodir}/outputs/taxon-sets/mafft-nexus-internal-trimmed \
     --taxa 14 \
     --aligner mafft \
     --cores $NSLOTS \
     --incomplete-matrix \
+    --output-format fasta \
+    --no-trim \
     --log-path ${prodir}/outputs/taxon-sets/all/log
 
+    # run gblocks trimming on the alignments
+phyluce_align_get_gblocks_trimmed_alignments_from_untrimmed \
+    --alignments ${prodir}/outputs/taxon-sets/mafft-nexus-internal-trimmed \
+    --output ${prodir}/outputs/taxon-sets/mafft-nexus-internal-trimmed-gblocks \
+    --cores $NSLOTS \
+    --log ${prodir}/outputs/taxon-sets/all/log
+    
     # get alignment summary data
 phyluce_align_get_align_summary_data \
-    --alignments ${prodir}/outputs/taxon-sets/mafft-nexus-edge-trimmed \
+    --alignments ${prodir}/outputs/taxon-sets/mafft-nexus-internal-trimmed-gblocks \
     --cores $NSLOTS \
-    --log-path ${prodir}/outputs/taxon-sets/all/log
+    --log-path log
 
 echo = `date` job $JOB_NAME done
