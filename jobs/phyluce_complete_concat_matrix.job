@@ -1,0 +1,46 @@
+#!/bin/sh
+# ----------------Parameters---------------------- #
+#$ -S /bin/sh
+#$ -pe mthread 16
+#$ -q mThM.q
+#$ -l mres=192G,h_data=12G,h_vmem=12G,himem
+#$ -cwd
+#$ -j y
+#$ -N phyluce_complete_concat_matrix
+#$ -o phyluce_complete_concat_matrix.log
+#$ -M connellym@si.edu
+#
+# ----------------Modules------------------------- #
+ module load bioinformatics/phyluce
+# ----------------Your Commands------------------- #
+#
+echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
+echo + NSLOTS = $NSLOTS
+
+#specify variable containing sequence file prefixes and directory paths
+mcs="/scratch/nmnh_corals/connellym"
+prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
+
+# making a list of sample names
+#set=$1
+#files=$(ls /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/data/raw/)
+#samples=$(echo "$files" | cut -d . -f 1 | sort -u)
+#samples=$(cat ${prodir}/data/${set}_samples.txt)
+pct=0.${1}
+
+phyluce_align_get_only_loci_with_min_taxa \
+    --alignments ${prodir}/outputs/taxon-sets/mafft-nexus-internal-trimmed-gblocks-clean \
+    --taxa 14 \
+    --percent ${pct} \
+    --output ${prodir}/outputs/taxon-sets/mafft-nexus-internal-trimmed-gblocks-clean-${1}p \
+    --cores $NSLOTS \
+    --log-path ${prodir}/outputs/taxon-sets/all/log
+
+# build the concatenated data matrix
+phyluce_align_concatenate_alignments \
+    --alignments ${prodir}/outputs/taxon-sets/mafft-nexus-internal-trimmed-gblocks-clean-${1}p \
+    --output ${prodir}/outputs/taxon-sets/mafft-nexus-internal-trimmed-gblocks-clean-${1}p-raxml \
+    --phylip \
+    --log-path ${prodir}/outputs/taxon-sets/all/log
+
+echo = `date` job $JOB_NAME done
