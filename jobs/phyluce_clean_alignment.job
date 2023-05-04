@@ -28,7 +28,7 @@ prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 #samples=$(cat ${prodir}/data/${set}_samples.txt)
 
 # align the data - turn off trimming and output FASTA
-phyluce_align_remove_locus_name_from_files \
+phyluce_align_remove_locus_name_nexus_lines  \
     --alignments ${prodir}/outputs/taxon-sets/mafft-nexus-internal-trimmed-gblocks \
     --output ${prodir}/outputs/taxon-sets/mafft-nexus-internal-trimmed-gblocks-clean \
     --cores $NSLOTS \
