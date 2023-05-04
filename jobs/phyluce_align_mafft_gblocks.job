@@ -29,7 +29,7 @@ samples=$(cat ${prodir}/data/${set}_samples.txt)
 
 # align the data - turn off trimming and output FASTA
 phyluce_align_seqcap_align \
-    --input ${prodir}/outputs/taxon-sets/all-taxa-incomplete.fasta \
+    --fasta ${prodir}/outputs/taxon-sets/all-taxa-incomplete.fasta \
     --output ${prodir}/outputs/taxon-sets/mafft-nexus-internal-trimmed \
     --taxa 14 \
     --aligner mafft \
