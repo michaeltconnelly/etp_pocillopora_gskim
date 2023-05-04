@@ -8,6 +8,7 @@
 #$ -j y
 #$ -N phyluce_align_mafft
 #$ -o phyluce_align_mafft.log
+#$ -m bea
 #$ -M connellym@si.edu
 #
 # ----------------Modules------------------------- #

@@ -8,6 +8,7 @@
 #$ -j y
 #$ -N phyluce_align_mafft_gblocks
 #$ -o phyluce_align_mafft_gblocks.log
+#$ -m bea
 #$ -M connellym@si.edu
 #
 # ----------------Modules------------------------- #
@@ -50,6 +51,6 @@ phyluce_align_get_gblocks_trimmed_alignments_from_untrimmed \
 phyluce_align_get_align_summary_data \
     --alignments ${prodir}/outputs/taxon-sets/mafft-nexus-internal-trimmed-gblocks \
     --cores $NSLOTS \
-    --log-path log
+    --log-path ${prodir}/outputs/taxon-sets/all/log
 
 echo = `date` job $JOB_NAME done

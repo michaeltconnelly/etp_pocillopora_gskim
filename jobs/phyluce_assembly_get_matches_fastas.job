@@ -8,7 +8,8 @@
 #$ -j y
 #$ -N phyluce_assembly_get_matches_fastas
 #$ -o phyluce_assembly_get_matches_fastas.log
-#-M connellym@si.edu
+#$ -m bea
+#$ -M connellym@si.edu
 #
 # ----------------Modules------------------------- #
  module load bioinformatics/phyluce
