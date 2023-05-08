@@ -37,10 +37,9 @@ phyluce_align_get_only_loci_with_min_taxa \
     --log-path ${prodir}/outputs/taxon-sets/all/log
 
 # build the concatenated data matrix
-phyluce_align_randomly_sample_and_concatenate \
+phyluce_align_format_nexus_files_for_raxml \
     --alignments ${prodir}/outputs/taxon-sets/mafft-nexus-internal-trimmed-gblocks-clean-${1}p \
     --output ${prodir}/outputs/taxon-sets/mafft-nexus-internal-trimmed-gblocks-clean-${1}p-raxml \
-    --sample-size 100 \
     --log-path ${prodir}/outputs/taxon-sets/all/log
 
 echo = `date` job $JOB_NAME done

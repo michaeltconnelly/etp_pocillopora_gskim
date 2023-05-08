@@ -28,7 +28,7 @@ samples=$(cat ${prodir}/data/${set}_samples.txt)
 #
 phyluce_assembly_match_contigs_to_probes \
     --contigs ${prodir}/outputs/spades/contigs/${set}/ \
-    --probes ${prodir}/data/baits/baits-220718-901-HexaV2Full-Moderate-RM25pc.fasta \
+    --probes ${prodir}/data/probes/hexa-v2-final-probes.fasta \
     --output ${prodir}/uce-search-results
 
 echo = `date` job $JOB_NAME done
