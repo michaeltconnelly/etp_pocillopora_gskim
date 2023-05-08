@@ -8,6 +8,7 @@
 #$ -j y
 #$ -N phyluce_complete_concat_matrix
 #$ -o phyluce_complete_concat_matrix.log
+#$ -m bea
 #$ -M connellym@si.edu
 #
 # ----------------Modules------------------------- #

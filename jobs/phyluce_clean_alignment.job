@@ -8,6 +8,7 @@
 #$ -j y
 #$ -N phyluce_clean_alignment
 #$ -o phyluce_clean_alignment.log
+#$ -m bea
 #$ -M connellym@si.edu
 #
 # ----------------Modules------------------------- #

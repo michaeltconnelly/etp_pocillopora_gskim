@@ -8,6 +8,8 @@
 #$ -j y
 #$ -N phyluce_assembly_match_contigs_probes
 #$ -o phyluce_assembly_match_contigs_probes.log
+#$ -m bea
+#$ -M connellym@si.edu
 #
 # ----------------Modules------------------------- #
  module load bioinformatics/phyluce
