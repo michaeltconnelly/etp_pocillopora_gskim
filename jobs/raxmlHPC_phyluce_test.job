@@ -1,4 +1,4 @@
-# /bin/sh
+#!/bin/sh
 # ----------------Parameters---------------------- #
 #$ -S /bin/sh
 #$ -pe mthread 16
@@ -15,11 +15,14 @@
 module load bioinformatics/raxml
 #
 # ----------------Your Commands------------------- #
-#
+
 echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
 echo + NSLOTS = $NSLOTS
-#
-prodir="/scratch/nmnh_corals/connellym/projects/MetaPocillopora"
+
+#specify variable containing sequence file prefixes and directory paths
+mcs="/scratch/nmnh_corals/connellym"
+prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
+
 #
 raxmlHPC \
 -f a \
