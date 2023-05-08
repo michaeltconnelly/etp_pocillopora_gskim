@@ -1,0 +1,59 @@
+#!/bin/sh
+# ----------------Parameters---------------------- #
+#$ -S /bin/sh
+#$ -pe mthread 12
+#$ -q mThM.q
+#$ -l mres=144G,h_data=12G,h_vmem=12G,himem
+#$ -cwd
+#$ -j y
+#$ -N angsd_ibs
+#$ -o angsd_ibs.log
+#
+# ----------------Modules------------------------- #
+ module load bioinformatics/angsd
+# ----------------Your Commands------------------- #
+#
+echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
+echo + NSLOTS = $NSLOTS
+
+#specify variable containing sequence file prefixes and directory paths
+mcs="/scratch/nmnh_corals/connellym"
+prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
+
+# making a list of sample names
+set=$1
+#files=$(ls /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/data/raw/)
+#samples=$(echo "$files" | cut -d . -f 1 | sort -u)
+#samples=$(cat ${prodir}/data/${set}_samples.txt)
+
+# making a list of bam file paths
+#
+ls ${prodir}/outputs/alignments/*.sorted.md.rg.bam > ${prodir}/outputs/alignments/bamfile.txt
+
+# from https://github.com/z0on/ClonesAndClades_Ofav_Keys/blob/master/read_processing_walkthrough.txt
+# Manzello et al. 2018
+
+# ----- IBS with ANGSD
+
+# F I L T E R S :
+# (ALWAYS record your filter settings and explore different combinations to confirm that results are robust. )
+# Suggested filters :
+# -snp_pval 1e-5 : high confidence that the SNP is not just sequencing error 
+# -minMaf 0.05 : only common SNPs, with allele frequency 0.05 or more.
+# set minInd to 75-80% of total number of samples
+# also adding  filters against very badly non-HWE sites (such as, all calls are heterozygotes => lumped paralog situation) and sites with really bad strand bias:
+FILTERS="-uniqueOnly 1 -remove_bads 1 -minMapQ 30 -minQ 30 -dosnpstat 1 -doHWE 1 -sb_pval 1e-5 -hetbias_pval 1e-5 -skipTriallelic 1 -minInd 12 -snp_pval 1e-5 -minMaf 0.05"
+
+# T O   D O : 
+# -GL 1 : samtools likelihood model
+# -doGlf 2 : output beagle format (for admixture)
+# -doGeno 8 : bgenotype likelihoods format for ngsLD
+# -makeMatrix 1 -doIBS 1 -doCov 1 : identity-by-state and covariance matrices based on single-read resampling (robust to variation in coverage across samples)
+TODO="-doMajorMinor 1 -doMaf 1 -doCounts 1 -makeMatrix 1 -doIBS 1 -doCov 1 -doGeno 8 -doVcf 1 -doPost 1 -doGlf 2"
+
+angsd -b ${prodir}/outputs/alignments/bamfile.txt -GL 1 $FILTERS $TODO -P 1 -out ${prodir}/outputs/angsd/${set}_ibs05
+
+# how many SNPs?
+zcat ${set}_ibs05.mafs.gz | wc -l
+
+# scp ibs05.ibsMat and bams to laptop, use step1_IBS.R to analyze
