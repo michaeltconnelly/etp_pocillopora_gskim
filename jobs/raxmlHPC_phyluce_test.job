@@ -25,8 +25,8 @@ prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 
 #
 raxmlHPC-PTHREADS-SSE3 \
--f a \ 
--m GTRGAMMA \ 
+-f a \
+-m GTRGAMMA \
 -x 123476 \
 -# 1000 \
 -T $NSLOTS \
