@@ -24,16 +24,16 @@ mcs="/scratch/nmnh_corals/connellym"
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 
 #
-raxmlHPC \
--f a \
--m GTRGAMMA \
+raxmlHPC-PTHREADS-SSE3 \
+-f a \ # rapid Bootstrap analysis and search for best-scoring ML tree in one program run
+-m GTRGAMMA \ # GTR + Optimization of substitution rates + GAMMA model of rate heterogeneity - alpha parameter will be estimated.
 -x 123476 \
--# 1000 \
+-N 1000 \
 -T $NSLOTS \
 -p 12345 \
 -s ${prodir}/outputs/taxon-sets/mafft-nexus-internal-trimmed-gblocks-clean-75p-raxml/mafft-nexus-internal-trimmed-gblocks-clean-75p.phylip \
 -w ${prodir}/outputs/raxml/raxml_test/ \
--n mafft-nexus-internal-trimmed-gblocks-clean-75p
+-n raxmlHPC-PTHREADS_test
 #
 echo = `date` job $JOB_NAME done
 # 
