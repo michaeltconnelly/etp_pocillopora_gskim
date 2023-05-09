@@ -28,7 +28,7 @@ set=$1
 
 # making a list of bam file paths
 #
-ls ${prodir}/outputs/alignments/*.sorted.md.rg.bam > ${prodir}/outputs/alignments/bamfile.txt
+ls ${prodir}/outputs/alignments/${set}/*.sorted.md.rg.bam > ${prodir}/outputs/alignments/bamfile.txt
 
 # from https://github.com/z0on/ClonesAndClades_Ofav_Keys/blob/master/read_processing_walkthrough.txt
 # Manzello et al. 2018
@@ -54,6 +54,6 @@ TODO="-doMajorMinor 1 -doMaf 1 -doCounts 1 -makeMatrix 1 -doIBS 1 -doCov 1 -doGe
 angsd -b ${prodir}/outputs/alignments/bamfile.txt -GL 1 $FILTERS $TODO -P 1 -out ${prodir}/outputs/angsd/${set}_ibs05
 
 # how many SNPs?
-zcat ${set}_ibs05.mafs.gz | wc -l
+zcat ${prodir}/outputs/angsd/${set}_ibs05.mafs.gz | wc -l
 
 # scp ibs05.ibsMat and bams to laptop, use step1_IBS.R to analyze
