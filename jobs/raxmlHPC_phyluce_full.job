@@ -1,0 +1,60 @@
+#!/bin/sh
+# ----------------Parameters---------------------- #
+#$ -S /bin/sh
+#$ -pe mthread 16
+#$ -q mThM.q
+#$ -l mres=192G,h_data=12G,h_vmem=12G,himem
+#$ -cwd
+#$ -j y
+#$ -N raxmlHPC_phyluce_full
+#$ -o raxmlHPC_phyluce_full.log
+#$ -m bea
+#$ -M connellym@si.edu
+#
+# ----------------Modules------------------------- #
+module load bioinformatics/raxml
+#
+# ----------------Your Commands------------------- #
+
+echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
+echo + NSLOTS = $NSLOTS
+
+#specify variable containing sequence file prefixes and directory paths
+mcs="/scratch/nmnh_corals/connellym"
+prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
+
+# from https://phyluce.readthedocs.io/en/v1.6.8/tutorial-one.html#id1 RAxML section
+
+# get two random numbers for seeds
+# for i in 1 2; do echo $RANDOM; done
+
+# run the search for the "best" ML tree
+raxmlHPC-PTHREADS-SSE3 \
+    -m GTRGAMMA \
+    -N 20 \
+    -p 23030 \
+    -n best \
+    -s ${prodir}/outputs/taxon-sets/mafft-nexus-internal-trimmed-gblocks-clean-75p-raxml/mafft-nexus-internal-trimmed-gblocks-clean-75p.phylip \
+    -w ${prodir}/outputs/raxml/raxml_test/ \
+    -T $NSLOTS
+
+# analyze boostrap data sets using the autoMRE function of RAxML
+raxmlHPC-PTHREADS-SSE3 \
+    -m GTRGAMMA \
+    -N autoMRE \
+    -p 16840 \
+    -b 7175 \
+    -n bootreps \
+    -s ${prodir}/outputs/taxon-sets/mafft-nexus-internal-trimmed-gblocks-clean-75p-raxml/mafft-nexus-internal-trimmed-gblocks-clean-75p.phylip \
+    -w ${prodir}/outputs/raxml/raxml_test/ \
+    -T $NSLOTS
+
+# reconcile the "best" ML tree with the bootreps
+raxmlHPC-SSE3 \
+    -m GTRGAMMA \
+    -f b \
+    -t RAxML_bestTree.best \
+    -z RAxML_bootstrap.bootreps \
+    -w ${prodir}/outputs/raxml/raxml_test/ 
+
+echo = `date` job $JOB_NAME done
