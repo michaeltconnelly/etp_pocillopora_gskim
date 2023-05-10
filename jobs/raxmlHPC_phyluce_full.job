@@ -53,8 +53,9 @@ raxmlHPC-PTHREADS-SSE3 \
 raxmlHPC-SSE3 \
     -m GTRGAMMA \
     -f b \
-    -t RAxML_bestTree.best \
-    -z RAxML_bootstrap.bootreps \
-    -w ${prodir}/outputs/raxml/raxml_test/ 
+    -t ${prodir}/outputs/raxml/raxml_test/RAxML_bestTree.best \
+    -z ${prodir}/outputs/raxml/raxml_test/RAxML_bootstrap.bootreps \
+    -w ${prodir}/outputs/raxml/raxml_test/ \
+    -n final
 
 echo = `date` job $JOB_NAME done

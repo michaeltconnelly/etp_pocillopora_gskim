@@ -25,7 +25,7 @@ prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 
 iqtree2 \
 -s ${prodir}/outputs/taxon-sets/mafft-nexus-internal-trimmed-gblocks-clean-75p-raxml/mafft-nexus-internal-trimmed-gblocks-clean-75p.phylip \
---prefix ${prodir}/outputs/iqtree/ \
+--prefix ${prodir}/outputs/iqtree/rsmas_phyluce_test \
 --seqtype DNA \
 -b 1000 \
 -T $NSLOTS
