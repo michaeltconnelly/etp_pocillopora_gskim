@@ -1,0 +1,31 @@
+#!/bin/sh
+# ----------------Parameters---------------------- #
+#$ -S /bin/sh
+#$ -pe mthread 16
+#$ -q mThM.q
+#$ -l mres=192G,h_data=12G,h_vmem=12G,himem
+#$ -cwd
+#$ -j y
+#$ -N pcangsd
+#$ -o pcangsd.log
+#$ -m bea
+#$ -M connellym@si.edu
+#
+# ----------------Modules------------------------- #
+module load bioinformatics/pcangsd
+#
+# ----------------Your Commands------------------- #
+
+echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
+echo + NSLOTS = $NSLOTS
+
+#specify variable containing sequence file prefixes and directory paths
+mcs="/scratch/nmnh_corals/connellym"
+prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
+
+pcangsd.py \
+-beagle ${prodir}/outputs/angsd/rsmas_ibs05.beagle.gz \
+-o ${prodir}/outputs/angsd/rsmas \
+-threads $NSLOTS
+
+echo = `date` job $JOB_NAME done

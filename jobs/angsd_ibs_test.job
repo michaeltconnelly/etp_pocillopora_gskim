@@ -60,3 +60,5 @@ angsd -b ${prodir}/outputs/alignments/bamfile.txt -GL 1 $FILTERS $TODO -P 1 -out
 zcat ${prodir}/outputs/angsd/${set}_ibs05.mafs.gz | wc -l
 
 # scp ibs05.ibsMat and bams to laptop, use step1_IBS.R to analyze
+
+echo = `date` job $JOB_NAME done
