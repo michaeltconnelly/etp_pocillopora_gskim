@@ -48,7 +48,7 @@ echo "samtools bam2fq \
  -f 12 -F 256 \
  -1 ${prodir}/data/unmapped/${sample}_Unmapped_R1_PE.fastq \
  -2 ${prodir}/data/unmapped/${sample}_Unmapped_R2_PE.fastq \
- -@ $NSLOTS \
+ -@ 8 \
  ${prodir}/outputs/alignments/${sample}.bam" >> "${prodir}"/bash/jobs/${sample}_unmapped_bam2fastq.job
 
  echo 'echo '${sample}' successfully processed' >> "${prodir}"/bash/jobs/${sample}_unmapped_bam2fastq.job
