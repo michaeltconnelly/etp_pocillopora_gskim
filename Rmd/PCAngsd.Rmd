@@ -1,0 +1,63 @@
+---
+title: "PCAngsd"
+author: "Mike Connelly"
+date: "2023-05-10"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library("tidyverse")
+```
+
+```{r}
+all_samples <- read_csv("../data/pocillopora_samples_002.csv")
+stri_samples <- read_csv("../data/stri_samples.txt")
+```
+```{r}
+samples <- filter(all_samples, all_samples$`Sample ID` %in% stri_samples$`Sample ID`)
+samples$`Region:Site` <- paste(samples$Region, samples$Site, sep = ":")
+```
+
+
+```{r}
+#open R
+# pop<-read.table("Demo/Data/Demo1pop.info")
+C <- as.matrix(read.table("../outputs/angsd/stri_.cov"))
+e <- eigen(C)
+
+pdf("../outputs/figures/PCAngsd1.pdf")
+#
+plot(e$vectors[,1:2],xlab="PC1",ylab="PC2", main="individual allele frequency")
+#
+plot(e$vectors[,2:3],xlab="PC2",ylab="PC3", main="individual allele frequency")
+# legend("top",fill=1:5,levels(pop[,1]))
+dev.off()
+## close R
+```
+```{r}
+pcs <- as.data.frame(e$vectors) %>% cbind(samples)
+pcs %>% ggplot(aes(x = V1, y = V2)) + geom_point(aes(fill = Region), shape = 21) + theme_bw()
+#
+pcvar <- round(e$values, 2)
+#
+
+pcs %>% ggplot(aes(x = V1, y = V2)) +
+  geom_point(aes(fill = `Region:Site`), shape = 21, size = 2, alpha = 0.75) +
+  theme_bw() + 
+  scale_fill_manual(values = site_colors) +
+  facet_grid(Region ~ .) +
+  xlab(paste0( "PC1 (", pcvar[1], "%)")) + 
+  ylab(paste0( "PC2 (", pcvar[2], "%)")) 
+#
+pcs %>% ggplot(aes(x = V2, y = V3)) + geom_point(aes(fill = Region), shape = 21) + theme_bw()
+# ggplot()
+```
+```{r}
+pdf("../outputs/figures/pca1.pdf", width = 6, height = 4)
+gg_pcangsd(e, pc=c(1,2)) +
+  facet_grid(Region ~ .) + 
+  ggtitle("Preliminary PCA of 101 STRI Pocillopora samples")
+dev.off()
+```
+

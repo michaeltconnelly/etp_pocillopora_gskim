@@ -15,7 +15,7 @@ library("marmap") #for downloading and plotting bathymetry and topography data
 library("raster") #for processing some spatial data
 library("rnaturalearth") #for downloading shapefiles
 library("rnaturalearthdata")
-library("rnaturalearthhires")
+# library("rnaturalearthhires")
 library("sf") #for processing shapefiles
 library("elevatr") #for downloading elevation data
 library("dplyr") #to keep things tidy
@@ -35,6 +35,49 @@ library("patchwork")
 ```{r}
 theme_set(theme_bw())
 ```
+## Sample import
+```{r sample_data_import}
+samples <- read_csv("./data/pocillopora_samples.csv")
+```
+```{r}
+all_samples <- read_csv("./data/pocillopora_samples_002.csv")
+stri_samples <- read_csv("./data/stri_samples.txt")
+```
+```{r}
+samples <- filter(all_samples, all_samples$`Sample ID` %in% stri_samples$`Sample ID`)
+samples$`Region:Site` <- paste(samples$Region, samples$Site, sep = ":")
+```
+```{r sample_data_tidy}
+# filter out irrelevant samples, select only informative columns
+samples_select <- samples #%>% 
+  # dplyr::filter(!is.na(`Sampling Date`)) %>% 
+  # dplyr::filter(!is.na(`Latitude`)) %>% 
+  # dplyr::select(`Sample ID`:`Depth (ft)`)
+# count sample number across different locations
+samples_locations <- samples_select %>% 
+  group_by(`Region`, `Site`, `Latitude`, `Longitude`) %>% 
+  count()
+samples_sites <- samples_select %>% 
+  group_by(`Region:Site`, `Latitude`, `Longitude`) %>% 
+  count()
+```
+
+```{r}
+# samples_locations$Longitude <- ifelse(samples_locations$Longitude < 0, (samples_locations$Longitude + 360), (samples_locations$Longitude)) 
+# samples_locations$Study <- factor(samples_locations$Study, levels = study_levels, ordered = TRUE)
+```
+## Colors
+```{r}
+gg_color_hue <- function(n) {
+  hues = seq(15, 375, length = n + 1)
+  hcl(h = hues, l = 65, c = 100)[1:n]
+}
+gcolors <- gg_color_hue(n_distinct(samples_locations$Region))
+# gcolors <- gg_color_hue(2)
+site_colors <- c("red", "red4", "maroon", "maroon4", "darkgreen", "green4", "green", "lightgreen", "cyan", "cyan4", "turquoise", "turquoise4")
+site_colors <- c("blue", "darkblue", "steelblue", "lightblue", "darkorange3","darkorange", "orange", "orangered", "cyan", "cyan3", "cyan4", "cornflowerblue")
+```
+
 
 ## Create mapping sf data objects
 ```{r download shapefiles, message=FALSE}
@@ -170,33 +213,7 @@ elevMapTest
 ### Map of Pocillopora sample origins
 ```{r factor levels}
 ```
-```{r sample_data_import}
-samples <- read_csv("./data/pocillopora_samples.csv")
-```
-```{r sample_data_tidy}
-# filter out irrelevant samples, select only informative columns
-samples_select <- samples %>% 
-  # dplyr::filter(!is.na(`Sampling Date`)) %>% 
-  dplyr::filter(!is.na(`Latitude`)) %>% 
-  dplyr::select(`Sample ID`:`Depth (ft)`)
-# count sample number across different locations
-samples_locations <- samples_select %>% 
-  group_by(`Region`, `Site`, `Latitude`, `Longitude`) %>% 
-  count()
-```
 
-```{r}
-# samples_locations$Longitude <- ifelse(samples_locations$Longitude < 0, (samples_locations$Longitude + 360), (samples_locations$Longitude)) 
-# samples_locations$Study <- factor(samples_locations$Study, levels = study_levels, ordered = TRUE)
-```
-```{r}
-gg_color_hue <- function(n) {
-  hues = seq(15, 375, length = n + 1)
-  hcl(h = hues, l = 65, c = 100)[1:n]
-}
-gcolors <- gg_color_hue(n_distinct(samples_locations$Region))
-# gcolors <- gg_color_hue(2)
-```
 ```{r}
 pdf("./outputs/figures/Fig1_samples_locations_map_bathymetry.pdf")
 title <- expression('Panama '*italic("Pocillopora")*' genotype origins')
@@ -244,6 +261,7 @@ elevMapTest
 dev.off()
 ```
 
+# START HERE
 ## Map of Pocillopora sample origins using marmap package
 ```{r}
 # get ETP bathymetric data
@@ -275,20 +293,20 @@ plot(panama, deep = 0, shallow = 0, step = 0,
 ```
 ```{r}
 # Plot bathy object using custom ggplot2 functions
-autoplot(panama, geom=c("r", "c"), colour="white", size=0.1) + scale_fill_etopo()
+marmap::autoplot.bathy(panama, geom=c("r", "c"), colour="white", size=0.1) + scale_fill_etopo()
 ```
 ```{r}
-pdf("./outputs/figures/Fig1_samples_locations_map_bathymetry.pdf", width = 8, height = 6)
+pdf("./outputs/figures/Fig1_samples_locations_map_bathymetry_051123.pdf", width = 8, height = 6)
 title <- expression('Eastern Pacific '*italic("Pocillopora")*' genotype origins')
 # Plot bathy object using custom ggplot2 functions
 par(mar = c(0.5, 0.5, 0.5, 0.5))
-autoplot(panama, geom=c("r", "c"), color = "white", size = 0.01) + 
+marmap::autoplot.bathy(panama, geom=c("r", "c"), color = "white", size = 0.01) + 
   scale_fill_etopo(name = "Depth (m)") + 
   new_scale_fill() +
   geom_point(data = samples_locations,
              aes(x = `Longitude`, y = `Latitude`, size = `n`, fill = `Region`),
-             shape = 21, alpha = 0.8, color = "black", stroke = 0.3,
-             position = position_jitter(width = 0.1, height = 0.1, seed = 3),
+             shape = 21, alpha = 0.9, color = "black", stroke = 0.5,
+             position = position_jitter(width = 0.2, height = 0.2, seed = 3),
              show.legend = T) +
   scale_fill_manual(values = gcolors,
                     guide = guide_legend(order = 2,
@@ -313,8 +331,42 @@ autoplot(panama, geom=c("r", "c"), color = "white", size = 0.01) +
   ggtitle(title)
 dev.off()
 ```
+```{r}
+pdf("./outputs/figures/Fig1_samples_sites_map_bathymetry_051123.pdf", width = 8, height = 6)
+marmap::autoplot.bathy(panama, geom=c("r", "c"), color = "white", size = 0.01) + 
+  scale_fill_etopo(name = "Depth (m)") + 
+  new_scale_fill() +
+  geom_point(data = samples_sites,
+             aes(x = `Longitude`, y = `Latitude`, size = `n`, fill = `Region:Site`),
+             shape = 21, alpha = 0.9, color = "black", stroke = 0.5,
+             position = position_jitter(width = 0.1, height = 0.1, seed = 3),
+             show.legend = T) +
+  scale_fill_manual(values = site_colors,
+                    guide = guide_legend(order = 2,
+                                         override.aes = list(size = 6,
+                                                             shape = 21, 
+                                                             fill = site_colors),
+                                         nrow = 12, title.position = "top")) +
+  scale_size(range = c(1, 5), breaks = c(1, 10, 20), limits = c(0, 20),
+             name = "# of samples",
+             guide = guide_legend(order = 3, override.aes = list(fill = "black"),
+                                  nrow = 5, title.position = "top")) +
+  labs(x="Longitude", y="Latitude", elevation = "Elevation") +
+  theme(panel.grid.major = element_blank(),
+        panel.background = element_rect(fill = "#f0f8ff"),
+        panel.border = element_rect(fill = NA),
+        plot.title = element_text(size = 16),
+        axis.title = element_text(size = 14), 
+        axis.text = element_text(size = 12),
+        legend.title = element_text(size = 14),
+        legend.text = element_text(size = 12),
+        legend.margin = margin(0,0,0,0)) +
+  ggtitle(title)
+scale_fill_manual()
+dev.off()
+```
 
 ```{r}
-autoplot(east_pacific, geom=c("r", "c"), colour="white", size=0.1) + scale_fill_etopo()
+marmap::autoplot.bathy(east_pacific, geom=c("r", "c"), colour="white", size=0.1) + scale_fill_etopo()
 ```
 

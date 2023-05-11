@@ -5,6 +5,8 @@
 ```{r}
 library("WGCNA") # for coloring clonal groups
 library("sparcl") # for ColorDendrogram
+# 
+library("ggtree")
 ```
 
 
@@ -26,8 +28,9 @@ meta=meta[bams,]
 
 # reading IBS matrix based on SNPs with allele frequency >= 0.05:
 ma = as.matrix(read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/stri__ibs05.ibsMat"))
-samples=bams #meta$Tag.Number
-dimnames(ma)=list(samples,samples)
+# samples=bams #meta$Tag.Number
+dimnames(ma)=list(samples$`Sample ID`,samples$`Sample ID`)
+dimnames(ma)=list(samples$Site,samples$Site)
 ```
 
 
@@ -39,6 +42,7 @@ dimnames(ma)=list(samples,samples)
 # plotting hierarchical clustering tree
 hc=hclust(as.dist(ma),"ave")
 plot(hc,cex=0.6)
+abline(h=0.15,col="red",lty=3)
 
 # retaining faveolata-only samples
 mafa=ma[meta$faveolata,meta$faveolata]
@@ -48,6 +52,7 @@ meta=meta[meta$faveolata,]
 # re-clustering
 hc=hclust(as.dist(mafa),"ave")
 plot(hc,cex=0.6)
+abline(h=0.15,col="red",lty=3)
 ```
 
 
@@ -104,5 +109,10 @@ write.table(paste(bamfa[sel],".fastq.bam",sep=""),quote=F, row.names=F,col.names
 
 save(bamfa,meta,mafa,sel,file='manzello_angsd_dec5.RData')
 
+```
+
+## Plot IBS clustering dendrogram with ggtree
+```{r}
+ggtree(hc)
 ```
 
