@@ -41,3 +41,8 @@ vignettes/*.pdf
 *.Rproj
 data/spatial_data
 outputs/QCs/
+outputs/raxml/
+outputs/angsd/
+outputs/figures/
+outputs/iqtree/
+outputs/mitofinder/
