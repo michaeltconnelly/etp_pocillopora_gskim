@@ -44,12 +44,12 @@ echo 'echo + NSLOTS = $NSLOTS' >> ${prodir}/bash/jobs/${sample}_unmapped_bam2fas
 echo 'echo "Starting samtools bam conversion to fastq"' >> $prodir/bash/jobs/${sample}_unmapped_bam2fastq.job
 #   input command for samtools conversion
 
-samtools bam2fq \
+echo "samtools bam2fq \
  -f 12 -F 256 \
  -1 ${prodir}/data/unmapped/${sample}_Unmapped_R1_PE.fastq \
  -2 ${prodir}/data/unmapped/${sample}_Unmapped_R2_PE.fastq \
  -@ $NSLOTS \
- ${prodir}/outputs/alignments/${sample}.bam
+ ${prodir}/outputs/alignments/${sample}.bam" >> "${prodir}"/bash/jobs/${sample}_unmapped_bam2fastq.job
 
  echo 'echo '${sample}' successfully processed' >> "${prodir}"/bash/jobs/${sample}_unmapped_bam2fastq.job
 #
