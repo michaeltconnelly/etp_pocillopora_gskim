@@ -27,7 +27,7 @@ row.names(meta)=meta$Run
 meta=meta[bams,]
 
 # reading IBS matrix based on SNPs with allele frequency >= 0.05:
-ma = as.matrix(read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/stri__ibs05.ibsMat"))
+ma = as.matrix(read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/etp_ibs05.ibsMat"))
 # samples=bams #meta$Tag.Number
 dimnames(ma)=list(samples$`Sample ID`,samples$`Sample ID`)
 dimnames(ma)=list(samples$Site,samples$Site)
@@ -113,6 +113,19 @@ save(bamfa,meta,mafa,sel,file='manzello_angsd_dec5.RData')
 
 ## Plot IBS clustering dendrogram with ggtree
 ```{r}
-ggtree(hc)
+pdf("../outputs/figures/ibs_dendrogram_etp_all.pdf", width = 8, height = 10)
+tree_title <- expression(paste("IBS clustering of ", italic("Pocillopora"), " samples (", 122, ")"))
+hc %>% ggtree() %<+% samples + 
+  geom_vline(xintercept = -0.15, stroke = 1, color = "red", linetype = 2) +
+  geom_tippoint(aes(fill = `Region:Site`), shape = 21, alpha = 0.8, stroke = 0.5, color = "black", hjust = 0.3, show.legend = TRUE) +
+  geom_tiplab(size = 2, hjust = -0.05) +
+  ggplot2::xlim(-0.45, 0.01) +
+  geom_treescale(x = -0.3, width = 0.05) +
+  scale_fill_manual(values = site_colors) +
+   theme(legend.position = "right",
+        legend.margin = margin(0,0,0,0, unit = "mm"),
+        plot.margin = margin(5,5,5,5, unit = "mm")) +
+  ggtitle(tree_title)
+dev.off()
 ```
 

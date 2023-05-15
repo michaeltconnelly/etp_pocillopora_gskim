@@ -40,8 +40,8 @@ theme_set(theme_bw())
 samples <- read_csv("./data/pocillopora_samples.csv")
 ```
 ```{r}
-all_samples <- read_csv("./data/pocillopora_samples_002.csv")
-stri_samples <- read_csv("./data/stri_samples.txt")
+all_samples <- read_csv("../data/pocillopora_samples_003.csv")
+stri_samples <- read_csv("../data/etp_samples.txt")
 ```
 ```{r}
 samples <- filter(all_samples, all_samples$`Sample ID` %in% stri_samples$`Sample ID`)
@@ -75,7 +75,7 @@ gg_color_hue <- function(n) {
 gcolors <- gg_color_hue(n_distinct(samples_locations$Region))
 # gcolors <- gg_color_hue(2)
 site_colors <- c("red", "red4", "maroon", "maroon4", "darkgreen", "green4", "green", "lightgreen", "cyan", "cyan4", "turquoise", "turquoise4")
-site_colors <- c("blue", "darkblue", "steelblue", "lightblue", "darkorange3","darkorange", "orange", "orangered", "cyan", "cyan3", "cyan4", "cornflowerblue")
+site_colors <- c("gold1", "blue", "darkblue", "steelblue", "lightblue", "darkorange3","darkorange", "orange", "orangered", "cyan", "cyan3", "cyan4", "turquoise", "lightgreen")
 ```
 
 
@@ -267,8 +267,11 @@ dev.off()
 # get ETP bathymetric data
 panama <- getNOAA.bathy(lon1 = -88, lon2 = -76,
                         lat1 = 4, lat2 = 12, resolution = 1)
-#
-east_pacific <- getNOAA.bathy(lon1 = -120, lon2 = -74,
+# East Pacific from Revi's to Galapagos (to show Clipperton samples)
+east_pacific <- getNOAA.bathy(lon1 = -112, lon2 = -76,
+                        lat1 = -2, lat2 = 16, resolution = 2)
+# East Pacific from Revi's to Rapa Nui
+east_pacific_all <- getNOAA.bathy(lon1 = -120, lon2 = -74,
                         lat1 = -30, lat2 = 30, resolution = 3)
 ```
 
@@ -362,11 +365,43 @@ marmap::autoplot.bathy(panama, geom=c("r", "c"), color = "white", size = 0.01) +
         legend.text = element_text(size = 12),
         legend.margin = margin(0,0,0,0)) +
   ggtitle(title)
-scale_fill_manual()
 dev.off()
 ```
 
 ```{r}
 marmap::autoplot.bathy(east_pacific, geom=c("r", "c"), colour="white", size=0.1) + scale_fill_etopo()
 ```
-
+```{r}
+pdf("../outputs/figures/Fig1_etp_samples_sites_map_bathymetry_051223.pdf", width = 8, height = 8)
+title <- expression('Eastern Pacific '*italic("Pocillopora")*' sample locations (n = 122 samples total)')
+marmap::autoplot.bathy(east_pacific, geom=c("r", "c"), color = "white", size = 0.01) + 
+  scale_fill_etopo(name = "Depth (m)") + 
+  new_scale_fill() +
+  geom_point(data = samples_sites,
+             aes(x = `Longitude`, y = `Latitude`, size = `n`, fill = `Region:Site`),
+             shape = 21, alpha = 0.9, color = "black", stroke = 0.5,
+             position = position_jitter(width = 0.1, height = 0.1, seed = 3),
+             show.legend = T) +
+  scale_fill_manual(values = site_colors,
+                    guide = guide_legend(order = 2,
+                                         override.aes = list(size = 3,
+                                                             shape = 21, 
+                                                             fill = site_colors),
+                                         nrow = 14, title.position = "top")) +
+  scale_size(range = c(1, 6), breaks = c(1, 10, 20), limits = c(0, 20),
+             name = "# of samples",
+             guide = guide_legend(order = 3, override.aes = list(fill = "black"),
+                                  nrow = 5, title.position = "top")) +
+  labs(x="Longitude", y="Latitude", elevation = "Elevation") +
+  theme(panel.grid.major = element_blank(),
+        panel.background = element_rect(fill = "#f0f8ff"),
+        panel.border = element_rect(fill = NA),
+        plot.title = element_text(size = 14),
+        axis.title = element_text(size = 10), 
+        axis.text = element_text(size = 8),
+        legend.title = element_text(size = 10),
+        legend.text = element_text(size = 8),
+        legend.margin = margin(0,0,0,0)) +
+  ggtitle(title)
+dev.off()
+```
