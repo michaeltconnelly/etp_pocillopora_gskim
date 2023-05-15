@@ -1,0 +1,36 @@
+#!/bin/sh
+# ----------------Parameters---------------------- #
+#$ -S /bin/sh
+#$ -pe mthread 8
+#$ -q sThC.q
+#$ -l mres=64G,h_data=8G,h_vmem=8G
+#$ -cwd
+#$ -j y
+#$ -N zooxtype
+#$ -o zooxtype.log
+#$ -m bea
+#$ -M connellym@si.edu
+#
+# ----------------Modules------------------------- #
+# module load bioinformatics/pcangsd
+#
+# ----------------Your Commands------------------- #
+
+echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
+echo + NSLOTS = $NSLOTS
+
+#specify variable containing sequence file prefixes and directory paths
+mcs="/scratch/nmnh_corals/connellym"
+prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
+
+# making a list of sample names
+set=$1
+#files=$(ls /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/data/raw/)
+#samples=$(echo "$files" | cut -d . -f 1 | sort -u)
+samples=$(cat ${prodir}/data/${set}_samples.txt)
+
+# making a variable with sample names and paths
+
+perl ${prodir}/bash/zooxtype.pl ${prodir}/outputs/symbiont_alignments/ > ${prodir}/outputs/allcounts_symABCD.txt
+
+echo = `date` job $JOB_NAME done
