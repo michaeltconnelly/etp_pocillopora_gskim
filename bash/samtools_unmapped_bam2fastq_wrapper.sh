@@ -51,6 +51,8 @@ echo "samtools bam2fq \
  -@ 8 \
  ${prodir}/outputs/alignments/${sample}.bam" >> "${prodir}"/bash/jobs/${sample}_unmapped_bam2fastq.job
 
+ echo "gzip ${prodir}/data/unmapped/${sample}_Unmapped_*.fastq" >> "${prodir}"/bash/jobs/${sample}_unmapped_bam2fastq.job
+
  echo 'echo '${sample}' successfully processed' >> "${prodir}"/bash/jobs/${sample}_unmapped_bam2fastq.job
 #
 echo 'echo = `date` job $JOB_NAME done' >> ${prodir}/bash/jobs/${sample}_unmapped_bam2fastq.job

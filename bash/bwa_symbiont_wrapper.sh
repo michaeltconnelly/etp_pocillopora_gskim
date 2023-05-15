@@ -43,8 +43,8 @@ echo 'echo + NSLOTS = $NSLOTS' >> ${prodir}/bash/jobs/${sample}_bwa_align_symbio
 
   #   input bwa mem alignment command
 echo "bwa mem ${mcs}/sequences/symbio/symABCDgenome.fasta \
-${prodir}/data/unmapped/${sample}_Unmapped_R1_PE_trimmed.fastq.gz \
-${prodir}/data/unmapped/${sample}_Unmapped_R2_PE_trimmed.fastq.gz \
+${prodir}/data/unmapped/${sample}_Unmapped_R1_PE.fastq.gz \
+${prodir}/data/unmapped/${sample}_Unmapped_R2_PE.fastq.gz \
 > ${prodir}/outputs/alignments/${sample}_symABCD.sam" >> "${prodir}"/bash/jobs/${sample}_bwa_align_symbiont.job
 
 #
