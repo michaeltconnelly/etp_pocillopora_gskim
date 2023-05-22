@@ -28,6 +28,7 @@ set=$1
 pcangsd.py \
 -beagle ${prodir}/outputs/angsd/${set}_ibs05.beagle.gz \
 -o ${prodir}/outputs/angsd/${set} \
+-admix \
 -threads $NSLOTS
 
 echo = `date` job $JOB_NAME done
