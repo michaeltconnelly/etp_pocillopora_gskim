@@ -6,8 +6,8 @@
 #$ -l mres=192G,h_data=12G,h_vmem=12G,himem
 #$ -cwd
 #$ -j y
-#$ -N angsd_ibs_${set}
-#$ -o angsd_ibs_${set}.log
+#$ -N angsd_ibs
+#$ -o angsd_ibs.log
 #$ -m bea
 #$ -M connellym@si.edu
 #
