@@ -39,7 +39,13 @@ vignettes/*.pdf
 .Renviron
 .DS_Store
 *.Rproj
-data/spatial_data
+#
+data/raw/
+data/unmapped/
+data/spatial_data/
+#
+bash/jobs/
+#
 outputs/QCs/
 outputs/raxml/
 outputs/angsd/

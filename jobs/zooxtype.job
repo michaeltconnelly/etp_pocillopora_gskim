@@ -31,6 +31,7 @@ samples=$(cat ${prodir}/data/${set}_samples.txt)
 
 # making a variable with sample names and paths
 
+
 perl ${prodir}/bash/zooxtype.pl ${prodir}/outputs/symbiont_alignments/ > ${prodir}/outputs/allcounts_symABCD.txt
 
 echo = `date` job $JOB_NAME done
