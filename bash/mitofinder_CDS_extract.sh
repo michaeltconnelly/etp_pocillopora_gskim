@@ -3,9 +3,6 @@
 
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 
-# print message 
-for i in ${prodir}/outputs/mitofinder/*/*Final*/*contig.fasta ; do echo $(basename $i) ; grep -v ">" $i | wc -c ; done
-
 # extract CDS from the NT fasta files
 mtgenes="ATP8 COX1 rrnL ND1 CYTB ND2 ND6 ATP6 ND4 rrnS COX3 COX2 ND4L ND3 ND5"
 # prep directories and output files
@@ -21,4 +18,5 @@ done
 
 # print message
 for gene in $mtgenes; do for i in ${prodir}/outputs/mitofinder/cds_alignments/${gene}/${gene}_all.fasta ; do lines=$(grep -v ">" $i | wc -l) ; echo "There are $lines seqs in $(basename $i)" ; done
+#
 echo "MitoFinder CDS extraction and concatenation complete"
