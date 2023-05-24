@@ -27,7 +27,7 @@ prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 mtgenes="ATP8 COX1 rrnL ND1 CYTB ND2 ND6 ATP6 ND4 rrnS COX3 COX2 ND4L ND3 ND5"
 # align 
 for gene in $mtgenes
-do mafft --retree 2 --adjustdirection --threads $NSLOTS ${prodir}/outputs/mitofinder/cds_alignments/${gene}/${gene}_all.fasta > ${prodir}/outputs/mitofinder/cds_alignments/${gene}/${gene}_aligned.fasta
+do mafft --retree 2 --adjustdirection --thread $NSLOTS ${prodir}/outputs/mitofinder/cds_alignments/${gene}/${gene}_all.fasta > ${prodir}/outputs/mitofinder/cds_alignments/${gene}/${gene}_aligned.fasta
 done
 #
 echo = `date` job $JOB_NAME done
