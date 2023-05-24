@@ -17,6 +17,6 @@ for gene in $mtgenes; do for file in ${prodir}/outputs/mitofinder/final_results/
 done
 
 # print message
-for gene in $mtgenes; do for i in ${prodir}/outputs/mitofinder/cds_alignments/${gene}/${gene}_all.fasta ; do lines=$(grep -v ">" $i | wc -l) ; echo "There are $lines seqs in $(basename $i)" ; done
+for gene in $mtgenes; do for i in ${prodir}/outputs/mitofinder/cds_alignments/${gene}/${gene}_all.fasta ; do lines=$(grep -v ">" $i | wc -l) ; echo "There are $lines seqs in $(basename $i)" ; done ; done
 #
 echo "MitoFinder CDS extraction and concatenation complete"
