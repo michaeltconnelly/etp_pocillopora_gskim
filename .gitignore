@@ -56,4 +56,5 @@ outputs/uce-search-results/
 outputs/mitofinder/
 outputs/raxml/
 outputs/iqtree/
-outputs/figures/
+outputs/figures/#
+logs/
