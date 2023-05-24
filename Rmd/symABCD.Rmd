@@ -1,0 +1,84 @@
+---
+title: "symABCD"
+author: "Mike Connelly"
+date: "4/28/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+options(stringsAsFactors = FALSE)
+```
+
+```{r}
+library(tidyverse) # for data wrangling and plotting
+library(RColorBrewer) # for colors
+```
+
+Plot the proportion of reads mapping to A, B, C, and D in Pocillopora corals
+
+```{r}
+abcd_pdam <- read.delim("./outputs/allcounts_symABCD.txt")
+
+df_abcd_pdam <- abcd_pdam %>% 
+  dplyr::select(sample, fracA, fracB, fracC, fracD) %>% 
+  gather(clade, frac, fracA:fracD) %>% View()
+  dplyr::mutate(Genus = factor(ifelse(clade == "fracA", "Symbiodinium", ifelse(clade == "fracB", "Breviolum", ifelse(clade == "fracC", "Cladocopium", "Durusdinium"))))) %>%
+  dplyr::mutate(`Sample ID` = str_extract(sample, "^.*_.*_[S]*")) %>% 
+  dplyr::mutate(`Sample ID` = str_replace(`Sample ID`, "_S.*_", "")) %>% 
+  dplyr::filter(`Sample ID` != "Perlas_344_AP3XG35") %>% 
+  dplyr::left_join(samples_pc_clusters, by = "Sample ID")
+# 
+df_abcd_pdam$Genus <- factor(df_abcd_pdam$Genus, levels = c("Symbiodinium", "Breviolum", "Cladocopium", "Durusdinium", ordered = T))
+
+plot_abcd_pdam <- df_abcd_pdam %>% 
+  ggplot() + 
+  geom_bar(aes(y = frac, x = sample, fill = Genus), stat="identity")+
+  # facet_grid(~Region, scales = "free") +
+  facet_grid(Region ~ cluster, scales = "free") +
+  scale_fill_brewer(palette="Spectral", name = "Genus")+
+  theme_classic()+
+  ylab("Proportion of Symbiont Reads")+
+  xlab("Pocillopora Samples")+
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+```
+```{r}
+pdf("./outputs/figures/pocillopora_symbiont_proportions.pdf", width = 6.5, height = 6.5)
+print(plot_abcd_pdam)
+dev.off()
+```
+### Supplementary Figure 6
+```{r }
+# df_abcd_pdam$Genotype
+# 
+plot_abcd_pdam <- df_abcd_pdam %>% 
+  ggplot() + 
+  geom_bar(aes(y = frac, x = sample, fill = Genus), stat="identity")+
+  facet_wrap(~ `Region:Site`, scales = "free") +
+  scale_fill_brewer(palette="Spectral", name = "Genus")+
+  theme_classic()+
+  ylab("Proportion of Symbiont Reads")+
+  xlab(NULL)+
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+```
+```{r}
+pdf("./outputs/figures/FigS6_pocillopora_symbiont_proportions.pdf", width = 6.5, height = 6.5)
+print(plot_abcd_pdam)
+dev.off()
+```
+
+## Scatterpie plot on map 
+to examine geographic patterns
+```{r}
+
+```
+
+## Pie chart tips on IBS clustering tree
+to examine phylogenetic and within-clone patterns
+```{r}
+
+```
+

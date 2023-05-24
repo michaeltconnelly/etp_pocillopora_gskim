@@ -1,0 +1,39 @@
+---
+title: "PHYLUCE_phylogenetic_analysis"
+author: "Mike Connelly"
+date: "2023-05-24"
+output: html_document
+---
+## Setup and packages
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = TRUE)
+options(stringsAsFactors = FALSE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+```{r packages}
+library("tidyverse")
+library("ggtree")
+# 
+```
+
+## Colors and theme
+```{r colors}
+region_colors <- c("gold1", "steelblue", "darkorange", "darkturquoise")
+# 
+site_colors <- c("gold1", "blue", "darkblue", "steelblue", "lightblue", "darkorange3","darkorange", "orange", "orangered", "cyan", "cyan3", "cyan4", "turquoise", "lightgreen")
+# 
+theme_set(theme_bw())
+```
+
+## Phylogenetic trees from PHYUCE UCE alignment
+
+### IQ-TREE
+```{r}
+
+```
+
+### RAxML
+```{r}
+
+```
+

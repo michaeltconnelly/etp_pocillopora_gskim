@@ -1,0 +1,243 @@
+---
+title: "IBS"
+author: "Mike Connelly"
+date: "2023-05-10"
+output: html_document
+---
+## Setup and packages
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = TRUE)
+options(stringsAsFactors = FALSE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+```{r packages}
+library("tidyverse")
+library("ggtree")
+#
+library("WGCNA") # for coloring clonal groups
+library("sparcl") # for ColorDendrogram
+# 
+```
+
+## Colors and theme
+```{r colors}
+region_colors <- c("gold1", "steelblue", "darkorange", "darkturquoise")
+# 
+site_colors <- c("gold1", "blue", "darkblue", "steelblue", "lightblue", "darkorange3","darkorange", "orange", "orangered", "cyan", "cyan3", "cyan4", "turquoise", "lightgreen")
+# 
+theme_set(theme_bw())
+```
+
+## Import sample metadata
+```{r import_sample_metadata}
+all_samples <- read_csv("./data/pocillopora_samples_003.csv")
+etp_samples <- read_csv("./data/etp_samples.txt")
+```
+```{r select_samples}
+samples <- filter(all_samples, all_samples$`Sample ID` %in% etp_samples$`Sample ID`)
+samples$`Region:Site` <- paste(samples$Region, samples$Site, sep = ":")
+```
+
+```{r bamfile_sample_order_check}
+# reading list of bam files = order of samples in IBS matrix
+bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/bamfile.txt",header=F)[,1]
+bams <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/","",bams,perl=T)
+bams <- sub(".sorted.md.rg.bam","",bams,perl=T)
+bams <- sub("_S[[:digit:]]+$", "", bams)
+# bams
+# aligning sample metadata with bams list
+# samples$`Sample ID` == bams
+all(samples$`Sample ID` == bams) # TRUE
+#
+# samples <- samples[match(bams, samples$`Sample ID`),]
+```
+
+## Import IBS matrix
+```{r import_ibs_matrix}
+# reading IBS matrix based on SNPs with allele frequency >= 0.05:
+ma <- as.matrix(read.table("./outputs/angsd/etp_ibs05.ibsMat"))
+```
+```{r import_ibs_matrix}
+# samples=bams #meta$Tag.Number
+dimnames(ma)=list(samples$`Sample ID`,samples$`Sample ID`)
+#
+# dimnames(ma)=list(samples$Site,samples$Site)
+```
+```{r ibs_dendrogram_test}
+# plotting hierarchical clustering dendrogram
+hc=hclust(as.dist(ma),"ave")
+plot(hc,cex=0.6)
+abline(h=0.15,col="red",lty=3)
+```
+
+```{r ibs_dendrogram_rsmas}
+# retaining only rsmas samples
+ma_rsmas <- ma[samples$RSMAS,samples$RSMAS]
+# re-clustering
+hc=hclust(as.dist(ma_rsmas),"ave")
+plot(hc,cex=0.6)
+abline(h=0.15,col="red",lty=3)
+```
+
+```{r ibs_dendrogram_stri}
+# retaining only stri samples
+ma_stri <- ma[samples$STRI,samples$STRI]
+# re-clustering
+hc=hclust(as.dist(ma_stri),"ave")
+plot(hc,cex=0.6)
+abline(h=0.15,col="red",lty=3)
+```
+
+```{r ibs_dendrogram_cluster1}
+# retaining only cluster 1 samples
+ma_cluster1 <- ma[samples_pc_clusters$cluster == 1,samples_pc_clusters$cluster == 1]
+# re-clustering
+hc=hclust(as.dist(ma_cluster1),"ave")
+plot(hc,cex=0.6)
+abline(h=0.15,col="red",lty=3)
+```
+
+```{r ibs_dendrogram_cluster3}
+# retaining only cluster 3 samples
+ma_cluster1 <- ma[samples_pc_clusters$cluster == 3,samples_pc_clusters$cluster == 3]
+# re-clustering
+hc=hclust(as.dist(ma_cluster1),"ave")
+plot(hc,cex=0.6)
+abline(h=0.15,col="red",lty=3)
+```
+
+### Identify clonal groups
+Cluster 1: 1-A, 1-B, 1-C, 1-D, --> 1-K
+Cluster 3: 3-A --> 3-D
+```{r clonegroup_identification}
+# "artificial clones" (genotyping replicates)
+cl1=c("73.GACT","73.TCAC","73.TGTC")
+cl2=c("83.GACT","83.TCAC","83.TGTC")
+cl3=c("88.GACT","88.TCAC","88.TGTC")
+cl4=c("91.GACT","91.TCAC","91.TGTC")
+cl5=c("79.GACT","79.TCAC","79.TGTC")
+# color artificial clones red
+art.clones=rep("black",nrow(mafa))
+#
+art.clones[meta$fileName %in% c(cl1,cl2,cl3,cl4)]="red"
+#
+ColorDendrogram(hclust(as.dist(mafa),"ave"), y = art.clones,branchlength=0.05)
+
+# cutoff for defining clones
+abline(h=0.15,col="red",lty=3)
+
+# sorting samples into clonal groups; singletons go into the same "color" group (for plotting) but different "cn" groups (for GLM modeling later)
+cc=cutree(hc,h=0.15)
+meta$cn=cc
+tc=table(cc)
+singletons=as.numeric(names(tc)[tc==1])
+cc[cc %in% singletons]= singletons[1]
+library(WGCNA) # just for coloring
+clones=labels2colors(as.numeric(as.factor(as.numeric(cc))))
+# changing some colors manually for better visibility
+clones[clones=="white"]="khaki3"
+clones[clones=="black"]="goldenrod"
+clones[clones=="turquoise"]="black"
+meta$cn.color=clones
+ColorDendrogram(hclust(as.dist(mafa),"ave"), y = clones, labels = F,branchlength=0.035)
+```
+```{r}
+# selecting one coral per clone
+sel=c()
+for (i in unique(clones)) {
+	if (i=="black") { 
+		sel=append(sel,subset(bamfa,clones==i)) 
+	} else {
+		sel=append(sel,sample(subset(bamfa,clones==i),1))
+	}
+}
+sel=bamfa %in% sel
+table(sel)
+```
+```{r}
+# writing list of bams with no clonal replicated - rerun the "ibs" ANGSD command with this one instead of 'bams' for PCoA or ADMIXTURE
+write.table(paste(bamfa[sel],".fastq.bam",sep=""),quote=F, row.names=F,col.names=F,sep="\t",file="bams_noclones")
+
+save(bamfa,meta,mafa,sel,file='manzello_angsd_dec5.RData')
+
+```
+
+## Plot IBS clustering dendrogram with ggtree
+```{r ibs_ggtree}
+pdf("../outputs/figures/ibs_dendrogram_etp_all.pdf", width = 8, height = 10)
+tree_title <- expression(paste("IBS clustering of ", italic("Pocillopora"), " samples (", 122, ")"))
+hc %>% ggtree() %<+% samples + 
+  geom_vline(xintercept = -0.15, stroke = 1, color = "red", linetype = 2) +
+  geom_tippoint(aes(fill = `Region:Site`), shape = 21, alpha = 0.8, stroke = 0.5, color = "black", hjust = 0.3, show.legend = TRUE) +
+  geom_tiplab(size = 2, hjust = -0.05) +
+  ggplot2::xlim(-0.45, 0.01) +
+  geom_treescale(x = -0.3, width = 0.05) +
+  scale_fill_manual(values = site_colors) +
+   theme(legend.position = "right",
+        legend.margin = margin(0,0,0,0, unit = "mm"),
+        plot.margin = margin(5,5,5,5, unit = "mm")) +
+  ggtitle(tree_title)
+dev.off()
+```
+
+## Plot separate IBS clustering dendrograms for Cluster 1, 2, and 3 samples
+
+### IBS for Cluster 1 only
+```{r import_ibs_matrix}
+# reading IBS matrix based on SNPs with allele frequency >= 0.05:
+ma <- as.matrix(read.table("./outputs/angsd/etp_cluster1_ibs05.ibsMat"))
+```
+```{r reorder_matrix_dimnames}
+# reading list of bam files = order of samples in IBS matrix
+bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/etp_cluster1_bamfile.txt",header=F)[,1]
+bams <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/","",bams,perl=T)
+bams <- sub(".sorted.md.rg.bam","",bams,perl=T)
+bams <- sub("_S[[:digit:]]+$", "", bams)
+bams
+samples_cluster1$`Sample ID`
+#
+all(samples_cluster1$`Sample ID` %in% bams)
+samples_cluster1 <- samples_cluster1[match(bams, samples_cluster1$`Sample ID`),]
+all(samples_cluster1$`Sample ID` == bams)
+```
+```{r import_ibs_matrix}
+dimnames(ma)=list(samples_cluster1$`Sample ID`,samples_cluster1$`Sample ID`)
+# dimnames(ma)=list(samples_cluster1$Site,samples_cluster1$Site)
+```
+```{r ibs_dendrogram_test}
+# plotting hierarchical clustering dendrogram
+hc=hclust(as.dist(ma),"ave")
+plot(hc,cex=0.6)
+abline(h=0.175,col="red",lty=3)
+```
+
+### IBS for Cluster 3 only
+```{r import_ibs_matrix}
+# reading IBS matrix based on SNPs with allele frequency >= 0.05:
+ma <- as.matrix(read.table("./outputs/angsd/etp_cluster3_ibs05.ibsMat"))
+```
+```{r reorder_matrix_dimnames}
+# reading list of bam files = order of samples in IBS matrix
+bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/etp_cluster3_bamfile.txt",header=F)[,1]
+bams <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/","",bams,perl=T)
+bams <- sub(".sorted.md.rg.bam","",bams,perl=T)
+bams <- sub("_S[[:digit:]]+$", "", bams)
+bams
+samples_cluster3$`Sample ID`
+#
+all(samples_cluster3$`Sample ID` %in% bams)
+samples_cluster3 <- samples_cluster3[match(bams, samples_cluster3$`Sample ID`),]
+all(samples_cluster3$`Sample ID` == bams)
+```
+```{r import_ibs_matrix}
+dimnames(ma)=list(samples_cluster3$`Sample ID`,samples_cluster3$`Sample ID`)
+# dimnames(ma)=list(samples_cluster1$Site,samples_cluster1$Site)
+```
+```{r ibs_dendrogram_test}
+# plotting hierarchical clustering dendrogram
+hc=hclust(as.dist(ma),"ave")
+plot(hc,cex=0.6)
+abline(h=0.15,col="red",lty=3)
+```
+Distance histograms
+

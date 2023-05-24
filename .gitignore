@@ -49,6 +49,7 @@ bash/jobs/
 #
 outputs/QCs/
 outputs/alignments/
+outputs/symbiont_alignments/
 outputs/angsd/
 outputs/spades/
 outputs/taxon-sets/
@@ -56,5 +57,7 @@ outputs/uce-search-results/
 outputs/mitofinder/
 outputs/raxml/
 outputs/iqtree/
-outputs/figures/#
+outputs/figures/
+#
+
 logs/
