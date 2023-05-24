@@ -1,5 +1,5 @@
 #!/bin/bash
-# purpose: extract the CDS for the 13 protein-coding genes and 2 tRNAs annotated in Mitofinder results
+# purpose: extract the CDS for the 13 protein-coding genes and 2 rRNA subunits annotated in Mitofinder results
 
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 
