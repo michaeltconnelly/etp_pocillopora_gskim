@@ -12,10 +12,10 @@ touch ${prodir}/outputs/mitofinder/cds_alignments/${gene}/${gene}_all.fasta; don
 
 # nested for-loops to extract CDS from each sample into single file for each gene
 # complete assemblies
-for gene in $mtgenes; do for file in ${prodir}/outputs/mitofinder/final_results/*/*contig_genes_NT.fasta; do grep -A 1 ">*\@${gene}" $file >> ${prodir}/outputs/mitofinder/cds_alignments/${gene}/${gene}_all.fasta; done
+for gene in $mtgenes; do for file in ${prodir}/outputs/mitofinder/final_results/*/*contig_genes_NT.fasta; do grep -A 1 ">*\@${gene}$" $file >> ${prodir}/outputs/mitofinder/cds_alignments/${gene}/${gene}_all.fasta; done
 done
 # incomplete assemblies
-for gene in $mtgenes; do for file in ${prodir}/outputs/mitofinder/final_results/*/*final_genes_NT.fasta; do grep -A 1 ">*\@${gene}" $file >> ${prodir}/outputs/mitofinder/cds_alignments/${gene}/${gene}_all.fasta; done
+for gene in $mtgenes; do for file in ${prodir}/outputs/mitofinder/final_results/*/*final_genes_NT.fasta; do grep -A 1 ">*\@${gene}$" $file >> ${prodir}/outputs/mitofinder/cds_alignments/${gene}/${gene}_all.fasta; done
 done
 
 # print message
