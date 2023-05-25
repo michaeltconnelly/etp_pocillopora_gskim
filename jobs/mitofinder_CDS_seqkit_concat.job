@@ -1,0 +1,38 @@
+#!/bin/sh
+# ----------------Parameters---------------------- #
+#$ -S /bin/sh
+#$ -pe mthread 4
+#$ -q sThC.q
+#$ -l mres=16G,h_data=4G,h_vmem=4G
+#$ -cwd
+#$ -j y
+#$ -N mitofinder_CDS_seqkit_concat
+#$ -o mitofinder_CDS_seqkit_concat.log
+#$ -m bea
+#$ -M connellym@si.edu
+#
+# ----------------Modules------------------------- #
+module load bioinformatics/seqkit
+#
+# ----------------Your Commands------------------- #
+
+echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
+echo + NSLOTS = $NSLOTS
+
+#specify variable containing sequence file prefixes and directory paths
+mcs="/scratch/nmnh_corals/connellym"
+prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
+
+# purpose: concatenate alignments for the 13 protein-coding genes and 2 ribosomal subunits annotated in Mitofinder results for phylogenetic inference
+mtgenes="ATP8 COX1 rrnL ND1 CYTB ND2 ND6 ATP6 ND4 rrnS COX3 COX2 ND4L ND3 ND5"
+
+for gene in $mtgenes
+# copy aligned sequences to working directory
+do cp ${prodir}/outputs/mitofinder/cds_alignments/${gene}/${gene}_aligned.fasta ${prodir}/outputs/mitofinder/cds_alignments/${gene}_aligned.fasta
+# separate headers to leave a space between sample ID and gene name
+seqkit replace -p '^(.+)@(.+?)$' -r '$1 $2' ${prodir}/outputs/mitofinder/cds_alignments/${gene}_aligned.fasta > ${prodir}/outputs/mitofinder/cds_alignments/${gene}_aligned_sep.fasta
+done
+
+seqkit concat ${prodir}/outputs/mitofinder/cds_alignments/*sep.fasta > ${prodir}/outputs/mitofinder/cds_alignments/mtCDS_concat.fasta
+# 
+echo = `date` job $JOB_NAME done

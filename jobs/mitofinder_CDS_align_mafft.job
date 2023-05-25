@@ -1,9 +1,9 @@
 #!/bin/sh
 # ----------------Parameters---------------------- #
 #$ -S /bin/sh
-#$ -pe mthread 16
-#$ -q mThM.q
-#$ -l mres=192G,h_data=12G,h_vmem=12G,himem
+#$ -pe mthread 4
+#$ -q sThC.q
+#$ -l mres=16G,h_data=4G,h_vmem=4G
 #$ -cwd
 #$ -j y
 #$ -N mitofinder_CDS_align_mafft
@@ -25,9 +25,9 @@ prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 
 # purpose: align the extracted CDS for the 13 protein-coding genes and 2 tRNAs annotated in Mitofinder results, concatenate alignments for phylogenetic inference
 mtgenes="ATP8 COX1 rrnL ND1 CYTB ND2 ND6 ATP6 ND4 rrnS COX3 COX2 ND4L ND3 ND5"
-# align 
+# align each gene separately with mafft
 for gene in $mtgenes
 do mafft --retree 2 --adjustdirection --thread $NSLOTS ${prodir}/outputs/mitofinder/cds_alignments/${gene}/${gene}_all.fasta > ${prodir}/outputs/mitofinder/cds_alignments/${gene}/${gene}_aligned.fasta
 done
-#
+# 
 echo = `date` job $JOB_NAME done
