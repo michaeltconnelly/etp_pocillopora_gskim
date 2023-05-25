@@ -33,6 +33,8 @@ do cp ${prodir}/outputs/mitofinder/cds_alignments/${gene}/${gene}_aligned.fasta 
 seqkit replace -p '^(.+)@(.+?)$' -r '$1 $2' ${prodir}/outputs/mitofinder/cds_alignments/${gene}_aligned.fasta > ${prodir}/outputs/mitofinder/cds_alignments/${gene}_aligned_sep.fasta
 done
 
+# concatenate sequences 
+# NOTE: does the order of sequences matter in the concatenated alignment?
 seqkit concat ${prodir}/outputs/mitofinder/cds_alignments/*sep.fasta > ${prodir}/outputs/mitofinder/cds_alignments/mtCDS_concat.fasta
 # 
 echo = `date` job $JOB_NAME done
