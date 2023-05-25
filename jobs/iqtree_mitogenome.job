@@ -1,0 +1,33 @@
+#!/bin/sh
+# ----------------Parameters---------------------- #
+#$ -S /bin/sh
+#$ -pe mthread 16
+#$ -q mThM.q
+#$ -l mres=192G,h_data=12G,h_vmem=12G,himem
+#$ -cwd
+#$ -j y
+#$ -N iqtree_mitogenome
+#$ -o iqtree_mitogenome.log
+#$ -m bea
+#$ -M connellym@si.edu
+#
+# ----------------Modules------------------------- #
+module load bioinformatics/iqtree
+#
+# ----------------Your Commands------------------- #
+
+echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
+echo + NSLOTS = $NSLOTS
+
+#specify variable containing sequence file prefixes and directory paths
+mcs="/scratch/nmnh_corals/connellym"
+prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
+
+iqtree2 \
+-s ${prodir}/mitofinder/cds_alignments/mtCDS_concat.fasta \
+--prefix ${prodir}/outputs/iqtree/mitogenome_test \
+--seqtype DNA \
+-b 1000 \
+-T $NSLOTS
+
+echo = `date` job $JOB_NAME done
