@@ -27,6 +27,10 @@ set=$1
 #files=$(ls /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/data/raw/)
 #samples=$(echo "$files" | cut -d . -f 1 | sort -u)
 samples=$(cat ${prodir}/data/${set}_samples.txt)
+
+# copy sample contigs to working directory and rename files
+mkdir ${prodir}/outputs/spades/contigs/${set}
+for sample in ${samples} ; do cp ${prodir}/outputs/spades/${sample}/contigs.fasta ${prodir}/outputs/spades/${set}/${sample}_contigs.fasta ; done
 #
 phyluce_assembly_match_contigs_to_probes \
     --contigs ${prodir}/outputs/spades/contigs/${set}/ \
