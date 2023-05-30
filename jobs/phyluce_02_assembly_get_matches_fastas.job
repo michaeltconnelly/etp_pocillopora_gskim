@@ -30,9 +30,7 @@ samples=$(cat ${prodir}/data/${set}_samples.txt)
 
 # create the basic configuration file
 echo '[all]' > ${prodir}/data/${set}.conf
-for sample in $samples
-echo ${sample}_contigs  >> ${prodir}/data/${set}.conf
-done
+for sample in $samples; do echo ${sample}_contigs  >> ${prodir}/data/${set}.conf ; done
 
 # create the data matrix configuration file
 phyluce_assembly_get_match_counts \
