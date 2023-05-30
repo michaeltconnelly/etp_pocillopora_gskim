@@ -34,7 +34,7 @@ for sample in $samples; do echo ${sample}_contigs  >> ${prodir}/data/${set}.conf
 
 # create the data matrix configuration file
 phyluce_assembly_get_match_counts \
-    --locus-db ${prodir}/outputs/uce-search-results/probe.matches.sqlite \
+    --locus-db ${prodir}/outputs/uce-search-results/${set}/probe.matches.sqlite \
     --taxon-list-config ${prodir}/data/${set}.conf \
     --taxon-group 'all' \
     --incomplete-matrix \
@@ -43,7 +43,7 @@ phyluce_assembly_get_match_counts \
 # get FASTA data for taxa in our taxon set
 phyluce_assembly_get_fastas_from_match_counts \
     --contigs ${prodir}/outputs/spades/contigs/${set}/ \
-    --locus-db ${prodir}/outputs/uce-search-results/probe.matches.sqlite \
+    --locus-db ${prodir}/outputs/uce-search-results/${set}/probe.matches.sqlite \
     --match-count-output ${prodir}/outputs/uce-taxon-sets/${set}-taxa-incomplete.conf \
     --output ${prodir}/outputs/uce-taxon-sets/${set}-taxa-incomplete.fasta \
     --incomplete-matrix ${prodir}/outputs/uce-taxon-sets/${set}-taxa-incomplete.incomplete \
