@@ -27,22 +27,28 @@ set=$1
 #files=$(ls /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/data/raw/)
 #samples=$(echo "$files" | cut -d . -f 1 | sort -u)
 samples=$(cat ${prodir}/data/${set}_samples.txt)
-#
+
+# create the basic configuration file
+echo '[all]' > ${prodir}/data/${set}.conf
+for sample in $samples
+echo ${sample}_contigs  >> ${prodir}/data/${set}.conf
+done
+
 # create the data matrix configuration file
 phyluce_assembly_get_match_counts \
     --locus-db ${prodir}/outputs/uce-search-results/probe.matches.sqlite \
     --taxon-list-config ${prodir}/data/${set}.conf \
     --taxon-group 'all' \
     --incomplete-matrix \
-    --output ${prodir}/outputs/taxon-sets/all/all-taxa-incomplete.conf
+    --output ${prodir}/outputs/uce-taxon-sets/${set}-taxa-incomplete.conf
 
 # get FASTA data for taxa in our taxon set
 phyluce_assembly_get_fastas_from_match_counts \
     --contigs ${prodir}/outputs/spades/contigs/${set}/ \
     --locus-db ${prodir}/outputs/uce-search-results/probe.matches.sqlite \
-    --match-count-output ${prodir}/outputs/taxon-sets/all/all-taxa-incomplete.conf \
-    --output ${prodir}/outputs/taxon-sets/all-taxa-incomplete.fasta \
-    --incomplete-matrix ${prodir}/outputs/taxon-sets/all-taxa-incomplete.incomplete \
-    --log-path ${prodir}/outputs/taxon-sets/all/log
+    --match-count-output ${prodir}/outputs/uce-taxon-sets/${set}-taxa-incomplete.conf \
+    --output ${prodir}/outputs/uce-taxon-sets/${set}-taxa-incomplete.fasta \
+    --incomplete-matrix ${prodir}/outputs/uce-taxon-sets/${set}-taxa-incomplete.incomplete \
+    --log-path ${prodir}/outputs/uce-taxon-sets/log
 
 echo = `date` job $JOB_NAME done
