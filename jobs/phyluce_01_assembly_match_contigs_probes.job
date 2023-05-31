@@ -38,3 +38,5 @@ phyluce_assembly_match_contigs_to_probes \
     --output ${prodir}/outputs/uce-search-results/${set}
 
 echo = `date` job $JOB_NAME done
+
+qsub ${prodir}/jobs/phyluce_02_assembly_get_matches_fastas.job
