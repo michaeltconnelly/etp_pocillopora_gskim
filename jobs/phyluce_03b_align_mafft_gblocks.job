@@ -28,29 +28,32 @@ set=$1
 #samples=$(echo "$files" | cut -d . -f 1 | sort -u)
 samples=$(cat ${prodir}/data/${set}_samples.txt)
 
+# creating a variable with the number of taxa
+ntaxa=$(grep "^\[.*\]" ${prodir}/outputs/uce-taxon-sets/${set}-taxa-incomplete.incomplete | wc -l)
+
 # align the data - turn off trimming and output FASTA
 phyluce_align_seqcap_align \
-    --fasta ${prodir}/outputs/taxon-sets/all-taxa-incomplete.fasta \
-    --output ${prodir}/outputs/taxon-sets/mafft-nexus-internal-trimmed \
-    --taxa 14 \
+    --fasta ${prodir}/outputs/uce-taxon-sets/${set}-taxa-incomplete.fasta \
+    --output ${prodir}/outputs/uce-taxon-sets/${set}-mafft-nexus-internal-trimmed.fasta \
+    --taxa $ntaxa \
     --aligner mafft \
     --cores $NSLOTS \
     --incomplete-matrix \
     --output-format fasta \
     --no-trim \
-    --log-path ${prodir}/outputs/taxon-sets/all/log
+    --log-path ${prodir}/outputs/uce-taxon-sets/log
 
     # run gblocks trimming on the alignments
 phyluce_align_get_gblocks_trimmed_alignments_from_untrimmed \
-    --alignments ${prodir}/outputs/taxon-sets/mafft-nexus-internal-trimmed \
-    --output ${prodir}/outputs/taxon-sets/mafft-nexus-internal-trimmed-gblocks \
+    --alignments ${prodir}/outputs/uce-taxon-sets/${set}-mafft-nexus-internal-trimmed.fasta \
+    --output ${prodir}/outputs/uce-taxon-sets/${set}-mafft-nexus-internal-trimmed-gblocks.fasta \
     --cores $NSLOTS \
-    --log ${prodir}/outputs/taxon-sets/all/log
+    --log ${prodir}/outputs/uce-taxon-sets/log
     
     # get alignment summary data
 phyluce_align_get_align_summary_data \
-    --alignments ${prodir}/outputs/taxon-sets/mafft-nexus-internal-trimmed-gblocks \
+    --alignments ${prodir}/outputs/uce-taxon-sets/${set}-mafft-nexus-internal-trimmed-gblocks.fasta \
     --cores $NSLOTS \
-    --log-path ${prodir}/outputs/taxon-sets/all/log
+    --log-path ${prodir}/outputs/uce-taxon-sets/log
 
 echo = `date` job $JOB_NAME done
