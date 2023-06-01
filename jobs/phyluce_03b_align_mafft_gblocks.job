@@ -45,14 +45,14 @@ phyluce_align_seqcap_align \
 
     # run gblocks trimming on the alignments
 phyluce_align_get_gblocks_trimmed_alignments_from_untrimmed \
-    --alignments ${prodir}/outputs/uce-taxon-sets/${set}-mafft-nexus-internal-trimmed.fasta \
-    --output ${prodir}/outputs/uce-taxon-sets/${set}-mafft-nexus-internal-trimmed-gblocks.fasta \
+    --alignments ${prodir}/outputs/uce-taxon-sets/${set}-mafft-nexus-internal-trimmed \
+    --output ${prodir}/outputs/uce-taxon-sets/${set}-mafft-nexus-internal-trimmed-gblocks \
     --cores $NSLOTS \
     --log ${prodir}/outputs/uce-taxon-sets/log
     
     # get alignment summary data
 phyluce_align_get_align_summary_data \
-    --alignments ${prodir}/outputs/uce-taxon-sets/${set}-mafft-nexus-internal-trimmed-gblocks.fasta \
+    --alignments ${prodir}/outputs/uce-taxon-sets/${set}-mafft-nexus-internal-trimmed-gblocks \
     --cores $NSLOTS \
     --log-path ${prodir}/outputs/uce-taxon-sets/log
 
