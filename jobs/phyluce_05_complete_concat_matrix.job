@@ -23,24 +23,27 @@ mcs="/scratch/nmnh_corals/connellym"
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 
 # making a list of sample names
-#set=$1
+set=$1
 #files=$(ls /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/data/raw/)
 #samples=$(echo "$files" | cut -d . -f 1 | sort -u)
 #samples=$(cat ${prodir}/data/${set}_samples.txt)
-pct=0.${1}
+pct=0.${2}
+
+# creating a variable with the number of taxa
+ntaxa=$(grep "^\[.*\]" ${prodir}/outputs/uce-taxon-sets/${set}-taxa-incomplete.incomplete | wc -l)
 
 phyluce_align_get_only_loci_with_min_taxa \
-    --alignments ${prodir}/outputs/taxon-sets/mafft-nexus-internal-trimmed-gblocks-clean \
-    --taxa 14 \
+    --alignments ${prodir}/outputs/uce-taxon-sets/${set}-mafft-nexus-internal-trimmed-gblocks-clean \
+    --taxa $ntaxa \
     --percent ${pct} \
-    --output ${prodir}/outputs/taxon-sets/mafft-nexus-internal-trimmed-gblocks-clean-${1}p \
+    --output ${prodir}/outputs/uce-taxon-sets/${set}-mafft-nexus-internal-trimmed-gblocks-clean-${2}p \
     --cores $NSLOTS \
-    --log-path ${prodir}/outputs/taxon-sets/all/log
+    --log-path ${prodir}/outputs/uce-taxon-sets/log
 
 # build the concatenated data matrix
 phyluce_align_format_nexus_files_for_raxml \
-    --alignments ${prodir}/outputs/taxon-sets/mafft-nexus-internal-trimmed-gblocks-clean-${1}p \
-    --output ${prodir}/outputs/taxon-sets/mafft-nexus-internal-trimmed-gblocks-clean-${1}p-raxml \
-    --log-path ${prodir}/outputs/taxon-sets/all/log
+    --alignments ${prodir}/outputs/uce-taxon-sets/${set}-mafft-nexus-internal-trimmed-gblocks-clean-${2}p \
+    --output ${prodir}/outputs/uce-taxon-sets/${set}-mafft-nexus-internal-trimmed-gblocks-clean-${2}p-raxml \
+    --log-path ${prodir}/outputs/uce-taxon-sets/log
 
 echo = `date` job $JOB_NAME done

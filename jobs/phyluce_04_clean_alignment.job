@@ -23,16 +23,18 @@ mcs="/scratch/nmnh_corals/connellym"
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 
 # making a list of sample names
-#set=$1
+set=$1
 #files=$(ls /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/data/raw/)
 #samples=$(echo "$files" | cut -d . -f 1 | sort -u)
 #samples=$(cat ${prodir}/data/${set}_samples.txt)
 
 # align the data - turn off trimming and output FASTA
 phyluce_align_remove_locus_name_from_nexus_lines  \
-    --alignments ${prodir}/outputs/taxon-sets/mafft-nexus-internal-trimmed-gblocks \
-    --output ${prodir}/outputs/taxon-sets/mafft-nexus-internal-trimmed-gblocks-clean \
+    --alignments ${prodir}/outputs/uce-taxon-sets/${set}-mafft-nexus-internal-trimmed-gblocks \
+    --output ${prodir}/outputs/uce-taxon-sets/${set}-mafft-nexus-internal-trimmed-gblocks-clean \
     --cores $NSLOTS \
-    --log-path ${prodir}/outputs/taxon-sets/all/log
+    --log-path ${prodir}/outputs/uce-taxon-sets/all/log
 
 echo = `date` job $JOB_NAME done
+
+qsub ${prodir}/jobs/phyluce_05_complete_concat_matrix.job $set 75
