@@ -40,13 +40,17 @@ theme_set(theme_bw())
 samples <- read_csv("./data/pocillopora_samples.csv")
 ```
 ```{r}
-all_samples <- read_csv("../data/pocillopora_samples_003.csv")
-stri_samples <- read_csv("../data/etp_samples.txt")
+all_samples <- read_csv("./data/pocillopora_samples_003.csv")
+stri_samples <- read_csv("./data/etp_samples.txt")
 ```
 ```{r}
 samples <- filter(all_samples, all_samples$`Sample ID` %in% stri_samples$`Sample ID`)
 samples$`Region:Site` <- paste(samples$Region, samples$Site, sep = ":")
 ```
+```{r}
+unsamples <- filter(all_samples, all_samples$`Sample ID` %notin% stri_samples$`Sample ID`)
+```
+
 ```{r sample_data_tidy}
 # filter out irrelevant samples, select only informative columns
 samples_select <- samples #%>% 

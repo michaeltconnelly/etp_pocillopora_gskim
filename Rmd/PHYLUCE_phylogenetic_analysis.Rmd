@@ -12,6 +12,7 @@ knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ```
 ```{r packages}
 library("tidyverse")
+library("treeio")
 library("ggtree")
 # 
 ```
@@ -29,11 +30,13 @@ theme_set(theme_bw())
 
 ### IQ-TREE
 ```{r}
-
+tree <- read.newick("./outputs/iqtree/rsmas.treefile")
+gg_tree(tree)
 ```
 
 ### RAxML
 ```{r}
-
+tree <- read.newick("./outputs/raxml/RAxML_bestTree.best")
+gg_tree(tree)
 ```
 

@@ -2,7 +2,9 @@
 #author: "Mike Connelly"
 #date: "05/11/2023"
 
-gg_pcangsd <- function(e, pc = c(1,2)) {
+# PCA visualization function
+###------------------------------------------------------------------------------------
+gg_pcangsd <- function(e, samples, pc = c(1,2)) {
   #
   pcs <- as.data.frame(e$vectors) %>% cbind(samples)
   #
@@ -16,4 +18,13 @@ gg_pcangsd <- function(e, pc = c(1,2)) {
     ylab(paste0( "PC", pc[2], " (", pcvar[pc[2]], "%)")) 
   #
   pca_plot
+}
+
+# Basic phylogenetic tree visualization
+###------------------------------------------------------------------------------------
+gg_tree <- function(treefile) {
+  ggtree(treefile) + 
+    geom_tiplab() +
+    geom_treescale(width = 0.01, x = 0.05) +
+    geom_rootedge(rootedge = 0.01)
 }

@@ -181,8 +181,8 @@ pcvar_c3 <- round(e3$values, 2)
 ```{r pca_cluster_ggplot}
 # test ggplot 
 pcs_c3 %>% ggplot(aes(x = V1, y = V2)) +
-  geom_point(aes(fill = `Region:Site`), shape = 21, size = 2, alpha = 0.75) +
-  scale_fill_manual(values = site_colors) +
+  geom_point(aes(fill = `Region`), shape = 21, size = 2, alpha = 0.75) +
+  scale_fill_manual(values = region_colors) +
   # facet_grid(Region ~ .) +
   coord_fixed(pcvar_c3[2]/pcvar_c3[1]) + 
   xlab(paste0( "PC1 (", pcvar_c3[1], "%)")) + 

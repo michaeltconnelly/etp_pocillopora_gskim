@@ -99,16 +99,121 @@ abline(h=0.15,col="red",lty=3)
 
 ```{r ibs_dendrogram_cluster3}
 # retaining only cluster 3 samples
-ma_cluster1 <- ma[samples_pc_clusters$cluster == 3,samples_pc_clusters$cluster == 3]
+ma_cluster3 <- ma[samples_pc_clusters$cluster == 3,samples_pc_clusters$cluster == 3]
 # re-clustering
-hc=hclust(as.dist(ma_cluster1),"ave")
+hc=hclust(as.dist(ma_cluster3),"ave")
 plot(hc,cex=0.6)
 abline(h=0.15,col="red",lty=3)
 ```
 
-### Identify clonal groups
+## Plot IBS clustering dendrogram with ggtree
+```{r ibs_ggtree}
+pdf("../outputs/figures/ibs_dendrogram_etp_all.pdf", width = 8, height = 10)
+tree_title <- expression(paste("IBS clustering of ", italic("Pocillopora"), " samples (", 122, ")"))
+hc %>% ggtree() %<+% samples + 
+  geom_vline(xintercept = -0.15, stroke = 1, color = "red", linetype = 2) +
+  geom_tippoint(aes(fill = `Region:Site`), shape = 21, alpha = 0.8, stroke = 0.5, color = "black", hjust = 0.3, show.legend = TRUE) +
+  geom_tiplab(size = 2, hjust = -0.05) +
+  ggplot2::xlim(-0.45, 0.01) +
+  geom_treescale(x = -0.3, width = 0.05) +
+  scale_fill_manual(values = site_colors) +
+   theme(legend.position = "right",
+        legend.margin = margin(0,0,0,0, unit = "mm"),
+        plot.margin = margin(5,5,5,5, unit = "mm")) +
+  ggtitle(tree_title)
+dev.off()
+```
+
+## Plot separate IBS clustering dendrograms for Cluster 1, 2, and 3 samples
+
+### IBS for Cluster 1 only
+```{r import_ibs_matrix}
+# reading IBS matrix based on SNPs with allele frequency >= 0.05:
+ma <- as.matrix(read.table("./outputs/angsd/etp_cluster1_ibs05.ibsMat"))
+```
+```{r reorder_matrix_dimnames}
+# reading list of bam files = order of samples in IBS matrix
+bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/etp_cluster1_bamfile.txt",header=F)[,1]
+bams <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/","",bams,perl=T)
+bams <- sub(".sorted.md.rg.bam","",bams,perl=T)
+bams <- sub("_S[[:digit:]]+$", "", bams)
+bams
+# samples_cluster1$`Sample ID`
+#
+all(samples_cluster1$`Sample ID` %in% bams)
+samples_cluster1 <- samples_cluster1[match(bams, samples_cluster1$`Sample ID`),]
+all(samples_cluster1$`Sample ID` == bams)
+```
+```{r import_ibs_matrix}
+dimnames(ma)=list(samples_cluster1$`Sample ID`,samples_cluster1$`Sample ID`)
+# dimnames(ma)=list(samples_cluster1$Site,samples_cluster1$Site)
+```
+```{r ibs_dendrogram_test}
+# plotting hierarchical clustering dendrogram
+hc=hclust(as.dist(ma),"ave")
+plot(hc,cex=0.6)
+abline(h=0.175,col="red",lty=3)
+```
 Cluster 1: 1-A, 1-B, 1-C, 1-D, --> 1-K
+```{r cluster1_clones}
+clone1A <- c("Perlas_357_AP3XG48")
+clone1B <- c("")
+clone1C <- c("")
+clone1D <- c("")
+clone1E <- c("")
+clone1F <- c("")
+clone1G <- c("")
+clone1H <- c("")
+clone1I <- c("")
+clone1J <- c("")
+clone1K <- c("")
+```
+
+```{r distance_histogram}
+ma %>% hist()
+```
+
+### IBS for Cluster 3 only
+```{r import_ibs_matrix}
+# reading IBS matrix based on SNPs with allele frequency >= 0.05:
+ma <- as.matrix(read.table("./outputs/angsd/etp_cluster3_ibs05.ibsMat"))
+```
+```{r reorder_matrix_dimnames}
+# reading list of bam files = order of samples in IBS matrix
+bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/etp_cluster3_bamfile.txt",header=F)[,1]
+bams <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/","",bams,perl=T)
+bams <- sub(".sorted.md.rg.bam","",bams,perl=T)
+bams <- sub("_S[[:digit:]]+$", "", bams)
+bams
+# samples_cluster3$`Sample ID`
+#
+all(samples_cluster3$`Sample ID` %in% bams)
+samples_cluster3 <- samples_cluster3[match(bams, samples_cluster3$`Sample ID`),]
+all(samples_cluster3$`Sample ID` == bams)
+```
+```{r import_ibs_matrix}
+dimnames(ma)=list(samples_cluster3$`Sample ID`,samples_cluster3$`Sample ID`)
+# dimnames(ma)=list(samples_cluster1$Site,samples_cluster1$Site)
+```
+```{r ibs_dendrogram_test}
+# plotting hierarchical clustering dendrogram
+hc=hclust(as.dist(ma),"ave")
+plot(hc,cex=0.6)
+abline(h=0.15,col="red",lty=3)
+```
+```{r distance_histogram}
+ma %>% hist()
+```
+
+### Identify clonal groups
 Cluster 3: 3-A --> 3-D
+```{r}
+clone3A <- c("PAN-37", "PAN-41")
+clone3B <- c("Coiba_692_AP3XF70", "Coiba_900_AP3XF69")
+clone3C <- c("PAN-44", "Perlas_358_AP3XG49")
+clone3D <- c("Perlas_370_AP3XG61", "Perlas_371_AP3XG62")
+```
+
 ```{r clonegroup_identification}
 # "artificial clones" (genotyping replicates)
 cl1=c("73.GACT","73.TCAC","73.TGTC")
@@ -116,6 +221,7 @@ cl2=c("83.GACT","83.TCAC","83.TGTC")
 cl3=c("88.GACT","88.TCAC","88.TGTC")
 cl4=c("91.GACT","91.TCAC","91.TGTC")
 cl5=c("79.GACT","79.TCAC","79.TGTC")
+
 # color artificial clones red
 art.clones=rep("black",nrow(mafa))
 #
@@ -162,82 +268,5 @@ save(bamfa,meta,mafa,sel,file='manzello_angsd_dec5.RData')
 
 ```
 
-## Plot IBS clustering dendrogram with ggtree
-```{r ibs_ggtree}
-pdf("../outputs/figures/ibs_dendrogram_etp_all.pdf", width = 8, height = 10)
-tree_title <- expression(paste("IBS clustering of ", italic("Pocillopora"), " samples (", 122, ")"))
-hc %>% ggtree() %<+% samples + 
-  geom_vline(xintercept = -0.15, stroke = 1, color = "red", linetype = 2) +
-  geom_tippoint(aes(fill = `Region:Site`), shape = 21, alpha = 0.8, stroke = 0.5, color = "black", hjust = 0.3, show.legend = TRUE) +
-  geom_tiplab(size = 2, hjust = -0.05) +
-  ggplot2::xlim(-0.45, 0.01) +
-  geom_treescale(x = -0.3, width = 0.05) +
-  scale_fill_manual(values = site_colors) +
-   theme(legend.position = "right",
-        legend.margin = margin(0,0,0,0, unit = "mm"),
-        plot.margin = margin(5,5,5,5, unit = "mm")) +
-  ggtitle(tree_title)
-dev.off()
-```
 
-## Plot separate IBS clustering dendrograms for Cluster 1, 2, and 3 samples
-
-### IBS for Cluster 1 only
-```{r import_ibs_matrix}
-# reading IBS matrix based on SNPs with allele frequency >= 0.05:
-ma <- as.matrix(read.table("./outputs/angsd/etp_cluster1_ibs05.ibsMat"))
-```
-```{r reorder_matrix_dimnames}
-# reading list of bam files = order of samples in IBS matrix
-bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/etp_cluster1_bamfile.txt",header=F)[,1]
-bams <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/","",bams,perl=T)
-bams <- sub(".sorted.md.rg.bam","",bams,perl=T)
-bams <- sub("_S[[:digit:]]+$", "", bams)
-bams
-samples_cluster1$`Sample ID`
-#
-all(samples_cluster1$`Sample ID` %in% bams)
-samples_cluster1 <- samples_cluster1[match(bams, samples_cluster1$`Sample ID`),]
-all(samples_cluster1$`Sample ID` == bams)
-```
-```{r import_ibs_matrix}
-dimnames(ma)=list(samples_cluster1$`Sample ID`,samples_cluster1$`Sample ID`)
-# dimnames(ma)=list(samples_cluster1$Site,samples_cluster1$Site)
-```
-```{r ibs_dendrogram_test}
-# plotting hierarchical clustering dendrogram
-hc=hclust(as.dist(ma),"ave")
-plot(hc,cex=0.6)
-abline(h=0.175,col="red",lty=3)
-```
-
-### IBS for Cluster 3 only
-```{r import_ibs_matrix}
-# reading IBS matrix based on SNPs with allele frequency >= 0.05:
-ma <- as.matrix(read.table("./outputs/angsd/etp_cluster3_ibs05.ibsMat"))
-```
-```{r reorder_matrix_dimnames}
-# reading list of bam files = order of samples in IBS matrix
-bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/etp_cluster3_bamfile.txt",header=F)[,1]
-bams <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/","",bams,perl=T)
-bams <- sub(".sorted.md.rg.bam","",bams,perl=T)
-bams <- sub("_S[[:digit:]]+$", "", bams)
-bams
-samples_cluster3$`Sample ID`
-#
-all(samples_cluster3$`Sample ID` %in% bams)
-samples_cluster3 <- samples_cluster3[match(bams, samples_cluster3$`Sample ID`),]
-all(samples_cluster3$`Sample ID` == bams)
-```
-```{r import_ibs_matrix}
-dimnames(ma)=list(samples_cluster3$`Sample ID`,samples_cluster3$`Sample ID`)
-# dimnames(ma)=list(samples_cluster1$Site,samples_cluster1$Site)
-```
-```{r ibs_dendrogram_test}
-# plotting hierarchical clustering dendrogram
-hc=hclust(as.dist(ma),"ave")
-plot(hc,cex=0.6)
-abline(h=0.15,col="red",lty=3)
-```
-Distance histograms
 
