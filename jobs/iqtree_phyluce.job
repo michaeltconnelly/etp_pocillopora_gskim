@@ -24,8 +24,8 @@ mcs="/scratch/nmnh_corals/connellym"
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 
 iqtree2 \
--s ${prodir}/outputs/taxon-sets/mafft-nexus-internal-trimmed-gblocks-clean-75p-raxml/mafft-nexus-internal-trimmed-gblocks-clean-75p.phylip \
---prefix ${prodir}/outputs/iqtree/rsmas_phyluce_test \
+-s ${prodir}/outputs/uce-taxon-sets/phyluce_test01-mafft-nexus-internal-trimmed-gblocks-clean-75p-raxml/phyluce_test01-mafft-nexus-internal-trimmed-gblocks-clean-75p.phylip \
+--prefix ${prodir}/outputs/iqtree/iqtree_test_phyluce01 \
 --seqtype DNA \
 -b 1000 \
 -T $NSLOTS
