@@ -25,6 +25,7 @@ prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 
 iqtree2 \
 -s ${prodir}/outputs/mitofinder/cds_alignments/mtCDS_concat.fasta \
+-q ${prodir}/outputs/mitofinder/cds_alignments/mtCDS_concat.partitions \
 --prefix ${prodir}/outputs/iqtree/mitogenome_test \
 --seqtype DNA \
 -b 1000 \
