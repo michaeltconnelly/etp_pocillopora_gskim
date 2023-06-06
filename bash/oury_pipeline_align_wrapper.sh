@@ -117,4 +117,9 @@ echo "samtools flagstat ${prodir}/outputs/oury_pipeline/${sample}_realigned_read
 # Echo finished 
 echo 'echo "'${sample}' Finished!"' >> ${prodir}/bash/jobs/${sample}_oury_pipeline.job
 #
-echo = `date` job $JOB_NAME done
+echo 'echo = `date` job $JOB_NAME done' >> ${prodir}/bash/jobs/${sample}_oury_pipeline.job
+
+# Submit job
+qsub ${prodir}/bash/jobs/${sample}_bwa_align.job
+#
+done
