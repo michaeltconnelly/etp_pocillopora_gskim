@@ -71,9 +71,12 @@ echo "gzip -d ${prodir}/data/trimmed/${sample}_R2_PE_trimmed.fastq.gz" >> ${prod
 
 echo "#Mapping" >> ${prodir}/bash/jobs/${sample}_oury_pipeline.job
 #
-#"@RG\tID:${sample}.XXXXXXXXX.1\tSM:${sample}\tPL:illumina\tLB:${sample}.S1\tPU:XXXXXXXXX.1"
+# read group header
+RG="@RG\tID:${sample}.XXXXXXXXX.1\tSM:${sample}\tPL:illumina\tLB:${sample}.S1\tPU:XXXXXXXXX.1"
+#
 echo "bwa mem \
--R ${mcs}/sequences/Pocillopora_UCEs_exons_2068_ref_sequences.fasta \
+-R '"$RG"' \
+${mcs}/sequences/Pocillopora_UCEs_exons_2068_ref_sequences.fasta \
 ${prodir}/data/trimmed/${sample}_R1_PE_trimmed.fastq \
 ${prodir}/data/trimmed/${sample}_R2_PE_trimmed.fastq \
 > ${prodir}/outputs/oury_pipeline/${sample}_aligned_reads.sam" >> ${prodir}/bash/jobs/${sample}_oury_pipeline.job
@@ -120,6 +123,6 @@ echo 'echo "'${sample}' Finished!"' >> ${prodir}/bash/jobs/${sample}_oury_pipeli
 echo 'echo = `date` job $JOB_NAME done' >> ${prodir}/bash/jobs/${sample}_oury_pipeline.job
 
 # Submit job
-qsub ${prodir}/bash/jobs/${sample}_bwa_align.job
+qsub ${prodir}/bash/jobs/${sample}_oury_pipeline.job
 #
 done
