@@ -24,7 +24,7 @@ mcs="/scratch/nmnh_corals/connellym"
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 
 # Make bam file list
-ls ${prodir}/outputs/*_realigned_reads.bam > ${prodir}/outputs/oury_pipeline/List_bam.txt
+ls ${prodir}/outputs/oury_pipeline/*_realigned_reads.bam > ${prodir}/outputs/oury_pipeline/List_bam.txt
 
 #3°) SNP genotype calling & filtering
 #3.1°) SNP genotype calling (where List_bam.txt is the list of the bam files)
