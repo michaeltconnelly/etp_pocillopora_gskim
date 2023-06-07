@@ -32,10 +32,10 @@ bcftools mpileup -A -B -I -Ou -a AD,DP,SP,INFO/AD -f ${mcs}/sequences/Pocillopor
 
 #3.2°) Filtering genotypes based on DP & SP
 #Filtering based on DP
-bcftools filter -S '.' -e 'FORMAT/DP<12'  ${prodir}/outputs/oury_pipeline/Calls_1559SNP.bcf | bcftools view -i 'AN>2 & AC!=0 & AN!=AC' --threads 2 -Ob –o ${prodir}/outputs/oury_pipeline/Calls_1559SNP_DP12.bcf
+bcftools filter -S '.' -e 'FORMAT/DP<12'  ${prodir}/outputs/oury_pipeline/Calls_1559SNP.bcf | bcftools view -i 'AN>2 & AC!=0 & AN!=AC' --threads 2 -Ob -o ${prodir}/outputs/oury_pipeline/Calls_1559SNP_DP12.bcf
 
 #Filtering based on SP
-bcftools filter -S '.' -e 'FORMAT/SP>13'  ${prodir}/outputs/oury_pipeline/Calls_1559SNP_DP12.bcf | bcftools view -i 'AN>2 & AC!=0 & AN!=AC' --threads 2 -Ob –o ${prodir}/outputs/oury_pipeline/Calls_1559SNP_DP12_SP13.bcf
+bcftools filter -S '.' -e 'FORMAT/SP>13'  ${prodir}/outputs/oury_pipeline/Calls_1559SNP_DP12.bcf | bcftools view -i 'AN>2 & AC!=0 & AN!=AC' --threads 2 -Ob -o ${prodir}/outputs/oury_pipeline/Calls_1559SNP_DP12_SP13.bcf
 
 # Echo finished 
 echo "Finished!"
