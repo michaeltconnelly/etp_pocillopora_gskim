@@ -1,0 +1,43 @@
+#!/bin/sh
+# ----------------Parameters---------------------- #
+#$ -S /bin/sh
+#$ -pe mthread 16
+#$ -q mThM.q
+#$ -l mres=192G,h_data=12G,h_vmem=12G,himem
+#$ -cwd
+#$ -j y
+#$ -N Oury_SNP_pipeline
+#$ -o Oury_SNP_pipeline.log
+#$ -m bea
+#$ -M connellym@si.edu
+#
+# ----------------Modules------------------------- #
+module load bioinformatics/bcftools
+#
+# ----------------Your Commands------------------- #
+
+echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
+echo + NSLOTS = $NSLOTS
+
+#specify variable containing sequence file prefixes and directory paths
+mcs="/scratch/nmnh_corals/connellym"
+prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
+
+# Make bam file list
+ls ${prodir}/outputs/*_realigned_reads.bam > ${prodir}/outputs/oury_pipeline/List_bam.txt
+
+#3°) SNP genotype calling & filtering
+#3.1°) SNP genotype calling (where List_bam.txt is the list of the bam files)
+bcftools mpileup -A -B -I -Ou -a AD,DP,SP,INFO/AD -f ${mcs}/sequences/Pocillopora_UCEs_exons_2068_ref_sequences.fasta -R ${prodir}/data/List_1559SNP_noLD.txt -b ${prodir}/outputs/oury_pipeline/List_bam.txt | bcftools call -m --threads 2 -Ob -o  ${prodir}/outputs/oury_pipeline/Calls_1559SNP.bcf
+
+#3.2°) Filtering genotypes based on DP & SP
+#Filtering based on DP
+bcftools filter -S '.' -e 'FORMAT/DP<12'  ${prodir}/outputs/oury_pipeline/Calls_1559SNP.bcf | bcftools view -i 'AN>2 & AC!=0 & AN!=AC' --threads 2 -Ob –o ${prodir}/outputs/oury_pipeline/Calls_1559SNP_DP12.bcf
+
+#Filtering based on SP
+bcftools filter -S '.' -e 'FORMAT/SP>13'  ${prodir}/outputs/oury_pipeline/Calls_1559SNP_DP12.bcf | bcftools view -i 'AN>2 & AC!=0 & AN!=AC' --threads 2 -Ob –o ${prodir}/outputs/oury_pipeline/Calls_1559SNP_DP12_SP13.bcf
+
+# Echo finished 
+echo "Finished!"
+#
+echo = `date` job $JOB_NAME done
