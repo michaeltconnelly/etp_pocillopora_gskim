@@ -1,6 +1,8 @@
 #!/bin/bash
 #./bash/zip_wrapper.sh
 
+prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
+
 set=$1
 #files=$(ls /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/data/raw/)
 #samples=$(echo "$files" | cut -d . -f 1 | sort -u)
