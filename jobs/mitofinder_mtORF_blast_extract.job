@@ -1,0 +1,29 @@
+#!/bin/bash
+# purpose: after running Mitofinder, extract mtORF sequence from assembled mitochondrial genomes using BLAST
+
+prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
+
+# first, organize mitofinder final results files
+cp -r ${prodir}/outputs/mitofinder/*/*Final*/ ${prodir}/outputs/mitofinder/final_results
+
+# collect mitogenome contigs into a single fasta file
+contigs=$(ls ${prodir}/outputs/mitofinder/final_results/*Final*/*contig*.fasta | grep -v "genes")
+for i in $contigs 
+do 
+echo $(basename $i)
+grep -v ">" $i | wc -c
+cat $i >> ${prodir}/outputs/mitofinder/mtorf_extract/all_mt_contigs.fasta
+done
+
+# make BLAST database to search for mtORF sequences
+makeblastdb -dbtype 'nucl' -in ${prodir}/outputs/mitofinder/mtorf_extract/all_mt_contigs.fasta -title mtcontigs -parse_seqids
+
+# complete BLAST search, format results to include matching subject sequences (sseq)
+blastn \
+-query ${prodir}/data/seqs/pocillopora_mtORF_Type3_ORF46_HQ378760.fasta \
+-db ${prodir}/outputs/mitofinder/mtorf_extract/all_mt_contigs.fasta \
+-out ${prodir}/outputs/mitofinder/mtorf_extract/mtORF_type3_blastn.tsv \
+-outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore sseq"
+
+# extract mtORF sequences into fasta file from BLAST results
+cat mtORF_type3_blastn.tsv | cut -d$'\t' -f 2,13 | sed 's/^/>/g' | sed 's/\t/\n/g' | seqkit seq -m 820 > ${prodir}/outputs/mitofinder/mtorf_extract/mtorf_hits.fasta

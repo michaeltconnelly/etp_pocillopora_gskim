@@ -24,9 +24,9 @@ echo "Preparing script for ${sample}"
 echo "# /bin/sh" > ${prodir}/bash/jobs/${sample}_mitofinder.job
 echo "# ----------------Parameters---------------------- #" >> ${prodir}/bash/jobs/${sample}_mitofinder.job
 echo "#$  -S /bin/sh
-#$ -pe mthread 8
+#$ -pe mthread 16
 #$ -q mThM.q
-#$ -l mres=96G,h_data=12G,h_vmem=12G,himem" >> ${prodir}/bash/jobs/${sample}_mitofinder.job
+#$ -l mres=192G,h_data=12G,h_vmem=12G,himem" >> ${prodir}/bash/jobs/${sample}_mitofinder.job
 echo "#$ -j y
 #$ -N ${sample}_mitofinder
 #$ -o ${prodir}/bash/jobs/${sample}_mitofinder.log
