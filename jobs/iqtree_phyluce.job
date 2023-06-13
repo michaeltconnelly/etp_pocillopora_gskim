@@ -25,9 +25,8 @@ prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 
 iqtree2 \
 -s ${prodir}/outputs/uce-taxon-sets/phyluce_test01-mafft-nexus-internal-trimmed-gblocks-clean-75p-raxml/phyluce_test01-mafft-nexus-internal-trimmed-gblocks-clean-75p.phylip \
--p ${prodir}/outputs/uce-taxon-sets/phyluce_test01-mafft-nexus-internal-trimmed-gblocks-clean-75p-raxml/phyluce_test01-mafft-nexus-internal-trimmed-gblocks-clean-75p.charsets \
 --seqtype DNA \
--m MFP+MERGE \
+-m MFP \
 -bb 1000 \
 -alrt 1000 \
 -nt $NSLOTS \
