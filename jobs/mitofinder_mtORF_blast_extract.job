@@ -26,4 +26,4 @@ blastn \
 -outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore sseq"
 
 # extract mtORF sequences into fasta file from BLAST results
-cat mtORF_type3_blastn.tsv | cut -d$'\t' -f 2,13 | sed 's/^/>/g' | sed 's/\t/\n/g' | seqkit seq -m 820 > ${prodir}/outputs/mitofinder/mtorf_extract/mtorf_hits.fasta
+cat ${prodir}/outputs/mitofinder/mtorf_extract/mtORF_type3_blastn.tsv | cut -d$'\t' -f 2,13 | sed 's/^/>/g' | sed 's/\t/\n/g' | seqkit seq -m 820 > ${prodir}/outputs/mitofinder/mtorf_extract/mtorf_hits.fasta

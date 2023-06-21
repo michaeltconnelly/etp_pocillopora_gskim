@@ -44,6 +44,7 @@ phyluce_align_get_only_loci_with_min_taxa \
 phyluce_align_format_nexus_files_for_raxml \
     --alignments ${prodir}/outputs/uce-taxon-sets/${set}-mafft-nexus-internal-trimmed-gblocks-clean-${2}p \
     --output ${prodir}/outputs/uce-taxon-sets/${set}-mafft-nexus-internal-trimmed-gblocks-clean-${2}p-raxml \
+    --charsets \
     --log-path ${prodir}/outputs/uce-taxon-sets/log
 
 echo = `date` job $JOB_NAME done

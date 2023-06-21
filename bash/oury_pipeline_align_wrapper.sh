@@ -116,6 +116,9 @@ echo "java -jar $GATK_HOME/GenomeAnalysisTK.jar -T IndelRealigner \
 echo "#2.5°) Mapping QC" >> ${prodir}/bash/jobs/${sample}_oury_pipeline.job
 #
 echo "samtools flagstat ${prodir}/outputs/oury_pipeline/${sample}_realigned_reads.bam" >> ${prodir}/bash/jobs/${sample}_oury_pipeline.job
+#
+echo "gzip ${prodir}/data/trimmed/${sample}_R1_PE_trimmed.fastq" >> ${prodir}/bash/jobs/${sample}_oury_pipeline.job
+echo "gzip ${prodir}/data/trimmed/${sample}_R2_PE_trimmed.fastq" >> ${prodir}/bash/jobs/${sample}_oury_pipeline.job
 
 # Echo finished 
 echo 'echo "'${sample}' Finished!"' >> ${prodir}/bash/jobs/${sample}_oury_pipeline.job
