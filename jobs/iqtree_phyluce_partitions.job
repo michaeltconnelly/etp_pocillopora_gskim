@@ -6,8 +6,8 @@
 #$ -l mres=72G,h_data=3G,h_vmem=3G
 #$ -cwd
 #$ -j y
-#$ -N iqtree_phyluce_test
-#$ -o iqtree_phyluce_test.log
+#$ -N iqtree_phyluce_noclones
+#$ -o iqtree_phyluce_noclones.log
 #$ -m bea
 #$ -M connellym@si.edu
 #
@@ -24,13 +24,13 @@ mcs="/scratch/nmnh_corals/connellym"
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 
 iqtree2 \
--s ${prodir}/outputs/uce-taxon-sets/phyluce_test01-mafft-nexus-internal-trimmed-gblocks-clean-75p-raxml/phyluce_test01-mafft-nexus-internal-trimmed-gblocks-clean-75p.phylip \
--p ${prodir}/outputs/uce-taxon-sets/phyluce_test01-mafft-nexus-internal-trimmed-gblocks-clean-75p-raxml/phyluce_test01-mafft-nexus-internal-trimmed-gblocks-clean-75p.partitions \
+-s ${prodir}/outputs/uce-taxon-sets/phyluce_noclones-mafft-nexus-internal-trimmed-gblocks-clean-75p-raxml/phyluce_noclones-mafft-nexus-internal-trimmed-gblocks-clean-75p.phylip \
+-p ${prodir}/outputs/uce-taxon-sets/phyluce_noclones-mafft-nexus-internal-trimmed-gblocks-clean-75p-raxml/phyluce_noclones-mafft-nexus-internal-trimmed-gblocks-clean-75p.partitions \
 --seqtype DNA \
 -m MFP+MERGE \
 -bb 1000 \
 -alrt 1000 \
 -nt $NSLOTS \
---prefix ${prodir}/outputs/iqtree/iqtree_test_phyluce03
+--prefix ${prodir}/outputs/iqtree/iqtree_test_phyluce_noclones
 
 echo = `date` job $JOB_NAME done
