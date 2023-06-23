@@ -6,8 +6,8 @@
 #$ -l mres=192G,h_data=12G,h_vmem=12G,himem
 #$ -cwd
 #$ -j y
-#$ -N phyluce_align_mafft_gblocks
-#$ -o phyluce_align_mafft_gblocks.log
+#$ -N phyluce_gblocks
+#$ -o phyluce_gblocks.log
 #$ -m bea
 #$ -M connellym@si.edu
 #
@@ -27,21 +27,6 @@ set=$1
 #files=$(ls /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/data/raw/)
 #samples=$(echo "$files" | cut -d . -f 1 | sort -u)
 samples=$(cat ${prodir}/data/${set}_samples.txt)
-
-# creating a variable with the number of taxa
-ntaxa=$(grep "^\[.*\]" ${prodir}/outputs/uce-taxon-sets/${set}-taxa-incomplete.incomplete | wc -l)
-
-# align the data - turn off trimming and output FASTA
-phyluce_align_seqcap_align \
-    --fasta ${prodir}/outputs/uce-taxon-sets/${set}-taxa-incomplete.fasta \
-    --output ${prodir}/outputs/uce-taxon-sets/${set}-mafft-nexus-internal-trimmed \
-    --taxa $ntaxa \
-    --aligner mafft \
-    --cores $NSLOTS \
-    --incomplete-matrix \
-    --output-format fasta \
-    --no-trim \
-    --log-path ${prodir}/outputs/uce-taxon-sets/log
 
     # run gblocks trimming on the alignments
 phyluce_align_get_gblocks_trimmed_alignments_from_untrimmed \
