@@ -28,10 +28,13 @@ set=$1
 #samples=$(echo "$files" | cut -d . -f 1 | sort -u)
 samples=$(cat ${prodir}/data/${set}_samples.txt)
 
-# copy sample contigs to working directory and rename files
+# make directory to hold contigs for a given analysis
 mkdir ${prodir}/outputs/spades/contigs/${set}
+# copy outgroup contigs from data 
+cp ${prodir}/data/outgroups/*.fasta ${prodir}/outputs/spades/contigs/${set}
+# copy sample contigs to working directory and rename files
 for sample in ${samples} ; do cp ${prodir}/outputs/spades/${sample}*/contigs.fasta ${prodir}/outputs/spades/contigs/${set}/${sample}_contigs.fasta ; done
-#
+# start phyluce contig match to probes
 phyluce_assembly_match_contigs_to_probes \
     --contigs ${prodir}/outputs/spades/contigs/${set}/ \
     --probes ${prodir}/data/probes/hexa-v2-final-probes.fasta \
@@ -39,4 +42,5 @@ phyluce_assembly_match_contigs_to_probes \
 
 echo = `date` job $JOB_NAME done
 
+# start next job in pipeline - get FASTAs for matches
 qsub ${prodir}/jobs/phyluce_02_assembly_get_matches_fastas.job $set

@@ -31,6 +31,9 @@ samples=$(cat ${prodir}/data/${set}_samples.txt)
 # create the basic configuration file
 echo '[all]' > ${prodir}/data/${set}.conf
 for sample in $samples; do echo ${sample}_contigs  >> ${prodir}/data/${set}.conf ; done
+# add outgroup taxa
+echo "Seriatopora_hystrix_ReFuGe_contigs" >> ${prodir}/data/${set}.conf
+echo "Stylophora_pistillata_ANT17_contigs" >> ${prodir}/data/${set}.conf
 
 # create the data matrix configuration file
 phyluce_assembly_get_match_counts \
@@ -50,3 +53,6 @@ phyluce_assembly_get_fastas_from_match_counts \
     --log-path ${prodir}/outputs/uce-taxon-sets/log
 
 echo = `date` job $JOB_NAME done
+
+# start next job in pipeline - MAFFT alignment and trimming
+qsub ${prodir}/jobs/phyluce_03b_align_mafft_gblocks.job $set

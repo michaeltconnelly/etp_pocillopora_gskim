@@ -37,4 +37,5 @@ phyluce_align_remove_locus_name_from_nexus_lines  \
 
 echo = `date` job $JOB_NAME done
 
+# start next job in pipeline - produce concatenated matrix
 qsub ${prodir}/jobs/phyluce_05_complete_concat_matrix.job $set 75

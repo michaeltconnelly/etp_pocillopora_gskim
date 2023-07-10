@@ -57,3 +57,6 @@ phyluce_align_get_align_summary_data \
     --log-path ${prodir}/outputs/uce-taxon-sets/log
 
 echo = `date` job $JOB_NAME done
+
+# start next job in pipeline - clean alignment
+qsub ${prodir}/jobs/phyluce_04_clean_alignment.job $set
