@@ -23,19 +23,23 @@ echo + NSLOTS = $NSLOTS
 mcs="/scratch/nmnh_corals/connellym"
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 
+# making a list of sample names
+set=$1
+samples=$(cat ${prodir}/data/${set}_samples.txt)
+
 # Make bam file list
-ls ${prodir}/outputs/oury_pipeline/*_realigned_reads.bam > ${prodir}/outputs/oury_pipeline/List_bam.txt
+for sample in ${samples} ; do ls ${prodir}/outputs/oury_pipeline/${sample}*_realigned_reads.bam >> ${prodir}/outputs/oury_pipeline/${set}_List_bam.txt ; done
 
 #3°) SNP genotype calling & filtering
-#3.1°) SNP genotype calling (where List_bam.txt is the list of the bam files)
-bcftools mpileup -A -B -I -Ou -a AD,DP,SP,INFO/AD -f ${mcs}/sequences/Pocillopora_UCEs_exons_2068_ref_sequences.fasta -R ${prodir}/data/List_1559SNP_noLD.txt -b ${prodir}/outputs/oury_pipeline/List_bam.txt | bcftools call -m --threads 2 -Ob -o  ${prodir}/outputs/oury_pipeline/Calls_1559SNP.bcf
+#3.1°) SNP genotype calling (where *List_bam.txt is the list of the bam files)
+bcftools mpileup -A -B -I -Ou -a AD,DP,SP,INFO/AD -f ${mcs}/sequences/Pocillopora_UCEs_exons_2068_ref_sequences.fasta -R ${prodir}/data/List_1559SNP_noLD.txt -b ${prodir}/outputs/oury_pipeline/${set}_List_bam.txt | bcftools call -m --threads 16 -Ob -o  ${prodir}/outputs/oury_pipeline/${set}_Calls_1559SNP.bcf
 
 #3.2°) Filtering genotypes based on DP & SP
 #Filtering based on DP
-bcftools filter -S '.' -e 'FORMAT/DP<12'  ${prodir}/outputs/oury_pipeline/Calls_1559SNP.bcf | bcftools view -i 'AN>2 & AC!=0 & AN!=AC' --threads 2 -Ob -o ${prodir}/outputs/oury_pipeline/Calls_1559SNP_DP12.bcf
+bcftools filter -S '.' -e 'FORMAT/DP<3'  ${prodir}/outputs/oury_pipeline/${set}_Calls_1559SNP.bcf | bcftools view -i 'AN>2 & AC!=0 & AN!=AC' --threads 16 -Ob -o ${prodir}/outputs/oury_pipeline/${set}_Calls_1559SNP_DP3.bcf
 
 #Filtering based on SP
-bcftools filter -S '.' -e 'FORMAT/SP>13'  ${prodir}/outputs/oury_pipeline/Calls_1559SNP_DP12.bcf | bcftools view -i 'AN>2 & AC!=0 & AN!=AC' --threads 2 -Ob -o ${prodir}/outputs/oury_pipeline/Calls_1559SNP_DP12_SP13.bcf
+bcftools filter -S '.' -e 'FORMAT/SP>6'  ${prodir}/outputs/oury_pipeline/${set}_Calls_1559SNP_DP3.bcf | bcftools view -i 'AN>2 & AC!=0 & AN!=AC' --threads 16 -Ob -o ${prodir}/outputs/oury_pipeline/${set}_Calls_1559SNP_DP3_SP6.bcf
 
 # Echo finished 
 echo "Finished!"
