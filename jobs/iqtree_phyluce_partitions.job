@@ -23,6 +23,7 @@ echo + NSLOTS = $NSLOTS
 mcs="/scratch/nmnh_corals/connellym"
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 
+# want to edit so different inputs can be passed as a variable - basename?
 iqtree2 \
 -s ${prodir}/outputs/uce-taxon-sets/phyluce_noclones_out-mafft-nexus-internal-trimmed-gblocks-clean-75p-raxml/phyluce_noclones_out-mafft-nexus-internal-trimmed-gblocks-clean-75p.phylip \
 -p ${prodir}/outputs/uce-taxon-sets/phyluce_noclones_out-mafft-nexus-internal-trimmed-gblocks-clean-75p-raxml/phyluce_noclones_out-mafft-nexus-internal-trimmed-gblocks-clean-75p.partitions \

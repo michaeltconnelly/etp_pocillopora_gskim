@@ -34,6 +34,7 @@ mkdir ${prodir}/outputs/spades/contigs/${set}
 cp ${prodir}/data/outgroups/*.fasta ${prodir}/outputs/spades/contigs/${set}
 # copy sample contigs to working directory and rename files
 for sample in ${samples} ; do cp ${prodir}/outputs/spades/${sample}*/contigs.fasta ${prodir}/outputs/spades/contigs/${set}/${sample}_contigs.fasta ; done
+
 # start phyluce contig match to probes
 phyluce_assembly_match_contigs_to_probes \
     --contigs ${prodir}/outputs/spades/contigs/${set}/ \
