@@ -1,0 +1,160 @@
+---
+title: "Pocillopora mtORF analysis"
+author: "Mike Connelly"
+date: "6/7/2023"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+```{r packages}
+library("tidyverse")
+library("ape")
+library("pegas")
+#
+source("./R/pocillopora_etp_gksim_functions.R")
+```
+## Import sample metadata
+```{r import_sample_metadata}
+all_samples <- read_csv("./data/pocillopora_samples_003.csv")
+etp_samples <- read_csv("./data/etp_samples.txt")
+```
+```{r select_samples}
+samples <- filter(all_samples, all_samples$`Sample ID` %in% etp_samples$`Sample ID`)
+samples$`Region:Site` <- paste(samples$Region, samples$Site, sep = ":")
+```
+
+## Import mtORF sequence alignment 
+```{r import_alignment}
+# data <- read.dna("./outputs/mitofinder/all_mtORF_extracted.fasta", format = "fasta")
+# data <- read.dna("./outputs/mitofinder/mtORF.fasta", format = "fasta")
+data <- read.dna("./outputs/mitofinder/mtorf_hits_aligned.fasta", format = "fasta")
+checkAlignment(data)
+# 199 sequences, 829 sites, no gaps
+# attributes(data)
+# dimnames(data)[[1]]
+```
+```{r haplotypes}
+dataHaplo <- haplotype(data)
+dataHaplo
+# ETP samples: 4 unique haplotypes
+ #  I  II III  IV 
+ # 14   5  96   4 
+# summary(dataHaplo)
+```
+```{r extract haplotypes and build network}
+dataHaplo <- sort(dataHaplo, what = "labels")
+# attributes(dataHaplo)
+dataNet <- haploNet(dataHaplo)
+```
+```{r extract sequence labels}
+seq_labels <- dimnames(data)[[1]]
+seq_labels
+```
+```{r countHap}
+countHap <- function(hap = h, dna = x){
+  with(
+    stack(setNames(attr(hap, "index"), rownames(hap))),
+    table(haplotype = ind, seq = attr(dna, "dimnames")[[1]][values])
+  )
+}
+```
+```{r genotype haplotype matches}
+df <- as.data.frame(countHap(dataHaplo, data))
+good <- df %>% filter(Freq == 1)
+```
+```{r}
+good$`Sample ID` <- gsub("_S.*", "", good$seq)
+#
+sample_haplotypes <- good %>% dplyr::select(`Sample ID`, `haplotype`)
+```
+```{r}
+# correspondence table between identified haplotypes and mtORF type/ORF name, etc.
+mtorf_types <- c(I = "Type 3a", II = "Type 3c", III = "Type 1a", IV = "Type 2")
+#
+sample_haplotypes$mtorf_type <-  mtorf_types[sample_haplotypes$haplotype]
+# join to sample metadata if necessary
+# samples <- left_join(samples, sample_haplotypes, by = "Sample ID")
+```
+
+
+
+```{r sample and clone correction}
+# filter out samples without recovered mtORF sequences
+samples_mtorf <- samples %>% filter(samples$`Sample ID` %in% good$`Sample ID`)
+
+# filter out clonal replicates identified by IBS
+# samples_noclones
+```
+```{r sample sort and colors}
+samples_mtorf <- samples_mtorf %>% arrange(`Sample ID`, sample_haplotypes$`Sample ID`)
+# genocolors <- genotype_colors %>% arrange(Genotype, seq_labels) %>% dplyr::select(color)
+```
+
+## Plot haplotype networks
+```{r basic haplotype net}
+plot(dataNet)
+```
+```{r blank haplotype net}
+# note: if scaling size by number of sequences, correct for clones first, as mtORF type 1 is clearly dominant.
+# pdf(file="~/Desktop/mtORF_haplotypes_sites.pdf", width = 8, height = 10, pointsize = 10)
+plot(dataNet,
+     size = attr(dataNet, "freq"),
+     show.mutation = 1,
+     labels = F,
+     legend = c(-100,100))
+# dev.off()
+```
+```{r metadata haplotype frequencies}
+Region <- haploFreq(data, samples_mtorf$Region, haplo = dataHaplo)
+Site <- haploFreq(data, samples_mtorf$Site, haplo = dataHaplo)
+Type <- haploFreq(data, samples_mtorf$mtorf_type, haplo = dataHaplo)
+```
+```{r colored haplonet}
+pdf(file="./outputs/figures/mtORF_haplotypes_genotypes.pdf", width = 4, height = 5, pointsize = 6)
+plot(dataNet,
+     size = attr(dataNet, "freq"),
+     pie = Region,
+     bg = c("blue", "green", "yellow", "red"),
+     show.mutation = 1,
+     labels = T,
+     legend = c(-3,18))
+dev.off()
+```
+```{r}
+pdf(file="./outputs/figures/mtORF_haplotypes_gulf.pdf", width = 4, height = 5, pointsize = 6)
+plot(dataNet,
+     size = attr(dataNet, "freq"),
+     pie = Site,
+     bg = site_colors,
+     show.mutation = 1,
+     labels = FALSE,
+     legend = c(-3,18))
+dev.off()
+```
+
+### Figure ##
+```{r figure ##: powerpoint}
+pdf(file="./outputs/figures/mtORF_haplotypes_type_nobones.pdf", width = 3, height = 4, pointsize = 6)
+plot(dataNet,
+     size = attr(dataNet, "freq"),
+     pie = Type,
+     bg = c("darkorange1", "purple", "turquoise2", "turquoise4"),
+     show.mutation = 1,
+     labels = FALSE,
+     legend = FALSE)
+dev.off()
+```
+```{r figure ##: manuscript}
+pdf(file="./outputs/figures/Fig1B_mtORF_haplotypes_type.pdf", height = 90/25.4, width = 75/25.4, pointsize = 6) # two-column max size
+plot(dataNet,
+     size = attr(dataNet, "freq"),
+     pie = Type,
+     bg = c("darkorange1","turquoise2"),
+     show.mutation = 1,
+     labels = FALSE,
+     legend = FALSE)
+dev.off()
+```

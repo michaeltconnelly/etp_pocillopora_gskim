@@ -1,0 +1,62 @@
+---
+title: "sNMF"
+author: "Mike Connelly"
+date: "2023-06-14"
+output: html_document
+---
+## Setup and packages
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = TRUE)
+options(stringsAsFactors = FALSE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+```{r packages}
+library("tidyverse")
+library("LEA")
+library("adegenet")
+library("vcfR")
+# 
+source("./R/pocillopora_etp_gksim_functions.R")
+```
+```{r}
+# note: need to perform clone correction! 
+#then want to combine my SNP calls with Nico's to verify assignments
+
+#Load vcf file and convert to genlight object
+# vcf <- read.vcfR("./data/Pocillopora_361ADN_1559SNP.vcf")
+vcf <- read.vcfR("./outputs/oury_pipeline/Calls_1559SNP_DP3.vcf")
+aa.genlight <- vcfR2genlight(vcf, n.cores=2)
+# locNames(aa.genlight) <- paste(vcf@fix[,1],vcf@fix[,2],sep="_")
+```
+
+```{r}
+#Export for sNMF
+geno <- t(as.matrix(aa.genlight))
+geno[is.na(geno)] <- 9
+write.table(geno, file="Pocillopora_361ADN_1559SNP.geno", sep="", row.names=F, col.names=F)
+write.table(geno, file="./outputs/oury_pipeline/Calls_1559SNP_DP3.geno", sep="", row.names=F, col.names=F)
+
+```
+
+```{r}
+#Running sNMF
+obj.snmf = snmf("./outputs/oury_pipeline/Calls_1559SNP_DP3.geno", K=2:10, project="new", ploidy=2, CPU=2,
+repetitions=5, entropy=T, iterations = 500)
+plot(obj.snmf, col = "blue4", cex = 1.4, pch = 19) #cross-entropy plot
+```
+
+```{r}
+#Export Q matrices for CLUMPAK
+k <- 10 #set k max
+n <- 5 #set nb iteration
+path <- "./outputs/oury_pipeline/" #set output path
+for (g in 2:k){
+for (i in 1:n){
+qmatrix = round(Q(obj.snmf, K=g, run=i),3)
+write.table(qmatrix, paste(path,"/K",g,"_",i,".txt",sep=""), col.names=F, row.names=F)
+}
+}
+```
+
+Then zip the resulting files and give them to CLUMPAK (http://clumpak.tau.ac.il/) to produce the structure-like plots.
+

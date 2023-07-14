@@ -17,6 +17,7 @@ library("ggtree")
 library("WGCNA") # for coloring clonal groups
 library("sparcl") # for ColorDendrogram
 # 
+source("./R/pocillopora_etp_gksim_functions.R")
 ```
 
 ## Colors and theme
@@ -25,12 +26,13 @@ region_colors <- c("gold1", "steelblue", "darkorange", "darkturquoise")
 # 
 site_colors <- c("gold1", "blue", "darkblue", "steelblue", "lightblue", "darkorange3","darkorange", "orange", "orangered", "cyan", "cyan3", "cyan4", "turquoise", "lightgreen")
 # 
+mtorf_colors <- c("darkorange1", "purple", "turquoise2", "turquoise4")
 theme_set(theme_bw())
 ```
 
 ## Import sample metadata
 ```{r import_sample_metadata}
-all_samples <- read_csv("./data/pocillopora_samples_003.csv")
+all_samples <- read_csv("./data/pocillopora_samples_004.csv")
 etp_samples <- read_csv("./data/etp_samples.txt")
 ```
 ```{r select_samples}
@@ -59,15 +61,15 @@ ma <- as.matrix(read.table("./outputs/angsd/etp_ibs05.ibsMat"))
 ```
 ```{r import_ibs_matrix}
 # samples=bams #meta$Tag.Number
-dimnames(ma)=list(samples$`Sample ID`,samples$`Sample ID`)
+dimnames(ma) <- list(samples$`Sample ID`,samples$`Sample ID`)
 #
 # dimnames(ma)=list(samples$Site,samples$Site)
 ```
 ```{r ibs_dendrogram_test}
 # plotting hierarchical clustering dendrogram
-hc=hclust(as.dist(ma),"ave")
-plot(hc,cex=0.6)
-abline(h=0.15,col="red",lty=3)
+hc <- hclust(as.dist(ma), "ave")
+plot(hc, cex = 0.6)
+abline(h = 0.15, col="red", lty=3)
 ```
 
 ```{r ibs_dendrogram_rsmas}
@@ -78,7 +80,6 @@ hc=hclust(as.dist(ma_rsmas),"ave")
 plot(hc,cex=0.6)
 abline(h=0.15,col="red",lty=3)
 ```
-
 ```{r ibs_dendrogram_stri}
 # retaining only stri samples
 ma_stri <- ma[samples$STRI,samples$STRI]
@@ -87,21 +88,11 @@ hc=hclust(as.dist(ma_stri),"ave")
 plot(hc,cex=0.6)
 abline(h=0.15,col="red",lty=3)
 ```
-
-```{r ibs_dendrogram_cluster1}
-# retaining only cluster 1 samples
-ma_cluster1 <- ma[samples_pc_clusters$cluster == 1,samples_pc_clusters$cluster == 1]
+```{r ibs_dendrogram_coco}
+# retaining only isla del coco samples
+ma_coco <- ma[samples$Region == "Coco",samples$Region == "Coco"]
 # re-clustering
-hc=hclust(as.dist(ma_cluster1),"ave")
-plot(hc,cex=0.6)
-abline(h=0.15,col="red",lty=3)
-```
-
-```{r ibs_dendrogram_cluster3}
-# retaining only cluster 3 samples
-ma_cluster3 <- ma[samples_pc_clusters$cluster == 3,samples_pc_clusters$cluster == 3]
-# re-clustering
-hc=hclust(as.dist(ma_cluster3),"ave")
+hc=hclust(as.dist(ma_coco),"ave")
 plot(hc,cex=0.6)
 abline(h=0.15,col="red",lty=3)
 ```
@@ -123,10 +114,44 @@ hc %>% ggtree() %<+% samples +
   ggtitle(tree_title)
 dev.off()
 ```
+```{r}
+pdf("./outputs/figures/ibs_dendrogram_etp_all_mtorf.pdf", width = 6.5, height = 8)
+tree_title <- expression(paste("Identity-by-state clustering of all ", italic("Pocillopora"), " samples (n=", 122, ")"))
+hc %>% ggtree() %<+% samples + 
+  geom_vline(xintercept = -0.15, stroke = 0.5, color = "grey25", linetype = 2) +
+  geom_tippoint(aes(fill = `mtorf_type`), shape = 21, alpha = 0.8, stroke = 0.5, color = "black", hjust = 0.3, show.legend = TRUE) +
+  geom_tiplab(size = 2, hjust = -0.05) +
+  ggplot2::xlim(-0.45, 0.01) +
+  geom_treescale(x = -0.45, y = 0.9, width = 0.05) +
+  scale_fill_manual(values = mtorf_colors, name = "mtORF Type") +
+   theme(legend.position = c(0.08, 0.9),
+        legend.margin = margin(0,0,0,0, unit = "mm"),
+        plot.margin = margin(5,5,5,5, unit = "mm")) +
+  ggtitle(tree_title)
+dev.off()
+```
+```{r}
+pdf("./outputs/figures/ibs_dendrogram_coco_mtorf.pdf", width = 6.5, height = 8.5)
+tree_title <- expression(paste("Identity-by-state clustering of Isla del Coco ", italic("Pocillopora"), " samples (n=", 26, ")"))
+#
+# hc$labels <- gsub("_AP3X.*", "", hc$labels)
+#
+hc %>% ggtree() %<+% samples + 
+  # geom_vline(xintercept = -0.15, stroke = 0.5, color = "grey25", linetype = 2) +
+  geom_tippoint(aes(fill = `mtorf_type`), shape = 21, alpha = 0.8, stroke = 0.5, color = "black", hjust = 0.3, show.legend = TRUE) +
+  geom_tiplab(size = 3, hjust = -0.05) +
+  ggplot2::xlim(-0.35, 0.01) +
+  geom_treescale(x = -0.35, y = 0.9, width = 0.05) +
+  scale_fill_manual(values = mtorf_colors[c(1,3,4)], name = "mtORF Type") +
+   theme(legend.position = c(0.08, 0.8),
+        legend.margin = margin(0,0,0,0, unit = "mm"),
+        plot.margin = margin(5,5,5,5, unit = "mm")) +
+  ggtitle(tree_title)
+dev.off()
+```
+## Plot separate IBS clustering dendrograms for different mtORF types
 
-## Plot separate IBS clustering dendrograms for Cluster 1, 2, and 3 samples
-
-### IBS for Cluster 1 only
+### IBS for mtORF 1a only
 ```{r import_ibs_matrix}
 # reading IBS matrix based on SNPs with allele frequency >= 0.05:
 ma <- as.matrix(read.table("./outputs/angsd/etp_cluster1_ibs05.ibsMat"))
@@ -154,7 +179,9 @@ hc=hclust(as.dist(ma),"ave")
 plot(hc,cex=0.6)
 abline(h=0.175,col="red",lty=3)
 ```
-Cluster 1: 1-A, 1-B, 1-C, 1-D, --> 1-K
+### Identify clonal groups
+
+mtORF 1: 1-A, 1-B, 1-C, 1-D, --> 1-K
 ```{r cluster1_clones}
 clone1A <- c("Perlas_357_AP3XG48")
 clone1B <- c("")
@@ -173,7 +200,7 @@ clone1K <- c("")
 ma %>% hist()
 ```
 
-### IBS for Cluster 3 only
+### IBS for mtORF type 3a only
 ```{r import_ibs_matrix}
 # reading IBS matrix based on SNPs with allele frequency >= 0.05:
 ma <- as.matrix(read.table("./outputs/angsd/etp_cluster3_ibs05.ibsMat"))
@@ -206,7 +233,7 @@ ma %>% hist()
 ```
 
 ### Identify clonal groups
-Cluster 3: 3-A --> 3-D
+mtORF 3: 3-A --> 3-D
 ```{r}
 clone3A <- c("PAN-37", "PAN-41")
 clone3B <- c("Coiba_692_AP3XF70", "Coiba_900_AP3XF69")
@@ -222,12 +249,13 @@ cl3=c("88.GACT","88.TCAC","88.TGTC")
 cl4=c("91.GACT","91.TCAC","91.TGTC")
 cl5=c("79.GACT","79.TCAC","79.TGTC")
 
+mafa <- ma
 # color artificial clones red
-art.clones=rep("black",nrow(mafa))
+art.clones <- rep("black",nrow(mafa))
 #
 art.clones[meta$fileName %in% c(cl1,cl2,cl3,cl4)]="red"
 #
-ColorDendrogram(hclust(as.dist(mafa),"ave"), y = art.clones,branchlength=0.05)
+ColorDendrogram(hclust(as.dist(mafa),"ave"), y = art.clones, branchlength=0.05)
 
 # cutoff for defining clones
 abline(h=0.15,col="red",lty=3)

@@ -14,7 +14,9 @@ knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 library("tidyverse")
 library("treeio")
 library("ggtree")
+library("phytools")
 # 
+source("./R/pocillopora_etp_gksim_functions.R")
 ```
 
 ## Colors and theme
@@ -23,20 +25,99 @@ region_colors <- c("gold1", "steelblue", "darkorange", "darkturquoise")
 # 
 site_colors <- c("gold1", "blue", "darkblue", "steelblue", "lightblue", "darkorange3","darkorange", "orange", "orangered", "cyan", "cyan3", "cyan4", "turquoise", "lightgreen")
 # 
+mtorf_colors <- c("darkorange1", "purple", "turquoise2", "turquoise4", "darkgrey")
+#
 theme_set(theme_bw())
 ```
+## Import sample metadata
+```{r import_sample_metadata}
+all_samples <- read_csv("./data/pocillopora_samples_004.csv")
+etp_samples <- read_csv("./data/etp_samples.txt")
+```
+```{r select_samples}
+samples <- filter(all_samples, all_samples$`Sample ID` %in% etp_samples$`Sample ID`)
+samples$`Region:Site` <- paste(samples$Region, samples$Site, sep = ":")
+```
+```{r outgroup_metadata}
+outgroups <- read_csv("./data/outgroups.csv")
+samples_out <- rbind(samples, outgroups)
+```
 
-## Phylogenetic trees from PHYUCE UCE alignment
+## Phylogenetic trees from PHYLUCE UCE alignment
 
 ### IQ-TREE
 ```{r}
 tree <- read.newick("./outputs/iqtree/rsmas.treefile")
 gg_tree(tree)
 ```
+```{r}
+tree <- read.newick("./outputs/iqtree/iqtree_test_phyluce_noclones_out.treefile")
+# midpoint root
+tree <- midpoint.root(tree)
+# set root-edge
+tree$root.edge <- 1
+gg_tree(tree)
+```
+```{r modify_tip_labels}
+# remove contigs suffix 
+tips <- gsub("_contigs$", "", tree$tip.label)
+tree$tip.label <- tips
+# remove biorepository codes 
+tips_short <- gsub("_AP.*", "", tips)
+```
+
+```{r basic_ggtree_viz}
+pdf("./outputs/figures/iqtree_01.pdf", width = 8, height = 8)
+tree_title <- expression(paste("IQ-TREE Maximum Likelihood Tree of ", italic("Pocillopora"), " samples (", 97, ")"))
+#
+tree %>% ggtree(., right = TRUE) %<+% samples + 
+  geom_tippoint(aes(fill = `mtorf_type`), shape = 21, alpha = 0.8, stroke = 0.5, color = "black", hjust = 0.3, show.legend = TRUE) +
+  geom_tiplab(size = 2, hjust = -0.05) +
+  ggplot2::xlim(-0.1, 0.33) +
+  geom_treescale(width = 0.04, x = -0.05, y = 1) +
+  scale_fill_manual(values = mtorf_colors, name = "mtORF Type") +
+   theme(legend.position = "right",
+        legend.margin = margin(0,0,0,0, unit = "mm"),
+        plot.margin = margin(5,5,5,5, unit = "mm")) +
+  ggtitle(tree_title)
+dev.off()
+```
+```{r annotated_ggtree_viz}
+# clades - node 103: P. effusa, node 108: P. grandis, node 180: P. meandrina, node 183: P. verrucosa-like
+pdf("./outputs/figures/iqtree_02.pdf", width = 8.5, height = 11.5)
+#
+tree %>% ggtree(., right = TRUE) %<+% samples + 
+  geom_tippoint(aes(fill = `mtorf_type`), shape = 21, alpha = 0.8, stroke = 0.5, color = "black", hjust = 0.3, show.legend = TRUE) +
+  geom_tiplab(size = 3, hjust = -0.05) +
+  # add bootstrap support values
+  geom_nodelab(size = 2, hjust = 1.25, vjust = -0.25) +
+  # add clade annotations
+  geom_cladelab(node = 103, label = "P. effusa (Clipperton)", angle = 0, 
+                  fontsize = 3, offset = 0.15) +
+  geom_cladelab(node = 107, label = "P. grandis-like", angle = 0, 
+                  fontsize = 3, offset = 0.15) +
+  geom_cladelab(node = 183, label = "P. verrucosa-like", angle = 0, 
+                  fontsize = 3, offset = 0.15) +
+  ggplot2::xlim(-0.05, 0.5) +
+  geom_treescale(width = 0.05, x = 0) +
+  scale_fill_manual(values = mtorf_colors, name = "mtORF Type") +
+   theme(legend.position = "right",
+        legend.margin = margin(0,0,0,0, unit = "mm"),
+        plot.margin = margin(5,5,5,5, unit = "mm")) +
+  ggtitle(tree_title)
+dev.off()
+```
+```{r}
+pdf("./outputs/figures/iqtree_nodes.pdf", width = 11.5, height = 8)
+tree %>% ggtree() + geom_text(aes(label=node), size = 2, hjust=.45)
+dev.off()
+```
+
 
 ### RAxML
 ```{r}
 tree <- read.newick("./outputs/raxml/RAxML_bestTree.best")
+tree <- midpoint.root(tree)
 gg_tree(tree)
 ```
 

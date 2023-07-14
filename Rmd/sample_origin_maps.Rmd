@@ -31,21 +31,22 @@ library("ggrepel") # for adding labels to plot
 library("extrafont")
 library("extrafontdb")
 library("patchwork")
+#
+source("./R/pocillopora_etp_gksim_functions.R")
 ```
 ```{r}
 theme_set(theme_bw())
 ```
 ## Sample import
 ```{r sample_data_import}
-samples <- read_csv("./data/pocillopora_samples.csv")
-```
-```{r}
-all_samples <- read_csv("./data/pocillopora_samples_003.csv")
+# samples <- read_csv("./data/pocillopora_samples.csv")
+# 
+all_samples <- read_csv("./data/pocillopora_samples_004.csv") # with all corrected mtorf types
 stri_samples <- read_csv("./data/etp_samples.txt")
 ```
 ```{r}
 samples <- filter(all_samples, all_samples$`Sample ID` %in% stri_samples$`Sample ID`)
-samples$`Region:Site` <- paste(samples$Region, samples$Site, sep = ":")
+# samples$`Region:Site` <- paste(samples$Region, samples$Site, sep = ":")
 ```
 ```{r}
 unsamples <- filter(all_samples, all_samples$`Sample ID` %notin% stri_samples$`Sample ID`)
@@ -82,203 +83,27 @@ site_colors <- c("red", "red4", "maroon", "maroon4", "darkgreen", "green4", "gre
 site_colors <- c("gold1", "blue", "darkblue", "steelblue", "lightblue", "darkorange3","darkorange", "orange", "orangered", "cyan", "cyan3", "cyan4", "turquoise", "lightgreen")
 ```
 
-
-## Create mapping sf data objects
-```{r download shapefiles, message=FALSE}
-# Load shapefiles from rnaturalearth package
-map <- ne_countries(scale = 10, returnclass = "sf")
-# 
-states <- ne_states(returnclass = "sf")
-# 
-# ocean <- ne_download(scale = 10, type = 'ocean', 
-#                    category = 'physical', returnclass = 'sf')
-#
-# rivers <- ne_download(scale = 10, type = 'rivers_lake_centerlines', 
-#                     category = 'physical', returnclass = 'sf')
-# 
-# reefs <- ne_download(scale = 10, type = 'reefs',
-#                      category = "physical", returnclass = 'sf')
-```
-```{r load shapefiles}
-ocean <- ne_load(scale = 10, type = "ocean", category = "physical", destdir = "data/spatial_data/ne_10m_ocean", returnclass = "sf")
-#
-rivers <- ne_load(scale = 10, type = "rivers_lake_centerlines", category = "physical", destdir = "data/spatial_data/ne_10m_rivers_lake_centerlines", returnclass = "sf")
-#
-reefs <- ne_load(scale = 10, type = "reefs", category = "physical", destdir = "data/spatial_data/ne_10m_reefs", returnclass = "sf")
-#
-```
-```{r load bathymetry shapefiles}
-bathymetry_K <- ne_load(scale = 10, type = "bathymetry_K_200", category = "physical", destdir = "data/spatial_data/ne_10m_bathymetry_all", returnclass = "sf")
-#
-bathymetry_J <- ne_load(scale = 10, type = "bathymetry_J_1000", category = "physical", destdir = "data/spatial_data/ne_10m_bathymetry_all", returnclass = "sf")
-#
-bathymetry_I <- ne_load(scale = 10, type = "bathymetry_I_2000", category = "physical", destdir = "data/spatial_data/ne_10m_bathymetry_all", returnclass = "sf")
-#
-bathymetry_H <- ne_load(scale = 10, type = "bathymetry_H_3000", category = "physical", destdir = "data/spatial_data/ne_10m_bathymetry_all", returnclass = "sf")
-#
-bathymetry_G <- ne_load(scale = 10, type = "bathymetry_G_4000", category = "physical", destdir = "data/spatial_data/ne_10m_bathymetry_all", returnclass = "sf")
-#
-bathymetry_F <- ne_load(scale = 10, type = "bathymetry_F_5000", category = "physical", destdir = "data/spatial_data/ne_10m_bathymetry_all", returnclass = "sf")
-#
-```
-```{r Quick check on basic shapefiles, echo = FALSE, fig.align= "center", fig.width= 6}
-quickCheck <-
-  ggplot() +
-  geom_sf(data = ocean, color = "black", size = 0.05, fill = "#def3f6") +
-  geom_sf(data = reefs, color = "red", size = 0.05, fill = "red") +
-  geom_sf(data = rivers, color = "blue", size = 0.05) +
-  geom_sf(data = states, color = "black", size = 0.05, fill = "#f5f5f5", alpha = 0.5) +
-  geom_sf(data = bathymetry_K, color = "red", size = 0.1) +
-  geom_sf(data = bathymetry_J, color = "orange", size = 0.1) +
-  geom_sf(data = bathymetry_I, color = "yellow", size = 0.1) +
-  geom_sf(data = bathymetry_H, color = "green", size = 0.1) +
-  theme(panel.grid.major = element_blank(), 
-        panel.background = element_blank(), 
-        panel.border = element_rect(fill = NA))
-par(mar = c(0.5, 0.5, 0.5, 0.5))
-quickCheck
-```
-```{r}
-focalArea <- map %>% filter(admin == "Panama" | admin == "Costa Rica")
-```
-```{r define map extent}
-limit <- st_buffer(focalArea, dist = 0.1) %>% st_bbox()
-
-clipLimit <- st_buffer(focalArea, dist = 0.5) %>% st_bbox()
-
-limitExtent <- as(extent(clipLimit), 'SpatialPolygons')
-
-crs(limitExtent) <- "+proj=longlat +datum=WGS84 +no_defs"
-```
-```{r Show map and clipping extent, echo = FALSE, fig.align= "center", warning = FALSE}
-par(mar = c(0.5, 0.5, 0.5, 0.5))
-plot(as(extent(clipLimit), 'SpatialPolygons'), lty="dashed")
-plot(as(extent(limit), 'SpatialPolygons'), add = TRUE)
-plot(focalArea, col = "#005293", add = TRUE)
-```
-```{r obtain elevation data}
-elev<-get_elev_raster(locations = limitExtent, z = 6, override_size_check = T)
-
-elevDF<-as.data.frame(elev, xy=TRUE)
-
-colnames(elevDF)<-c("x", "y", "elevation")
-
-elevDF[, 3][elevDF[, 3] < 1500] <- NA
-```
-```{r Test elevation map, echo = FALSE, fig.align= "center", warning = FALSE}
-par(mar = c(0.5, 0.5, 0.5, 0.5))
-elevMapTest <-
-  ggplot() +
-  geom_tile(data = elevDF, aes(x=x, y=y, fill=elevation), alpha =0.4)+
-  scale_fill_gradient(low="#a3a0a0", high= "#000000", 
-                      na.value="transparent")+
-  geom_sf(data = ocean, color = "black", size = 0.05, fill = "#add8e6")+
-  geom_sf(data = rivers, color = "#d7f2fa", size = 0.5)+
-  geom_sf(data = states, color = "black", size = 0.05, fill = "#f5f5f5", alpha = 0.2)+
-  geom_sf(data = map, color = "black", size = 0.1, fill = "#f5f5f5", alpha = 0.2)+
-    coord_sf(
-    xlim = c(limit["xmin"], limit["xmax"]),
-    ylim = c(limit["ymin"], limit["ymax"])) +
-  labs(x="Longitude", y="Latitude", elevation = "Elevation") +
-  theme(panel.grid.major = element_blank(),
-  panel.background = element_rect(fill = "#f0f8ff"),
-  panel.border = element_rect(fill = NA))
-  ggtitle(title)
-elevMapTest
-```
-```{r Test bathymetry map}
-par(mar = c(0.5, 0.5, 0.5, 0.5))
-elevMapTest <-
-  ggplot() +
-  geom_tile(data = elevDF, aes(x=x, y=y, fill=elevation), alpha =0.4)+
-  scale_fill_gradient(low="#a3a0a0", high= "#000000", 
-                      na.value="transparent")+
-  geom_sf(data = ocean, color = "black", size = 0.05, fill = "#add8e6")+
-  geom_sf(data = rivers, color = "#d7f2fa", size = 0.5)+
-  geom_sf(data = states, color = "black", size = 0.05, fill = "#f5f5f5", alpha = 0.2)+
-  geom_sf(data = map, color = "black", size = 0.1, fill = "#f5f5f5", alpha = 0.2)+
-  geom_sf(data = bathymetry_K, color = "red", size = 0.1) +
-  geom_sf(data = bathymetry_J, color = "orange", size = 0.1) +
-  geom_sf(data = bathymetry_I, color = "yellow", size = 0.1) +
-  geom_sf(data = bathymetry_H, color = "green", size = 0.1) +
-  geom_sf(data = bathymetry_G, color = "blue", size = 0.1) +
-  geom_sf(data = bathymetry_F, color = "purple", size = 0.1) +
-    coord_sf(
-    xlim = c(limit["xmin"], limit["xmax"]),
-    ylim = c(limit["ymin"], limit["ymax"])) +
-  labs(x="Longitude", y="Latitude", elevation = "Elevation") +
-  theme(panel.grid.major = element_blank(),
-  panel.background = element_rect(fill = "#f0f8ff"),
-  panel.border = element_rect(fill = NA))
-  ggtitle(title)
-elevMapTest
-```
-
-### Map of Pocillopora sample origins
-```{r factor levels}
-```
-
-```{r}
-pdf("./outputs/figures/Fig1_samples_locations_map_bathymetry.pdf")
-title <- expression('Panama '*italic("Pocillopora")*' genotype origins')
-par(mar = c(0.5, 0.5, 0.5, 0.5))
-elevMapTest <-
-  ggplot() +
-  geom_sf(data = ocean, color = "black", size = 0.1, fill = "aliceblue") +
-  geom_sf(data = states, color = "black", size = 0.1, fill = "antiquewhite", alpha = 0.5) +
-  geom_sf(data = map, color = "black", size = 0.2, fill = "antiquewhite", alpha = 0.5) +
-  geom_tile(data = elevDF, aes(x = x, y = y, fill = elevation), alpha = 0.4, show.legend = FALSE) +
-  scale_fill_gradient(low="antiquewhite3", high= "black",
-                      na.value="transparent", name = "Elevation (m)") +
-  geom_sf(data = rivers, color = "royalblue3", size = 0.15) +
-  #
-  geom_sf(data = bathymetry_K, color = "red", size = 0.1) +
-  geom_sf(data = bathymetry_J, color = "orange", size = 0.1) +
-  geom_sf(data = bathymetry_I, color = "yellow", size = 0.1) +
-  geom_sf(data = bathymetry_H, color = "green", size = 0.1) +
-  geom_sf(data = bathymetry_G, color = "blue", size = 0.1) +
-  #
-    coord_sf(
-    xlim = c(limit["xmin"], limit["xmax"]),
-    ylim = c(limit["ymin"], limit["ymax"])) +
-  #
-  new_scale_fill() +
-   geom_point(data = samples_locations, aes(x = `Longitude`, y = `Latitude`, size = `n`, fill = `Region`), shape = 21, alpha = 0.8, color = "black", stroke = 0.5,
-             position = position_jitter(width = 0.2, height = 0.2, seed = 3),
-             show.legend = T) +
- scale_fill_manual(values = gcolors,
-                    guide = guide_legend(order = 1, override.aes = list(size = 6, shape = 21, fill = gcolors), nrow = 5, title.position = "top")) +
-  scale_size(range = c(1, 5), breaks = c(1, 10, 20), limits = c(0, 20),
-             guide = guide_legend(order = 2, override.aes = list(fill = "black"), nrow = 5, title.position = "top")) +
-  #
-  labs(x="Longitude", y="Latitude", elevation = "Elevation") +
-  theme(panel.grid.major = element_blank(),
-        panel.background = element_rect(fill = "#f0f8ff"),
-        panel.border = element_rect(fill = NA),
-        plot.title = element_text(size = 16),
-        axis.title = element_text(size = 14), 
-        axis.text = element_text(size = 10),
-        legend.title = element_text(size = 14),
-        legend.text = element_text(size = 10)) +
-  ggtitle(title)
-elevMapTest
-dev.off()
-```
-
-# START HERE
-## Map of Pocillopora sample origins using marmap package
-```{r}
-# get ETP bathymetric data
+## Map of Pocillopora sample origins
+### Obtain NOAA bathymetric data with marmap
+```{r marmap_NOAA_bathymetric_data}
+# Panama and Costa Rica - Perlas, Coiba, Coco
 panama <- getNOAA.bathy(lon1 = -88, lon2 = -76,
                         lat1 = 4, lat2 = 12, resolution = 1)
+
 # East Pacific from Revi's to Galapagos (to show Clipperton samples)
 east_pacific <- getNOAA.bathy(lon1 = -112, lon2 = -76,
                         lat1 = -2, lat2 = 16, resolution = 2)
+
 # East Pacific from Revi's to Rapa Nui
 east_pacific_all <- getNOAA.bathy(lon1 = -120, lon2 = -74,
                         lat1 = -30, lat2 = 30, resolution = 3)
 ```
+```{r marmap_NOAA_bathymetric_data_inset}
+perlas <- getNOAA.bathy(lon1 = -79.5, lon2 = -78.5,
+                        lat1 = 8, lat2 = 9, resolution = 1)
+```
 
+### Inspect marmap data
 ```{r}
 summary(panama)
 ```
@@ -286,7 +111,7 @@ summary(panama)
 plot(panama, image = TRUE)
 scaleBathy(panama, deg = 2, x = "bottomleft", inset = 5)
 ```
-```{r}
+```{r blues_test}
 # Creating a custom palette of blues
 blues <- c("lightsteelblue4", "lightsteelblue3",
            "lightsteelblue2", "lightsteelblue1")
@@ -298,10 +123,11 @@ plot(panama, image = TRUE, land = TRUE, lwd = 0.1,
 plot(panama, deep = 0, shallow = 0, step = 0,
      lwd = 0.4, add = TRUE)
 ```
-```{r}
+```{r etopo_test}
 # Plot bathy object using custom ggplot2 functions
 marmap::autoplot.bathy(panama, geom=c("r", "c"), colour="white", size=0.1) + scale_fill_etopo()
 ```
+## Figure 1: Map of sample origins
 ```{r}
 pdf("./outputs/figures/Fig1_samples_locations_map_bathymetry_051123.pdf", width = 8, height = 6)
 title <- expression('Eastern Pacific '*italic("Pocillopora")*' genotype origins')
@@ -372,10 +198,9 @@ marmap::autoplot.bathy(panama, geom=c("r", "c"), color = "white", size = 0.01) +
 dev.off()
 ```
 
+
 ```{r}
-marmap::autoplot.bathy(east_pacific, geom=c("r", "c"), colour="white", size=0.1) + scale_fill_etopo()
-```
-```{r}
+# including Clipperton samples in map
 pdf("../outputs/figures/Fig1_etp_samples_sites_map_bathymetry_051223.pdf", width = 8, height = 8)
 title <- expression('Eastern Pacific '*italic("Pocillopora")*' sample locations (n = 122 samples total)')
 marmap::autoplot.bathy(east_pacific, geom=c("r", "c"), color = "white", size = 0.01) + 
@@ -409,3 +234,90 @@ marmap::autoplot.bathy(east_pacific, geom=c("r", "c"), color = "white", size = 0
   ggtitle(title)
 dev.off()
 ```
+
+## Scatterpie map of *Pocillopora* mtORF types
+```{r prepare_scatterpie_data}
+# see example at: https://cran.r-project.org/web/packages/scatterpie/vignettes/scatterpie.html
+region_coords <- samples %>% group_by(Region) %>% summarise(Longitude=mean(Longitude), Latitude=mean(Latitude))
+  
+regions_mtorfs <- samples %>% 
+  group_by(`Region`, mtorf_type) %>% 
+  dplyr::count() %>% 
+  pivot_wider(names_from = mtorf_type, values_from = n, values_fill = 0) %>% 
+  # dplyr::rename("Type 1" = Type_1, "Type 3" = Type_3) %>% 
+  mutate("radius" = (`Type 1a` + `Type 2` + `Type 3a` + `Type 3c`)/50) %>% 
+  left_join(region_coords, by = "Region")
+#
+sites_mtorfs <- samples %>% 
+  group_by(`Region:Site`, mtorf_type) %>% 
+  dplyr::count() %>% 
+  pivot_wider(names_from = mtorf_type, values_from = n, values_fill = 0) %>% 
+  # dplyr::rename("Type 1" = Type_1, "Type 3" = Type_3) %>% 
+  mutate("radius" = (`Type 1a` + `Type 2` + `Type 3a` + `Type 3c`)/20) %>% 
+  left_join(samples_sites, by = "Region:Site") %>% dplyr::select(-n)
+```
+
+### ETP w/ Clipperton
+```{r regions_unscaled}
+pdf("./outputs/figures/Fig1_mtorf_etp_regions_map_062123.pdf", width = 6.5, height = 3.5)
+marmap::autoplot.bathy(east_pacific, geom=c("r", "c"), color = "white", size = 0.01) + 
+  scale_fill_etopo(name = "Depth (m)") + 
+  #
+  new_scale_fill() +
+  geom_scatterpie(aes(x = Longitude, y = Latitude, group = `Region`, r = 2),
+                    data = regions_mtorfs, cols = c("Type 1a", "Type 2", "Type 3a", "Type 3c"), size = 5, alpha = .8) + 
+  scale_fill_manual(values = c("darkorange1", "purple", "turquoise2", "turquoise4"), name = "mtORF Type") +
+  labs(x="Longitude", y="Latitude") +
+  theme(panel.grid.major = element_blank(),
+        panel.background = element_rect(fill = "#f0f8ff"),
+        panel.border = element_rect(fill = NA),
+        plot.title = element_text(size = 12),
+        axis.title = element_text(size = 10), 
+        axis.text = element_text(size = 8),
+        legend.title = element_text(size = 10),
+        legend.text = element_text(size = 8),
+        legend.margin = margin(0,0,0,0)) +
+  ggtitle(title)
+  #
+dev.off()
+```
+### Panama and Costa Rica
+```{r regions_panama_scaled}
+pdf("./outputs/figures/Fig1_mtorf_regions_map_062123.pdf", width = 6.5, height = 4.5)
+title <- expression('Eastern Pacific '*italic("Pocillopora")*' mtORF types across STRI regions')
+marmap::autoplot.bathy(panama, geom=c("r", "c"), color = "white", size = 0.01) + 
+  scale_fill_etopo(name = "Depth (m)") + 
+  #
+  new_scale_fill() +
+  geom_scatterpie(aes(x = Longitude, y = Latitude, group = `Region`, r = radius), 
+                    data = regions_mtorfs[-1,], cols = c("Type 1a", "Type 2", "Type 3a", "Type 3c"), alpha = .8) + 
+  scale_fill_manual(values = c("darkorange1", "turquoise2", "turquoise4"), name = "mtORF Type") +
+  geom_scatterpie_legend(regions_mtorfs$radius, x = -80.25, y = 5.75, label_position = "right", n = 4,
+                         labeller = function(x) 50*x) +
+  labs(x="Longitude", y="Latitude") +
+  theme(panel.grid.major = element_blank(),
+        panel.background = element_rect(fill = "#f0f8ff"),
+        panel.border = element_rect(fill = NA),
+        plot.title = element_text(size = 12),
+        axis.title = element_text(size = 10), 
+        axis.text = element_text(size = 8),
+        legend.title = element_text(size = 10),
+        legend.text = element_text(size = 8),
+        legend.margin = margin(0,0,0,0)) +
+  ggtitle(title)
+  #
+dev.off()
+```
+
+```{r region:sites_panama}
+marmap::autoplot.bathy(panama, geom=c("r", "c"), color = "white", size = 0.01) + 
+  scale_fill_etopo(name = "Depth (m)") + 
+  #
+  new_scale_fill() +
+  geom_scatterpie(aes(x = Longitude, y = Latitude, group = `Region:Site`, r = radius),
+                    data = sites_mtorfs[-1,], cols = c("Type 1a", "Type 2", "Type 3a", "Type 3c"), alpha = .8) + 
+  scale_fill_manual(values = c("darkorange1", "turquoise2", "turquoise4"), name = "mtORF Type")
+  #
+```
+
+I would like to find a way to plot up-close maps of Coiba, Perlas and Isla del Coco to show fine detail site variation.

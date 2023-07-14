@@ -2,6 +2,9 @@
 #author: "Mike Connelly"
 #date: "05/11/2023"
 
+# notin operator
+`%notin%` <- Negate(`%in%`)
+
 # PCA visualization function
 ###------------------------------------------------------------------------------------
 gg_pcangsd <- function(e, samples, pc = c(1,2)) {
