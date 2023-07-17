@@ -1,0 +1,22 @@
+# /bin/sh
+# ----------------Parameters---------------------- #
+#$ -S /bin/sh
+#$ -pe mthread 24
+#$ -q lThC.q
+#$ -l mres=48G,h_data=2G,h_vmem=2G
+#$ -cwd
+#$ -j y
+#$ -N snapp_run
+#$ -o snapp_runs.log
+#$ -m bea
+#$ -M connellym@si.edu
+#
+# ----------------Your Commands------------------- #
+#
+echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
+echo + NSLOTS = $NSLOTS
+# note - call the qsub command from the intended output directory
+#
+/scratch/nmnh_corals/connellym/programs/beast/bin/beast -threads $NSLOTS $1
+#
+echo = `date` job $JOB_NAME done
