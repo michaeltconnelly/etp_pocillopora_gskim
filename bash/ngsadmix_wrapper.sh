@@ -24,7 +24,7 @@ echo "#$  -S /bin/sh
 #$ -l mres=192G,h_data=12G,h_vmem=12G,himem" >> ${prodir}/bash/jobs/ngsadmix_${set}_K${j}.job
 echo "#$ -j y
 #$ -N ngsadmix_${set}_K${j}.job
-#$ -o ${prodir}/bash/jobs/ngsadmix_${set}_K${j}.job
+#$ -o ${prodir}/bash/jobs/ngsadmix_${set}_K${j}.log
 #$ -m bea
 #$ -M connellym@si.edu" >> ${prodir}/bash/jobs/ngsadmix_${set}_K${j}.job
 #
@@ -37,7 +37,7 @@ echo 'echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTN
 echo 'echo + NSLOTS = $NSLOTS' >> ${prodir}/bash/jobs/ngsadmix_${set}_K${j}.job
 
 #   input command for NGSadmix
-echo "NGSadmix -likes ${prodir}/outputs/angsd/${set}_ibs05.beagle.gz -K $j -P 16 -o ${prodir}/outputs/angsd/ngsadmix/${set} -minMaf 0.05" >> ${prodir}/bash/jobs/ngsadmix_${set}_K${j}.job
+echo "NGSadmix -likes ${prodir}/outputs/angsd/${set}_ibs05.beagle.gz -K $j -P 16 -o ${prodir}/outputs/angsd/ngsadmix/${set}_K${j} -minMaf 0.05" >> ${prodir}/bash/jobs/ngsadmix_${set}_K${j}.job
 #
 echo 'echo = `date` job $JOB_NAME done' >> ${prodir}/bash/jobs/ngsadmix_${set}_K${j}.job
 # submit job
