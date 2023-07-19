@@ -15,6 +15,8 @@ K=$2
 for j in `seq 2 $K`
 do 
 echo "NGSadmix for K=${j}"
+# make output directory
+mkdir ${prodir}/outputs/ngsadmix/${set}
 #   input QSUB commands
 echo "# /bin/sh" > ${prodir}/bash/jobs/ngsadmix_${set}_K${j}.job
 echo "# ----------------Parameters---------------------- #" >> ${prodir}/bash/jobs/ngsadmix_${set}_K${j}.job
@@ -37,9 +39,10 @@ echo 'echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTN
 echo 'echo + NSLOTS = $NSLOTS' >> ${prodir}/bash/jobs/ngsadmix_${set}_K${j}.job
 
 #   input command for NGSadmix
-echo "NGSadmix -likes ${prodir}/outputs/angsd/${set}_ibs05.beagle.gz -K $j -P 16 -o ${prodir}/outputs/angsd/ngsadmix/${set}_K${j} -minMaf 0.05" >> ${prodir}/bash/jobs/ngsadmix_${set}_K${j}.job
+echo "NGSadmix -likes ${prodir}/outputs/angsd/${set}_ibs05.beagle.gz -K $j -P 16 -o ${prodir}/outputs/ngsadmix/${set}/${set}_K${j} -minMaf 0.05" >> ${prodir}/bash/jobs/ngsadmix_${set}_K${j}.job
 #
 echo 'echo = `date` job $JOB_NAME done' >> ${prodir}/bash/jobs/ngsadmix_${set}_K${j}.job
+
 # submit job
 qsub ${prodir}/bash/jobs/ngsadmix_${set}_K${j}.job
 done
