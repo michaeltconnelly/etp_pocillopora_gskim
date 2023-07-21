@@ -31,7 +31,7 @@ theme_set(theme_bw())
 ```
 ## Import sample metadata
 ```{r import_sample_metadata}
-all_samples <- read_csv("./data/pocillopora_samples_004.csv")
+all_samples <- read_csv("./data/pocillopora_samples_all_metadata.csv")
 etp_samples <- read_csv("./data/etp_samples.txt")
 ```
 ```{r select_samples}
@@ -94,7 +94,9 @@ tree %>% ggtree(., right = TRUE) %<+% samples +
   # add clade annotations
   geom_cladelab(node = 103, label = "P. effusa (Clipperton)", angle = 0, 
                   fontsize = 3, offset = 0.15) +
-  geom_cladelab(node = 107, label = "P. grandis-like", angle = 0, 
+  geom_cladelab(node = 108, label = "P. grandis-like", angle = 0, 
+                  fontsize = 3, offset = 0.15) +
+  geom_cladelab(node = 180, label = "P. meandrina-like", angle = 0, 
                   fontsize = 3, offset = 0.15) +
   geom_cladelab(node = 183, label = "P. verrucosa-like", angle = 0, 
                   fontsize = 3, offset = 0.15) +

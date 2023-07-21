@@ -1,0 +1,127 @@
+---
+title: "NGSAdmix"
+author: "Mike Connelly"
+date: "2023-07-19"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = TRUE)
+options(stringsAsFactors = FALSE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+```{r packages}
+library("tidyverse")
+library("RColorBrewer")
+# 
+source("./R/pocillopora_etp_gksim_functions.R")
+```
+
+## Import sample metadata
+```{r import_sample_metadata}
+all_samples <- read_csv("./data/pocillopora_samples_all_metadata.csv")
+etp_samples <- read_csv("./data/etp_samples.txt")
+```
+```{r select_samples}
+samples <- filter(all_samples, all_samples$`Sample ID` %in% etp_samples$`Sample ID`)
+samples$`Region:Site` <- paste(samples$Region, samples$Site, sep = ":")
+```
+## Colors
+```{r}
+
+```
+
+# All ETP samples together
+## Import and visualize NGSAdmix results
+```{r}
+# code adapted from: https://baylab.github.io/MarineGenomics/week-9-population-structure-using-ngsadmix.html
+
+# read in the data 
+q <- read_table("./outputs/ngsadmix/phyluce_noclones_K4.qopt", col_names = c("pop1","pop2","pop3","pop4"))
+
+# read in the population information file located in the bam.filelist
+pop <- read_table("./data/phyluce_noclones_samples.txt", col_names = "Sample ID") %>% 
+  arrange(`Sample ID`) %>% left_join(samples, by = "Sample ID")
+
+# combine
+q_pop <- cbind(pop, q)
+
+# order it by population
+ord <- order(q_pop$pop2)
+ord <- order(pop$mtorf_type)
+```
+```{r}
+barplot(t(q)[,ord],
+        col=1:4,
+        names = pop$`Sample ID`[ord],
+        las = 2,
+        cex.names = 0.2,
+        space = 0,
+        border=NA,
+        xlab="Individuals",
+        ylab="Admixture proportions for K=3")
+```
+```{r ggplot_K_proportions}
+## ggplot attempt
+q_pop_tidy <- q_pop %>%
+  pivot_longer(cols = `pop1`:`pop4`, names_to = "pop") %>% 
+  arrange(mtorf_type)
+#
+q_pop_tidy %>%
+  ggplot(aes(x = `Sample ID`, y = value)) +
+  geom_col(aes(fill = `pop`), position = "stack") +
+  xlab("Individuals") + 
+  ylab("Admixture proportions for K=4") +
+  theme(axis.text.x = element_text(size = 4, angle = 90))
+```
+```{r}
+# how to make combination of plots for multiple values of K?
+# for example, K from 2 - 8
+maxK <- 8
+popcolors <- brewer.pal(maxK, "Set1")
+qopt_list <- list()
+for (i in 2:maxK){
+  print(i)
+  kcols <- c()
+  # internal loop to create column header names
+  for (j in c(1:i)){
+  kcols <- append(kcols, paste0("pop",j))
+  }
+  # print(kcols)
+  qopt_list[[i]] <- read_table(paste0("./outputs/ngsadmix/phyluce_noclones_K",i,".qopt"), col_names = kcols)
+}
+qopt_list
+```
+
+```{r}
+plot_list <- list()
+for (i in 2:8){
+q <- qopt_list[[i]]
+q_pop <- cbind(pop, q)
+  ## ggplot attempt
+q_pop_tidy <- q_pop %>%
+  pivot_longer(cols = contains("pop"), names_to = "pop") %>%
+  arrange(Region, mtorf_type)
+#
+#
+q_pop_tidy_plot <- q_pop_tidy %>%
+  ggplot(aes(x = `Sample ID`, y = value)) +
+  geom_col(aes(fill = `pop`), position = "stack", show.legend = F) +
+  scale_fill_manual(values = popcolors) +
+  xlab("Individuals") +
+  ylab(paste0("K=",i)) +
+  theme(axis.text.x = element_blank(),
+        axis.title.x = element_blank(),
+        legend.text = element_text(size = 2))
+#
+# print(q_pop_tidy_plot)
+plot_list[[i-1]] <- q_pop_tidy_plot
+}
+```
+```{r}
+pdf("./outputs/figures/ngsadmix_K2-8.pdf")
+# print(plot_list[[1]])
+plot_list[[1]] / plot_list[[2]] / plot_list[[3]] / plot_list[[4]] / plot_list[[5]] / plot_list[[6]] / plot_list[[7]]
+dev.off()
+```
+# *P. grandis* populations only
