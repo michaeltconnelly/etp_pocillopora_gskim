@@ -6,8 +6,8 @@
 #$ -l mres=72G,h_data=3G,h_vmem=3G
 #$ -cwd
 #$ -j y
-#$ -N iqtree_phyluce_noclones_out
-#$ -o iqtree_phyluce_noclones_out.log
+#$ -N iqtree_phyluce
+#$ -o iqtree_phyluce.log
 #$ -m bea
 #$ -M connellym@si.edu
 #
@@ -23,15 +23,17 @@ echo + NSLOTS = $NSLOTS
 mcs="/scratch/nmnh_corals/connellym"
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 
-# want to edit so different inputs can be passed as a variable - basename?
+# specify which taxon set and alignment to use
+set=$1
+#
 iqtree2 \
--s ${prodir}/outputs/uce-taxon-sets/phyluce_noclones_out-mafft-nexus-internal-trimmed-gblocks-clean-75p-raxml/phyluce_noclones_out-mafft-nexus-internal-trimmed-gblocks-clean-75p.phylip \
--p ${prodir}/outputs/uce-taxon-sets/phyluce_noclones_out-mafft-nexus-internal-trimmed-gblocks-clean-75p-raxml/phyluce_noclones_out-mafft-nexus-internal-trimmed-gblocks-clean-75p.partitions \
+-s ${prodir}/outputs/uce-taxon-sets/${set}-mafft-nexus-internal-trimmed-gblocks-clean-75p-raxml/${set}-mafft-nexus-internal-trimmed-gblocks-clean-75p.phylip \
+-p ${prodir}/outputs/uce-taxon-sets/${set}-mafft-nexus-internal-trimmed-gblocks-clean-75p-raxml/${set}-mafft-nexus-internal-trimmed-gblocks-clean-75p.partitions \
 --seqtype DNA \
 -m MFP+MERGE \
 -bb 1000 \
 -alrt 1000 \
 -nt $NSLOTS \
---prefix ${prodir}/outputs/iqtree/iqtree_test_phyluce_noclones_out
+--prefix ${prodir}/outputs/iqtree/iqtree_${set}
 
 echo = `date` job $JOB_NAME done
