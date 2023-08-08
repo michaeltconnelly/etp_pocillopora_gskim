@@ -42,8 +42,9 @@ echo 'echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTN
 echo 'echo + NSLOTS = $NSLOTS' >> ${prodir}/bash/jobs/${sample}_unmapped_bam2fastq.job
 
 echo 'echo "Starting samtools bam conversion to fastq"' >> $prodir/bash/jobs/${sample}_unmapped_bam2fastq.job
-#   input command for samtools conversion
 
+#   input command for samtools conversion
+# -f 12 -F 256 outputs only reads where both reads of the pair are unmapped
 echo "samtools bam2fq \
  -f 12 -F 256 \
  -1 ${prodir}/data/unmapped/${sample}_Unmapped_R1_PE.fastq \
