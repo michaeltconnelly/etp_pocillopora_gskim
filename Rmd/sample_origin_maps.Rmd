@@ -41,7 +41,7 @@ theme_set(theme_bw())
 ```{r sample_data_import}
 # samples <- read_csv("./data/pocillopora_samples.csv")
 # 
-all_samples <- read_csv("./data/pocillopora_samples_004.csv") # with all corrected mtorf types
+all_samples <- read_csv("./data/pocillopora_samples_all_metadata.csv") # with all corrected mtorf types
 stri_samples <- read_csv("./data/etp_samples.txt")
 ```
 ```{r}

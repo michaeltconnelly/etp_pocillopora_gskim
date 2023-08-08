@@ -1,0 +1,61 @@
+---
+title: "Pipeline Metrics Summary"
+author: "Mike Connelly"
+date: "2023-08-07"
+output: html_document
+---
+## Setup and packages
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = TRUE)
+options(stringsAsFactors = FALSE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+```{r packages}
+library("tidyverse")
+#
+source("./R/pocillopora_etp_gksim_functions.R")
+```
+
+## Colors and theme
+```{r colors}
+region_colors <- c("gold1", "steelblue", "darkorange", "darkturquoise")
+#
+spp_colors <- c("purple", "darkorange1", "gold", "turquoise2", "turquoise4")
+# 
+theme_set(theme_bw())
+```
+
+## Import sample metadata
+```{r import_sample_metadata}
+all_samples <- read_csv("./data/pocillopora_samples_all_metadata.csv")
+#
+# select_samples <- read_csv("./data/etp_samples.txt")
+select_samples <- read_csv("./data/phyluce_noclones_samples.txt", col_names = c("Sample ID"))
+```
+```{r select_samples}
+samples <- filter(all_samples, all_samples$`Sample ID` %in% select_samples$`Sample ID`)
+```
+## Sample summaries
+```{r}
+## Panama regions and species
+samples %>% filter(Region == "Coiba" | Region == "Perlas") %>% group_by(Region, Species) %>% count()
+
+## Panama P. grandis site and regions
+samples %>% filter(Region == "Coiba" | Region == "Perlas") %>% filter(Species == "P. grandis") %>% group_by(`Region:Site`) %>% count()
+```
+
+```{r raw_reads}
+multiqc_fastqc <- read_tsv("./outputs/QCs/fastqcs/multiqc_data/multiqc_fastqc.txt")
+```
+```{r trimmed_reads}
+multiqc_trimqc <- read_tsv("./outputs/QCs/trimqcs/multiqc_data/multiqc_fastqc.txt")
+```
+
+
+BWA mapped reads
+
+SPAdes assembly metrics
+
+PHYLUCE alignment matrix stats
+
+SNP matrix stats

@@ -32,7 +32,7 @@ theme_set(theme_bw())
 
 ## Import sample metadata
 ```{r import_sample_metadata}
-all_samples <- read_csv("./data/pocillopora_samples_004.csv")
+all_samples <- read_csv("./data/pocillopora_samples_all_metadata.csv")
 etp_samples <- read_csv("./data/etp_samples.txt")
 ```
 ```{r select_samples}

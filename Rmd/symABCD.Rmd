@@ -12,8 +12,8 @@ options(stringsAsFactors = FALSE)
 ```
 
 ```{r}
-library(tidyverse) # for data wrangling and plotting
-library(RColorBrewer) # for colors
+library("tidyverse") # for data wrangling and plotting
+library("RColorBrewer") # for colors
 ```
 
 Plot the proportion of reads mapping to A, B, C, and D in Pocillopora corals
@@ -27,16 +27,16 @@ df_abcd_pdam <- abcd_pdam %>%
   dplyr::mutate(Genus = factor(ifelse(clade == "fracA", "Symbiodinium", ifelse(clade == "fracB", "Breviolum", ifelse(clade == "fracC", "Cladocopium", "Durusdinium"))))) %>%
   dplyr::mutate(`Sample ID` = str_extract(sample, "^.*_.*_[S]*")) %>% 
   dplyr::mutate(`Sample ID` = str_replace(`Sample ID`, "_S.*_", "")) %>% 
-  dplyr::filter(`Sample ID` != "Perlas_344_AP3XG35") %>% 
-  dplyr::left_join(samples_pc_clusters, by = "Sample ID")
+  dplyr::filter(`Sample ID` != "Perlas_344_AP3XG35") #%>% 
+  #dplyr::left_join(samples_pc_clusters, by = "Sample ID")
 # 
 df_abcd_pdam$Genus <- factor(df_abcd_pdam$Genus, levels = c("Symbiodinium", "Breviolum", "Cladocopium", "Durusdinium", ordered = T))
 
 plot_abcd_pdam <- df_abcd_pdam %>% 
   ggplot() + 
-  geom_bar(aes(y = frac, x = sample, fill = Genus), stat="identity")+
+  geom_bar(aes(y = frac, x = sample, fill = Genus), stat="identity") +
   # facet_grid(~Region, scales = "free") +
-  facet_grid(Region ~ cluster, scales = "free") +
+  # facet_grid(Region ~ cluster, scales = "free") +
   scale_fill_brewer(palette="Spectral", name = "Genus")+
   theme_classic()+
   ylab("Proportion of Symbiont Reads")+
@@ -73,12 +73,70 @@ dev.off()
 ## Scatterpie plot on map 
 to examine geographic patterns
 ```{r}
-
+all(df_abcd_pdam$`Sample ID` %in% samples$`Sample ID`)
 ```
 
 ## Pie chart tips on IBS clustering tree
 to examine phylogenetic and within-clone patterns
 ```{r}
+df_plot <- df_abcd_pdam %>% dplyr::select(`Sample ID`, clade:Genus)
+df_plot_C <- df_plot %>% filter(clade=="fracC")
+```
+```{r}
+tr <- rtree(30)
+tr <- tree
 
+d1 <- data.frame(id=tr$tip.label, val=rnorm(99, sd=3))
+p <- ggtree(tr)
+
+p2 <- facet_plot(p, panel="dot", data=d1, geom=geom_point, aes(x=val), color='firebrick')
+#
+d2 <- data.frame(id=tr$tip.label, value = abs(rnorm(99, mean=100, sd=50)))
+
+facet_plot(p2, panel = 'bar', data = d2, geom=geom_segment, aes(x=0, xend=value, y=y, yend=y), size=3, color='steelblue') + theme_tree2()
+
+facet_plot(p, panel = 'symbiont proportion', data = df_plot_C, geom = geom_point, mapping = aes(x = frac, fill = Genus), size=1) + theme_tree2()
+
+df_plot_C$`Sample ID` %in% tree$tip.label
+```
+```{r}
+ggplot(df_abcd_pdam) + geom_col(aes(x = frac, y = sample, fill = Genus))
+```
+
+```{r}
+library(ggtree)
+library(reshape2)
+library(ggplot2)
+
+set.seed(2020-12-18)
+
+## generate random data with 15 tips
+num_tips = 15
+tr <- rtree(num_tips)
+p <- ggtree(tr)
+
+a <- runif(num_tips, 0, 0.33)
+b <- runif(num_tips, 0, 0.33)
+c <- runif(num_tips, 0, 0.33)
+d <- 1 - a - b - c
+dat <- data.frame(a=a, b=b, c=c, d=d)
+
+## melt the dataframe to create pie-charts
+dat.m = melt(dat, id.vars = "tip")
+dat.m = melt(dat, id.vars = "tip")
+
+## create list to hold all pie charts
+pies = list()
+for (i in 1:num_tips) {
+  curr_dat = melt(dat[i,])
+  ## create a ggplot object for each pie chart
+  pies[[i]] =  ggplot(curr_dat, aes(y = value, fill = variable, x="")) + 
+    geom_bar(stat = "identity") +
+    coord_polar("y", start=0) +
+    theme_void() + scale_fill_brewer(palette = "Set1", guide = F)
+}
+# give them the appropriate names and plot on tree
+names(pies) = 1:15
+inset(p, pies, width=0.1, height=0.1, hjust=0)
 ```
 

@@ -22,6 +22,8 @@ region_colors <- c("gold1", "steelblue", "darkorange", "darkturquoise")
 # 
 site_colors <- c("gold1", "blue", "darkblue", "steelblue", "lightblue", "darkorange3","darkorange", "orange", "orangered", "cyan", "cyan3", "cyan4", "turquoise", "lightgreen")
 names(site_colors)
+#
+spp_colors <- c("purple", "darkorange1", "gold", "turquoise2", "turquoise4")
 # 
 theme_set(theme_bw())
 ```
@@ -29,11 +31,12 @@ theme_set(theme_bw())
 ## Import sample metadata
 ```{r import_sample_metadata}
 all_samples <- read_csv("./data/pocillopora_samples_all_metadata.csv")
-etp_samples <- read_csv("./data/etp_samples.txt")
+select_samples <- read_csv("./data/etp_samples.txt")
+# select_samples <- read_csv("./data/phyluce_noclones_samples.txt", col_names = c("Sample ID"))
 ```
 ```{r select_samples}
-samples <- filter(all_samples, all_samples$`Sample ID` %in% etp_samples$`Sample ID`)
-samples$`Region:Site` <- paste(samples$Region, samples$Site, sep = ":")
+samples <- filter(all_samples, all_samples$`Sample ID` %in% select_samples$`Sample ID`)
+# samples$`Region:Site` <- paste(samples$Region, samples$Site, sep = ":")
 ```
 Note: Remove clones from the dataset using IBS analysis before running PCAngsd
 
@@ -58,7 +61,7 @@ pcvar <- round(e$values, 2)
 ```
 ### Plot PCA of all-samples
 ```{r pca_test_ggplot}
-title <- expression(paste("Preliminary PCA of 122 ETP ", italic("Pocillopora"), " samples"))
+title <- expression(paste("PCA of East Pacific ", italic("Pocillopora"), " samples"))
 # test ggplot 
 pcs %>% ggplot(aes(x = V1, y = V2)) +
   geom_point(aes(fill = `Region`), shape = 21, size = 2, alpha = 0.75) +
@@ -79,9 +82,9 @@ pcs %>% ggplot(aes(x = V1, y = V2)) +
   ggtitle(title)
 # 
 pcs %>% ggplot(aes(x = V1, y = V2)) +
-  geom_point(aes(fill = `Region`, shape = `mtorf_type`), size = 2, alpha = 0.75) +
-  scale_fill_manual(values = region_colors) +
-  scale_shape_manual(values = c(21:25)) +
+  geom_point(aes(fill = `Species`), shape = 21, size = 2, alpha = 0.75) +
+  scale_fill_manual(values = spp_colors) +
+  # scale_shape_manual(values = c(21:25)) +
   # facet_grid(Region ~ .) +
   coord_fixed(pcvar[2]/pcvar[1]) + 
   xlab(paste0( "PC1 (", pcvar[1], "%)")) + 
@@ -93,23 +96,71 @@ pcs %>% ggplot(aes(x = V1, y = V2)) +
 ```{r figure 1: pca_1-2}
 # use custom function to plot PCA colored by Region:Site
 pdf("./outputs/figures/pca12.pdf", width = 8, height = 6)
-gg_pcangsd(e, pc=c(1,2)) +
+gg_pcangsd(e, samples, pc=c(1,2)) +
   ggtitle(title)
   #
-gg_pcangsd(e, pc=c(1,2)) +
+gg_pcangsd(e, samples, pc=c(1,2)) +
   facet_grid(Region ~ .) +
   ggtitle(title)
 dev.off()
 ```
 ```{r pca_2-3}
 pdf("./outputs/figures/pca23.pdf", width = 8, height = 6)
-gg_pcangsd(e, pc=c(2,3)) +
+gg_pcangsd(e, samples, pc=c(2,3)) +
   ggtitle(title)
   #
 dev.off()
 ```
+
+### PCA of no-clones samples
+```{r pca}
+# pop<-read.table("Demo/Data/Demo1pop.info")
+C <- as.matrix(read.table("./outputs/angsd/phyluce_noclones.cov"))
+e <- eigen(C)
+```
+```{r pca_test_plot}
+plot(e$vectors[,1:2],xlab="PC1",ylab="PC2", main="individual allele frequency")
+#
+```
+
+```{r select_samples}
+select_samples <- read_csv("./data/phyluce_noclones_samples.txt", col_names = c("Sample ID")) %>% arrange(`Sample ID`)
+
+samples <- filter(all_samples, all_samples$`Sample ID` %in% select_samples$`Sample ID`)
+samples <- samples[match(select_samples$`Sample ID`, samples$`Sample ID`),]
+```
+
+```{r combine_pca_metadata}
+# combine pc coordinates with sample metadata
+pcs <- as.data.frame(e$vectors) %>% cbind(samples)
+# store variable with % variance explained by each PC
+pcvar <- round(e$values, 2)
+#
+```
+
+### PCA of all samples by species
+
+```{r}
+pdf(file="./outputs/figures/etp_spp_pca_color.pdf", width = 4, height = 2.5)
+title <- expression(paste("PCA of East Pacific ", italic("Pocillopora"), " spp."))
+pcs %>% ggplot(aes(x = V1, y = V2)) +
+  geom_jitter(aes(fill = `Species`), shape = 21, size = 4, alpha = 0.6, show.legend = F, width = 0.005, height = 0.005) +
+  scale_fill_manual(values = spp_colors) +
+  # facet_grid(Region ~ .) +
+  # coord_fixed(pcvar[2]/pcvar[1]) + 
+  xlab(paste0( "PC1 (", pcvar[1], "%)")) + 
+  ylab(paste0( "PC2 (", pcvar[2], "%)")) +
+  theme(plot.title = element_text(size = 16, hjust = 1.4),
+        axis.title = element_text(size = 12),
+        axis.text = element_text(size = 11),
+        legend.title = element_text(size = 14),
+        legend.text = element_text(size = 12, face = "italic")) +
+  ggtitle(title)
+dev.off()
+```
+
 ### Assign samples to PCA clusters - 
-# REDO BASED ON MTORF RESULTS!
+### REDO BASED ON MTORF RESULTS!
 
 Based on the PCA plot of all eastern Pacific *Pocillopora* samples, there appear to be three genetic clusters that separate along PC1: cluster 1 (PC1 > 0.025), cluster 2 (PC1 < 0.025 and PC1 > -0.10), and cluster 3 (PC1 < -0.10). Samples were labelled according to their genetic cluster, and PCA was performed again.
 
@@ -178,6 +229,16 @@ pcs_c1 %>% ggplot(aes(x = V1, y = V2)) +
   xlab(paste0( "PC1 (", pcvar_c1[1], "%)")) + 
   ylab(paste0( "PC2 (", pcvar_c1[2], "%)"))
 # 
+# test ggplot 
+pcs_c1 %>% ggplot(aes(x = V1, y = V2)) +
+  geom_point(aes(fill = `Region:Site`), shape = 21, size = 2, alpha = 0.75) +
+  scale_fill_manual(values = site_colors) +
+  # facet_grid(Region ~ .) +
+  coord_fixed(pcvar_c1[2]/pcvar_c1[1]) + 
+  theme(legend.position = "right") +
+  xlab(paste0( "PC1 (", pcvar_c1[1], "%)")) + 
+  ylab(paste0( "PC2 (", pcvar_c1[2], "%)"))
+# 
 ```
 ```{r pgrandis_region_pca}
 pdf("./outputs/figures/pgrandis_region_pca.pdf", height = 4.5, width = 6)
@@ -202,11 +263,12 @@ dev.off()
 
 ```
 
-### Plot PCAs for Cluster 3
+### Plot PCAs for *P. verrucosa*
 ```{r pca_c3}
+pverrucosa <- read_csv("./data/pverrucosa_samples.txt", col_names = "Sample ID") %>% arrange(`Sample ID`)
 # pop<-read.table("Demo/Data/Demo1pop.info")
-C3 <- as.matrix(read.table("./outputs/angsd/etp_cluster3.cov"))
-e3 <- eigen(C3)
+C <- as.matrix(read.table("./outputs/angsd/pverrucosa.cov"))
+e <- eigen(C)
 ```
 ```{r pca_test_plot}
 plot(e$vectors[,1:2],xlab="PC1",ylab="PC2", main="individual allele frequency")
@@ -216,16 +278,16 @@ plot(e$vectors[,2:3],xlab="PC2",ylab="PC3", main="individual allele frequency")
 ```
 ```{r combine_pca_metadata}
 # combine pc coordinates with sample metadata
-pcs_c3 <- as.data.frame(e3$vectors) %>% cbind(samples_cluster3)
+pcs <- as.data.frame(e$vectors) %>% cbind(pverrucosa) %>% left_join(samples)
 # store variable with % variance explained by each PC
-pcvar_c3 <- round(e3$values, 2)
+pcvar <- round(e$values, 2)
 #
 ```
 ```{r pca_cluster_ggplot}
 # test ggplot 
-pcs_c3 %>% ggplot(aes(x = V1, y = V2)) +
-  geom_point(aes(fill = `Region`), shape = 21, size = 2, alpha = 0.75) +
-  scale_fill_manual(values = region_colors) +
+pcs %>% ggplot(aes(x = V1, y = V2)) +
+  geom_point(aes(fill = `Region:Site`), shape = 21, size = 2, alpha = 0.75) +
+  scale_fill_manual(values = site_colors) +
   # facet_grid(Region ~ .) +
   coord_fixed(pcvar_c3[2]/pcvar_c3[1]) + 
   xlab(paste0( "PC1 (", pcvar_c3[1], "%)")) + 
