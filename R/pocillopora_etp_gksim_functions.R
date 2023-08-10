@@ -2,6 +2,14 @@
 #author: "Mike Connelly"
 #date: "05/11/2023"
 
+# project-wide color themes
+region_colors <- c("gold1", "steelblue", "darkorange", "darkturquoise")
+# 
+site_colors <- c("gold1", "blue", "darkblue", "steelblue", "lightblue", "darkorange3","darkorange", "orange", "orangered", "cyan", "cyan3", "cyan4", "turquoise", "lightgreen")
+names(site_colors)
+#
+spp_colors <- c("purple", "darkorange1", "gold", "turquoise2", "turquoise4")
+
 # notin operator
 `%notin%` <- Negate(`%in%`)
 

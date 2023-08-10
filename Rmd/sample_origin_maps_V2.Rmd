@@ -1,0 +1,288 @@
+---
+title: "Pocillopora genotype origin map"
+author: "Mike Connelly"
+date: "01/27/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+```{r packages, message=FALSE}
+library("tidyverse")
+library("raster") #for processing some spatial data
+library("rnaturalearth") #for downloading shapefiles
+library("sf") #for processing shapefiles
+library("elevatr") #for downloading elevation data
+library("dplyr") #to keep things tidy
+library("magrittr") #to keep things very tidy
+library("ggspatial") #for scale bars and arrows
+library("ggplot2") #for tidy plotting
+library("ggpubr") #for easy selection of symbols
+library("colourpicker") #for easy selection of colors
+library("rnaturalearthhires")
+library("maps") # for getting pacific-centered map
+library("scatterpie") # for plotting proportions of different lineages on map
+library("ggnewscale") # for adding new fill scale to keep elevation
+library("ggrepel") # for adding labels to plot
+```
+```{r load shapefiles, message=FALSE}
+# Load shapefiles from rnaturalearth package
+map <- ne_countries(scale = 10, returnclass = "sf")
+# 
+states <- ne_states(returnclass = "sf")
+# 
+ocean <- ne_download(scale = 10, type = 'ocean', 
+                   category = 'physical', returnclass = 'sf')
+# 
+rivers <- ne_download(scale = 10, type = 'rivers_lake_centerlines', 
+                    category = 'physical', returnclass = 'sf')
+# 
+reefs <- ne_download(scale = 10, type = 'reefs',
+                     category = "physical", returnclass = 'sf')
+```
+```{r Quick check on basic shapefiles, echo = FALSE, fig.align= "center", fig.width= 6}
+quickCheck <-
+  ggplot() +
+  geom_sf(data = ocean, color = "black", size = 0.05, fill = "#def3f6") +
+  geom_sf(data = reefs, color = "red", size = 0.05, fill = "red") +
+  geom_sf(data = rivers, color = "blue", size = 0.05) +
+  geom_sf(data = states, color = "black", size = 0.05, fill = "#f5f5f5", alpha = 0.5) +
+  theme(panel.grid.major = element_blank(), 
+        panel.background = element_blank(), 
+        panel.border = element_rect(fill = NA))
+par(mar = c(0.5, 0.5, 0.5, 0.5))
+quickCheck
+```
+
+```{r}
+etp_countries <- c("Mexico", "Guatemala", "El Salvador", "Nicaragua", "Honduras", "Costa Rica", "Panama", "Colombia", "Ecuador", "Peru")
+focalArea <- map %>% filter(admin %in% etp_countries)
+```
+```{r define map extent}
+limit <- st_buffer(focalArea, dist = 0.1) %>% st_bbox()
+
+clipLimit <- st_buffer(focalArea, dist = 0.5) %>% st_bbox()
+
+limitExtent <- as(extent(clipLimit), 'SpatialPolygons')
+
+crs(limitExtent) <- "+proj=longlat +datum=WGS84 +no_defs"
+```
+```{r Show map and clipping extent, echo = FALSE, fig.align= "center", warning = FALSE}
+par(mar = c(0.5, 0.5, 0.5, 0.5))
+plot(as(extent(clipLimit), 'SpatialPolygons'), lty="dashed")
+plot(as(extent(limit), 'SpatialPolygons'), add = TRUE)
+plot(focalArea, col = "#005293", add = TRUE)
+```
+
+```{r obtain elevation data}
+elev<-get_elev_raster(locations = limitExtent, z = 6, override_size_check = T)
+
+elevDF<-as.data.frame(elev, xy=TRUE)
+
+colnames(elevDF)<-c("x", "y", "elevation")
+
+elevDF[, 3][elevDF[, 3] < 1500] <- NA
+```
+
+```{r Test elevation map, echo = FALSE, fig.align= "center", warning = FALSE}
+par(mar = c(0.5, 0.5, 0.5, 0.5))
+elevMapTest <-
+  ggplot() +
+  # geom_tile(data = elevDF, aes(x=x, y=y, fill=elevation), alpha =0.4)+
+  # scale_fill_gradient(low="#a3a0a0", high= "#000000", 
+  #                     na.value="transparent")+
+  geom_sf(data = ocean, color = "black", size = 0.05, fill = "#add8e6")+
+  geom_sf(data = rivers, color = "#d7f2fa", size = 0.5)+
+  geom_sf(data = states, color = "black", size = 0.05, fill = "#f5f5f5", alpha = 0.2)+
+  geom_sf(data = map, color = "black", size = 0.1, fill = "#f5f5f5", alpha = 0.2)+
+    coord_sf(
+    xlim = c(-112, -76),
+    ylim = c(-2, 16)) +
+  labs(x="Longitude", y="Latitude", elevation = "Elevation") +
+  theme(panel.grid.major = element_blank(),
+  panel.background = element_rect(fill = "#f0f8ff"),
+  panel.border = element_rect(fill = NA))
+elevMapTest
+```
+
+## Plot proportions of *Pocillopora* mtORF lineages on map with scatterpie
+```{r sample_data_import}
+# samples <- read_csv("./data/pocillopora_samples.csv")
+# 
+all_samples <- read_csv("./data/pocillopora_samples_all_metadata.csv") # with all corrected mtorf types
+stri_samples <- read_csv("./data/etp_samples.txt")
+#
+all_samples_2 <- read_csv("./data/pocillopora_samples_round2_select_metadata.csv")
+```
+```{r}
+samples <- filter(all_samples, all_samples$`Sample ID` %in% stri_samples$`Sample ID`)
+# samples$`Region:Site` <- paste(samples$Region, samples$Site, sep = ":")
+```
+```{r}
+unsamples <- filter(all_samples, all_samples$`Sample ID` %notin% stri_samples$`Sample ID`)
+```
+
+```{r sample_data_tidy}
+# filter out irrelevant samples, select only informative columns
+samples_select <- samples #%>% 
+  # dplyr::filter(!is.na(`Sampling Date`)) %>% 
+  # dplyr::filter(!is.na(`Latitude`)) %>% 
+  # dplyr::select(`Sample ID`:`Depth (ft)`)
+# count sample number across different locations
+samples_regions <- samples_select %>% 
+  group_by(`Region`) %>% 
+  count() %>% 
+  left_join(region_coords, by = "Region")
+samples_locations <- samples_select %>% 
+  group_by(`Region`, `Site`, `Latitude`, `Longitude`) %>% 
+  count()
+samples_sites <- samples_select %>% 
+  group_by(`Region:Site`, `Latitude`, `Longitude`) %>% 
+  count()
+```
+```{r}
+samples_regions_2 <- all_samples_2 %>% 
+  group_by(`Region`, `Latitude`, `Longitude`) %>% 
+  count() %>% filter(Region != "Chiriqui")
+```
+
+```{r prepare_scatterpie_data}
+# see example at: https://cran.r-project.org/web/packages/scatterpie/vignettes/scatterpie.html
+region_coords <- samples %>% group_by(Region) %>% summarise(Longitude=mean(Longitude), Latitude=mean(Latitude))
+  
+regions_mtorfs <- samples %>% 
+  group_by(`Region`, mtorf_type) %>% 
+  dplyr::count() %>% 
+  pivot_wider(names_from = mtorf_type, values_from = n, values_fill = 0) %>% 
+  # dplyr::rename("Type 1" = Type_1, "Type 3" = Type_3) %>% 
+  mutate("radius" = (`Type 1a` + `Type 2` + `Type 3a` + `Type 3c`)/50) %>% 
+  left_join(region_coords, by = "Region")
+#
+sites_mtorfs <- samples %>% 
+  group_by(`Region:Site`, mtorf_type) %>% 
+  dplyr::count() %>% 
+  pivot_wider(names_from = mtorf_type, values_from = n, values_fill = 0) %>% 
+  # dplyr::rename("Type 1" = Type_1, "Type 3" = Type_3) %>% 
+  mutate("radius" = (`Type 1a` + `Type 2` + `Type 3a` + `Type 3c`)/20) %>% 
+  left_join(samples_sites, by = "Region:Site") %>% dplyr::select(-n)
+#
+regions_species <- samples %>% 
+  group_by(`Region`, Species) %>% 
+  dplyr::count() %>% 
+  pivot_wider(names_from = Species, values_from = n, values_fill = 0) %>% 
+  # dplyr::rename("Type 1" = Type_1, "Type 3" = Type_3) %>% 
+  mutate("radius" = (`P. effusa` + `P. grandis` + `P. meandrina` + `P. verrucosa 3a` + `P. verrucosa 3c`)/50) %>% 
+  left_join(region_coords, by = "Region")
+```
+
+### Figure 1A
+#### Species Scatterpie
+```{r figure 1A: powerpoint}
+pdf(file="./outputs/figures/Pocillopora_origins_map_scatterpie.pdf", width = 8, height = 4)
+title <- expression('East Pacific '*italic("Pocillopora")*' sample origins and species identification')
+par(mar = c(0.5, 0.5, 0.5, 0.5))
+elevMapTest <-
+  ggplot() +
+  geom_sf(data = ocean, color = "black", size = 0.1, fill = "aliceblue") +
+  geom_sf(data = rivers, color = "#d7f2fa", size = 0.5)+
+  geom_sf(data = states, color = "darkgrey", size = 0.1, fill = "antiquewhite", alpha = 0.5) +
+  geom_sf(data = map, color = "black", size = 0.1, fill = "antiquewhite", alpha = 0.5) +
+    coord_sf(
+    xlim = c(-112, -76),
+    ylim = c(-2, 16)) +
+  #
+  new_scale_fill() +
+geom_scatterpie(aes(x = Longitude, y = Latitude, group = `Region`, r = 1.5),
+                    data = regions_species, cols = c("P. effusa", "P. grandis", "P. meandrina", "P. verrucosa 3a", "P. verrucosa 3c"), size = 5, alpha = .8) + 
+  scale_fill_manual(values = c("purple", "darkorange1", "gold", "turquoise2", "turquoise4"), name = "Species") +
+  #
+  labs(x="Longitude", y="Latitude", elevation = "Elevation") +
+  theme(panel.grid.major = element_blank(),
+        panel.background = element_rect(fill = "#f0f8ff"),
+        panel.border = element_rect(fill = NA),
+        plot.title = element_text(size = 16),
+        axis.title = element_blank(), 
+        axis.text = element_text(size = 11),
+        legend.title = element_text(size = 14),
+        legend.text = element_text(size = 12, face = "italic"),
+        legend.position = c(0.14, 0.26)) +
+  ggtitle(title)
+elevMapTest
+dev.off()
+```
+
+### Sample Numbers Round 1
+```{r figure 1A: powerpoint}
+pdf(file="./outputs/figures/Pocillopora_origins_map_numbersR1.pdf", width = 8, height = 4)
+title <- expression('East Pacific '*italic("Pocillopora")*' sample origins and species identification')
+par(mar = c(0.5, 0.5, 0.5, 0.5))
+elevMapTest <-
+  ggplot() +
+  geom_sf(data = ocean, color = "black", size = 0.1, fill = "aliceblue") +
+  geom_sf(data = rivers, color = "#d7f2fa", size = 0.5)+
+  geom_sf(data = states, color = "darkgrey", size = 0.1, fill = "antiquewhite", alpha = 0.5) +
+  geom_sf(data = map, color = "black", size = 0.1, fill = "antiquewhite", alpha = 0.5) +
+    coord_sf(
+    xlim = c(-112, -76),
+    ylim = c(-2, 16)) +
+  #
+  new_scale_fill() +
+geom_point(aes(x = Longitude, y = Latitude, size = n),
+                    data = samples_regions, shape = 21, alpha = .8, fill = "grey40", color = "black") + 
+  scale_size_continuous(range = c(0.4, 10), limits = c(0, 60), breaks = c(5, 15, 30, 60), name = "# samples") +
+  #
+  labs(x="Longitude", y="Latitude") +
+  theme(panel.grid.major = element_blank(),
+        panel.background = element_rect(fill = "#f0f8ff"),
+        panel.border = element_rect(fill = NA),
+        plot.title = element_text(size = 16),
+        axis.title = element_blank(), 
+        axis.text = element_text(size = 11),
+        legend.title = element_text(size = 14),
+        legend.text = element_text(size = 12),
+        legend.position = c(0.09, 0.26)) +
+  ggtitle(title)
+elevMapTest
+dev.off()
+```
+### Scatterpie plus sample numbers round 2
+```{r figure 1A: powerpoint}
+pdf(file="./outputs/figures/Pocillopora_origins_map_scatterpie_numbersR2.pdf", width = 8, height = 4)
+title <- expression('East Pacific '*italic("Pocillopora")*' sample origins and species identification')
+par(mar = c(0.5, 0.5, 0.5, 0.5))
+elevMapTest <-
+  ggplot() +
+  geom_sf(data = ocean, color = "black", size = 0.1, fill = "aliceblue") +
+  geom_sf(data = rivers, color = "#d7f2fa", size = 0.5)+
+  geom_sf(data = states, color = "darkgrey", size = 0.1, fill = "antiquewhite", alpha = 0.5) +
+  geom_sf(data = map, color = "black", size = 0.1, fill = "antiquewhite", alpha = 0.5) +
+    coord_sf(
+    xlim = c(-112, -76),
+    ylim = c(-2, 16)) +
+  #
+  new_scale_fill() +
+geom_scatterpie(aes(x = Longitude, y = Latitude, group = `Region`, r = 1.5),
+                    data = regions_species, cols = c("P. effusa", "P. grandis", "P. meandrina", "P. verrucosa 3a", "P. verrucosa 3c"), size = 5, alpha = .8) + 
+  scale_fill_manual(values = c("purple", "darkorange1", "gold", "turquoise2", "turquoise4"), name = "Species") +
+  #
+  new_scale_fill() +
+geom_point(aes(x = Longitude, y = Latitude, size = n),
+                    data = samples_regions_2, shape = 21, alpha = .8, fill = "grey40", color = "black", show.legend = FALSE) + 
+  scale_size_continuous(range = c(0.4, 10), limits = c(0, 60), breaks = c(5, 15, 30, 60), name = "# samples") +
+  #
+  labs(x="Longitude", y="Latitude") +
+  theme(panel.grid.major = element_blank(),
+        panel.background = element_rect(fill = "#f0f8ff"),
+        panel.border = element_rect(fill = NA),
+        plot.title = element_text(size = 16),
+        axis.title = element_blank(), 
+        axis.text = element_text(size = 11),
+        legend.title = element_text(size = 14),
+        legend.text = element_text(size = 12, face = "italic"),
+        legend.position = c(0.14, 0.26)) +
+  ggtitle(title)
+elevMapTest
+dev.off()
+```

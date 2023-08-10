@@ -14,19 +14,9 @@ knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 library("tidyverse")
 #
 source("./R/pocillopora_etp_gksim_functions.R")
-```
-
-## Colors and theme
-```{r colors}
-region_colors <- c("gold1", "steelblue", "darkorange", "darkturquoise")
-# 
-site_colors <- c("gold1", "blue", "darkblue", "steelblue", "lightblue", "darkorange3","darkorange", "orange", "orangered", "cyan", "cyan3", "cyan4", "turquoise", "lightgreen")
-names(site_colors)
-#
-spp_colors <- c("purple", "darkorange1", "gold", "turquoise2", "turquoise4")
-# 
 theme_set(theme_bw())
 ```
+
 
 ## Import sample metadata
 ```{r import_sample_metadata}
@@ -257,10 +247,48 @@ pcs_c1 %>% ggplot(aes(x = V1, y = V2)) +
 dev.off()
 ```
 
-
-### Plot PCAs for Cluster 2
-```{r}
-
+### Plot PCAs for P. grandis - Panama
+```{r pca_c1}
+pgrandis <- read_csv("./data/pgrandis_panama_samples.txt", col_names = "Sample ID") %>% arrange(`Sample ID`)
+pgrandis_samples <- pgrandis %>% left_join(samples)
+# pop<-read.table("Demo/Data/Demo1pop.info")
+C1 <- as.matrix(read.table("./outputs/angsd/pgrandis_panama.cov"))
+e1 <- eigen(C1)
+```
+```{r pca_test_plot}
+plot(e1$vectors[,1:2],xlab="PC1",ylab="PC2", main="individual allele frequency")
+#
+plot(e1$vectors[,2:3],xlab="PC2",ylab="PC3", main="individual allele frequency")
+# 
+```
+```{r combine_pca_metadata}
+# combine pc coordinates with sample metadata
+pcs_c1 <- as.data.frame(e1$vectors) %>% cbind(pgrandis_samples)
+# store variable with % variance explained by each PC
+pcvar_c1 <- round(e1$values, 2)
+#
+```
+```{r pca_ggplot}
+# test ggplot 
+pcs_c1 %>% ggplot(aes(x = V1, y = V2)) +
+  geom_point(aes(fill = `Region`), shape = 21, size = 2, alpha = 0.75) +
+  scale_fill_manual(values = region_colors) +
+  # facet_grid(Region ~ .) +
+  coord_fixed(pcvar_c1[2]/pcvar_c1[1]) + 
+  theme(legend.position = "right") +
+  xlab(paste0( "PC1 (", pcvar_c1[1], "%)")) + 
+  ylab(paste0( "PC2 (", pcvar_c1[2], "%)"))
+# 
+# test ggplot 
+pcs_c1 %>% ggplot(aes(x = V1, y = V2)) +
+  geom_point(aes(fill = `Region:Site`), shape = 21, size = 2, alpha = 0.75) +
+  scale_fill_manual(values = site_colors) +
+  # facet_grid(Region ~ .) +
+  coord_fixed(pcvar_c1[2]/pcvar_c1[1]) + 
+  theme(legend.position = "right") +
+  xlab(paste0( "PC1 (", pcvar_c1[1], "%)")) + 
+  ylab(paste0( "PC2 (", pcvar_c1[2], "%)"))
+# 
 ```
 
 ### Plot PCAs for *P. verrucosa*
