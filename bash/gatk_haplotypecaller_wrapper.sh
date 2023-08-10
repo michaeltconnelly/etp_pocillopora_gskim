@@ -49,6 +49,8 @@ echo "java -Xmx2g -jar /share/apps/bioinformatics/gatk/3.8.1.0/GenomeAnalysisTK.
 -o ${prodir}/outputs/alignments/${sample}.gvcf.gz \
 -R /home/connellym/sequences/pdam_scaffolds.fasta \
 -ERC GVCF \
+-variant_index_type LINEAR \
+-variant_index_parameter 128000 \
 -nct 16" >> ${prodir}/bash/jobs/gatk_haplotypecaller_${sample}.job
 #
 echo "#" >> ${prodir}/bash/jobs/gatk_haplotypecaller_${sample}.job
