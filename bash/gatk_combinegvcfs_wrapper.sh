@@ -33,8 +33,8 @@ echo "#$  -S /bin/sh
 echo "# ----------------Modules------------------------- #" >> ${prodir}/bash/jobs/gatk_combinegvcfs.job
 echo "module load bioinformatics/gatk" >> ${prodir}/bash/jobs/gatk_combinegvcfs.job
 echo "# ----------------Your Commands------------------- #" >> ${prodir}/bash/jobs/gatk_combinegvcfs.job
-echo "echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME" >> ${prodir}/bash/jobs/gatk_combinegvcfs.job
-echo "echo + NSLOTS = $NSLOTS" >> ${prodir}/bash/jobs/gatk_combinegvcfs.job
+echo 'echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME' >> ${prodir}/bash/jobs/gatk_combinegvcfs.job
+echo 'echo + NSLOTS = $NSLOTS' >> ${prodir}/bash/jobs/gatk_combinegvcfs.job
 
 # Input command for GATK CombineGVCFs
 echo "java -jar /share/apps/bioinformatics/gatk/3.8.1.0/GenomeAnalysisTK.jar \
@@ -48,6 +48,9 @@ done
 # 
 echo "--out ${prodir}/outputs/${set}_gvcf.gz" >> ${prodir}/bash/jobs/gatk_combinegvcfs.job
 #
-echo "echo = `date` job $JOB_NAME done" >> ${prodir}/bash/jobs/gatk_combinegvcfs.job
+echo "#" >> ${prodir}/bash/jobs/gatk_combinegvcfs.job
+#
+echo 'echo = `date` job $JOB_NAME done' >> ${prodir}/bash/jobs/gatk_combinegvcfs.job
+
 # submit job
-#qsub ${prodir}/bash/jobs/gatk_combinegvcfs.job
+qsub ${prodir}/bash/jobs/gatk_combinegvcfs.job
