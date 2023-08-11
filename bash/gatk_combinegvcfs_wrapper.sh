@@ -43,10 +43,10 @@ echo "java -jar /share/apps/bioinformatics/gatk/3.8.1.0/GenomeAnalysisTK.jar \
 # for loop to input which gvcfs to combine
 for sample in $samples
 do \
-echo "--variant ${prodir}/outputs/alignments/${sample}.gvcf.gz \ " >> ${prodir}/bash/jobs/gatk_combinegvcfs.job
+echo "--variant ${prodir}/outputs/alignments/${sample}.g.vcf.gz \ " >> ${prodir}/bash/jobs/gatk_combinegvcfs.job
 done
 # 
-echo "--out ${prodir}/outputs/${set}_gvcf.gz" >> ${prodir}/bash/jobs/gatk_combinegvcfs.job
+echo "--out ${prodir}/outputs/${set}_g.vcf.gz" >> ${prodir}/bash/jobs/gatk_combinegvcfs.job
 #
 echo "#" >> ${prodir}/bash/jobs/gatk_combinegvcfs.job
 #
