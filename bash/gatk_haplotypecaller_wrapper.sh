@@ -21,8 +21,8 @@ for sample in $samples
 do \
 echo "Preparing script for ${sample}"
 #   input QSUB commands
-echo "# /bin/sh" > ${prodir}/bash/jobs/gatk_haplotypecaller_${sample}.job
-echo "# ----------------Parameters---------------------- #" >> ${prodir}/bash/jobs/gatk_haplotypecaller_${sample}.job
+echo "# /bin/sh" > ${prodir}/bash/jobs/${sample}_gatk_HC.job
+echo "# ----------------Parameters---------------------- #" >> ${prodir}/bash/jobs/${sample}_gatk_HC.job
 echo "#$  -S /bin/sh
 #$ -pe mthread 16
 #$ -q mThC.q
@@ -30,18 +30,18 @@ echo "#$  -S /bin/sh
 #$ -cwd
 #$ -j y
 #$ -N gatk_HC_${sample}
-#$ -o ${prodir}/bash/jobs/gatk_haplotypecaller_${sample}.log
+#$ -o ${prodir}/bash/jobs/${sample}_gatk_HC.log
 #$ -m bea
-#$ -M connellym@si.edu" >> ${prodir}/bash/jobs/gatk_haplotypecaller_${sample}.job
-echo "# ----------------Modules------------------------- #" >> ${prodir}/bash/jobs/gatk_haplotypecaller_${sample}.job
-echo "module load bioinformatics/gatk" >> ${prodir}/bash/jobs/gatk_haplotypecaller_${sample}.job
-echo "# ----------------Your Commands------------------- #" >> ${prodir}/bash/jobs/gatk_haplotypecaller_${sample}.job
-echo 'echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME' >> ${prodir}/bash/jobs/gatk_haplotypecaller_${sample}.job
-echo 'echo + NSLOTS = $NSLOTS' >> ${prodir}/bash/jobs/gatk_haplotypecaller_${sample}.job
-echo "#" >> ${prodir}/bash/jobs/gatk_haplotypecaller_${sample}.job
+#$ -M connellym@si.edu" >> ${prodir}/bash/jobs/${sample}_gatk_HC.job
+echo "# ----------------Modules------------------------- #" >> ${prodir}/bash/jobs/${sample}_gatk_HC.job
+echo "module load bioinformatics/gatk" >> ${prodir}/bash/jobs/${sample}_gatk_HC.job
+echo "# ----------------Your Commands------------------- #" >> ${prodir}/bash/jobs/${sample}_gatk_HC.job
+echo 'echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME' >> ${prodir}/bash/jobs/${sample}_gatk_HC.job
+echo 'echo + NSLOTS = $NSLOTS' >> ${prodir}/bash/jobs/${sample}_gatk_HC.job
+echo "#" >> ${prodir}/bash/jobs/${sample}_gatk_HC.job
 #
-echo 'echo "This is the sample being processed:"' >> ${prodir}/bash/jobs/gatk_haplotypecaller_${sample}.job
-echo "echo $sample" >> ${prodir}/bash/jobs/gatk_haplotypecaller_${sample}.job
+echo 'echo "This is the sample being processed:"' >> ${prodir}/bash/jobs/${sample}_gatk_HC.job
+echo "echo $sample" >> ${prodir}/bash/jobs/${sample}_gatk_HC.job
 #   input command for GATK
 echo "java -Xmx2g -jar /share/apps/bioinformatics/gatk/3.8.1.0/GenomeAnalysisTK.jar \
 -T HaplotypeCaller \
@@ -49,12 +49,12 @@ echo "java -Xmx2g -jar /share/apps/bioinformatics/gatk/3.8.1.0/GenomeAnalysisTK.
 -o ${prodir}/outputs/alignments/${sample}.g.vcf.gz \
 -R ${mcs}/sequences/pdam/pdam_genome.fasta \
 -ERC GVCF \
--nct 16" >> ${prodir}/bash/jobs/gatk_haplotypecaller_${sample}.job
+-nct 16" >> ${prodir}/bash/jobs/${sample}_gatk_HC.job
 #
-echo "#" >> ${prodir}/bash/jobs/gatk_haplotypecaller_${sample}.job
+echo "#" >> ${prodir}/bash/jobs/${sample}_gatk_HC.job
 #
-echo 'echo = `date` job $JOB_NAME done' >> ${prodir}/bash/jobs/gatk_haplotypecaller_${sample}.job
+echo 'echo = `date` job $JOB_NAME done' >> ${prodir}/bash/jobs/${sample}_gatk_HC.job
 # submit job
-qsub ${prodir}/bash/jobs/gatk_haplotypecaller_${sample}.job
+qsub ${prodir}/bash/jobs/${sample}_gatk_HC.job
 #
 done
