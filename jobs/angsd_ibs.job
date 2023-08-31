@@ -59,7 +59,7 @@ FILTERS="-uniqueOnly 1 -remove_bads 1 -minMapQ 30 -minQ 30 -dosnpstat 1 -doHWE 1
 # -makeMatrix 1 -doIBS 1 -doCov 1 : identity-by-state and covariance matrices based on single-read resampling (robust to variation in coverage across samples)
 TODO="-doMajorMinor 1 -doMaf 1 -doCounts 1 -makeMatrix 1 -doIBS 1 -doCov 1 -doGeno 8 -doVcf 1 -doPost 1 -doGlf 2"
 
-angsd -b $BAMS -GL 1 $FILTERS $TODO -P 1 -out ${prodir}/outputs/angsd/${set}_ibs05
+angsd -b $BAMS -GL 1 $FILTERS $TODO -P $NSLOTS -out ${prodir}/outputs/angsd/${set}_ibs05
 
 # how many SNPs?
 zcat ${prodir}/outputs/angsd/${set}_ibs05.mafs.gz | wc -l
