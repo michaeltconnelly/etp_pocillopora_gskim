@@ -44,6 +44,7 @@ data/raw/
 data/trimmed/
 data/unmapped/
 data/spatial_data/
+data/outgroups/
 #
 bash/jobs/
 #
@@ -51,12 +52,16 @@ outputs/QCs/
 outputs/alignments/
 outputs/symbiont_alignments/
 outputs/angsd/
+outputs/ngsadmix
 outputs/spades/
 outputs/taxon-sets/
 outputs/uce-search-results/
 outputs/mitofinder/
+outputs/pochist/
 outputs/raxml/
 outputs/iqtree/
+outputs/snapp/
+outputs/oury_pipeline/
 outputs/figures/
 #
 
