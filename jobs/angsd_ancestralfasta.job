@@ -22,11 +22,25 @@ echo + NSLOTS = $NSLOTS
 mcs="/scratch/nmnh_corals/connellym"
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 
-BAMS=${prodir}/outputs/alignments/peffusa_bamfile.txt
-OUT=${prodir}/data/seqs/peffusa_ancestral.fasta
+# making a list of sample names
+set=$1
+#files=$(ls /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/data/raw/)
+#samples=$(echo "$files" | cut -d . -f 1 | sort -u)
+samples=$(cat ${prodir}/data/${set}_samples.txt)
+
+# making a list of bam file paths
+ls ${prodir}/outputs/alignments/*rg.bam | grep -f ${prodir}/data/${set}_samples.txt > ${prodir}/outputs/alignments/${set}_bamfile.txt
+
+# verify samples are correct
+echo " These are the samples to be processed: ${samples}, there are $(cat ${prodir}/outputs/alignments/${set}_bamfile.txt | wc -l) in total"
+
+# assign variable to bamfile
+BAMS=${prodir}/outputs/alignments/${set}_bamfile.txt
+
+OUT=${prodir}/data/seqs/${set}_ancestral.fasta
 
 # modified from http://www.popgen.dk/angsd/index.php/Fasta, section "Ancestral fasta using multiple outgroups"
 
-angsd -b $BAMS -out $OUT -doCounts 1 -snp_pval 0.01 -doMaf 1 -doMajorMinor 1 -GL 2 -rmSNPs 1 -minind 4 -setMinDepthInd 10 -explode 1
+angsd -b $BAMS -out $OUT -doCounts 1 -snp_pval 0.01 -doMaf 1 -doMajorMinor 1 -GL 2 -rmSNPs 1 -minind 4 -setMinDepthInd 1 -explode 1
 
 echo = `date` job $JOB_NAME done
