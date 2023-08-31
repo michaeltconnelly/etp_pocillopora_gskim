@@ -34,12 +34,14 @@ ls ${prodir}/outputs/alignments/*rg.bam | grep -f ${prodir}/data/${set}_samples.
 # verify samples are correct
 echo " These are the samples to be processed: ${samples}, there are $(cat ${prodir}/outputs/alignments/${set}_bamfile.txt | wc -l) in total"
 
+# assign variable to bamfile
+BAMS=${prodir}/outputs/alignments/${set}_bamfile.txt
+
 # from https://github.com/z0on/ClonesAndClades_Ofav_Keys/blob/master/read_processing_walkthrough.txt
 # Manzello et al. 2018
 
 # ----- IBS with ANGSD
-
-# F I L T E R S :
+#FILTERS:
 # (ALWAYS record your filter settings and explore different combinations to confirm that results are robust. )
 # Suggested filters :
 # -snp_pval 1e-5 : high confidence that the SNP is not just sequencing error 
@@ -50,14 +52,14 @@ minindv=$(echo "$nsamps*0.85" | bc | awk '{print int($1+0.5)}')
 # also adding  filters against very badly non-HWE sites (such as, all calls are heterozygotes => lumped paralog situation) and sites with really bad strand bias:
 FILTERS="-uniqueOnly 1 -remove_bads 1 -minMapQ 30 -minQ 30 -dosnpstat 1 -doHWE 1 -sb_pval 1e-5 -hetbias_pval 1e-5 -skipTriallelic 1 -minInd $minindv -snp_pval 1e-5 -minMaf 0.05"
 
-# T O   D O : 
+#TODO: 
 # -GL 1 : samtools likelihood model
 # -doGlf 2 : output beagle format (for admixture)
 # -doGeno 8 : bgenotype likelihoods format for ngsLD
 # -makeMatrix 1 -doIBS 1 -doCov 1 : identity-by-state and covariance matrices based on single-read resampling (robust to variation in coverage across samples)
 TODO="-doMajorMinor 1 -doMaf 1 -doCounts 1 -makeMatrix 1 -doIBS 1 -doCov 1 -doGeno 8 -doVcf 1 -doPost 1 -doGlf 2"
 
-angsd -b ${prodir}/outputs/alignments/${set}_bamfile.txt -GL 1 $FILTERS $TODO -P 1 -out ${prodir}/outputs/angsd/${set}_ibs05
+angsd -b $BAMS -GL 1 $FILTERS $TODO -P 1 -out ${prodir}/outputs/angsd/${set}_ibs05
 
 # how many SNPs?
 zcat ${prodir}/outputs/angsd/${set}_ibs05.mafs.gz | wc -l
