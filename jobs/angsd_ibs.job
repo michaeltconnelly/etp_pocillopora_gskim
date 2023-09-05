@@ -29,7 +29,7 @@ set=$1
 samples=$(cat ${prodir}/data/${set}_samples.txt)
 
 # making a list of bam file paths
-ls ${prodir}/outputs/alignments/*rg.bam | grep -f ${prodir}/data/${set}_samples.txt > ${prodir}/outputs/alignments/${set}_bamfile.txt
+ls ${prodir}/outputs/alignments/*md.rg.bam | grep -f ${prodir}/data/${set}_samples.txt > ${prodir}/outputs/alignments/${set}_bamfile.txt
 
 # verify samples are correct
 echo " These are the samples to be processed: ${samples}, there are $(cat ${prodir}/outputs/alignments/${set}_bamfile.txt | wc -l) in total"
