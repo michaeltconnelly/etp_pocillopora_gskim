@@ -27,7 +27,7 @@ echo 'echo + NSLOTS = $NSLOTS' >> $prodir/bash/jobs/fastqc_${study}.job
 echo "#" >> $prodir/bash/jobs/fastqc_${study}.job
 #
 echo "fastqc \
-${prodir}/data/reads/*.fastq* \
+${prodir}/data/raw/*.fastq.gz \
 --threads 16 \
 -o ${prodir}/outputs/QCs/fastqcs/" >> $prodir/bash/jobs/fastqc_${study}.job
 #
