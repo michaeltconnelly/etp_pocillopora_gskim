@@ -1,6 +1,28 @@
-#!/bin/bash
+#!/bin/sh
+# ----------------Parameters---------------------- #
+#$ -S /bin/sh
+#$ -pe mthread 4
+#$ -q mThM.q
+#$ -l mres=32G,h_data=8G,h_vmem=8G
+#$ -cwd
+#$ -j y
+#$ -N mtorf_extract_blast_align
+#$ -o mtorf_extract_blast_align.log
+#$ -m bea
+#$ -M connellym@si.edu
+#
 # purpose: after running Mitofinder, extract mtORF sequence from assembled mitochondrial genomes using BLAST
+# ----------------Modules------------------------- #
+ module load bioinformatics/blast
+ module load bioinformatics/seqkit
+ module load bioinformatics/mafft
+# ----------------Your Commands------------------- #
+#
+echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
+echo + NSLOTS = $NSLOTS
 
+#specify variable containing sequence file prefixes and directory paths
+mcs="/scratch/nmnh_corals/connellym"
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 
 # first, organize mitofinder final results files
@@ -27,3 +49,8 @@ blastn \
 
 # extract mtORF sequences into fasta file from BLAST results
 cat ${prodir}/outputs/mitofinder/mtorf_extract/mtORF_type3_blastn.tsv | cut -d$'\t' -f 2,13 | sed 's/^/>/g' | sed 's/\t/\n/g' | seqkit seq -m 820 > ${prodir}/outputs/mitofinder/mtorf_extract/mtorf_hits.fasta
+
+# align mtORF sequences using MAFFT
+mafft ${prodir}/outputs/mitofinder/mtorf_extract/mtorf_hits.fasta > ${prodir}/outputs/mitofinder/mtorf_extract/mtorf_hits_aligned.fasta
+
+echo = `date` job $JOB_NAME done
