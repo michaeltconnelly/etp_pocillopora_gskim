@@ -39,10 +39,9 @@ theme_set(theme_bw())
 ```
 ## Sample import
 ```{r sample_data_import}
-# samples <- read_csv("./data/pocillopora_samples.csv")
-# 
-all_samples <- read_csv("./data/pocillopora_samples_all_metadata.csv") # with all corrected mtorf types
-stri_samples <- read_csv("./data/etp_samples.txt")
+source("./R/sample_import.R")
+#
+stri_samples <- read_csv("./data/etp_samples.txt") # samples from Panama for manuscript
 ```
 ```{r}
 samples <- filter(all_samples, all_samples$`Sample ID` %in% stri_samples$`Sample ID`)
@@ -66,7 +65,6 @@ samples_sites <- samples_select %>%
   group_by(`Region:Site`, `Latitude`, `Longitude`) %>% 
   count()
 ```
-
 ```{r}
 # samples_locations$Longitude <- ifelse(samples_locations$Longitude < 0, (samples_locations$Longitude + 360), (samples_locations$Longitude)) 
 # samples_locations$Study <- factor(samples_locations$Study, levels = study_levels, ordered = TRUE)
@@ -79,6 +77,7 @@ gg_color_hue <- function(n) {
 }
 gcolors <- gg_color_hue(n_distinct(samples_locations$Region))
 # gcolors <- gg_color_hue(2)
+
 site_colors <- c("red", "red4", "maroon", "maroon4", "darkgreen", "green4", "green", "lightgreen", "cyan", "cyan4", "turquoise", "turquoise4")
 site_colors <- c("gold1", "blue", "darkblue", "steelblue", "lightblue", "darkorange3","darkorange", "orange", "orangered", "cyan", "cyan3", "cyan4", "turquoise", "lightgreen")
 ```

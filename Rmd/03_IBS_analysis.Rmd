@@ -1,9 +1,11 @@
 ---
-title: "IBS"
+title: "IBS Analysis"
 author: "Mike Connelly"
 date: "2023-05-10"
 output: html_document
 ---
+Code for Panama *Pocillopora* genome skimming manuscript
+
 ## Setup and packages
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = TRUE)
@@ -32,32 +34,38 @@ theme_set(theme_bw())
 
 ## Import sample metadata
 ```{r import_sample_metadata}
-all_samples <- read_csv("./data/pocillopora_samples_all_metadata.csv")
+source("./R/sample_import.R")
+all_samples <- samples
 etp_samples <- read_csv("./data/etp_samples.txt")
+etp_samples <- read_csv("./data/pana_manu.txt", col_names = "Sample ID")
 ```
 ```{r select_samples}
-samples <- filter(all_samples, all_samples$`Sample ID` %in% etp_samples$`Sample ID`)
+samples <- filter(all_samples, all_samples$`Sample ID` %in% etp_samples$`Sample ID`) %>% arrange(`Sample ID`)
 samples$`Region:Site` <- paste(samples$Region, samples$Site, sep = ":")
 ```
 
 ```{r bamfile_sample_order_check}
 # reading list of bam files = order of samples in IBS matrix
-bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/bamfile.txt",header=F)[,1]
+bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/panama_manuscript_bamfile.txt",header=F)[,1]
+bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/all_bamfile.txt",header=F)[,1]
 bams <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/","",bams,perl=T)
 bams <- sub(".sorted.md.rg.bam","",bams,perl=T)
 bams <- sub("_S[[:digit:]]+$", "", bams)
-# bams
+bams
 # aligning sample metadata with bams list
 # samples$`Sample ID` == bams
+all(samples$`Sample ID` %in% bams) # TRUE
 all(samples$`Sample ID` == bams) # TRUE
 #
-# samples <- samples[match(bams, samples$`Sample ID`),]
+samples <- samples[match(bams, samples$`Sample ID`),]
 ```
 
 ## Import IBS matrix
 ```{r import_ibs_matrix}
 # reading IBS matrix based on SNPs with allele frequency >= 0.05:
 ma <- as.matrix(read.table("./outputs/angsd/etp_ibs05.ibsMat"))
+ma <- as.matrix(read.table("./outputs/angsd/panama_manuscript_ibs05.ibsMat"))
+ma <- as.matrix(read.table("./outputs/angsd/all_ibs05.ibsMat"))
 ```
 ```{r import_ibs_matrix}
 # samples=bams #meta$Tag.Number
@@ -75,6 +83,7 @@ abline(h = 0.15, col="red", lty=3)
 ```{r ibs_dendrogram_rsmas}
 # retaining only rsmas samples
 ma_rsmas <- ma[samples$RSMAS,samples$RSMAS]
+ma_rsmas <- ma[samples$REPLICATE,samples$REPLICATE]
 # re-clustering
 hc=hclust(as.dist(ma_rsmas),"ave")
 plot(hc,cex=0.6)

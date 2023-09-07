@@ -41,6 +41,12 @@ rivers <- ne_download(scale = 10, type = 'rivers_lake_centerlines',
 # 
 reefs <- ne_download(scale = 10, type = 'reefs',
                      category = "physical", returnclass = 'sf')
+#
+minor_islands <- ne_download(scale = 10, type = 'minor_islands',
+                             category = "physical", returnclass = 'sf')
+#
+minor_islands_coastline <- ne_download(scale = 10, type = 'minor_islands_coastline',
+                             category = "physical", returnclass = 'sf')
 ```
 ```{r Quick check on basic shapefiles, echo = FALSE, fig.align= "center", fig.width= 6}
 quickCheck <-
@@ -49,6 +55,7 @@ quickCheck <-
   geom_sf(data = reefs, color = "red", size = 0.05, fill = "red") +
   geom_sf(data = rivers, color = "blue", size = 0.05) +
   geom_sf(data = states, color = "black", size = 0.05, fill = "#f5f5f5", alpha = 0.5) +
+  geom_sf(data = minor_islands, color = "black", size = 0.05, fill = "green") +
   theme(panel.grid.major = element_blank(), 
         panel.background = element_blank(), 
         panel.border = element_rect(fill = NA))
@@ -106,15 +113,73 @@ elevMapTest <-
   panel.border = element_rect(fill = NA))
 elevMapTest
 ```
+```{r test Coiba map}
+par(mar = c(0.5, 0.5, 0.5, 0.5))
+CoibaMapTest <-
+  ggplot() +
+  # geom_tile(data = elevDF, aes(x=x, y=y, fill=elevation), alpha =0.4)+
+  # scale_fill_gradient(low="#a3a0a0", high= "#000000", 
+  #                     na.value="transparent")+
+  geom_sf(data = ocean, size = 0.05, fill = "#add8e6")+
+  geom_sf(data = rivers, color = "#d7f2fa", size = 0.5)+
+  geom_sf(data = states, color = "black", size = 0.05, fill = "#f5f5f5", alpha = 0.2)+
+  geom_sf(data = map, color = "black", size = 0.1, fill = "#f5f5f5", alpha = 0.2)+
+  geom_sf(data = minor_islands, color = "black", size = 0.1, fill = "#f5f5f5") +
+    coord_sf(
+    xlim = c(-82.25, -81.25),
+    ylim = c(7, 8)) +
+  labs(x="Longitude", y="Latitude", elevation = "Elevation") +
+  theme(panel.grid.major = element_blank(),
+  panel.background = element_rect(fill = "#f0f8ff"),
+  panel.border = element_rect(fill = NA))
+CoibaMapTest
+```
+```{r test Perlas map}
+par(mar = c(0.5, 0.5, 0.5, 0.5))
+PerlasMapTest <-
+  ggplot() +
+  # geom_tile(data = elevDF, aes(x=x, y=y, fill=elevation), alpha =0.4)+
+  # scale_fill_gradient(low="#a3a0a0", high= "#000000", 
+  #                     na.value="transparent")+
+  geom_sf(data = ocean, size = 0.05, fill = "#add8e6")+
+  geom_sf(data = rivers, color = "#d7f2fa", size = 0.5)+
+  geom_sf(data = states, color = "black", size = 0.05, fill = "#f5f5f5", alpha = 0.2)+
+  geom_sf(data = map, color = "black", size = 0.1, fill = "#f5f5f5", alpha = 0.2)+
+        geom_sf(data = minor_islands, color = "black", size = 0.1, fill = "#f5f5f5") +
+    coord_sf(
+    xlim = c(-79.5, -78.5),
+    ylim = c(8, 9)) +
+  labs(x="Longitude", y="Latitude", elevation = "Elevation") +
+  theme(panel.grid.major = element_blank(),
+  panel.background = element_rect(fill = "#f0f8ff"),
+  panel.border = element_rect(fill = NA))
+PerlasMapTest
+```
+```{r}
+CoibaMapTest +
+    geom_point(data = samples_sites[grepl("Coiba", samples_sites$`Region:Site`), ],
+             aes(x = `Longitude`, y = `Latitude`, size = `n`, fill = `Region:Site`),
+             shape = 21, alpha = 0.9, color = "black", stroke = 0.5,
+             # position = position_jitter(width = 0.1, height = 0.1, seed = 3),
+             show.legend = F)
+#
+PerlasMapTest +
+    geom_point(data = samples_sites[grepl("Perlas", samples_sites$`Region:Site`), ],
+             aes(x = `Longitude`, y = `Latitude`, size = `n`, fill = `Region:Site`),
+             shape = 21, alpha = 0.9, color = "black", stroke = 0.5,
+             # position = position_jitter(width = 0.1, height = 0.1, seed = 3),
+             show.legend = F)
+```
+
 
 ## Plot proportions of *Pocillopora* mtORF lineages on map with scatterpie
 ```{r sample_data_import}
+source("./R/sample_import.R")
 # samples <- read_csv("./data/pocillopora_samples.csv")
 # 
-all_samples <- read_csv("./data/pocillopora_samples_all_metadata.csv") # with all corrected mtorf types
 stri_samples <- read_csv("./data/etp_samples.txt")
 #
-all_samples_2 <- read_csv("./data/pocillopora_samples_round2_select_metadata.csv")
+costarica_samples <- read_csv("./data/pocillopora_samples_costarica_metadata.csv")
 ```
 ```{r}
 samples <- filter(all_samples, all_samples$`Sample ID` %in% stri_samples$`Sample ID`)
@@ -126,6 +191,7 @@ unsamples <- filter(all_samples, all_samples$`Sample ID` %notin% stri_samples$`S
 
 ```{r sample_data_tidy}
 # filter out irrelevant samples, select only informative columns
+region_coords <- samples %>% group_by(Region) %>% summarise(Longitude=mean(Longitude), Latitude=mean(Latitude))
 samples_select <- samples #%>% 
   # dplyr::filter(!is.na(`Sampling Date`)) %>% 
   # dplyr::filter(!is.na(`Latitude`)) %>% 
@@ -145,12 +211,16 @@ samples_sites <- samples_select %>%
 ```{r}
 samples_regions_2 <- all_samples_2 %>% 
   group_by(`Region`, `Latitude`, `Longitude`) %>% 
-  count() %>% filter(Region != "Chiriqui")
+  count() 
+
+samples_redo_regions <- samples_regions
+samples_redo_regions$n <- c(2, 9, 8, 12)
+
+samples_regions_2 <- bind_rows(samples_regions_2, samples_redo_regions)
 ```
 
 ```{r prepare_scatterpie_data}
 # see example at: https://cran.r-project.org/web/packages/scatterpie/vignettes/scatterpie.html
-region_coords <- samples %>% group_by(Region) %>% summarise(Longitude=mean(Longitude), Latitude=mean(Latitude))
   
 regions_mtorfs <- samples %>% 
   group_by(`Region`, mtorf_type) %>% 
@@ -215,7 +285,7 @@ dev.off()
 
 ### Sample Numbers Round 1
 ```{r figure 1A: powerpoint}
-pdf(file="./outputs/figures/Pocillopora_origins_map_numbersR1.pdf", width = 8, height = 4)
+# pdf(file="./outputs/figures/Pocillopora_origins_map_numbersR1.pdf", width = 8, height = 4)
 title <- expression('East Pacific '*italic("Pocillopora")*' sample origins and species identification')
 par(mar = c(0.5, 0.5, 0.5, 0.5))
 elevMapTest <-
@@ -245,7 +315,7 @@ geom_point(aes(x = Longitude, y = Latitude, size = n),
         legend.position = c(0.09, 0.26)) +
   ggtitle(title)
 elevMapTest
-dev.off()
+# dev.off()
 ```
 ### Scatterpie plus sample numbers round 2
 ```{r figure 1A: powerpoint}
@@ -286,3 +356,41 @@ geom_point(aes(x = Longitude, y = Latitude, size = n),
 elevMapTest
 dev.off()
 ```
+```{r}
+pdf(file="./outputs/figures/Pocillopora_origins_map_numbersR1R2.pdf", width = 8, height = 4)
+title <- expression('East Pacific '*italic("Pocillopora")*' sample origins')
+par(mar = c(0.5, 0.5, 0.5, 0.5))
+elevMapTest <-
+  ggplot() +
+  geom_sf(data = ocean, color = "black", size = 0.1, fill = "aliceblue") +
+  geom_sf(data = rivers, color = "#d7f2fa", size = 0.5)+
+  geom_sf(data = states, color = "darkgrey", size = 0.1, fill = "antiquewhite", alpha = 0.5) +
+  geom_sf(data = map, color = "black", size = 0.1, fill = "antiquewhite", alpha = 0.5) +
+    coord_sf(
+    xlim = c(-112, -76),
+    ylim = c(-2, 16)) +
+  #
+  new_scale_fill() +
+geom_point(aes(x = Longitude, y = Latitude, size = n),
+                    data = samples_regions, shape = 21, alpha = .8, fill = "grey40", color = "black") + 
+#
+  geom_point(aes(x = Longitude, y = Latitude, size = n),
+                    data = samples_regions_2, shape = 21, alpha = .8, fill = "red", color = "black", show.legend = FALSE) + 
+  #
+  scale_size_continuous(range = c(0.4, 10), limits = c(0, 60), breaks = c(5, 15, 30, 60), name = "# samples") +
+  #
+  labs(x="Longitude", y="Latitude") +
+  theme(panel.grid.major = element_blank(),
+        panel.background = element_rect(fill = "#f0f8ff"),
+        panel.border = element_rect(fill = NA),
+        plot.title = element_text(size = 16),
+        axis.title = element_blank(), 
+        axis.text = element_text(size = 11),
+        legend.title = element_text(size = 14),
+        legend.text = element_text(size = 12),
+        legend.position = c(0.09, 0.26)) +
+  ggtitle(title)
+elevMapTest
+dev.off()
+```
+

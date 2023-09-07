@@ -18,12 +18,12 @@ source("./R/pocillopora_etp_gksim_functions.R")
 ```
 ## Import sample metadata
 ```{r import_sample_metadata}
-all_samples <- read_csv("./data/pocillopora_samples_003.csv")
+source("./R/sample_import.R")
+all_samples <- samples
 etp_samples <- read_csv("./data/etp_samples.txt")
 ```
 ```{r select_samples}
 samples <- filter(all_samples, all_samples$`Sample ID` %in% etp_samples$`Sample ID`)
-samples$`Region:Site` <- paste(samples$Region, samples$Site, sep = ":")
 ```
 
 ## Import mtORF sequence alignment 
@@ -43,6 +43,9 @@ dataHaplo
  #  I  II III  IV 
  # 14   5  96   4 
 # summary(dataHaplo)
+
+ #  I  II III  IV 
+ # 38   6 203   5
 ```
 ```{r extract haplotypes and build network}
 dataHaplo <- sort(dataHaplo, what = "labels")
