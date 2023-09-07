@@ -11,26 +11,26 @@ echo "# /bin/sh
 #$ -l mres=16G,h_data=1G,h_vmem=1G
 #$ -cwd
 #$ -j y
-#$ -N fastqc_${study}
-#$ -o ${prodir}/bash/jobs/fastqc_${study}.log
+#$ -N trimqc_${study}
+#$ -o ${prodir}/bash/jobs/trimqc_${study}.log
 #$ -m bea
-#$ -M connellym@si.edu" > $prodir/bash/jobs/fastqc_${study}.job
+#$ -M connellym@si.edu" > $prodir/bash/jobs/trimqc_${study}.job
 #
-echo "#" >> $prodir/bash/jobs/fastqc_${study}.job
-echo "# ----------------Modules------------------------- #" >> $prodir/bash/jobs/fastqc_${study}.job
-echo "module load bioinformatics/fastqc" >> $prodir/bash/jobs/fastqc_${study}.job
+echo "#" >> $prodir/bash/jobs/trimqc_${study}.job
+echo "# ----------------Modules------------------------- #" >> $prodir/bash/jobs/trimqc_${study}.job
+echo "module load bioinformatics/fastqc" >> $prodir/bash/jobs/trimqc_${study}.job
 echo "#
 # ----------------Your Commands------------------- #
-#" >> $prodir/bash/jobs/fastqc_${study}.job
-echo 'echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME' >> $prodir/bash/jobs/fastqc_${study}.job
-echo 'echo + NSLOTS = $NSLOTS' >> $prodir/bash/jobs/fastqc_${study}.job
-echo "#" >> $prodir/bash/jobs/fastqc_${study}.job
+#" >> $prodir/bash/jobs/trimqc_${study}.job
+echo 'echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME' >> $prodir/bash/jobs/trimqc_${study}.job
+echo 'echo + NSLOTS = $NSLOTS' >> $prodir/bash/jobs/trimqc_${study}.job
+echo "#" >> $prodir/bash/jobs/trimqc_${study}.job
 #
 echo "fastqc \
-${prodir}/data/trimmed/*.trimmed.fastq* \
+${prodir}/data/trimmed/*_trimmed.fastq.gz \
 --threads 16 \
--o ${prodir}/outputs/QCs/trimqcs/" >> $prodir/bash/jobs/fastqc_${study}.job
+-o ${prodir}/outputs/QCs/trimqcs/" >> $prodir/bash/jobs/trimqc_${study}.job
 #
-echo "echo = `date` job $JOB_NAME done" >> $prodir/bash/jobs/fastqc_${study}.job
+echo "echo = `date` job $JOB_NAME done" >> $prodir/bash/jobs/trimqc_${study}.job
 
-qsub $prodir/bash/jobs/fastqc_${study}.job
+qsub $prodir/bash/jobs/trimqc_${study}.job
