@@ -11,8 +11,8 @@ echo "# /bin/sh
 #$ -l mres=16G,h_data=1G,h_vmem=1G
 #$ -cwd
 #$ -j y
-#$ -N fastqc_${study}
-#$ -o ${prodir}/bash/jobs/fastqc_${study}.log
+#$ -N unmapqc_${study}
+#$ -o ${prodir}/bash/jobs/unmapqc_${study}.log
 #$ -m bea
 #$ -M connellym@si.edu" > $prodir/bash/jobs/fastqc_${study}.job
 #
