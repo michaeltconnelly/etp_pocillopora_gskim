@@ -8,7 +8,10 @@ region_colors <- c("gold1", "steelblue", "darkorange", "darkturquoise")
 site_colors <- c("gold1", "blue", "darkblue", "steelblue", "lightblue", "darkorange3","darkorange", "orange", "orangered", "cyan", "cyan3", "cyan4", "turquoise", "lightgreen")
 names(site_colors)
 #
+mtorf_colors <- c("darkorange1", "purple", "turquoise2", "turquoise4")
+#
 spp_colors <- c("purple", "darkorange1", "gold", "turquoise2", "turquoise4")
+
 
 theme_set(theme_bw())
 

@@ -22,42 +22,52 @@ library("sparcl") # for ColorDendrogram
 source("./R/pocillopora_etp_gksim_functions.R")
 ```
 
-## Colors and theme
-```{r colors}
-region_colors <- c("gold1", "steelblue", "darkorange", "darkturquoise")
-# 
-site_colors <- c("gold1", "blue", "darkblue", "steelblue", "lightblue", "darkorange3","darkorange", "orange", "orangered", "cyan", "cyan3", "cyan4", "turquoise", "lightgreen")
-# 
-mtorf_colors <- c("darkorange1", "purple", "turquoise2", "turquoise4")
-theme_set(theme_bw())
-```
-
 ## Import sample metadata
 ```{r import_sample_metadata}
 source("./R/sample_import.R")
-all_samples <- samples
-etp_samples <- read_csv("./data/etp_samples.txt")
-etp_samples <- read_csv("./data/pana_manu.txt", col_names = "Sample ID")
+samples <- all_samples
 ```
 ```{r select_samples}
+#
+samples <- filter(all_samples, `Sequence Round` == 2)
+samples <- filter(all_samples, ANALYSIS ==T)
+samples <- filter(all_samples, `PANAMA_MANUSCRIPT` == T)
+etp_samples <- read_csv("./data/etp_samples.txt")
 samples <- filter(all_samples, all_samples$`Sample ID` %in% etp_samples$`Sample ID`) %>% arrange(`Sample ID`)
-samples$`Region:Site` <- paste(samples$Region, samples$Site, sep = ":")
 ```
 
 ```{r bamfile_sample_order_check}
 # reading list of bam files = order of samples in IBS matrix
 bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/panama_manuscript_bamfile.txt",header=F)[,1]
-bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/all_bamfile.txt",header=F)[,1]
-bams <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/","",bams,perl=T)
-bams <- sub(".sorted.md.rg.bam","",bams,perl=T)
-bams <- sub("_S[[:digit:]]+$", "", bams)
-bams
-# aligning sample metadata with bams list
-# samples$`Sample ID` == bams
-all(samples$`Sample ID` %in% bams) # TRUE
-all(samples$`Sample ID` == bams) # TRUE
+bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/round2_bamfile.txt",header=F)[,1]
+bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/all_analysis_bamfile.txt",header=F)[,1]
 #
-samples <- samples[match(bams, samples$`Sample ID`),]
+bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/", "", bams, perl=T)
+bam_ids <- sub(".sorted.md.rg.bam", "", bam_ids, perl=T)
+bam_ids <- sub("_S[[:digit:]]+$", "", bam_ids)
+# fix perlas 344 error - TEMPORARY!
+bams <- sub("__", "_", bams)
+#
+bam_ids
+```
+```{r bam_sample_order_check}
+# are all the bam files in the sample metadata?
+all(bam_ids %in% samples$`Sample ID`) # TRUE
+# which bam files are not in the sample metadata?
+bam_ids[bam_ids %notin% samples$`Sample ID`] # character(0)
+#
+# are all samples in the bam files?
+all(samples$`Sample ID` %in% bam_ids) # TRUE
+# which samples are not in the bam files?
+samples[samples$`Sample ID` %notin% bam_ids,]
+#
+# do all the sample ids match the bam file ids in the correct order?
+all(samples$`Sample ID` == bam_ids) # TRUE
+# which samples ids do not match? 
+samples[samples$`Sample ID` =! bam_ids,]
+#
+# aligning sample metadata with bams list, then check tests above
+samples <- samples[match(bam_ids, samples$`Sample ID`),] 
 ```
 
 ## Import IBS matrix
@@ -66,10 +76,12 @@ samples <- samples[match(bams, samples$`Sample ID`),]
 ma <- as.matrix(read.table("./outputs/angsd/etp_ibs05.ibsMat"))
 ma <- as.matrix(read.table("./outputs/angsd/panama_manuscript_ibs05.ibsMat"))
 ma <- as.matrix(read.table("./outputs/angsd/all_ibs05.ibsMat"))
+ma <- as.matrix(read.table("./outputs/angsd/round2_ibs05.ibsMat"))
+ma <- as.matrix(read.table("./outputs/angsd/all_analysis_ibs05.ibsMat"))
 ```
 ```{r import_ibs_matrix}
-# samples=bams #meta$Tag.Number
-dimnames(ma) <- list(samples$`Sample ID`,samples$`Sample ID`)
+# IMPORTANT: verify that the order of ids in sample metadata and in the bam file list used for IBS in ANGSD match
+dimnames(ma) <- list(samples$`Sample ID`, samples$`Sample ID`)
 #
 # dimnames(ma)=list(samples$Site,samples$Site)
 ```
@@ -79,15 +91,16 @@ hc <- hclust(as.dist(ma), "ave")
 plot(hc, cex = 0.6)
 abline(h = 0.15, col="red", lty=3)
 ```
-
+### IBS matrix subsets
 ```{r ibs_dendrogram_rsmas}
 # retaining only rsmas samples
 ma_rsmas <- ma[samples$RSMAS,samples$RSMAS]
-ma_rsmas <- ma[samples$REPLICATE,samples$REPLICATE]
+# ma_rsmas <- ma[samples$REPLICATE,samples$REPLICATE]
 # re-clustering
 hc=hclust(as.dist(ma_rsmas),"ave")
 plot(hc,cex=0.6)
-abline(h=0.15,col="red",lty=3)
+abline(h=0.145,col="darkorange",lty=3)
+abline(h=0.105,col="turquoise2",lty=3)
 ```
 ```{r ibs_dendrogram_stri}
 # retaining only stri samples
@@ -108,11 +121,11 @@ abline(h=0.15,col="red",lty=3)
 
 ## Plot IBS clustering dendrogram with ggtree
 ```{r ibs_ggtree}
-pdf("../outputs/figures/ibs_dendrogram_etp_all.pdf", width = 8, height = 10)
+pdf("./outputs/figures/ibs_dendrogram_etp_all_analysis.pdf", width = 8, height = 12)
 tree_title <- expression(paste("IBS clustering of ", italic("Pocillopora"), " samples (", 122, ")"))
 hc %>% ggtree() %<+% samples + 
   geom_vline(xintercept = -0.15, stroke = 1, color = "red", linetype = 2) +
-  geom_tippoint(aes(fill = `Region:Site`), shape = 21, alpha = 0.8, stroke = 0.5, color = "black", hjust = 0.3, show.legend = TRUE) +
+  # geom_tippoint(aes(fill = `Region:Site`), shape = 21, alpha = 0.8, stroke = 0.5, color = "black", hjust = 0.3, show.legend = TRUE) +
   geom_tiplab(size = 2, hjust = -0.05) +
   ggplot2::xlim(-0.45, 0.01) +
   geom_treescale(x = -0.3, width = 0.05) +

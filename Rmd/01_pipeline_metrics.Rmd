@@ -19,36 +19,28 @@ source("./R/pocillopora_etp_gksim_functions.R")
 ## Import sample metadata
 ```{r import_samples_metadata}
 source("./R/sample_import.R")
+samples <- all_samples
 ```
 ```{r select_samples}
+# analyze all samples through QC steps, then subset for final analysis and figures
 samples <- filter(all_samples, PANAMA_MANUSCRIPT==T)
+samples <- filter(all_samples, `Sequence Round` == 1)
 samples <- filter(all_samples, `Sequence Round` == 2)
-```
-## Sample summaries
-```{r}
-## Panama regions and species
-samples %>% filter(Region == "Chiriqui" | Region == "Panama") %>% group_by(Region, Species) %>% count()
-
-## Panama P. grandis site and regions
-samples %>% filter(Region == "Chiriqui" | Region == "Panama") %>% filter(Species == "P. grandis") %>% group_by(`Region:Site`) %>% count()
+samples <- filter(all_samples, `Sequence Round` == 1 | `Sequence Round` == 2)
 ```
 
-## Import/inspect pipeline QC metrics
-  Note: Run MultiQC on R1 reads only to create reports, exclude low-depth (<1M reads) samples
-  
+## Import/inspect lcWGS pipeline QC metrics
+  Note: Run MultiQC on R1 reads only to create reports for all analysis samples (124 + 165), with low-depth (<1M reads, 18 + 5) samples already excluded.
+        
 ### Raw reads
 ```{r import_multiqc_data}
 # raw reads
 multiqc_fastqc <- read_tsv("./outputs/QCs/fastqcs/multiqc_data/multiqc_fastqc.txt") %>%
   mutate("Sample ID" = gsub("_S.*_R[12]_001", "", Sample)) %>%
   mutate(`Sample ID` = gsub("^05_", "", `Sample ID`))
-
-multiqc_fastqc <- read_tsv("./outputs/QCs/fastqcs/01_round2/multiqc_data/multiqc_fastqc.txt") %>%
-  mutate("Sample ID" = gsub("_S.*_R[12]_001", "", Sample)) %>%
-  mutate(`Sample ID` = gsub("^05_", "", `Sample ID`))
 ```
-
-```{r}
+```{r inspect_read_depth}
+# quick check of sample depth
 multiqc_fastqc %>%
   mutate(Sample = fct_reorder(Sample, desc(`Total Sequences`))) %>%
   ggplot(aes(Sample, `Total Sequences`)) +
@@ -61,10 +53,10 @@ multiqc_fastqc %>%
 ### Trimmed reads
 ```{r}
 # trimmed reads
-multiqc_trimqc <- read_tsv("./outputs/QCs/trimqcs/01_round2/multiqc_data/multiqc_fastqc.txt") %>%
+multiqc_trimqc <- read_tsv("./outputs/QCs/trimqcs/multiqc_data/multiqc_fastqc.txt") %>%
   mutate("Sample ID" = gsub("_S.*_R[12]_PE", "", Sample))
 ```
-```{r}
+```{r inspect_read_Depth}
 multiqc_trimqc %>%
   mutate(Sample = fct_reorder(Sample, desc(`Total Sequences`))) %>%
   ggplot(aes(Sample, `Total Sequences`)) +
@@ -73,39 +65,68 @@ multiqc_trimqc %>%
   theme(axis.text.x = element_text(size = 5, angle = 90))
 ```
 
-
 ### *Pocillopora* coral BWA mapped reads
 ```{r}
 # samtools alignment flagstat files
 multiqc_flagstat <-  read_tsv("./outputs/QCs/flagstats/multiqc_data/multiqc_samtools_flagstat.txt")  %>%
   mutate("Sample ID" = gsub("_S.*_flagstat", "", Sample))
 ```
-
+```{r inspect_alignment_stats}
+multiqc_flagstat %>%
+  mutate(Sample = fct_reorder(Sample, desc(`total_passed`))) %>% 
+  ggplot(aes(Sample, `total_passed`)) +
+  geom_point(size = 0.5) +
+  geom_hline(yintercept = 1000000, color = "red") +
+  theme(axis.text.x = element_text(size = 5, angle = 90))
+```
 
 ## Read QC, trim, coral alignment pipeline metrics plot
 ### Summarize QC, trim, alignment data
 ```{r tidy_multiqc_data}
 # tidy multiqc data to look at raw versus trimmed reads
-multiqc_fastqc_reads <- multiqc_fastqc %>% filter(grepl("R1", Sample)) %>% select(`Sample ID`, `Total Sequences`) %>% rename("Raw Reads" = `Total Sequences`)
+multiqc_fastqc_reads <- multiqc_fastqc %>% filter(grepl("R1", Sample)) %>% dplyr::select(`Sample ID`, `Total Sequences`) %>% mutate("Raw Reads" = `Total Sequences` * 2, .keep = "unused") 
 #
-multiqc_trimqc_reads <- multiqc_trimqc %>% filter(grepl("R1", Sample)) %>% select(`Sample ID`, `Total Sequences`) %>% rename("Trimmed Reads" = `Total Sequences`)
+multiqc_trimqc_reads <- multiqc_trimqc %>% filter(grepl("R1", Sample)) %>% dplyr::select(`Sample ID`, `Total Sequences`) %>% mutate("Trimmed Reads" = `Total Sequences` * 2, .keep = "unused")
 #
-multiqc_flagstat_reads <- multiqc_flagstat %>% select(`Sample ID`, `mapped_passed`) %>% 
+multiqc_flagstat_reads <- multiqc_flagstat %>% dplyr::select(`Sample ID`, `mapped_passed`) %>% 
   rename("Mapped Reads" = `mapped_passed`)
 #
-multiqc_data <- left_join(samples, multiqc_fastqc_reads, by = "Sample ID") %>%
-  left_join(., multiqc_trimqc_reads, by = "Sample ID")# %>% 
+multiqc_data <- left_join(multiqc_fastqc_reads, multiqc_trimqc_reads, by = "Sample ID") %>%
   left_join(., multiqc_flagstat_reads, by = "Sample ID")
 ```
+```{r}
+multiqc_data[duplicated(multiqc_data$`Sample ID`),]
+```
+
+```{r}
+mqc <- multiqc_data %>%
+  inner_join(samples, by = "Sample ID") %>% pivot_longer(., `Raw Reads`:`Mapped Reads`, names_to = "pipeline_step", values_to = "read_count", names_transform = list("pipeline_step" = as_factor))
+#
+  mqc %>% ggplot(aes(pipeline_step, read_count)) +
+  geom_path(aes(group = `Sample ID`), show.legend = FALSE) +
+  geom_point(size = 2, shape = 21, color = "black", alpha = 0.5, stroke = 0.5, show.legend = FALSE) + 
+  facet_grid(.~Species, scales = "free") +
+  # scale_y_continuous(limits = c(0, 3e7), breaks = c(0, 1e7, 2e7, 3e7)) +
+  # scale_color_manual(values = genocolors) +
+  # scale_shape_manual(values = colshapes) + 
+  # scale_fill_manual(values = genocolors) +
+  theme(axis.text.x = element_text(angle = 315, hjust = 0),
+        axis.title.x = element_blank()
+        # panel.grid.major = element_line(color = "grey92"),
+        ) +
+  ylab("read count") +
+  xlab("pipeline step") + 
+  ggtitle("read counts")
+```
+
 ```{r multiqc_plot_data}
 multiqc_plot_data <- multiqc_data %>%
-  mutate(`Raw Reads` = `Raw Reads` * 2,
-         `Trimmed Reads` = `Trimmed Reads` * 2) %>% 
-  pivot_longer(., `Raw Reads`:`Mapped Reads`, names_to = "pipeline_step", values_to = "read_count") %>%
+  inner_join(samples, by = "Sample ID") %>%
+  pivot_longer(., `Raw Reads`:`Mapped Reads`, names_to = "pipeline_step", values_to = "read_count", names_transform = list("pipeline_step" = as_factor)) %>% 
   dplyr::group_by(`Sample ID`) %>%
   dplyr::mutate(proportion = read_count / read_count[pipeline_step == "Raw Reads"])
 # 
-multiqc_plot_data$pipeline_step <- factor(multiqc_plot_data$pipeline_step, levels = c("Raw Reads", "Trimmed Reads", "Mapped Reads"), ordered = TRUE) # , "Uniquely Mapped Reads", "Input Reads", "Assigned Reads"
+# multiqc_plot_data$pipeline_step <- factor(multiqc_plot_data$pipeline_step, levels = c("Raw Reads", "Trimmed Reads", "Mapped Reads"), ordered = TRUE) # , "Uniquely Mapped Reads", "Input Reads", "Assigned Reads"
 ```
 ### Pipeline metric plots for manuscript
 ```{r read_depth_plot}
@@ -146,8 +167,8 @@ pipeQC_proportions <- multiqc_plot_data %>%
   geom_path(aes(group = `Sample ID`), show.legend = FALSE) +
   geom_point(size = 2, shape = 21, color = "black", alpha = 0.5, stroke = 0.5, show.legend = FALSE) + 
   # facet_grid(.~Region, scales = "free") +
-    # facet_grid(.~Species, scales = "free") +
-  scale_y_continuous(limits = c(0.5, 1.02)) +
+    facet_grid(.~Species, scales = "free") +
+  scale_y_continuous(limits = c(0.0, 1.02)) +
   # scale_color_manual(values = genocolors) +
   # scale_shape_manual(values = colshapes) + 
   # scale_fill_manual(values = genocolors) +
@@ -161,6 +182,25 @@ pipeQC_proportions <- multiqc_plot_data %>%
 pipeQC_proportions
 ```
 
+## Import/inspect non-coral pipeline QC metrics
+  Note: Run MultiQC on R1 reads only to create reports for all analysis samples (124 + 165), with low-depth (<1M reads, 18 + 5) samples already excluded.
+        
+### Paired unmapped reads
+```{r import_multiqc_data}
+# raw reads
+multiqc_unmapqc <- read_tsv("./outputs/QCs/unmappedqcs/multiqc_data/multiqc_fastqc.txt") %>%
+  mutate("Sample ID" = gsub("_S.*_R[12]_001", "", Sample)) %>%
+  mutate(`Sample ID` = gsub("^05_", "", `Sample ID`))
+```
+```{r inspect_read_depth}
+# quick check of sample depth
+multiqc_unmapqc %>%
+  mutate(Sample = fct_reorder(Sample, desc(`Total Sequences`))) %>%
+  ggplot(aes(Sample, `Total Sequences`)) +
+  geom_point(size = 0.5) +
+  geom_hline(yintercept = 1000000, color = "red") +
+  theme(axis.text.x = element_text(size = 5, angle = 90))
+```
 
 
 SPAdes assembly metrics

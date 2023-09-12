@@ -19,11 +19,7 @@ source("./R/pocillopora_etp_gksim_functions.R")
 ## Import sample metadata
 ```{r import_sample_metadata}
 source("./R/sample_import.R")
-all_samples <- samples
-etp_samples <- read_csv("./data/etp_samples.txt")
-```
-```{r select_samples}
-samples <- filter(all_samples, all_samples$`Sample ID` %in% etp_samples$`Sample ID`)
+samples <- all_samples
 ```
 
 ## Import mtORF sequence alignment 
@@ -39,22 +35,17 @@ checkAlignment(data)
 ```{r haplotypes}
 dataHaplo <- haplotype(data)
 dataHaplo
-# ETP samples: 4 unique haplotypes
- #  I  II III  IV 
- # 14   5  96   4 
-# summary(dataHaplo)
-
- #  I  II III  IV 
- # 38   6 203   5
 ```
 ```{r extract haplotypes and build network}
 dataHaplo <- sort(dataHaplo, what = "labels")
-# attributes(dataHaplo)
+attributes(dataHaplo)
 dataNet <- haploNet(dataHaplo)
 ```
 ```{r extract sequence labels}
 seq_labels <- dimnames(data)[[1]]
-seq_labels
+# seq_labels
+seq_ids <- gsub("_S[[:digit:]]+.[[:digit:]]$", "", seq_labels)
+# seq_ids
 ```
 ```{r countHap}
 countHap <- function(hap = h, dna = x){
@@ -78,22 +69,21 @@ sample_haplotypes <- good %>% dplyr::select(`Sample ID`, `haplotype`)
 mtorf_types <- c(I = "Type 3a", II = "Type 3c", III = "Type 1a", IV = "Type 2")
 #
 sample_haplotypes$mtorf_type <-  mtorf_types[sample_haplotypes$haplotype]
-# join to sample metadata if necessary
-# samples <- left_join(samples, sample_haplotypes, by = "Sample ID")
 ```
 
-
+```{r}
+## need sample order to match to order of aligned sequences in FASTA file
+samples_fasta <- samples[match(seq_ids, samples$`Sample ID`),]
+```
 
 ```{r sample and clone correction}
+# identify samples without recovered mtORF sequences 
+
 # filter out samples without recovered mtORF sequences
-samples_mtorf <- samples %>% filter(samples$`Sample ID` %in% good$`Sample ID`)
+samples_mtorf <- samples_fasta %>% filter(samples_fasta$`Sample ID` %in% good$`Sample ID`)
 
 # filter out clonal replicates identified by IBS
 # samples_noclones
-```
-```{r sample sort and colors}
-samples_mtorf <- samples_mtorf %>% arrange(`Sample ID`, sample_haplotypes$`Sample ID`)
-# genocolors <- genotype_colors %>% arrange(Genotype, seq_labels) %>% dplyr::select(color)
 ```
 
 ## Plot haplotype networks
@@ -114,9 +104,10 @@ plot(dataNet,
 Region <- haploFreq(data, samples_mtorf$Region, haplo = dataHaplo)
 Site <- haploFreq(data, samples_mtorf$Site, haplo = dataHaplo)
 Type <- haploFreq(data, samples_mtorf$mtorf_type, haplo = dataHaplo)
+HaploType <- haploFreq(data, samples_mtorf$haplotype, haplo = dataHaplo)
 ```
 ```{r colored haplonet}
-pdf(file="./outputs/figures/mtORF_haplotypes_genotypes.pdf", width = 4, height = 5, pointsize = 6)
+pdf(file="./outputs/figures/mtORF_haplotypes_region.pdf", width = 4, height = 5, pointsize = 6)
 plot(dataNet,
      size = attr(dataNet, "freq"),
      pie = Region,
@@ -127,11 +118,11 @@ plot(dataNet,
 dev.off()
 ```
 ```{r}
-pdf(file="./outputs/figures/mtORF_haplotypes_gulf.pdf", width = 4, height = 5, pointsize = 6)
+pdf(file="./outputs/figures/mtORF_haplotypes_site.pdf", width = 4, height = 5, pointsize = 6)
 plot(dataNet,
      size = attr(dataNet, "freq"),
      pie = Site,
-     bg = site_colors,
+     # bg = site_colors,
      show.mutation = 1,
      labels = FALSE,
      legend = c(-3,18))
@@ -140,22 +131,11 @@ dev.off()
 
 ### Figure ##
 ```{r figure ##: powerpoint}
-pdf(file="./outputs/figures/mtORF_haplotypes_type_nobones.pdf", width = 3, height = 4, pointsize = 6)
+pdf(file="./outputs/figures/mtORF_haplotypes_type.pdf", width = 3, height = 4, pointsize = 6)
 plot(dataNet,
      size = attr(dataNet, "freq"),
      pie = Type,
      bg = c("darkorange1", "purple", "turquoise2", "turquoise4"),
-     show.mutation = 1,
-     labels = FALSE,
-     legend = FALSE)
-dev.off()
-```
-```{r figure ##: manuscript}
-pdf(file="./outputs/figures/Fig1B_mtORF_haplotypes_type.pdf", height = 90/25.4, width = 75/25.4, pointsize = 6) # two-column max size
-plot(dataNet,
-     size = attr(dataNet, "freq"),
-     pie = Type,
-     bg = c("darkorange1","turquoise2"),
      show.mutation = 1,
      labels = FALSE,
      legend = FALSE)
