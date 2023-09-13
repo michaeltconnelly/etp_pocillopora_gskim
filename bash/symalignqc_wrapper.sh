@@ -29,7 +29,7 @@ echo 'prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"' >>
 # produce samtools flagstat reports for alignment QC
 echo 'for i in ${prodir}/outputs/symbiont_alignments/*.sam; do name=$(basename $i | cut -d . -f 1); echo $name; samtools flagstat $i > ${prodir}/outputs/QCs/symbiont_flagstats/${name}_symbiont_flagstat.txt; done' >> $prodir/bash/jobs/symalignqc_${study}.job
 
-echo "echo = `date` job $JOB_NAME done" >> $prodir/bash/jobs/symsymalignqc_${study}.job
+echo "echo = `date` job $JOB_NAME done" >> $prodir/bash/jobs/symalignqc_${study}.job
 
 qsub $prodir/bash/jobs/symalignqc_${study}.job
 
