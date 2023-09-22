@@ -39,11 +39,11 @@ echo 'echo + NSLOTS = $NSLOTS' >> ${prodir}/bash/jobs/gatk_combinegvcfs.job
 # Input command for GATK CombineGVCFs
 echo "java -jar /share/apps/bioinformatics/gatk/3.8.1.0/GenomeAnalysisTK.jar \
 -T CombineGVCFs \
--R /home/connellym/sequences/pdam_scaffolds.fasta \" >> ${prodir}/bash/jobs/gatk_combinegvcfs.job
+-R /home/connellym/sequences/pdam_scaffolds.fasta \\" >> ${prodir}/bash/jobs/gatk_combinegvcfs.job
 # for loop to input which gvcfs to combine
 for sample in $samples
 do \
-echo "--variant ${prodir}/outputs/alignments/${sample}.g.vcf.gz \" >> ${prodir}/bash/jobs/gatk_combinegvcfs.job
+echo "--variant ${prodir}/outputs/alignments/${sample}.g.vcf.gz \\" >> ${prodir}/bash/jobs/gatk_combinegvcfs.job
 done
 # 
 echo "--out ${prodir}/outputs/${set}_g.vcf.gz" >> ${prodir}/bash/jobs/gatk_combinegvcfs.job
