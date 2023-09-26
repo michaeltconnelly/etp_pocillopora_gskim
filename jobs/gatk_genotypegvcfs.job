@@ -25,7 +25,7 @@ set=$1
 java -jar /share/apps/bioinformatics/gatk/3.8.1.0/GenomeAnalysisTK.jar \
 -T GenotypeGVCFs \
 -R /home/connellym/sequences/pdam_scaffolds.fasta \
--V ${prodir}/outputs/${set}.gvcf.gz \
+-V ${prodir}/outputs/${set}_g.vcf.gz \
 -o ${prodir}/outputs/${set}.vcf.gz
 #
 echo = `date` job $JOB_NAME done
