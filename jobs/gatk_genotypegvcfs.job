@@ -20,6 +20,7 @@ echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
 echo + NSLOTS = $NSLOTS
 #
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
+set=$1
 #
 java -jar /share/apps/bioinformatics/gatk/3.8.1.0/GenomeAnalysisTK.jar \
 -T GenotypeGVCFs \
