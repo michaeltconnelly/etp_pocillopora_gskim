@@ -22,16 +22,16 @@ prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 outdir="${prodir}/outputs/vcf_filtering/${VCF_NAME}"
 VCF_IN="${prodir}/outputs/vcf_filtering/${VCF_NAME}.vcf.gz"
 mkdir $outdir
---vcf $VCF_IN --out ${outdir}/${VCF_NAME} --depth
---vcf $VCF_IN --out ${outdir}/${VCF_NAME} --site-mean-depth
---vcf $VCF_IN --out ${outdir}/${VCF_NAME} --geno-depth
---vcf $VCF_IN --out ${outdir}/${VCF_NAME} --missing-indv
---vcf $VCF_IN --out ${outdir}/${VCF_NAME} --missing-site
---vcf $VCF_IN --out ${outdir}/${VCF_NAME} --indv-freq-burden
---vcf $VCF_IN --out ${outdir}/${VCF_NAME} --freq2
---vcf $VCF_IN --out ${outdir}/${VCF_NAME} --singletons
---vcf $VCF_IN --out ${outdir}/${VCF_NAME} --012
---vcf $VCF_IN --out ${outdir}/${VCF_NAME} --het
---vcf $VCF_IN --out ${outdir}/${VCF_NAME} --site-quality
+vcftools --gzvcf $VCF_IN --out ${outdir}/${VCF_NAME} --depth
+vcftools --gzvcf $VCF_IN --out ${outdir}/${VCF_NAME} --site-mean-depth
+vcftools --gzvcf $VCF_IN --out ${outdir}/${VCF_NAME} --geno-depth
+vcftools --gzvcf $VCF_IN --out ${outdir}/${VCF_NAME} --missing-indv
+vcftools --gzvcf $VCF_IN --out ${outdir}/${VCF_NAME} --missing-site
+vcftools --gzvcf $VCF_IN --out ${outdir}/${VCF_NAME} --indv-freq-burden
+vcftools --gzvcf $VCF_IN --out ${outdir}/${VCF_NAME} --freq2
+vcftools --gzvcf $VCF_IN --out ${outdir}/${VCF_NAME} --singletons
+vcftools --gzvcf $VCF_IN --out ${outdir}/${VCF_NAME} --012
+vcftools --gzvcf $VCF_IN --out ${outdir}/${VCF_NAME} --het
+vcftools --gzvcf $VCF_IN --out ${outdir}/${VCF_NAME} --site-quality
 #
 echo = `date` job $JOB_NAME done
