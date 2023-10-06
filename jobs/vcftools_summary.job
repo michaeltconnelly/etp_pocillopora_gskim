@@ -1,0 +1,37 @@
+# /bin/sh 
+# ----------------Parameters---------------------- #
+#$  -S /bin/sh
+#$ -q sThC.q
+#$ -l mres=8G,h_data=8G,h_vmem=8G
+#$ -cwd
+#$ -j y
+#$ -N vcftools_summary
+#$ -o vcftools_summary.log
+#$ -m bea
+#$ -M connellym@si.edu
+#
+# ----------------Modules------------------------- #
+module load bioinformatics/vcftools
+#
+# ----------------Your Commands------------------- #
+#
+echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
+#
+VCF_NAME="$1"
+prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
+outdir="${prodir}/outputs/vcf_filtering/${VCF_NAME}"
+VCF_IN="${prodir}/outputs/vcf_filtering/${VCF_NAME}.vcf.gz"
+mkdir $outdir
+--vcf $VCF_IN --out ${outdir}/${VCF_NAME} --depth
+--vcf $VCF_IN --out ${outdir}/${VCF_NAME} --site-mean-depth
+--vcf $VCF_IN --out ${outdir}/${VCF_NAME} --geno-depth
+--vcf $VCF_IN --out ${outdir}/${VCF_NAME} --missing-indv
+--vcf $VCF_IN --out ${outdir}/${VCF_NAME} --missing-site
+--vcf $VCF_IN --out ${outdir}/${VCF_NAME} --indv-freq-burden
+--vcf $VCF_IN --out ${outdir}/${VCF_NAME} --freq2
+--vcf $VCF_IN --out ${outdir}/${VCF_NAME} --singletons
+--vcf $VCF_IN --out ${outdir}/${VCF_NAME} --012
+--vcf $VCF_IN --out ${outdir}/${VCF_NAME} --het
+--vcf $VCF_IN --out ${outdir}/${VCF_NAME} --site-quality
+#
+echo = `date` job $JOB_NAME done
