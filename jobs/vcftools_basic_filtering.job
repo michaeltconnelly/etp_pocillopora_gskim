@@ -31,7 +31,7 @@ MISS="0.15"
 # minimum quality score 
 QUAL="30"
 # minimum depth
-MIN_DEPTH="20"
+MIN_DEPTH="$2"
 # maximum depth
 MAX_DEPTH="300"
 vcftools --gzvcf $VCF_IN \
