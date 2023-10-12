@@ -1,0 +1,43 @@
+# /bin/sh
+# ----------------Parameters---------------------- #
+#$  -S /bin/sh
+#$ -q lThC.q
+#$ -l mres=4G,h_data=4G,h_vmem=4G
+#$ -cwd
+#$ -j y
+#$ -N vcftools_basic_filtering
+#$ -o vcftools_basic_filtering.log
+#$ -m bea
+#$ -M connellym@si.edu
+#
+# ----------------Modules------------------------- #
+module load bioinformatics/bcftools
+module load bioinformatics/vcftools
+module load bioinformatics/vcflib
+#
+# ----------------Your Commands------------------- #
+#
+echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
+#
+VCF_NAME="$1"
+prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
+VCF_IN="${prodir}/outputs/${VCF_NAME}.vcf.gz"
+VCF_OUT="${prodir}/outputs/${VCF_NAME}_filtered.vcf.gz"
+# vcf filtering settings
+# minimum minor allele frequency
+MAF="0.05"
+# maximum percent missing data per variant
+MISS="0"
+# minimum quality score 
+QUAL="30"
+# minimum depth: 10-30 
+MIN_DEPTH="$2"
+# maximum depth
+MAX_DEPTH="300"
+vcftools --gzvcf $VCF_IN \
+--remove-indels --maf $MAF --max-missing $MISS --minQ $QUAL \
+--min-meanDP $MIN_DEPTH --max-meanDP $MAX_DEPTH \
+--minDP $MIN_DEPTH --maxDP $MAX_DEPTH --recode --stdout | gzip -c > \
+$VCF_OUT
+#
+echo = `date` job $JOB_NAME done
