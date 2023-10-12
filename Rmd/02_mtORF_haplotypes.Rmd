@@ -104,6 +104,7 @@ plot(dataNet,
 Region <- haploFreq(data, samples_mtorf$Region, haplo = dataHaplo)
 Site <- haploFreq(data, samples_mtorf$Site, haplo = dataHaplo)
 Type <- haploFreq(data, samples_mtorf$mtorf_type, haplo = dataHaplo)
+Species <- haploFreq(data, samples_mtorf$Species, haplo = dataHaplo)
 HaploType <- haploFreq(data, samples_mtorf$haplotype, haplo = dataHaplo)
 ```
 ```{r colored haplonet}
@@ -136,6 +137,18 @@ plot(dataNet,
      size = attr(dataNet, "freq"),
      pie = Type,
      bg = c("darkorange1", "purple", "turquoise2", "turquoise4"),
+     show.mutation = 1,
+     labels = FALSE,
+     legend = FALSE)
+dev.off()
+```
+### Figure 1B
+```{r}
+pdf(file="./outputs/figures/mtORF_haplotypes_species.pdf", width = 4, height = 2, pointsize = 6)
+plot(dataNet,
+     size = sqrt((attr(dataNet, "freq"))),
+     pie = Species,
+     bg = spp_colors,
      show.mutation = 1,
      labels = FALSE,
      legend = FALSE)

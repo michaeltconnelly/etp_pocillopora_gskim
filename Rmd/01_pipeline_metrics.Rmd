@@ -29,7 +29,7 @@ samples <- filter(all_samples, `Sequence Round` == 2)
 samples <- filter(all_samples, `Sequence Round` == 1 | `Sequence Round` == 2)
 ```
 
-## Import/inspect lcWGS pipeline QC metrics
+## Import/inspect genome skimming pipeline QC metrics
   Note: Run MultiQC on R1 reads only to create reports for all analysis samples (124 + 165), with low-depth (<1M reads, 18 + 5) samples already excluded.
         
 ### Raw reads
@@ -99,8 +99,10 @@ multiqc_data[duplicated(multiqc_data$`Sample ID`),]
 ```
 
 ```{r}
-mqc <- multiqc_data %>%
-  inner_join(samples, by = "Sample ID") %>% pivot_longer(., `Raw Reads`:`Mapped Reads`, names_to = "pipeline_step", values_to = "read_count", names_transform = list("pipeline_step" = as_factor))
+multiqc_sample_data <- multiqc_data %>%
+  inner_join(samples, by = "Sample ID")
+
+mqc <- multiqc_sample_data %>% pivot_longer(., `Raw Reads`:`Mapped Reads`, names_to = "pipeline_step", values_to = "read_count", names_transform = list("pipeline_step" = as_factor))
 #
   mqc %>% ggplot(aes(pipeline_step, read_count)) +
   geom_path(aes(group = `Sample ID`), show.legend = FALSE) +
@@ -181,6 +183,22 @@ pipeQC_proportions <- multiqc_plot_data %>%
   ggtitle("read proportions")
 pipeQC_proportions
 ```
+
+## Find samples with most reads in a given species/clone group
+```{r}
+multiqc_sample_data <- multiqc_data %>%
+  inner_join(samples, by = "Sample ID")
+# 
+multiqc_sample_data %>% arrange(Species, desc(`Raw Reads`)) %>% View()
+
+# select top 5 samples with most reads per species
+topsamples <-  multiqc_sample_data %>% group_by(Species) %>% top_n(., 5, `Raw Reads`) %>% arrange(Species, desc(`Raw Reads`))
+
+# select top sample with most reads per clonegroup
+
+
+```
+
 
 ## Import/inspect non-coral pipeline QC metrics
   Note: Run MultiQC on R1 reads only to create reports for all analysis samples (124 + 165), with low-depth (<1M reads, 18 + 5) samples already excluded.

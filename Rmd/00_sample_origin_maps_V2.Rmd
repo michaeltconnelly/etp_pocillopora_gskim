@@ -208,17 +208,6 @@ samples_sites <- samples_select %>%
   group_by(`Region:Site`, `Latitude`, `Longitude`) %>% 
   count()
 ```
-```{r}
-samples_regions_2 <- all_samples_2 %>% 
-  group_by(`Region`, `Latitude`, `Longitude`) %>% 
-  count() 
-
-samples_redo_regions <- samples_regions
-samples_redo_regions$n <- c(2, 9, 8, 12)
-
-samples_regions_2 <- bind_rows(samples_regions_2, samples_redo_regions)
-```
-
 ```{r prepare_scatterpie_data}
 # see example at: https://cran.r-project.org/web/packages/scatterpie/vignettes/scatterpie.html
   
@@ -243,6 +232,7 @@ regions_species <- samples %>%
   dplyr::count() %>% 
   pivot_wider(names_from = Species, values_from = n, values_fill = 0) %>% 
   # dplyr::rename("Type 1" = Type_1, "Type 3" = Type_3) %>% 
+  mutate("sum" = (`P. effusa` + `P. grandis` + `P. meandrina` + `P. verrucosa 3a` + `P. verrucosa 3c`)) %>%
   mutate("radius" = (`P. effusa` + `P. grandis` + `P. meandrina` + `P. verrucosa 3a` + `P. verrucosa 3c`)/50) %>% 
   left_join(region_coords, by = "Region")
 ```
@@ -251,7 +241,6 @@ regions_species <- samples %>%
 #### Species Scatterpie
 ```{r figure 1A: powerpoint}
 pdf(file="./outputs/figures/Pocillopora_origins_map_scatterpie.pdf", width = 8, height = 4)
-title <- expression('East Pacific '*italic("Pocillopora")*' sample origins and species identification')
 par(mar = c(0.5, 0.5, 0.5, 0.5))
 elevMapTest <-
   ggplot() +
@@ -264,29 +253,29 @@ elevMapTest <-
     ylim = c(-2, 16)) +
   #
   new_scale_fill() +
-geom_scatterpie(aes(x = Longitude, y = Latitude, group = `Region`, r = 1.5),
+  geom_scatterpie(aes(x = Longitude, y = Latitude, group = `Region`, r = radius),
                     data = regions_species, cols = c("P. effusa", "P. grandis", "P. meandrina", "P. verrucosa 3a", "P. verrucosa 3c"), size = 5, alpha = .8) + 
   scale_fill_manual(values = c("purple", "darkorange1", "gold", "turquoise2", "turquoise4"), name = "Species") +
   #
+  geom_text_repel(aes(x = Longitude, y = Latitude, label = sum), size = 2.5, box.padding = 1, min.segment.length = 2, seed = 3, data = regions_species) +
   labs(x="Longitude", y="Latitude", elevation = "Elevation") +
   theme(panel.grid.major = element_blank(),
         panel.background = element_rect(fill = "#f0f8ff"),
         panel.border = element_rect(fill = NA),
         plot.title = element_text(size = 16),
         axis.title = element_blank(), 
-        axis.text = element_text(size = 11),
-        legend.title = element_text(size = 14),
-        legend.text = element_text(size = 12, face = "italic"),
+        axis.text = element_text(size = 10),
+        legend.title = element_text(size = 12),
+        legend.text = element_text(size = 10, face = "italic"),
         legend.position = c(0.14, 0.26)) +
-  ggtitle(title)
+  ggtitle(expression(italic("Pocillopora")*' sample origins and species identification'), subtitle = "All East Pacific samples (n= 289)")
 elevMapTest
 dev.off()
 ```
 
 ### Sample Numbers Round 1
 ```{r figure 1A: powerpoint}
-# pdf(file="./outputs/figures/Pocillopora_origins_map_numbersR1.pdf", width = 8, height = 4)
-title <- expression('East Pacific '*italic("Pocillopora")*' sample origins and species identification')
+pdf(file="./outputs/figures/Pocillopora_origins_map_numbers.pdf", width = 8, height = 4)
 par(mar = c(0.5, 0.5, 0.5, 0.5))
 elevMapTest <-
   ggplot() +
@@ -300,8 +289,8 @@ elevMapTest <-
   #
   new_scale_fill() +
 geom_point(aes(x = Longitude, y = Latitude, size = n),
-                    data = samples_regions, shape = 21, alpha = .8, fill = "grey40", color = "black") + 
-  scale_size_continuous(range = c(0.4, 10), limits = c(0, 60), breaks = c(5, 15, 30, 60), name = "# samples") +
+                    data = samples_regions, shape = 21, alpha = .8, fill = "grey40", color = "black") +
+  scale_size_continuous(range = c(0.4, 10), limits = c(0, 80), breaks = c(10, 20, 40, 80), name = "# samples") +
   #
   labs(x="Longitude", y="Latitude") +
   theme(panel.grid.major = element_blank(),
@@ -313,9 +302,9 @@ geom_point(aes(x = Longitude, y = Latitude, size = n),
         legend.title = element_text(size = 14),
         legend.text = element_text(size = 12),
         legend.position = c(0.09, 0.26)) +
-  ggtitle(title)
+  ggtitle(expression('East Pacific '*italic("Pocillopora")*' sample origins and numbers'))
 elevMapTest
-# dev.off()
+dev.off()
 ```
 ### Scatterpie plus sample numbers round 2
 ```{r figure 1A: powerpoint}

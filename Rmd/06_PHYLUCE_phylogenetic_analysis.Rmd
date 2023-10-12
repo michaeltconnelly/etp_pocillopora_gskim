@@ -19,39 +19,25 @@ library("phytools")
 source("./R/pocillopora_etp_gksim_functions.R")
 ```
 
-## Colors and theme
-```{r colors}
-region_colors <- c("gold1", "steelblue", "darkorange", "darkturquoise")
-# 
-site_colors <- c("gold1", "blue", "darkblue", "steelblue", "lightblue", "darkorange3","darkorange", "orange", "orangered", "cyan", "cyan3", "cyan4", "turquoise", "lightgreen")
-# 
-mtorf_colors <- c("darkorange1", "purple", "turquoise2", "turquoise4", "darkgrey")
-#
-theme_set(theme_bw())
-```
 ## Import sample metadata
 ```{r import_sample_metadata}
-all_samples <- read_csv("./data/pocillopora_samples_all_metadata.csv")
-etp_samples <- read_csv("./data/etp_samples.txt")
+source("./R/sample_import.R")
+samples <- all_samples
 ```
 ```{r select_samples}
-samples <- filter(all_samples, all_samples$`Sample ID` %in% etp_samples$`Sample ID`)
-samples$`Region:Site` <- paste(samples$Region, samples$Site, sep = ":")
+samples <- filter(all_samples, ANALYSIS ==T)
+# samples <- filter(all_samples, `PANAMA_MANUSCRIPT` == T)
 ```
 ```{r outgroup_metadata}
-outgroups <- read_csv("./data/outgroups.csv")
-samples_out <- rbind(samples, outgroups)
+# outgroups <- read_csv("./data/outgroups.csv")
+# samples_out <- rbind(samples, outgroups)
 ```
 
 ## Phylogenetic trees from PHYLUCE UCE alignment
 
 ### IQ-TREE
 ```{r}
-tree <- read.newick("./outputs/iqtree/rsmas.treefile")
-gg_tree(tree)
-```
-```{r}
-tree <- read.newick("./outputs/iqtree/iqtree_test_phyluce_noclones_out.treefile")
+tree <- read.newick("./outputs/iqtree/iqtree_phyluce_all_noclones.treefile")
 # midpoint root
 tree <- midpoint.root(tree)
 # set root-edge
@@ -60,15 +46,15 @@ gg_tree(tree)
 ```
 ```{r modify_tip_labels}
 # remove contigs suffix 
-tips <- gsub("_contigs$", "", tree$tip.label)
+tips <- gsub("_S.*_contigs$", "", tree$tip.label)
 tree$tip.label <- tips
 # remove biorepository codes 
 tips_short <- gsub("_AP.*", "", tips)
 ```
 
 ```{r basic_ggtree_viz}
-pdf("./outputs/figures/iqtree_01.pdf", width = 8, height = 8)
-tree_title <- expression(paste("IQ-TREE Maximum Likelihood Tree of ", italic("Pocillopora"), " samples (", 97, ")"))
+pdf("./outputs/figures/iqtree_02.pdf", width = 8, height = 8)
+tree_title <- expression(paste("IQ-TREE Maximum Likelihood Tree of ", italic("Pocillopora"), " samples"))
 #
 tree %>% ggtree(., right = TRUE) %<+% samples + 
   geom_tippoint(aes(fill = `mtorf_type`), shape = 21, alpha = 0.8, stroke = 0.5, color = "black", hjust = 0.3, show.legend = TRUE) +

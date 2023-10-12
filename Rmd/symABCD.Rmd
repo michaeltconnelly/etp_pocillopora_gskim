@@ -13,11 +13,20 @@ options(stringsAsFactors = FALSE)
 
 ```{r}
 library("tidyverse") # for data wrangling and plotting
+library("magrittr")
 library("RColorBrewer") # for colors
 ```
+## Import sample metadata
+```{r import_sample_metadata}
+source("./R/sample_import.R")
+samples <- all_samples
+```
+```{r select_samples}
+samples <- filter(all_samples, ANALYSIS ==T)
+# samples <- filter(all_samples, `PANAMA_MANUSCRIPT` == T)
+```
 
-Plot the proportion of reads mapping to A, B, C, and D in Pocillopora corals
-
+## Plot the proportion of reads mapping to A, B, C, and D in Pocillopora corals
 ```{r}
 abcd_pdam <- read.delim("./outputs/allcounts_symABCD.txt")
 
@@ -26,8 +35,8 @@ df_abcd_pdam <- abcd_pdam %>%
   gather(clade, frac, fracA:fracD) %>%
   dplyr::mutate(Genus = factor(ifelse(clade == "fracA", "Symbiodinium", ifelse(clade == "fracB", "Breviolum", ifelse(clade == "fracC", "Cladocopium", "Durusdinium"))))) %>%
   dplyr::mutate(`Sample ID` = str_extract(sample, "^.*_.*_[S]*")) %>% 
-  dplyr::mutate(`Sample ID` = str_replace(`Sample ID`, "_S.*_", "")) %>% 
-  dplyr::filter(`Sample ID` != "Perlas_344_AP3XG35") #%>% 
+  dplyr::mutate(`Sample ID` = str_replace(`Sample ID`, "_S.*_", "")) #%>% 
+  # dplyr::filter(`Sample ID` != "Perlas_344_AP3XG35") #%>% 
   #dplyr::left_join(samples_pc_clusters, by = "Sample ID")
 # 
 df_abcd_pdam$Genus <- factor(df_abcd_pdam$Genus, levels = c("Symbiodinium", "Breviolum", "Cladocopium", "Durusdinium", ordered = T))
@@ -51,6 +60,8 @@ dev.off()
 ```
 ### Supplementary Figure 6
 ```{r }
+df_abcd_pdam %<>% left_join(samples, by = "Sample ID")
+  
 # df_abcd_pdam$Genotype
 # 
 plot_abcd_pdam <- df_abcd_pdam %>% 
@@ -63,9 +74,32 @@ plot_abcd_pdam <- df_abcd_pdam %>%
   xlab(NULL)+
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank())
+
+plot_abcd_pdam <- df_abcd_pdam %>% 
+  ggplot() + 
+  geom_bar(aes(y = frac, x = sample, fill = Genus), stat="identity")+
+  facet_wrap(~ `Species` + `mtorf_type`, scales = "free") +
+  scale_fill_brewer(palette="Spectral", name = "Genus")+
+  theme_classic()+
+  ylab("Proportion of Symbiont Reads")+
+  xlab(NULL)+
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
+plot_abcd_pdam <- df_abcd_pdam %>% 
+  filter(PANAMA_MANUSCRIPT) %>% 
+  ggplot() + 
+  geom_bar(aes(y = frac, x = sample, fill = Genus), stat="identity")+
+  facet_wrap(~ `Species`, scales = "free") +
+  scale_fill_brewer(palette="Spectral", name = "Genus")+
+  theme_classic()+
+  ylab("Proportion of Symbiont Reads")+
+  xlab(NULL)+
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
 ```
 ```{r}
-pdf("./outputs/figures/FigS6_pocillopora_symbiont_proportions.pdf", width = 6.5, height = 6.5)
+pdf("./outputs/figures/FigS6_pocillopora_spp_symbiont_proportions_panama.pdf", width = 6.5, height = 6.5)
 print(plot_abcd_pdam)
 dev.off()
 ```

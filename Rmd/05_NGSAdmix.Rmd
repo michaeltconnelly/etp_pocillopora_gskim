@@ -37,10 +37,10 @@ samples$`Region:Site` <- paste(samples$Region, samples$Site, sep = ":")
 # code adapted from: https://baylab.github.io/MarineGenomics/week-9-population-structure-using-ngsadmix.html
 
 # read in the data 
-q <- read_table("./outputs/ngsadmix/phyluce_noclones_K4.qopt", col_names = c("pop1","pop2","pop3","pop4"))
+q <- read_table("./outputs/ngsadmix/pgrandis_noclones_K4.qopt", col_names = c("pop1","pop2","pop3","pop4"))
 
 # read in the population information file located in the bam.filelist
-pop <- read_table("./data/phyluce_noclones_samples.txt", col_names = "Sample ID") %>% 
+pop <- read_table("./data/pgrandis_noclones_samples.txt", col_names = "Sample ID") %>% 
   arrange(`Sample ID`) %>% left_join(samples, by = "Sample ID")
 
 # combine
@@ -88,7 +88,7 @@ for (i in 2:maxK){
   kcols <- append(kcols, paste0("pop",j))
   }
   # print(kcols)
-  qopt_list[[i]] <- read_table(paste0("./outputs/ngsadmix/phyluce_noclones_K",i,".qopt"), col_names = kcols)
+  qopt_list[[i]] <- read_table(paste0("./outputs/ngsadmix/pgrandis_noclones_K",i,".qopt"), col_names = kcols)
 }
 qopt_list
 ```
@@ -119,9 +119,33 @@ plot_list[[i-1]] <- q_pop_tidy_plot
 }
 ```
 ```{r}
-pdf("./outputs/figures/ngsadmix_K2-8.pdf")
+# pdf("./outputs/figures/ngsadmix_K2-8.pdf")
 # print(plot_list[[1]])
 plot_list[[1]] / plot_list[[2]] / plot_list[[3]] / plot_list[[4]] / plot_list[[5]] / plot_list[[6]] / plot_list[[7]]
-dev.off()
+# dev.off()
 ```
 # *P. grandis* populations only
+## Choose best K
+```{r}
+data<-list.files("./outputs/ngsadmix/", pattern = ".log", full.names = T)
+#look at data to make sure it only has the log files
+data
+```
+```{r}
+#use lapply to read in all our log files at once
+bigData<-lapply(1:21, FUN = function(i) readLines(data[i]))
+
+
+# find the line that starts with "best like=" or just "b"
+library(stringr)
+
+
+#this will pull out the line that starts with "b" from each file and return it as a list
+foundset<-sapply(1:21, FUN= function(x) bigData[[x]][which(str_sub(bigData[[x]], 1, 1) == 'b')])
+
+foundset
+```
+```{r}
+# https://baylab.github.io/MarineGenomics/week-9-population-structure-using-ngsadmix.html
+```
+

@@ -34,30 +34,28 @@ library("patchwork")
 #
 source("./R/pocillopora_etp_gksim_functions.R")
 ```
-```{r}
-theme_set(theme_bw())
-```
 ## Sample import
-```{r sample_data_import}
+```{r import_sample_metadata}
 source("./R/sample_import.R")
-#
-stri_samples <- read_csv("./data/etp_samples.txt") # samples from Panama for manuscript
+samples <- all_samples
 ```
-```{r}
-samples <- filter(all_samples, all_samples$`Sample ID` %in% stri_samples$`Sample ID`)
-# samples$`Region:Site` <- paste(samples$Region, samples$Site, sep = ":")
-```
-```{r}
-unsamples <- filter(all_samples, all_samples$`Sample ID` %notin% stri_samples$`Sample ID`)
+```{r select_samples}
+samples <- filter(all_samples, ANALYSIS ==T)
+# samples <- filter(all_samples, `PANAMA_MANUSCRIPT` == T)
 ```
 
 ```{r sample_data_tidy}
 # filter out irrelevant samples, select only informative columns
+region_coords <- samples %>% group_by(Region) %>% summarise(Longitude=mean(Longitude), Latitude=mean(Latitude))
 samples_select <- samples #%>% 
   # dplyr::filter(!is.na(`Sampling Date`)) %>% 
   # dplyr::filter(!is.na(`Latitude`)) %>% 
   # dplyr::select(`Sample ID`:`Depth (ft)`)
 # count sample number across different locations
+samples_regions <- samples_select %>% 
+  group_by(`Region`) %>% 
+  count() %>% 
+  left_join(region_coords, by = "Region")
 samples_locations <- samples_select %>% 
   group_by(`Region`, `Site`, `Latitude`, `Longitude`) %>% 
   count()
@@ -77,16 +75,18 @@ gg_color_hue <- function(n) {
 }
 gcolors <- gg_color_hue(n_distinct(samples_locations$Region))
 # gcolors <- gg_color_hue(2)
-
-site_colors <- c("red", "red4", "maroon", "maroon4", "darkgreen", "green4", "green", "lightgreen", "cyan", "cyan4", "turquoise", "turquoise4")
-site_colors <- c("gold1", "blue", "darkblue", "steelblue", "lightblue", "darkorange3","darkorange", "orange", "orangered", "cyan", "cyan3", "cyan4", "turquoise", "lightgreen")
 ```
 
 ## Map of Pocillopora sample origins
 ### Obtain NOAA bathymetric data with marmap
 ```{r marmap_NOAA_bathymetric_data}
+# NOTE: these maps are only good for 100 km scale
+# Panama - Perlas, Coiba
+panama <- getNOAA.bathy(lon1 = -83, lon2 = -77,
+                        lat1 = 6, lat2 = 10, resolution = 1)
+
 # Panama and Costa Rica - Perlas, Coiba, Coco
-panama <- getNOAA.bathy(lon1 = -88, lon2 = -76,
+panama_costarica <- getNOAA.bathy(lon1 = -88, lon2 = -76,
                         lat1 = 4, lat2 = 12, resolution = 1)
 
 # East Pacific from Revi's to Galapagos (to show Clipperton samples)
@@ -96,10 +96,6 @@ east_pacific <- getNOAA.bathy(lon1 = -112, lon2 = -76,
 # East Pacific from Revi's to Rapa Nui
 east_pacific_all <- getNOAA.bathy(lon1 = -120, lon2 = -74,
                         lat1 = -30, lat2 = 30, resolution = 3)
-```
-```{r marmap_NOAA_bathymetric_data_inset}
-perlas <- getNOAA.bathy(lon1 = -79.5, lon2 = -78.5,
-                        lat1 = 8, lat2 = 9, resolution = 1)
 ```
 
 ### Inspect marmap data
@@ -122,9 +118,10 @@ plot(panama, image = TRUE, land = TRUE, lwd = 0.1,
 plot(panama, deep = 0, shallow = 0, step = 0,
      lwd = 0.4, add = TRUE)
 ```
-```{r etopo_test}
+```{r etopo_test, warning=FALSE}
 # Plot bathy object using custom ggplot2 functions
 marmap::autoplot.bathy(panama, geom=c("r", "c"), colour="white", size=0.1) + scale_fill_etopo()
+marmap::autoplot.bathy(east_pacific, geom=c("r", "c"), colour="white", size=0.1) + scale_fill_etopo()
 ```
 ## Figure 1: Map of sample origins
 ```{r}
