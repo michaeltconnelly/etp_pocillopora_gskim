@@ -5,8 +5,8 @@
 #$ -l mres=4G,h_data=4G,h_vmem=4G
 #$ -cwd
 #$ -j y
-#$ -N vcftools_basic_filtering
-#$ -o vcftools_basic_filtering.log
+#$ -N vcftools_strict_filtering
+#$ -o vcftools_strict_filtering.log
 #$ -m bea
 #$ -M connellym@si.edu
 #
