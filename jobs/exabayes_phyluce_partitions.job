@@ -34,7 +34,6 @@ exabayes-mpi -np $NSLOTS \
 -q ${prodir}/outputs/uce-taxon-sets/${set}-mafft-nexus-internal-trimmed-gblocks-clean-75p-raxml/${set}-mafft-nexus-internal-trimmed-gblocks-clean-75p.partitions \
 -w ${prodir}/outputs/exabayes/exabayes_${set} \
 -n ${set} \
--s 12345 \
--R 4 
+-s 12345 
 
 echo = `date` job $JOB_NAME done
