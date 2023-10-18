@@ -26,6 +26,9 @@ prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 set=$1
 samples=$(cat ${prodir}/data/${set}_samples.txt)
 
+# make output directory structure
+mkdir -p ${prodir}/outputs/pochist/blast_results/ ${prodir}/outputs/pochist/fastas/
+
 # 
 for sample in $samples
 do
@@ -45,8 +48,8 @@ makeblastdb -in ${prodir}/outputs/spades/contigs/${set}/${sample}_contigs.fasta 
 blastn -query ${prodir}/data/seqs/Pmeandrina_Hist3_MG587097.fasta -db ${prodir}/outputs/spades/blastdbs/${sample} -out ${prodir}/outputs/pochist/blast_results/${sample}_PocHist3.tsv -outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore sseq" -max_target_seqs 1
 
 # extract best BLAST hit subject sequence as fasta
-cat ${prodir}/outputs/pochist/blast_results/${sample}_PocHist3.tsv | cut -d$'\t' -f 2,13 | sed "s/^/>${sample}_/g" | sed 's/\t/\n/g' > ${prodir}/outputs/pochist/${sample}_hist3.fasta
+cat ${prodir}/outputs/pochist/blast_results/${sample}_PocHist3.tsv | cut -d$'\t' -f 2,13 | sed "s/^/>${sample}_/g" | sed 's/\t/\n/g' > ${prodir}/outputs/pochist/fastas/${sample}_hist3.fasta
 
 # collate results
-cat ${prodir}/outputs/pochist/${sample}_hist3.fasta >> ${prodir}/outputs/pochist/PocHist3_All.fasta
+cat ${prodir}/outputs/pochist/fastas/${sample}_hist3.fasta >> ${prodir}/outputs/pochist/PocHist3_All.fasta
 done
