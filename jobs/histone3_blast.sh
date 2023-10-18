@@ -42,7 +42,7 @@ done
 for sample in $samples
 do
 # make BLAST database to search for histone3 sequences
-makeblastdb -in ${prodir}/outputs/spades/contigs/${set}/${sample}_contigs.fasta -out ${prodir}/outputs/spades/blastdbs/${sample} -dbtype 'nucl' -title ${sample} -parse_seqids
+makeblastdb -in ${prodir}/outputs/spades/contigs/${sample}_contigs.fasta -out ${prodir}/outputs/spades/blastdbs/${sample} -dbtype 'nucl' -title ${sample} -parse_seqids
 
 # perform BLAST search
 blastn -query ${prodir}/data/seqs/Pmeandrina_Hist3_MG587097.fasta -db ${prodir}/outputs/spades/blastdbs/${sample} -out ${prodir}/outputs/pochist/blast_results/${sample}_PocHist3.tsv -outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore sseq" -max_target_seqs 1
