@@ -51,7 +51,7 @@ FILTERS="-minMapQ 30 -minQ 30" #-minInd $minindv
 # -doSaf 1: perform multisample GL estimation
 TODO=" -doSaf 1"
 # set ancestral reference genome fasta file
-ANC="/scratch/nmnh_corals/connellym/sequences/Pocillopora_effusa_v3.fa"
+ANC="/scratch/nmnh_corals/connellym/sequences/pdam/pdam_genome.fasta"
 
 # estimate the site allele frequency likelihood
 angsd -b $BAMLIST -anc $ANC -P $NSLOTS -out ${prodir}/outputs/angsd/${set}_saf $TODO -GL 1
