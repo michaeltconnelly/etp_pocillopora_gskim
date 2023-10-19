@@ -6,8 +6,8 @@
 #$ -l mres=192G,h_data=12G,h_vmem=12G,himem
 #$ -cwd
 #$ -j y
-#$ -N angsd_dosaf
-#$ -o angsd_dosaf.log
+#$ -N angsd_dosaf_SFS
+#$ -o angsd_dosaf_SFS.log
 #$ -m bea
 #$ -M connellym@si.edu
 #
@@ -51,12 +51,13 @@ FILTERS="-minMapQ 30 -minQ 30" #-minInd $minindv
 # -doSaf 1: perform multisample GL estimation
 TODO=" -doSaf 1"
 # set ancestral reference genome fasta file
-ANC="/scratch/nmnh_corals/connellym/sequences/pdam/pdam_genome.fasta"
+#ANC="/scratch/nmnh_corals/connellym/sequences/pdam/pdam_genome.fasta"
+ANC="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/data/seqs/peffusa_reference_ancestral.fa"
 
 # estimate the site allele frequency likelihood
 angsd -b $BAMLIST $FILTERS -anc $ANC -P $NSLOTS -out ${prodir}/outputs/angsd/${set} $TODO -GL 1
 
-# now try the EM optimization with 4 threads
+# now try the EM optimization to calculate the SFS
 realSFS ${prodir}/outputs/angsd/${set}.saf.idx -maxIter 100 -P $NSLOTS > ${prodir}/outputs/angsd/${set}.sfs
 
 echo = `date` job $JOB_NAME done
