@@ -21,7 +21,7 @@ for j in `seq 1 $K` ; do
 echo "NGSadmix for K=${j}, iteration #${i}"
 
 # make output directory structure
-mkdir -p ${prodir}/outputs/ngsadmix/${set}/${j}
+mkdir -p ${prodir}outputs/ngsadmix/${set}/K${j}
 
 #   input QSUB commands
 echo "# /bin/sh" > ${prodir}/bash/jobs/ngsadmix_${set}_K${j}_${i}.job
@@ -46,7 +46,7 @@ echo 'echo + NSLOTS = $NSLOTS' >> ${prodir}/bash/jobs/ngsadmix_${set}_K${j}_${i}
 #
 #   input command for NGSadmix --> nested while loop runs for 10 iterations!
 #
-echo "NGSadmix -likes ${prodir}/outputs/angsd/${set}_ibs05.beagle.gz -K $j -P 16 -o ${prodir}/outputs/ngsadmix/${set}/${j}/${set}_K${j}_${i} -minMaf 0.05" >> ${prodir}/bash/jobs/ngsadmix_${set}_K${j}_${i}.job
+echo "NGSadmix -likes ${prodir}/outputs/angsd/${set}_ibs05.beagle.gz -K $j -P 16 -o ${prodir}outputs/ngsadmix/${set}/K${j}/${set}_K${j}_${i} -minMaf 0.05" >> ${prodir}/bash/jobs/ngsadmix_${set}_K${j}_${i}.job
 #
 echo 'echo = `date` job $JOB_NAME done' >> ${prodir}/bash/jobs/ngsadmix_${set}_K${j}_${i}.job
 #
@@ -56,3 +56,5 @@ done
 #
 i=$(( $i + 1 ))
 done
+
+# NOTE input commands to organize log files in output for identifying the best K in R
