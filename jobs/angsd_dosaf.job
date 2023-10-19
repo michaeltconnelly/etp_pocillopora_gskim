@@ -54,10 +54,10 @@ TODO=" -doSaf 1"
 ANC="/scratch/nmnh_corals/connellym/sequences/pdam/pdam_genome.fasta"
 
 # estimate the site allele frequency likelihood
-angsd -b $BAMLIST -anc $ANC -P $NSLOTS -out ${prodir}/outputs/angsd/${set}_saf $TODO -GL 1
+angsd -b $BAMLIST $FILTERS -anc $ANC -P $NSLOTS -out ${prodir}/outputs/angsd/${set} $TODO -GL 1
 
-#now try the EM optimization with 4 threads
-#misc/realSFS smallFolded.saf.idx -maxIter 100 -P 4 >smallFolded.sfs
+# now try the EM optimization with 4 threads
+realSFS ${prodir}/outputs/angsd/${set}.saf.idx -maxIter 100 -P $NSLOTS > ${prodir}/outputs/angsd/${set}.sfs
 
 echo = `date` job $JOB_NAME done
 
