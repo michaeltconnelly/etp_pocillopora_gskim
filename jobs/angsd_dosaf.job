@@ -1,0 +1,66 @@
+#!/bin/sh
+# ----------------Parameters---------------------- #
+#$ -S /bin/sh
+#$ -pe mthread 16
+#$ -q mThM.q
+#$ -l mres=192G,h_data=12G,h_vmem=12G,himem
+#$ -cwd
+#$ -j y
+#$ -N angsd_dosaf
+#$ -o angsd_dosaf.log
+#$ -m bea
+#$ -M connellym@si.edu
+#
+# ----------------Modules------------------------- #
+ module load bioinformatics/angsd
+# ----------------Your Commands------------------- #
+#
+echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
+echo + NSLOTS = $NSLOTS
+
+#specify variable containing sequence file prefixes and directory paths
+mcs="/scratch/nmnh_corals/connellym"
+prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
+
+# making a list of sample names
+set=$1
+#files=$(ls /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/data/raw/)
+#samples=$(echo "$files" | cut -d . -f 1 | sort -u)
+samples=$(cat ${prodir}/data/${set}_samples.txt)
+
+# making a list of bam file paths
+ls ${prodir}/outputs/alignments/*rg.bam | grep -f ${prodir}/data/${set}_samples.txt > ${prodir}/outputs/alignments/${set}_bamfile.txt
+
+# verify samples are correct
+echo " These are the samples to be processed: ${samples}, there are $(cat ${prodir}/outputs/alignments/${set}_bamfile.txt | wc -l) in total"
+
+# ----- SAF with ANGSD
+# need to create a bam file list for each population / species
+BAMLIST="${prodir}/outputs/alignments/${set}_bamfile.txt"
+
+#FILTERS:
+# -snp_pval 1e-5 : high confidence that the SNP is not just sequencing error 
+# -minMaf 0.05 : only common SNPs, with allele frequency 0.05 or more.
+# set minInd to 75-80% of total number of samples
+nsamps=$(cat $BAMS | wc -l) 
+minindv=$(echo "$nsamps*0.85" | bc | awk '{print int($1+0.5)}')
+# filters for SFS estimation
+FILTERS="-minMapQ 30 -minQ 30" #-minInd $minindv 
+
+#TODO: 
+# -doSaf 1: perform multisample GL estimation
+TODO=" -doSaf 1"
+# set ancestral reference genome fasta file
+ANC="/scratch/nmnh_corals/connellym/sequences/Pocillopora_effusa_v3.fa"
+
+# estimate the site allele frequency likelihood
+angsd -b $BAMLIST -anc $ANC -P $NSLOTS -out ${prodir}/outputs/angsd/${set}_saf $TODO -GL 1
+
+#now try the EM optimization with 4 threads
+#misc/realSFS smallFolded.saf.idx -maxIter 100 -P 4 >smallFolded.sfs
+
+echo = `date` job $JOB_NAME done
+
+#in R
+#sfs<-scan("smallFolded.sfs")
+#barplot(sfs[-1])
