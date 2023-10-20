@@ -61,6 +61,7 @@ outputs/pochist/
 outputs/raxml/
 outputs/iqtree/
 outputs/snapp/
+outputs/symbiont_counts/
 outputs/oury_pipeline/
 outputs/figures/
 #
