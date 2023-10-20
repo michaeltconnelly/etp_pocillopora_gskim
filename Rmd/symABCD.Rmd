@@ -28,11 +28,13 @@ samples <- filter(all_samples, ANALYSIS ==T)
 
 ## Plot the proportion of reads mapping to A, B, C, and D in Pocillopora corals
 ```{r}
-abcd_pdam <- read.delim("./outputs/allcounts_symABCD.txt")
+abcd_pdam <- read.delim("./outputs/symbiont_counts/allcounts_symABCD.txt")
 
 df_abcd_pdam <- abcd_pdam %>% 
-  dplyr::select(sample, fracA, fracB, fracC, fracD) %>% 
-  gather(clade, frac, fracA:fracD) %>%
+  dplyr::select(sample, fracA, fracB, fracC, fracD) %>% drop_na() %>% 
+  # reorder samples based on proportion of Cladocopium
+  mutate("sample" = forcats::fct_reorder2(`sample`, desc(fracC), desc(fracD))) %>% 
+  gather(clade, frac, fracA:fracD) %>% 
   dplyr::mutate(Genus = factor(ifelse(clade == "fracA", "Symbiodinium", ifelse(clade == "fracB", "Breviolum", ifelse(clade == "fracC", "Cladocopium", "Durusdinium"))))) %>%
   dplyr::mutate(`Sample ID` = str_extract(sample, "^.*_.*_[S]*")) %>% 
   dplyr::mutate(`Sample ID` = str_replace(`Sample ID`, "_S.*_", "")) #%>% 
@@ -54,7 +56,7 @@ plot_abcd_pdam <- df_abcd_pdam %>%
         axis.ticks.x=element_blank())
 ```
 ```{r}
-pdf("./outputs/figures/pocillopora_symbiont_proportions_facet.pdf", width = 6.5, height = 6.5)
+pdf("./outputs/figures/nobones/pocillopora_symbiont_proportions_species_facet.pdf", width = 8.5, height = 4.75)
 print(plot_abcd_pdam)
 dev.off()
 ```
@@ -62,6 +64,7 @@ dev.off()
 ```{r }
 df_abcd_pdam %<>% left_join(samples, by = "Sample ID")
   
+df_abcd_pdam %<>% filter(Set == "USFQ_CSUMB")
 # df_abcd_pdam$Genotype
 # 
 plot_abcd_pdam <- df_abcd_pdam %>% 
@@ -78,13 +81,37 @@ plot_abcd_pdam <- df_abcd_pdam %>%
 plot_abcd_pdam <- df_abcd_pdam %>% 
   ggplot() + 
   geom_bar(aes(y = frac, x = sample, fill = Genus), stat="identity")+
-  facet_wrap(~ `Species` + `mtorf_type`, scales = "free") +
+  facet_grid(`Species` ~ ., scales = "free", space = "free") +
   scale_fill_brewer(palette="Spectral", name = "Genus")+
   theme_classic()+
   ylab("Proportion of Symbiont Reads")+
   xlab(NULL)+
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank())
+
+plot_abcd_pdam <- df_abcd_pdam %>% 
+  ggplot() + 
+  geom_bar(aes(y = frac, x = sample, fill = Genus), stat="identity")+
+  facet_wrap(`Species` ~ ., scales = "free") +
+  scale_fill_brewer(palette="Spectral", name = "Genus")+
+  theme_classic()+
+  ylab("Proportion of Symbiont Reads")+
+  xlab(NULL)+
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        legend.position = c(0.85, 0.25))
+
+plot_abcd_pdam <- df_abcd_pdam %>% 
+  ggplot() + 
+  geom_bar(aes(y = frac, x = sample, fill = Genus), stat="identity")+
+  facet_wrap(`Site` + `Species` ~ ., scales = "free") +
+  scale_fill_brewer(palette="Spectral", name = "Genus")+
+  theme_classic()+
+  ylab("Proportion of Symbiont Reads")+
+  xlab(NULL)+
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        legend.position = c(0.85, 0.2))
 
 plot_abcd_pdam <- df_abcd_pdam %>% 
   filter(PANAMA_MANUSCRIPT) %>% 
@@ -99,7 +126,7 @@ plot_abcd_pdam <- df_abcd_pdam %>%
         axis.ticks.x=element_blank())
 ```
 ```{r}
-pdf("./outputs/figures/FigS6_pocillopora_spp_symbiont_proportions_panama.pdf", width = 6.5, height = 6.5)
+pdf("./outputs/figures/pocillopora_spp_symbiont_proportions_galapagos.pdf", width = 6.5, height = 6.5)
 print(plot_abcd_pdam)
 dev.off()
 ```

@@ -83,36 +83,7 @@ plot(as(extent(limit), 'SpatialPolygons'), add = TRUE)
 plot(focalArea, col = "#005293", add = TRUE)
 ```
 
-```{r obtain elevation data}
-elev<-get_elev_raster(locations = limitExtent, z = 6, override_size_check = T)
 
-elevDF<-as.data.frame(elev, xy=TRUE)
-
-colnames(elevDF)<-c("x", "y", "elevation")
-
-elevDF[, 3][elevDF[, 3] < 1500] <- NA
-```
-
-```{r Test elevation map, echo = FALSE, fig.align= "center", warning = FALSE}
-par(mar = c(0.5, 0.5, 0.5, 0.5))
-elevMapTest <-
-  ggplot() +
-  # geom_tile(data = elevDF, aes(x=x, y=y, fill=elevation), alpha =0.4)+
-  # scale_fill_gradient(low="#a3a0a0", high= "#000000", 
-  #                     na.value="transparent")+
-  geom_sf(data = ocean, color = "black", size = 0.05, fill = "#add8e6")+
-  geom_sf(data = rivers, color = "#d7f2fa", size = 0.5)+
-  geom_sf(data = states, color = "black", size = 0.05, fill = "#f5f5f5", alpha = 0.2)+
-  geom_sf(data = map, color = "black", size = 0.1, fill = "#f5f5f5", alpha = 0.2)+
-    coord_sf(
-    xlim = c(-112, -76),
-    ylim = c(-2, 16)) +
-  labs(x="Longitude", y="Latitude", elevation = "Elevation") +
-  theme(panel.grid.major = element_blank(),
-  panel.background = element_rect(fill = "#f0f8ff"),
-  panel.border = element_rect(fill = NA))
-elevMapTest
-```
 ```{r test Coiba map}
 par(mar = c(0.5, 0.5, 0.5, 0.5))
 CoibaMapTest <-
@@ -175,18 +146,11 @@ PerlasMapTest +
 ## Plot proportions of *Pocillopora* mtORF lineages on map with scatterpie
 ```{r sample_data_import}
 source("./R/sample_import.R")
-# samples <- read_csv("./data/pocillopora_samples.csv")
-# 
-stri_samples <- read_csv("./data/etp_samples.txt")
-#
-costarica_samples <- read_csv("./data/pocillopora_samples_costarica_metadata.csv")
+samples <- all_samples
 ```
-```{r}
-samples <- filter(all_samples, all_samples$`Sample ID` %in% stri_samples$`Sample ID`)
-# samples$`Region:Site` <- paste(samples$Region, samples$Site, sep = ":")
-```
-```{r}
-unsamples <- filter(all_samples, all_samples$`Sample ID` %notin% stri_samples$`Sample ID`)
+```{r select_samples}
+samples <- filter(all_samples, ANALYSIS ==T)
+# samples <- filter(all_samples, `PANAMA_MANUSCRIPT` == T)
 ```
 
 ```{r sample_data_tidy}
@@ -273,11 +237,11 @@ elevMapTest
 dev.off()
 ```
 
-### Sample Numbers Round 1
+### Sample Numbers 
 ```{r figure 1A: powerpoint}
-pdf(file="./outputs/figures/Pocillopora_origins_map_numbers.pdf", width = 8, height = 4)
+pdf(file="./outputs/figures/Pocillopora_origins_map_numbers.pdf", width = 7.2, height = 4)
 par(mar = c(0.5, 0.5, 0.5, 0.5))
-elevMapTest <-
+map_samplenumbers <-
   ggplot() +
   geom_sf(data = ocean, color = "black", size = 0.1, fill = "aliceblue") +
   geom_sf(data = rivers, color = "#d7f2fa", size = 0.5)+
@@ -288,8 +252,8 @@ elevMapTest <-
     ylim = c(-2, 16)) +
   #
   new_scale_fill() +
-geom_point(aes(x = Longitude, y = Latitude, size = n),
-                    data = samples_regions, shape = 21, alpha = .8, fill = "grey40", color = "black") +
+  geom_point(aes(x = Longitude, y = Latitude, size = n, fill = Region),
+                    data = samples_regions, shape = 21, alpha = .8, color = "black", show.legend = F) +
   scale_size_continuous(range = c(0.4, 10), limits = c(0, 80), breaks = c(10, 20, 40, 80), name = "# samples") +
   #
   labs(x="Longitude", y="Latitude") +
@@ -298,15 +262,15 @@ geom_point(aes(x = Longitude, y = Latitude, size = n),
         panel.border = element_rect(fill = NA),
         plot.title = element_text(size = 16),
         axis.title = element_blank(), 
-        axis.text = element_text(size = 11),
+        axis.text = element_text(size = 12),
         legend.title = element_text(size = 14),
         legend.text = element_text(size = 12),
         legend.position = c(0.09, 0.26)) +
-  ggtitle(expression('East Pacific '*italic("Pocillopora")*' sample origins and numbers'))
-elevMapTest
+  ggtitle(expression('East Pacific '*italic("Pocillopora")*' sampling locations'))
+map_samplenumbers
 dev.off()
 ```
-### Scatterpie plus sample numbers round 2
+### Scatterpie
 ```{r figure 1A: powerpoint}
 pdf(file="./outputs/figures/Pocillopora_origins_map_scatterpie_numbersR2.pdf", width = 8, height = 4)
 title <- expression('East Pacific '*italic("Pocillopora")*' sample origins and species identification')
@@ -341,43 +305,6 @@ geom_point(aes(x = Longitude, y = Latitude, size = n),
         legend.title = element_text(size = 14),
         legend.text = element_text(size = 12, face = "italic"),
         legend.position = c(0.14, 0.26)) +
-  ggtitle(title)
-elevMapTest
-dev.off()
-```
-```{r}
-pdf(file="./outputs/figures/Pocillopora_origins_map_numbersR1R2.pdf", width = 8, height = 4)
-title <- expression('East Pacific '*italic("Pocillopora")*' sample origins')
-par(mar = c(0.5, 0.5, 0.5, 0.5))
-elevMapTest <-
-  ggplot() +
-  geom_sf(data = ocean, color = "black", size = 0.1, fill = "aliceblue") +
-  geom_sf(data = rivers, color = "#d7f2fa", size = 0.5)+
-  geom_sf(data = states, color = "darkgrey", size = 0.1, fill = "antiquewhite", alpha = 0.5) +
-  geom_sf(data = map, color = "black", size = 0.1, fill = "antiquewhite", alpha = 0.5) +
-    coord_sf(
-    xlim = c(-112, -76),
-    ylim = c(-2, 16)) +
-  #
-  new_scale_fill() +
-geom_point(aes(x = Longitude, y = Latitude, size = n),
-                    data = samples_regions, shape = 21, alpha = .8, fill = "grey40", color = "black") + 
-#
-  geom_point(aes(x = Longitude, y = Latitude, size = n),
-                    data = samples_regions_2, shape = 21, alpha = .8, fill = "red", color = "black", show.legend = FALSE) + 
-  #
-  scale_size_continuous(range = c(0.4, 10), limits = c(0, 60), breaks = c(5, 15, 30, 60), name = "# samples") +
-  #
-  labs(x="Longitude", y="Latitude") +
-  theme(panel.grid.major = element_blank(),
-        panel.background = element_rect(fill = "#f0f8ff"),
-        panel.border = element_rect(fill = NA),
-        plot.title = element_text(size = 16),
-        axis.title = element_blank(), 
-        axis.text = element_text(size = 11),
-        legend.title = element_text(size = 14),
-        legend.text = element_text(size = 12),
-        legend.position = c(0.09, 0.26)) +
   ggtitle(title)
 elevMapTest
 dev.off()

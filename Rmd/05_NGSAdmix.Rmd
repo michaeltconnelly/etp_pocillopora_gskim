@@ -13,41 +13,46 @@ knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ```{r packages}
 library("tidyverse")
 library("RColorBrewer")
+library("patchwork")
 # 
 source("./R/pocillopora_etp_gksim_functions.R")
 ```
 
 ## Import sample metadata
 ```{r import_sample_metadata}
-all_samples <- read_csv("./data/pocillopora_samples_all_metadata.csv")
-etp_samples <- read_csv("./data/etp_samples.txt")
+source("./R/sample_import.R")
+samples <- all_samples
 ```
 ```{r select_samples}
-samples <- filter(all_samples, all_samples$`Sample ID` %in% etp_samples$`Sample ID`)
-samples$`Region:Site` <- paste(samples$Region, samples$Site, sep = ":")
-```
-## Colors
-```{r}
-
+samples <- filter(all_samples, ANALYSIS ==T)
+# samples <- filter(all_samples, `PANAMA_MANUSCRIPT` == T)
 ```
 
-# All ETP samples together
+## All ETP samples together - no clones
 ## Import and visualize NGSAdmix results
 ```{r}
 # code adapted from: https://baylab.github.io/MarineGenomics/week-9-population-structure-using-ngsadmix.html
 
 # read in the data 
-q <- read_table("./outputs/ngsadmix/pgrandis_noclones_K4.qopt", col_names = c("pop1","pop2","pop3","pop4"))
+q <- read_table("./outputs/ngsadmix/all_noclones_K3_1.qopt", col_names = c("pop1","pop2","pop3"))
 
 # read in the population information file located in the bam.filelist
-pop <- read_table("./data/pgrandis_noclones_samples.txt", col_names = "Sample ID") %>% 
+bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/all_noclones_bamfile.txt",header=F)[,1]
+bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/", "", bams, perl=T)
+bam_ids <- sub(".sorted.md.rg.bam", "", bam_ids, perl=T)
+bam_ids <- sub("_S[[:digit:]]+$", "", bam_ids)
+#
+bam_ids
+pop <- data_frame("Sample ID" = bam_ids) %>% left_join(samples, by = "Sample ID")
+
+pop <- read_table("./data/all_noclones_samples.txt", col_names = "Sample ID") %>% 
   arrange(`Sample ID`) %>% left_join(samples, by = "Sample ID")
 
 # combine
 q_pop <- cbind(pop, q)
 
 # order it by population
-ord <- order(q_pop$pop2)
+ord <- order(q_pop$pop1)
 ord <- order(pop$mtorf_type)
 ```
 ```{r}
@@ -64,20 +69,21 @@ barplot(t(q)[,ord],
 ```{r ggplot_K_proportions}
 ## ggplot attempt
 q_pop_tidy <- q_pop %>%
-  pivot_longer(cols = `pop1`:`pop4`, names_to = "pop") %>% 
-  arrange(mtorf_type)
+  mutate("Sample ID" = fct_reorder2(`Sample ID`, desc(pop1), pop2)) %>% 
+  pivot_longer(cols = `pop1`:`pop3`, names_to = "pop") 
 #
 q_pop_tidy %>%
   ggplot(aes(x = `Sample ID`, y = value)) +
-  geom_col(aes(fill = `pop`), position = "stack") +
+  geom_col(aes(fill = `pop`), position = "stack") + 
+  facet_grid(~Country, scales = "free", space = "free") + 
   xlab("Individuals") + 
-  ylab("Admixture proportions for K=4") +
+  ylab("Admixture proportions for K=3") +
   theme(axis.text.x = element_text(size = 4, angle = 90))
 ```
-```{r}
+```{r import_qopt_files}
 # how to make combination of plots for multiple values of K?
-# for example, K from 2 - 8
-maxK <- 8
+# for example, K from 2 - 10
+maxK <- 10
 popcolors <- brewer.pal(maxK, "Set1")
 qopt_list <- list()
 for (i in 2:maxK){
@@ -88,7 +94,7 @@ for (i in 2:maxK){
   kcols <- append(kcols, paste0("pop",j))
   }
   # print(kcols)
-  qopt_list[[i]] <- read_table(paste0("./outputs/ngsadmix/pgrandis_noclones_K",i,".qopt"), col_names = kcols)
+  qopt_list[[i]] <- read_table(paste0("./outputs/ngsadmix/all_noclones_K",i,"_1.qopt"), col_names = kcols)
 }
 qopt_list
 ```
@@ -100,6 +106,7 @@ q <- qopt_list[[i]]
 q_pop <- cbind(pop, q)
   ## ggplot attempt
 q_pop_tidy <- q_pop %>%
+  mutate("Sample ID" = fct_reorder(`Sample ID`, desc(Species))) %>% 
   pivot_longer(cols = contains("pop"), names_to = "pop") %>%
   arrange(Region, mtorf_type)
 #
@@ -108,6 +115,7 @@ q_pop_tidy_plot <- q_pop_tidy %>%
   ggplot(aes(x = `Sample ID`, y = value)) +
   geom_col(aes(fill = `pop`), position = "stack", show.legend = F) +
   scale_fill_manual(values = popcolors) +
+    facet_grid(~Country, scales = "free", space = "free") + 
   xlab("Individuals") +
   ylab(paste0("K=",i)) +
   theme(axis.text.x = element_blank(),
@@ -124,16 +132,15 @@ plot_list[[i-1]] <- q_pop_tidy_plot
 plot_list[[1]] / plot_list[[2]] / plot_list[[3]] / plot_list[[4]] / plot_list[[5]] / plot_list[[6]] / plot_list[[7]]
 # dev.off()
 ```
-# *P. grandis* populations only
 ## Choose best K
 ```{r}
-data<-list.files("./outputs/ngsadmix/", pattern = ".log", full.names = T)
+data<-list.files("./outputs/ngsadmix/", pattern = "all_noclones.*.log", full.names = T)
 #look at data to make sure it only has the log files
 data
 ```
 ```{r}
 #use lapply to read in all our log files at once
-bigData<-lapply(1:21, FUN = function(i) readLines(data[i]))
+bigData<-lapply(1:45, FUN = function(i) readLines(data[i]))
 
 
 # find the line that starts with "best like=" or just "b"
@@ -141,11 +148,47 @@ library(stringr)
 
 
 #this will pull out the line that starts with "b" from each file and return it as a list
-foundset<-sapply(1:21, FUN= function(x) bigData[[x]][which(str_sub(bigData[[x]], 1, 1) == 'b')])
+foundset<-sapply(1:45, FUN= function(x) bigData[[x]][which(str_sub(bigData[[x]], 1, 1) == 'b')])
 
 foundset
 ```
 ```{r}
+as.numeric( sub("\\D*(\\d+).*", "\\1", foundset) )
 # https://baylab.github.io/MarineGenomics/week-9-population-structure-using-ngsadmix.html
+```
+```{r}
+#now lets store it in a dataframe
+#make a dataframe with an index 2:7, this corresponds to our K values
+logs<-data.frame(K = rep(2:10, each=5))
+logs$like<-as.vector(as.numeric( sub("\\D*(\\d+).*", "\\1", foundset) ))
+
+logs %>% group_by(K) %>% 
+  summarise(mK = mean(abs(like))/sd(abs(like)))
+
+tapply(logs$like, logs$K, FUN= function(x) mean(abs(x))/sd(abs(x)))
+tapply
+```
+
+```{r}
+# https://github.com/alexkrohn/AmargosaVoleTutorials/blob/master/ngsAdmix_tutorial.md
+
+logs <- as.data.frame(read.table("./outputs/ngsadmix/logfile"))
+logs$K <- c(rep("10", 5), rep("1", 5), rep("2", 5), rep("3", 5), rep("4", 
+    5), rep("5", 5), rep("6", 5), rep("7", 5), rep("8", 5), rep("9", 5))
+#
+write.table(logs[, c(2, 1)], "./outputs/ngsadmix/logfile_formatted", row.names = F, 
+    col.names = F, quote = F)
+
+logs %>% group_by(K) %>% 
+  summarise(mK = (mean(abs(V1))/sd(abs(V1)))) %>% 
+  arrange(desc(mK))
+```
+
+## Plot Best K
+```{r}
+
+pdf("./outputs/figures/ngsadmix.pdf", width = 7.5, height = 3.5)
+plot_list[[2]]
+dev.off()
 ```
 

@@ -31,7 +31,7 @@ Note: Remove clones from the dataset using IBS analysis before running PCAngsd
 ## Perform PCA of all samples
 ```{r pca}
 # pop<-read.table("Demo/Data/Demo1pop.info")
-C <- as.matrix(read.table("./outputs/angsd/etp.cov"))
+C <- as.matrix(read.table("./outputs/angsd/all_analysis.cov"))
 e <- eigen(C)
 ```
 ```{r pca_test_plot}
@@ -100,10 +100,10 @@ gg_pcangsd(e, samples, pc=c(2,3)) +
 dev.off()
 ```
 
-### PCA of no-clones samples
+## Perform PCA of no-clones samples
 ```{r pca}
 # pop<-read.table("Demo/Data/Demo1pop.info")
-C <- as.matrix(read.table("./outputs/angsd/phyluce_noclones.cov"))
+C <- as.matrix(read.table("./outputs/angsd/all_noclones.cov"))
 e <- eigen(C)
 ```
 ```{r pca_test_plot}
@@ -111,20 +111,48 @@ plot(e$vectors[,1:2],xlab="PC1",ylab="PC2", main="individual allele frequency")
 #
 ```
 
+```{r bamfile_sample_order_check}
+# reading list of bam files = order of samples in IBS matrix
+bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/all_noclones_bamfile.txt",header=F)[,1]
+#
+bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/", "", bams, perl=T)
+bam_ids <- sub(".sorted.md.rg.bam", "", bam_ids, perl=T)
+bam_ids <- sub("_S[[:digit:]]+$", "", bam_ids)
+#
+bam_ids
+```
 ```{r select_samples}
-select_samples <- read_csv("./data/phyluce_noclones_samples.txt", col_names = c("Sample ID")) %>% arrange(`Sample ID`)
-#
-samples <- filter(all_samples, all_samples$`Sample ID` %in% select_samples$`Sample ID`)
-#
-samples <- samples[match(select_samples$`Sample ID`, samples$`Sample ID`),]
+# aligning sample metadata with bams list, then check again
+samples_noclones <- samples[match(bam_ids, samples$`Sample ID`),] 
+# do all the sample ids match the bam file ids in the correct order?
+all(samples_noclones$`Sample ID` == bam_ids) # TRUE
 ```
 
 ```{r combine_pca_metadata}
 # combine pc coordinates with sample metadata
-pcs <- as.data.frame(e$vectors) %>% cbind(samples)
+pcs <- as.data.frame(e$vectors) %>% cbind(samples_noclones)
 # store variable with % variance explained by each PC
 pcvar <- round(e$values, 2)
 #
+```
+
+```{r}
+pdf(file="./outputs/figures/nobones/pcangsd_species.pdf", width = 5.5, height = 3.75)
+title <- expression(paste("East Pacific ", italic("Pocillopora"), " PCA (4,644,899 SNPs)"))
+pcs %>% ggplot(aes(x = V1, y = V2)) +
+  geom_point(aes(fill = `Species`), shape = 21, size = 3, alpha = 0.75, show.legend = F) +
+  scale_fill_manual(values = spp_colors) +
+  # facet_grid(Region ~ .) +
+  # coord_fixed(pcvar[2]/pcvar[1]) + 
+  xlab(paste0( "PC1 (", pcvar[1], "%)")) + 
+  ylab(paste0( "PC2 (", pcvar[2], "%)")) +
+  theme(plot.title = element_text(size = 16, hjust = -0.2),
+        axis.title = element_text(size = 14),
+        axis.text = element_text(size = 12),
+        legend.title = element_text(size = 14),
+        legend.text = element_text(size = 12)) +
+  ggtitle(title)
+dev.off()
 ```
 
 ### PCA of all samples by species

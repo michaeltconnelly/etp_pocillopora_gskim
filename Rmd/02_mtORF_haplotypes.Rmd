@@ -38,7 +38,7 @@ dataHaplo
 ```
 ```{r extract haplotypes and build network}
 dataHaplo <- sort(dataHaplo, what = "labels")
-attributes(dataHaplo)
+# attributes(dataHaplo)
 dataNet <- haploNet(dataHaplo)
 ```
 ```{r extract sequence labels}
@@ -131,13 +131,17 @@ dev.off()
 ```
 
 ### Figure ##
+```{r}
+setHaploNetOptions(mutations.font = 20)
+```
+
 ```{r figure ##: powerpoint}
-pdf(file="./outputs/figures/mtORF_haplotypes_type.pdf", width = 3, height = 4, pointsize = 6)
+pdf(file="./outputs/figures/nobones/mtORF_haplotypes_type.pdf", width = 4.5, height = 3, pointsize = 6)
 plot(dataNet,
-     size = attr(dataNet, "freq"),
+     size = sqrt(attr(dataNet, "freq")),
      pie = Type,
      bg = c("darkorange1", "purple", "turquoise2", "turquoise4"),
-     show.mutation = 1,
+     show.mutation = 3, 
      labels = FALSE,
      legend = FALSE)
 dev.off()
