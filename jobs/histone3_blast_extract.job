@@ -6,8 +6,8 @@
 #$ -l mres=192G,h_data=12G,h_vmem=12G,himem
 #$ -cwd
 #$ -j y
-#$ -N histone3_blastloop
-#$ -o histone3_blastloop.log
+#$ -N histone3_blast_extract
+#$ -o histone3_blast_extract.log
 #$ -m bea
 #$ -M connellym@si.edu
 #
@@ -26,26 +26,30 @@ prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 set=$1
 samples=$(cat ${prodir}/data/${set}_samples.txt)
 
-# make output directory structure
-mkdir -p ${prodir}/outputs/pochist/blast_results/ ${prodir}/outputs/pochist/fastas/
+# make output directory structure - for BLAST databases, results, and extracted fasta seqs
+mkdir -p ${prodir}/outputs/spades/rehead_contigs/ ${prodir}/outputs/spades_blastdbs/ ${prodir}/outputs/pochist/ ${prodir}/outputs/pochist/blast_results/ ${prodir}/outputs/pochist/fastas/
 
-# 
+# for loop to rename SPAdes contigs 
 for sample in $samples
 do
 # assign variable for sample spades assembly directory
-spades_dir=${prodir}/outputs/spades/${sample}*
+SPADES_DIR=${prodir}/outputs/spades/${sample}*
 
 # add sample ID string to contig fasta headers
-sed "s/^>/>${sample}_/g" ${spades_dir}/contigs.fasta | sed 's/ODE_//g' > ${prodir}/outputs/spades/${sample}_contigs.fasta
+sed "s/^>/>${sample}_/g" ${SPADES_DIR}/contigs.fasta | sed 's/ODE_//g' > ${prodir}/outputs/spades/rehead_contigs/${sample}_contigs.fasta
 done
 
+# for loop to create BLAST databases, conduct histone 3 search and extract best match as fasta file
 for sample in $samples
 do
+# set variable for SPAdes contigs
+CONTIGS="${prodir}/outputs/spades/rehead_contigs/${sample}_contigs.fasta"
+
 # make BLAST database to search for histone3 sequences
-makeblastdb -in ${prodir}/outputs/${sample}_contigs.fasta -out ${prodir}/outputs/spades/blastdbs/${sample} -dbtype 'nucl' -title ${sample} -parse_seqids
+makeblastdb -in $CONTIGS -out ${prodir}/outputs/spades_blastdbs/${sample} -dbtype 'nucl' -title ${sample} -parse_seqids
 
 # perform BLAST search
-blastn -query ${prodir}/data/seqs/Pmeandrina_Hist3_MG587097.fasta -db ${prodir}/outputs/spades/blastdbs/${sample} -out ${prodir}/outputs/pochist/blast_results/${sample}_PocHist3.tsv -outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore sseq" -max_target_seqs 1
+blastn -query ${prodir}/data/seqs/Pmeandrina_Hist3_MG587097.fasta -db ${prodir}/outputs/spades_blastdbs/${sample} -out ${prodir}/outputs/pochist/blast_results/${sample}_PocHist3.tsv -outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore sseq" -max_target_seqs 1
 
 # extract best BLAST hit subject sequence as fasta
 cat ${prodir}/outputs/pochist/blast_results/${sample}_PocHist3.tsv | cut -d$'\t' -f 2,13 | sed "s/^/>${sample}_/g" | sed 's/\t/\n/g' > ${prodir}/outputs/pochist/fastas/${sample}_hist3.fasta
@@ -53,3 +57,5 @@ cat ${prodir}/outputs/pochist/blast_results/${sample}_PocHist3.tsv | cut -d$'\t'
 # collate results
 cat ${prodir}/outputs/pochist/fastas/${sample}_hist3.fasta >> ${prodir}/outputs/pochist/PocHist3_All.fasta
 done
+
+echo = `date` job $JOB_NAME done
