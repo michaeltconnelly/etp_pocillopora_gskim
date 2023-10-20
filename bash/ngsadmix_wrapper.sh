@@ -8,21 +8,21 @@ prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 
 # making a list of sample names
 set=$1
-# make output directory
-mkdir -p ${prodir}/outputs/ngsadmix/${set}
 # set a value for max number of K populations
 K=$2
-# 
+
+# make output directory
+mkdir -p ${prodir}/outputs/ngsadmix/${set}
+for j in `seq 1 $K` ; do 
+mkdir ${prodir}outputs/ngsadmix/${set}/K${j}
+done
+
+# while loop to perform 5 iterations of NGSadmix analysis
 i=1
 while [ $i -le 5 ] ; do
-
-# for loop to automate generation of scripts to perform NGSAdmix from 2:K 
+# for loop to automate generation of scripts to perform NGSAdmix from 1:K 
 for j in `seq 1 $K` ; do 
 echo "NGSadmix for K=${j}, iteration #${i}"
-
-# make output directory structure
-mkdir -p ${prodir}outputs/ngsadmix/${set}/K${j}
-
 #   input QSUB commands
 echo "# /bin/sh" > ${prodir}/bash/jobs/ngsadmix_${set}_K${j}_${i}.job
 echo "# ----------------Parameters---------------------- #" >> ${prodir}/bash/jobs/ngsadmix_${set}_K${j}_${i}.job
@@ -32,7 +32,7 @@ echo "#$  -S /bin/sh
 #$ -l mres=192G,h_data=12G,h_vmem=12G,himem" >> ${prodir}/bash/jobs/ngsadmix_${set}_K${j}_${i}.job
 echo "#$ -j y
 #$ -N ngsadmix_${set}_K${j}_${i}.job
-#$ -o ${prodir}/bash/jobs/ngsadmix_${set}_K${j}.log
+#$ -o ${prodir}/bash/jobs/ngsadmix_${set}_K${j}_${i}.log
 #$ -m bea
 #$ -M connellym@si.edu" >> ${prodir}/bash/jobs/ngsadmix_${set}_K${j}_${i}.job
 #
