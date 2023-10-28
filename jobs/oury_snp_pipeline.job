@@ -49,7 +49,7 @@ bcftools sort ${prodir}/outputs/oury_pipeline/${set}_Calls_1559SNP_DP3_SP6.bcf -
 
 bcftools index -t ${prodir}/outputs/oury_pipeline/${set}_Calls_1559SNP_DP3_SP6_sorted.vcf.gz
 
-bcftools merge ${prodir}/outputs/oury_pipeline/${set}_Calls_1559SNP_DP3_SP6_sorted.vcf.gz ${prodir}/data/Pocillopora_361ADN_1559SNP.vcf  -Ov -m snps -o ${prodir}/outputs/oury_pipeline/${set}_DP3_SP6_merged361ref.vcf
+bcftools merge ${prodir}/outputs/oury_pipeline/${set}_Calls_1559SNP_DP3_SP6_sorted.vcf.gz ${prodir}/data/Pocillopora_361ADN_1559SNP.vcf.gz  -Oz -m snps -o ${prodir}/outputs/oury_pipeline/${set}_DP3_SP6_merged361ref.vcf.gz
 
 # Echo finished 
 echo "Finished!"
