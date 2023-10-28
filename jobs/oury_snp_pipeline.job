@@ -30,11 +30,11 @@ samples=$(cat ${prodir}/data/${set}_samples.txt)
 # Make bam file list
 touch ${prodir}/outputs/oury_pipeline/${set}_List_bam.txt 
 for sample in ${samples} ; do ls ${prodir}/outputs/oury_pipeline/${sample}*_realigned_reads.bam >> ${prodir}/outputs/oury_pipeline/${set}_List_bam.txt ; done
-cat ${prodir}/outputs/oury_pipeline/${set}_List_bam.txt | sort | uniq > ${prodir}/outputs/oury_pipeline/${set}_List_bam.txt
+cat ${prodir}/outputs/oury_pipeline/${set}_List_bam.txt | sort | uniq > ${prodir}/outputs/oury_pipeline/${set}_bams.txt
 
 #3°) SNP genotype calling & filtering
 #3.1°) SNP genotype calling (where *List_bam.txt is the list of the bam files)
-bcftools mpileup -A -B -I -Ou -a AD,DP,SP,INFO/AD -f ${mcs}/sequences/Pocillopora_UCEs_exons_2068_ref_sequences.fasta -R ${prodir}/data/List_1559SNP_noLD.txt -b ${prodir}/outputs/oury_pipeline/${set}_List_bam.txt | bcftools call -m --threads 16 -Ob -o  ${prodir}/outputs/oury_pipeline/${set}_Calls_1559SNP.bcf
+bcftools mpileup -A -B -I -Ou -a AD,DP,SP,INFO/AD -f ${mcs}/sequences/Pocillopora_UCEs_exons_2068_ref_sequences.fasta -R ${prodir}/data/List_1559SNP_noLD.txt -b ${prodir}/outputs/oury_pipeline/${set}_bams.txt | bcftools call -m --threads 16 -Ob -o  ${prodir}/outputs/oury_pipeline/${set}_Calls_1559SNP.bcf
 
 #3.2°) Filtering genotypes based on DP & SP
 #Filtering based on DP
