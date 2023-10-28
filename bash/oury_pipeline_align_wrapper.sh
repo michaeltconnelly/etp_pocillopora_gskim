@@ -129,3 +129,5 @@ echo 'echo = `date` job $JOB_NAME done' >> ${prodir}/bash/jobs/${sample}_oury_pi
 qsub ${prodir}/bash/jobs/${sample}_oury_pipeline.job
 #
 done
+
+# NOTE: after aligning reads and creating realigned bams for each sample, proceed to oury_snp_pipeline.job

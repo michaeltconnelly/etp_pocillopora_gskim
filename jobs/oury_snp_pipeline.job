@@ -28,6 +28,7 @@ set=$1
 samples=$(cat ${prodir}/data/${set}_samples.txt)
 
 # Make bam file list
+touch ${prodir}/outputs/oury_pipeline/${set}_List_bam.txt 
 for sample in ${samples} ; do ls ${prodir}/outputs/oury_pipeline/${sample}*_realigned_reads.bam >> ${prodir}/outputs/oury_pipeline/${set}_List_bam.txt ; done
 
 #3°) SNP genotype calling & filtering
@@ -40,6 +41,14 @@ bcftools filter -S '.' -e 'FORMAT/DP<3'  ${prodir}/outputs/oury_pipeline/${set}_
 
 #Filtering based on SP
 bcftools filter -S '.' -e 'FORMAT/SP>6'  ${prodir}/outputs/oury_pipeline/${set}_Calls_1559SNP_DP3.bcf | bcftools view -i 'AN>2 & AC!=0 & AN!=AC' --threads 16 -Ob -o ${prodir}/outputs/oury_pipeline/${set}_Calls_1559SNP_DP3_SP6.bcf
+
+#4°) Merge with Oury reference SNPs for direct downstream comparisons
+
+bcftools sort ${prodir}/outputs/oury_pipeline/${set}_Calls_1559SNP_DP3_SP6.bcf -Ov -o ${prodir}/outputs/oury_pipeline/${set}_Calls_1559SNP_DP3_SP6_sorted.bcf
+
+bcftools index -t ${prodir}/outputs/oury_pipeline/${set}_Calls_1559SNP_DP3_SP6_sorted.vcf
+
+bcftools merge ${prodir}/outputs/oury_pipeline/${set}_Calls_1559SNP_DP3_SP6_sorted.vcf ${prodir}/data/Pocillopora_361ADN_1559SNP.vcf  -Ov -m snps -o ${prodir}/outputs/oury_pipeline/${set}_DP3_SP6_merged361ref.vcf
 
 # Echo finished 
 echo "Finished!"
