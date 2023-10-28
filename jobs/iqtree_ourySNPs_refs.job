@@ -30,6 +30,6 @@ iqtree2 \
 -bb 1000 \
 -alrt 1000 \
 -nt $NSLOTS \
---prefix ${prodir}/outputs/iqtree/iqtree_oury
+--prefix ${prodir}/outputs/iqtree/iqtree_oury_refs
 
 echo = `date` job $JOB_NAME done
