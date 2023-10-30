@@ -24,12 +24,12 @@ mcs="/scratch/nmnh_corals/connellym"
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 
 iqtree2 \
--s ${prodir}/outputs/oury_pipeline/all_noclones_DP3_SP6_miss15_merged361ref.min4.phy \
+-s ${prodir}/data/Pocillopora_361ADN_1559SNP.min4.phy \
 --seqtype DNA \
 -m MFP \
 -bb 1000 \
 -alrt 1000 \
 -nt $NSLOTS \
---prefix ${prodir}/outputs/iqtree/iqtree_oury_refs_miss15
+--prefix ${prodir}/outputs/iqtree/iqtree_oury_361ADN
 
 echo = `date` job $JOB_NAME done
