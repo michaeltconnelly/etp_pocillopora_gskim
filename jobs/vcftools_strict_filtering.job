@@ -27,13 +27,18 @@ VCF_OUT="${prodir}/outputs/${VCF_NAME}_strict_filtered.vcf.gz"
 # minimum minor allele frequency
 MAF="0.05"
 # maximum percent missing data per variant
-MISS="0.05"
+MISS="$3"
 # minimum quality score 
 QUAL="30"
 # minimum depth: 10-30 
 MIN_DEPTH="$2"
 # maximum depth
 MAX_DEPTH="300"
+# record options
+echo "Sample set: $VCF_NAME"
+echo "Min. Depth: $MIN_DEPTH"
+echo "Max missing: $MISS"
+#
 vcftools --gzvcf $VCF_IN \
 --remove-indels --maf $MAF --max-missing $MISS --minQ $QUAL \
 --min-meanDP $MIN_DEPTH --max-meanDP $MAX_DEPTH \
