@@ -44,10 +44,11 @@ echo 'echo + NSLOTS = $NSLOTS' >> ${prodir}/bash/jobs/${sample}_mitofinder.job
 #   input mitofinder command
 # mitosequence.gb consists of Genbank reference database, 5749 mitogenomes 05/02/2023
 # pocilloporidae.gb consists of Pocillopora (2), Madracis (1), Stylophora (1), Seriatopora (2) mitogenomes
+# pocillopora.gb consists of Pocillopora-only reference mitogenomes
 echo "mitofinder \
 -j ${sample} \
--o 1 \
--r ${mcs}/sequences/pocilloporidae.gb \
+-o 4 \
+-r ${mcs}/sequences/pocillopora.gb \
 -1 ${prodir}/data/trimmed/${sample}_R1_PE_trimmed.fastq.gz  \
 -2 ${prodir}/data/trimmed/${sample}_R2_PE_trimmed.fastq.gz  \
 --new-genes" >> "${prodir}"/bash/jobs/${sample}_mitofinder.job
