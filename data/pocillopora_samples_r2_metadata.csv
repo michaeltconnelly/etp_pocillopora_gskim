@@ -1,171 +1,171 @@
 ﻿Sample ID,Cattle Tag Number,Biorepository Number,USNM Number,Country,Region,Site,Sampling Date,Latitude,Longitude,Set,STRI,RSMAS,ANALYSIS,PANAMA_MANUSCRIPT,REPLICATE,SINGLETON,Region:Site,haplotype,mtorf_type,Species
-Gorgona_22,22A,NA,NA,Colombia,Gorgona,Azufrada N,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Azufrada N,III,Type 1a,P. grandis
-Gorgona_23,23-1A,NA,NA,Colombia,Gorgona,Azufrada N,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Azufrada N,III,Type 1a,P. grandis
-Gorgona_24,24-1A,NA,NA,Colombia,Gorgona,Azufrada N,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Azufrada N,III,Type 1a,P. grandis
-Gorgona_26,26,NA,NA,Colombia,Gorgona,Azufrada N,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Azufrada N,III,Type 1a,P. grandis
-Gorgona_27,27,NA,NA,Colombia,Gorgona,Azufrada N,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:Azufrada N,III,Type 1a,P. grandis
-Gorgona_28,28,NA,NA,Colombia,Gorgona,Azufrada N,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:Azufrada N,III,Type 1a,P. grandis
-Gorgona_30,30,NA,NA,Colombia,Gorgona,Azufrada N,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Azufrada N,III,Type 1a,P. grandis
-Gorgona_31,31,NA,NA,Colombia,Gorgona,Azufrada N,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:Azufrada N,III,Type 1a,P. grandis
-Gorgona_41,41,NA,NA,Colombia,Gorgona,Azufrada S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Azufrada S,III,Type 1a,P. grandis
-Gorgona_44,44,NA,NA,Colombia,Gorgona,Azufrada S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:Azufrada S,III,Type 1a,P. grandis
-Gorgona_46,46,NA,NA,Colombia,Gorgona,Azufrada S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Azufrada S,III,Type 1a,P. grandis
-Gorgona_47,47,NA,NA,Colombia,Gorgona,Azufrada S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Azufrada S,III,Type 1a,P. grandis
-Gorgona_49,49,NA,NA,Colombia,Gorgona,Azufrada S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Azufrada S,III,Type 1a,P. grandis
-Gorgona_69,69,NA,NA,Colombia,Gorgona,Azufrada S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Azufrada S,III,Type 1a,P. grandis
-Gorgona_70,70,NA,NA,Colombia,Gorgona,Azufrada S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Azufrada S,III,Type 1a,P. grandis
-Gorgona_71,71,NA,NA,Colombia,Gorgona,Azufrada S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Azufrada S,III,Type 1a,P. grandis
-Gorgona_72,72,NA,NA,Colombia,Gorgona,Azufrada S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Azufrada S,III,Type 1a,P. grandis
+Gorgona_22,22A,NA,NA,Colombia,Gorgona,Azufrada N,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Azufrada N,IV,Type 1a,P. grandis
+Gorgona_23,23-1A,NA,NA,Colombia,Gorgona,Azufrada N,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Azufrada N,IV,Type 1a,P. grandis
+Gorgona_24,24-1A,NA,NA,Colombia,Gorgona,Azufrada N,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Azufrada N,IV,Type 1a,P. grandis
+Gorgona_26,26,NA,NA,Colombia,Gorgona,Azufrada N,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Azufrada N,IV,Type 1a,P. grandis
+Gorgona_27,27,NA,NA,Colombia,Gorgona,Azufrada N,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:Azufrada N,IV,Type 1a,P. grandis
+Gorgona_28,28,NA,NA,Colombia,Gorgona,Azufrada N,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:Azufrada N,IV,Type 1a,P. grandis
+Gorgona_30,30,NA,NA,Colombia,Gorgona,Azufrada N,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Azufrada N,IV,Type 1a,P. grandis
+Gorgona_31,31,NA,NA,Colombia,Gorgona,Azufrada N,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:Azufrada N,IV,Type 1a,P. grandis
+Gorgona_41,41,NA,NA,Colombia,Gorgona,Azufrada S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Azufrada S,IV,Type 1a,P. grandis
+Gorgona_44,44,NA,NA,Colombia,Gorgona,Azufrada S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:Azufrada S,IV,Type 1a,P. grandis
+Gorgona_46,46,NA,NA,Colombia,Gorgona,Azufrada S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Azufrada S,IV,Type 1a,P. grandis
+Gorgona_47,47,NA,NA,Colombia,Gorgona,Azufrada S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Azufrada S,IV,Type 1a,P. grandis
+Gorgona_49,49,NA,NA,Colombia,Gorgona,Azufrada S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Azufrada S,IV,Type 1a,P. grandis
+Gorgona_69,69,NA,NA,Colombia,Gorgona,Azufrada S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Azufrada S,IV,Type 1a,P. grandis
+Gorgona_70,70,NA,NA,Colombia,Gorgona,Azufrada S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Azufrada S,IV,Type 1a,P. grandis
+Gorgona_71,71,NA,NA,Colombia,Gorgona,Azufrada S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Azufrada S,IV,Type 1a,P. grandis
+Gorgona_72,72,NA,NA,Colombia,Gorgona,Azufrada S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Azufrada S,IV,Type 1a,P. grandis
 Gorgona_73,73,NA,NA,Colombia,Gorgona,Azufrada S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Azufrada S,I,Type 3a,P. verrucosa 3a
-Gorgona_74,74,NA,NA,Colombia,Gorgona,Azufrada S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Azufrada S,III,Type 1a,P. grandis
+Gorgona_74,74,NA,NA,Colombia,Gorgona,Azufrada S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Azufrada S,IV,Type 1a,P. grandis
 Gorgona_75,75,NA,NA,Colombia,Gorgona,Azufrada S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Azufrada S,I,Type 3a,P. verrucosa 3a
 Gorgona_76,76,NA,NA,Colombia,Gorgona,Azufrada S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:Azufrada S,I,Type 3a,P. verrucosa 3a
-Gorgona_77,77,NA,NA,Colombia,Gorgona,Azufrada S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:Azufrada S,III,Type 1a,P. grandis
-Gorgona_121,121,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:Playa Blanca S,III,Type 1a,P. grandis
-Gorgona_123,123,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Playa Blanca S,III,Type 1a,P. grandis
+Gorgona_77,77,NA,NA,Colombia,Gorgona,Azufrada S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:Azufrada S,IV,Type 1a,P. grandis
+Gorgona_121,121,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:Playa Blanca S,IV,Type 1a,P. grandis
+Gorgona_123,123,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Playa Blanca S,IV,Type 1a,P. grandis
 Gorgona_124,124-Li,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Playa Blanca S,I,Type 3a,P. verrucosa 3a
-Gorgona_125,125,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Playa Blanca S,III,Type 1a,P. grandis
-Gorgona_126,126,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Playa Blanca S,III,Type 1a,P. grandis
-Gorgona_127,127,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Playa Blanca S,III,Type 1a,P. grandis
-Gorgona_128,128,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Playa Blanca S,III,Type 1a,P. grandis
-Gorgona_129,129,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:Playa Blanca S,III,Type 1a,P. grandis
+Gorgona_125,125,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Playa Blanca S,IV,Type 1a,P. grandis
+Gorgona_126,126,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Playa Blanca S,IV,Type 1a,P. grandis
+Gorgona_127,127,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Playa Blanca S,IV,Type 1a,P. grandis
+Gorgona_128,128,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Playa Blanca S,IV,Type 1a,P. grandis
+Gorgona_129,129,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:Playa Blanca S,IV,Type 1a,P. grandis
 Gorgona_130,130-li,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Playa Blanca S,I,Type 3a,P. verrucosa 3a
 Gorgona_131,131,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:Playa Blanca S,NA,NA,P. grandis
 Gorgona_132,132,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Playa Blanca S,I,Type 3a,P. verrucosa 3a
-Gorgona_134,134,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:Playa Blanca S,III,Type 1a,P. grandis
-Gorgona_135,135,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:Playa Blanca S,III,Type 1a,P. grandis
-Gorgona_142,142,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:Playa Blanca S,III,Type 1a,P. grandis
-Gorgona_143,143,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Playa Blanca S,III,Type 1a,P. grandis
-Gorgona_144,144,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:Playa Blanca S,III,Type 1a,P. grandis
-Gorgona_145,145,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Playa Blanca S,III,Type 1a,P. grandis
-Gorgona_146,146,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:Playa Blanca S,III,Type 1a,P. grandis
-Gorgona_147,147,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:Playa Blanca S,III,Type 1a,P. grandis
+Gorgona_134,134,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:Playa Blanca S,IV,Type 1a,P. grandis
+Gorgona_135,135,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:Playa Blanca S,IV,Type 1a,P. grandis
+Gorgona_142,142,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:Playa Blanca S,IV,Type 1a,P. grandis
+Gorgona_143,143,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Playa Blanca S,IV,Type 1a,P. grandis
+Gorgona_144,144,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:Playa Blanca S,IV,Type 1a,P. grandis
+Gorgona_145,145,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:Playa Blanca S,IV,Type 1a,P. grandis
+Gorgona_146,146,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:Playa Blanca S,IV,Type 1a,P. grandis
+Gorgona_147,147,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:Playa Blanca S,IV,Type 1a,P. grandis
 Gorgona_149,149,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:Playa Blanca S,I,Type 3a,P. verrucosa 3a
 Gorgona_150,150,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,FALSE,FALSE,FALSE,NA,Gorgona:Playa Blanca S,NA,NA,NA
 Gorgona_151,151,NA,NA,Colombia,Gorgona,Playa Blanca S,,2.92975,-78.20268,AMP,FALSE,FALSE,FALSE,FALSE,FALSE,NA,Gorgona:Playa Blanca S,NA,NA,NA
-Gorgona_166,166,NA,NA,Colombia,Gorgona,La Ventana S Int,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:La Ventana S Int,III,Type 1a,P. grandis
-Gorgona_167,167,NA,NA,Colombia,Gorgona,La Ventana S Int,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:La Ventana S Int,III,Type 1a,P. grandis
-Gorgona_168,168,NA,NA,Colombia,Gorgona,La Ventana S Int,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:La Ventana S Int,III,Type 1a,P. grandis
-Gorgona_171,171,NA,NA,Colombia,Gorgona,La Ventana S Int,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:La Ventana S Int,III,Type 1a,P. grandis
-Gorgona_173,173,NA,NA,Colombia,Gorgona,La Ventana S Int,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:La Ventana S Int,III,Type 1a,P. grandis
-Gorgona_179,179,NA,NA,Colombia,Gorgona,La Ventana N Ext,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:La Ventana N Ext,III,Type 1a,P. grandis
-Gorgona_180,180,NA,NA,Colombia,Gorgona,La Ventana N Ext,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:La Ventana N Ext,III,Type 1a,P. grandis
+Gorgona_166,166,NA,NA,Colombia,Gorgona,La Ventana S Int,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:La Ventana S Int,IV,Type 1a,P. grandis
+Gorgona_167,167,NA,NA,Colombia,Gorgona,La Ventana S Int,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:La Ventana S Int,IV,Type 1a,P. grandis
+Gorgona_168,168,NA,NA,Colombia,Gorgona,La Ventana S Int,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Gorgona:La Ventana S Int,IV,Type 1a,P. grandis
+Gorgona_171,171,NA,NA,Colombia,Gorgona,La Ventana S Int,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:La Ventana S Int,IV,Type 1a,P. grandis
+Gorgona_173,173,NA,NA,Colombia,Gorgona,La Ventana S Int,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:La Ventana S Int,IV,Type 1a,P. grandis
+Gorgona_179,179,NA,NA,Colombia,Gorgona,La Ventana N Ext,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:La Ventana N Ext,IV,Type 1a,P. grandis
+Gorgona_180,180,NA,NA,Colombia,Gorgona,La Ventana N Ext,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:La Ventana N Ext,IV,Type 1a,P. grandis
 Gorgona_181,181,NA,NA,Colombia,Gorgona,La Ventana N Ext,,2.92975,-78.20268,AMP,FALSE,FALSE,FALSE,FALSE,FALSE,NA,Gorgona:La Ventana N Ext,NA,NA,NA
-Gorgona_78,78,NA,NA,Colombia,Gorgona,Azufrada S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:Azufrada S,III,Type 1a,P. grandis
-Secas_299,299-1,NA,NA,Panama,Chiriqui,Secas,,7.958645,-82.015012,AMP,FALSE,FALSE,TRUE,TRUE,FALSE,TRUE,Chiriqui:Secas,III,Type 1a,P. grandis
-Secas_302,302-1,NA,NA,Panama,Chiriqui,Secas,,7.958645,-82.015012,AMP,FALSE,FALSE,TRUE,TRUE,FALSE,FALSE,Chiriqui:Secas,III,Type 1a,P. grandis
-Secas_303,303-1,NA,NA,Panama,Chiriqui,Secas,,7.958645,-82.015012,AMP,FALSE,FALSE,TRUE,TRUE,FALSE,FALSE,Chiriqui:Secas,III,Type 1a,P. grandis
-Secas_304,305-1,NA,NA,Panama,Chiriqui,Secas,,7.958645,-82.015012,AMP,FALSE,FALSE,TRUE,TRUE,FALSE,FALSE,Chiriqui:Secas,III,Type 1a,P. grandis
-Floreana_473,473,NA,NA,Ecuador,Galapagos,Floreana,,-1.216193,-90.422824,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Floreana,III,Type 1a,P. grandis
-Darwin_539,539,NA,NA,Ecuador,Galapagos,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,III,Type 1a,P. grandis
-Darwin_563,563,NA,NA,Ecuador,Galapagos,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Darwin,III,Type 1a,P. grandis
-Darwin_548,548,NA,NA,Ecuador,Galapagos,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,III,Type 1a,P. grandis
-Darwin_558,558,NA,NA,Ecuador,Galapagos,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,III,Type 1a,P. grandis
-Darwin_563b,563,NA,NA,Ecuador,Galapagos,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Darwin,III,Type 1a,P. grandis
-Darwin_576,576,NA,NA,Ecuador,Galapagos,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,III,Type 1a,P. grandis
-Darwin_617,617,NA,NA,Ecuador,Galapagos,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,III,Type 1a,P. grandis
-Darwin_534,534,NA,NA,Ecuador,Galapagos,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,III,Type 1a,P. meandrina
-Darwin_553,553,NA,NA,Ecuador,Galapagos,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,III,Type 1a,P. meandrina
-Floreana_567,No tag,NA,NA,Ecuador,Galapagos,Floreana,,-1.216193,-90.422824,AMP,FALSE,FALSE,FALSE,FALSE,FALSE,NA,Galapagos:Floreana,NA,NA,NA
-Floreana_581,No tag,NA,NA,Ecuador,Galapagos,Floreana,,-1.216193,-90.422824,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Floreana,III,Type 1a,P. grandis
-Floreana_584,No tag,NA,NA,Ecuador,Galapagos,Floreana,,-1.216193,-90.422824,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Floreana,III,Type 1a,P. grandis
-Floreana_589,No tag,NA,NA,Ecuador,Galapagos,Floreana,,-1.216193,-90.422824,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Floreana,III,Type 1a,P. grandis
-Floreana_590,No tag,NA,NA,Ecuador,Galapagos,Floreana,,-1.216193,-90.422824,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Floreana,III,Type 1a,P. grandis
-Darwin_556,556,NA,NA,Ecuador,Galapagos,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,III,Type 1a,P. grandis
-Darwin_594,594,NA,NA,Ecuador,Galapagos,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,III,Type 1a,P. grandis
-Darwin_549,549,NA,NA,Ecuador,Galapagos,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,III,Type 1a,P. grandis
-Darwin_550,550,NA,NA,Ecuador,Galapagos,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,III,Type 1a,P. grandis
-Darwin_551,551,NA,NA,Ecuador,Galapagos,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,III,Type 1a,P. grandis
-Darwin_557,557,NA,NA,Ecuador,Galapagos,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,III,Type 1a,P. grandis
-Darwin_564,564,NA,NA,Ecuador,Galapagos,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,III,Type 1a,P. grandis
-Darwin_567,567,NA,NA,Ecuador,Galapagos,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,III,Type 1a,P. grandis
-Darwin_584,584,NA,NA,Ecuador,Galapagos,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,III,Type 1a,P. grandis
-Darwin_589,589,NA,NA,Ecuador,Galapagos,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,FALSE,FALSE,FALSE,NA,Galapagos:Darwin,NA,NA,NA
-Darwin_591,591,NA,NA,Ecuador,Galapagos,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,III,Type 1a,P. grandis
-Darwin_1A,1A,NA,NA,Ecuador,Galapagos,Darwin,,1.67211,-91.999483,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,III,Type 1a,P. grandis
-Darwin_2A,2A,NA,NA,Ecuador,Galapagos,Darwin,,1.67211,-91.999483,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,III,Type 1a,P. grandis
-Darwin_3A,3A,NA,NA,Ecuador,Galapagos,Darwin,,1.67211,-91.999483,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,III,Type 1a,P. grandis
-Darwin_4A,4A,NA,NA,Ecuador,Galapagos,Darwin,,1.67211,-91.999483,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,III,Type 1a,P. grandis
-Darwin_5A,5A,NA,NA,Ecuador,Galapagos,Darwin,,1.67211,-91.999483,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,III,Type 1a,P. grandis
-Espanola_1A,1A,NA,NA,Ecuador,Galapagos,Espanola,,-1.35207,-89.6548,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Espanola,III,Type 1a,P. grandis
-Espanola_2A,2A,NA,NA,Ecuador,Galapagos,Espanola,,-1.35207,-89.6548,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Espanola,III,Type 1a,P. grandis
-Espanola_3A,3A,NA,NA,Ecuador,Galapagos,Espanola,,-1.35207,-89.6548,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Espanola,III,Type 1a,P. grandis
-Espanola_4A,4A,NA,NA,Ecuador,Galapagos,Espanola,,-1.35207,-89.6548,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Espanola,III,Type 1a,P. grandis
-Espanola_5A,5A,NA,NA,Ecuador,Galapagos,Espanola,,-1.35207,-89.6548,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Espanola,III,Type 1a,P. grandis
-Floreana_1E,1E,NA,NA,Ecuador,Galapagos,Floreana,,-1.216193,-90.422824,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Floreana,III,Type 1a,P. grandis
-Floreana_2E,2E,NA,NA,Ecuador,Galapagos,Floreana,,-1.216193,-90.422824,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Floreana,III,Type 1a,P. grandis
-Floreana_3E,3E,NA,NA,Ecuador,Galapagos,Floreana,,-1.216193,-90.422824,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Floreana,III,Type 1a,P. grandis
-Floreana_4E,4E,NA,NA,Ecuador,Galapagos,Floreana,,-1.216193,-90.422824,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Floreana,III,Type 1a,P. grandis
-Floreana_5E,5E,NA,NA,Ecuador,Galapagos,Floreana,,-1.216193,-90.422824,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Floreana,III,Type 1a,P. grandis
-Isabela_1E,1E,NA,NA,Ecuador,Galapagos,Isabela,,-0.96667,-90.95225,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Isabela,I,Type 3a,P. verrucosa 3a
-Isabela_2E,2E,NA,NA,Ecuador,Galapagos,Isabela,,-0.96667,-90.95225,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Isabela,I,Type 3a,P. verrucosa 3a
-Isabela_3E,3E,NA,NA,Ecuador,Galapagos,Isabela,,-0.96667,-90.95225,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Isabela,I,Type 3a,P. verrucosa 3a
-Isabela_4E,4E,NA,NA,Ecuador,Galapagos,Isabela,,-0.96667,-90.95225,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Isabela,I,Type 3a,P. verrucosa 3a
-Isabela_7A,7A,NA,NA,Ecuador,Galapagos,Isabela,,-0.96667,-90.95225,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Isabela,I,Type 3a,P. verrucosa 3a
-SantaCruz_1A,1A,NA,NA,Ecuador,Galapagos,San Cristobal,,-0.71281,-89.24040771,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:San Cristobal,I,Type 3a,P. verrucosa 3a
-SantaCruz_2A,2A,NA,NA,Ecuador,Galapagos,San Cristobal,,-0.71281,-89.24040771,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:San Cristobal,I,Type 3a,P. verrucosa 3a
-SantaCruz_3A,3A,NA,NA,Ecuador,Galapagos,San Cristobal,,-0.71281,-89.24040771,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:San Cristobal,I,Type 3a,P. verrucosa 3a
-SantaCruz_4A,4A,NA,NA,Ecuador,Galapagos,San Cristobal,,-0.71281,-89.24040771,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:San Cristobal,I,Type 3a,P. verrucosa 3a
-SantaCruz_5A,5A,NA,NA,Ecuador,Galapagos,San Cristobal,,-0.71281,-89.24040771,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:San Cristobal,I,Type 3a,P. verrucosa 3a
-SanCristobal_1A,1A,NA,NA,Ecuador,Galapagos,Santa Cruz,,-0.758707,-90.30522,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Santa Cruz,III,Type 1a,P. grandis
-SanCristobal_2A,2A,NA,NA,Ecuador,Galapagos,Santa Cruz,,-0.758707,-90.30522,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Santa Cruz,III,Type 1a,P. grandis
-SanCristobal_3A,3A,NA,NA,Ecuador,Galapagos,Santa Cruz,,-0.758707,-90.30522,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Santa Cruz,III,Type 1a,P. grandis
-SanCristobal_4A,4A,NA,NA,Ecuador,Galapagos,Santa Cruz,,-0.758707,-90.30522,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Santa Cruz,III,Type 1a,P. grandis
-SanCristobal_5A,5A,NA,NA,Ecuador,Galapagos,Santa Cruz,,-0.758707,-90.30522,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Santa Cruz,NA,NA,P. grandis
-Wolf_1E,1E,NA,NA,Ecuador,Galapagos,Wolf,,1.38396,-91.82057,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Wolf,III,Type 1a,P. grandis
-Wolf_2E,2E,NA,NA,Ecuador,Galapagos,Wolf,,1.38396,-91.82057,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Wolf,III,Type 1a,P. grandis
-Wolf_3E,3E,NA,NA,Ecuador,Galapagos,Wolf,,1.38396,-91.82057,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Wolf,III,Type 1a,P. grandis
-Wolf_4E,4E,NA,NA,Ecuador,Galapagos,Wolf,,1.38396,-91.82057,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Wolf,III,Type 1a,P. grandis
-Wolf_5E,5E,NA,NA,Ecuador,Galapagos,Wolf,,1.38396,-91.82057,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Wolf,NA,NA,P. grandis
-Wolf2_1E,1E,NA,NA,Ecuador,Galapagos,Wolf2,,1.38396,-91.82057,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Wolf2,III,Type 1a,P. grandis
-Wolf2_2E,2E,NA,NA,Ecuador,Galapagos,Wolf2,,1.38396,-91.82057,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Wolf2,III,Type 1a,P. grandis
-Wolf2_3E,3E,NA,NA,Ecuador,Galapagos,Wolf2,,1.38396,-91.82057,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Wolf2,III,Type 1a,P. grandis
-Wolf2_4E,4E,NA,NA,Ecuador,Galapagos,Wolf2,,1.38396,-91.82057,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Wolf2,III,Type 1a,P. grandis
-Wolf2_5E,5E,NA,NA,Ecuador,Galapagos,Wolf2,,1.38396,-91.82057,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Wolf2,III,Type 1a,P. grandis
+Gorgona_78,78,NA,NA,Colombia,Gorgona,Azufrada S,,2.92975,-78.20268,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Gorgona:Azufrada S,IV,Type 1a,P. grandis
+Secas_299,299-1,NA,NA,Panama,Chiriqui,Secas,,7.958645,-82.015012,AMP,FALSE,FALSE,TRUE,TRUE,FALSE,TRUE,Chiriqui:Secas,IV,Type 1a,P. grandis
+Secas_302,302-1,NA,NA,Panama,Chiriqui,Secas,,7.958645,-82.015012,AMP,FALSE,FALSE,TRUE,TRUE,FALSE,FALSE,Chiriqui:Secas,IV,Type 1a,P. grandis
+Secas_303,303-1,NA,NA,Panama,Chiriqui,Secas,,7.958645,-82.015012,AMP,FALSE,FALSE,TRUE,TRUE,FALSE,FALSE,Chiriqui:Secas,IV,Type 1a,P. grandis
+Secas_304,305-1,NA,NA,Panama,Chiriqui,Secas,,7.958645,-82.015012,AMP,FALSE,FALSE,TRUE,TRUE,FALSE,FALSE,Chiriqui:Secas,IV,Type 1a,P. grandis
+Floreana_473,473,NA,NA,Ecuador,Galapagos Central,Floreana,,-1.216193,-90.422824,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Floreana,IV,Type 1a,P. grandis
+Darwin_539,539,NA,NA,Ecuador,Galapagos Northern,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,IV,Type 1a,P. grandis
+Darwin_563,563,NA,NA,Ecuador,Galapagos Northern,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Darwin,IV,Type 1a,P. grandis
+Darwin_548,548,NA,NA,Ecuador,Galapagos Northern,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,IV,Type 1a,P. grandis
+Darwin_558,558,NA,NA,Ecuador,Galapagos Northern,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,IV,Type 1a,P. grandis
+Darwin_563b,563,NA,NA,Ecuador,Galapagos Northern,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Darwin,IV,Type 1a,P. grandis
+Darwin_576,576,NA,NA,Ecuador,Galapagos Northern,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,IV,Type 1a,P. grandis
+Darwin_617,617,NA,NA,Ecuador,Galapagos Northern,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,IV,Type 1a,P. grandis
+Darwin_534,534,NA,NA,Ecuador,Galapagos Northern,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,IV,Type 1a,P. meandrina
+Darwin_553,553,NA,NA,Ecuador,Galapagos Northern,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,IV,Type 1a,P. meandrina
+Floreana_567,No tag,NA,NA,Ecuador,Galapagos Central,Floreana,,-1.216193,-90.422824,AMP,FALSE,FALSE,FALSE,FALSE,FALSE,NA,Galapagos:Floreana,NA,NA,NA
+Floreana_581,No tag,NA,NA,Ecuador,Galapagos Central,Floreana,,-1.216193,-90.422824,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Floreana,IV,Type 1a,P. grandis
+Floreana_584,No tag,NA,NA,Ecuador,Galapagos Central,Floreana,,-1.216193,-90.422824,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Floreana,IV,Type 1a,P. grandis
+Floreana_589,No tag,NA,NA,Ecuador,Galapagos Central,Floreana,,-1.216193,-90.422824,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Floreana,IV,Type 1a,P. grandis
+Floreana_590,No tag,NA,NA,Ecuador,Galapagos Central,Floreana,,-1.216193,-90.422824,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Floreana,IV,Type 1a,P. grandis
+Darwin_556,556,NA,NA,Ecuador,Galapagos Northern,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,IV,Type 1a,P. grandis
+Darwin_594,594,NA,NA,Ecuador,Galapagos Northern,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,IV,Type 1a,P. grandis
+Darwin_549,549,NA,NA,Ecuador,Galapagos Northern,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,IV,Type 1a,P. grandis
+Darwin_550,550,NA,NA,Ecuador,Galapagos Northern,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,IV,Type 1a,P. grandis
+Darwin_551,551,NA,NA,Ecuador,Galapagos Northern,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,IV,Type 1a,P. grandis
+Darwin_557,557,NA,NA,Ecuador,Galapagos Northern,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,IV,Type 1a,P. grandis
+Darwin_564,564,NA,NA,Ecuador,Galapagos Northern,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,IV,Type 1a,P. grandis
+Darwin_567,567,NA,NA,Ecuador,Galapagos Northern,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,IV,Type 1a,P. grandis
+Darwin_584,584,NA,NA,Ecuador,Galapagos Northern,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,IV,Type 1a,P. grandis
+Darwin_589,589,NA,NA,Ecuador,Galapagos Northern,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,FALSE,FALSE,FALSE,NA,Galapagos:Darwin,NA,NA,NA
+Darwin_591,591,NA,NA,Ecuador,Galapagos Northern,Darwin,,1.67211,-91.999483,AMP,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,IV,Type 1a,P. grandis
+Darwin_1A,1A,NA,NA,Ecuador,Galapagos Northern,Darwin,,1.67211,-91.999483,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,IV,Type 1a,P. grandis
+Darwin_2A,2A,NA,NA,Ecuador,Galapagos Northern,Darwin,,1.67211,-91.999483,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,IV,Type 1a,P. grandis
+Darwin_3A,3A,NA,NA,Ecuador,Galapagos Northern,Darwin,,1.67211,-91.999483,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,IV,Type 1a,P. grandis
+Darwin_4A,4A,NA,NA,Ecuador,Galapagos Northern,Darwin,,1.67211,-91.999483,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,IV,Type 1a,P. grandis
+Darwin_5A,5A,NA,NA,Ecuador,Galapagos Northern,Darwin,,1.67211,-91.999483,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Darwin,IV,Type 1a,P. grandis
+Espanola_1A,1A,NA,NA,Ecuador,Galapagos Central,Espanola,,-1.35207,-89.6548,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Espanola,IV,Type 1a,P. grandis
+Espanola_2A,2A,NA,NA,Ecuador,Galapagos Central,Espanola,,-1.35207,-89.6548,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Espanola,IV,Type 1a,P. grandis
+Espanola_3A,3A,NA,NA,Ecuador,Galapagos Central,Espanola,,-1.35207,-89.6548,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Espanola,IV,Type 1a,P. grandis
+Espanola_4A,4A,NA,NA,Ecuador,Galapagos Central,Espanola,,-1.35207,-89.6548,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Espanola,IV,Type 1a,P. grandis
+Espanola_5A,5A,NA,NA,Ecuador,Galapagos Central,Espanola,,-1.35207,-89.6548,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Espanola,IV,Type 1a,P. grandis
+Floreana_1E,1E,NA,NA,Ecuador,Galapagos Central,Floreana,,-1.216193,-90.422824,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Floreana,IV,Type 1a,P. grandis
+Floreana_2E,2E,NA,NA,Ecuador,Galapagos Central,Floreana,,-1.216193,-90.422824,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Floreana,IV,Type 1a,P. grandis
+Floreana_3E,3E,NA,NA,Ecuador,Galapagos Central,Floreana,,-1.216193,-90.422824,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Floreana,IV,Type 1a,P. grandis
+Floreana_4E,4E,NA,NA,Ecuador,Galapagos Central,Floreana,,-1.216193,-90.422824,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Floreana,IV,Type 1a,P. grandis
+Floreana_5E,5E,NA,NA,Ecuador,Galapagos Central,Floreana,,-1.216193,-90.422824,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Floreana,IV,Type 1a,P. grandis
+Isabela_1E,1E,NA,NA,Ecuador,Galapagos Central,Isabela,,-0.96667,-90.95225,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Isabela,I,Type 3a,P. verrucosa 3a
+Isabela_2E,2E,NA,NA,Ecuador,Galapagos Central,Isabela,,-0.96667,-90.95225,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Isabela,I,Type 3a,P. verrucosa 3a
+Isabela_3E,3E,NA,NA,Ecuador,Galapagos Central,Isabela,,-0.96667,-90.95225,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Isabela,I,Type 3a,P. verrucosa 3a
+Isabela_4E,4E,NA,NA,Ecuador,Galapagos Central,Isabela,,-0.96667,-90.95225,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Isabela,I,Type 3a,P. verrucosa 3a
+Isabela_7A,7A,NA,NA,Ecuador,Galapagos Central,Isabela,,-0.96667,-90.95225,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Isabela,I,Type 3a,P. verrucosa 3a
+SantaCruz_1A,1A,NA,NA,Ecuador,Galapagos Central,San Cristobal,,-0.71281,-89.24040771,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:San Cristobal,I,Type 3a,P. verrucosa 3a
+SantaCruz_2A,2A,NA,NA,Ecuador,Galapagos Central,San Cristobal,,-0.71281,-89.24040771,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:San Cristobal,I,Type 3a,P. verrucosa 3a
+SantaCruz_3A,3A,NA,NA,Ecuador,Galapagos Central,San Cristobal,,-0.71281,-89.24040771,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:San Cristobal,I,Type 3a,P. verrucosa 3a
+SantaCruz_4A,4A,NA,NA,Ecuador,Galapagos Central,San Cristobal,,-0.71281,-89.24040771,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:San Cristobal,I,Type 3a,P. verrucosa 3a
+SantaCruz_5A,5A,NA,NA,Ecuador,Galapagos Central,San Cristobal,,-0.71281,-89.24040771,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:San Cristobal,I,Type 3a,P. verrucosa 3a
+SanCristobal_1A,1A,NA,NA,Ecuador,Galapagos Central,Santa Cruz,,-0.758707,-90.30522,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Santa Cruz,IV,Type 1a,P. grandis
+SanCristobal_2A,2A,NA,NA,Ecuador,Galapagos Central,Santa Cruz,,-0.758707,-90.30522,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Santa Cruz,IV,Type 1a,P. grandis
+SanCristobal_3A,3A,NA,NA,Ecuador,Galapagos Central,Santa Cruz,,-0.758707,-90.30522,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Santa Cruz,IV,Type 1a,P. grandis
+SanCristobal_4A,4A,NA,NA,Ecuador,Galapagos Central,Santa Cruz,,-0.758707,-90.30522,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Santa Cruz,IV,Type 1a,P. grandis
+SanCristobal_5A,5A,NA,NA,Ecuador,Galapagos Central,Santa Cruz,,-0.758707,-90.30522,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Santa Cruz,NA,NA,P. grandis
+Wolf_1E,1E,NA,NA,Ecuador,Galapagos Northern,Wolf,,1.38396,-91.82057,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Wolf,IV,Type 1a,P. grandis
+Wolf_2E,2E,NA,NA,Ecuador,Galapagos Northern,Wolf,,1.38396,-91.82057,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Wolf,IV,Type 1a,P. grandis
+Wolf_3E,3E,NA,NA,Ecuador,Galapagos Northern,Wolf,,1.38396,-91.82057,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Wolf,IV,Type 1a,P. grandis
+Wolf_4E,4E,NA,NA,Ecuador,Galapagos Northern,Wolf,,1.38396,-91.82057,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Wolf,IV,Type 1a,P. grandis
+Wolf_5E,5E,NA,NA,Ecuador,Galapagos Northern,Wolf,,1.38396,-91.82057,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Wolf,NA,NA,P. grandis
+Wolf2_1E,1E,NA,NA,Ecuador,Galapagos Northern,Wolf2,,1.38396,-91.82057,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,Galapagos:Wolf2,IV,Type 1a,P. grandis
+Wolf2_2E,2E,NA,NA,Ecuador,Galapagos Northern,Wolf2,,1.38396,-91.82057,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Wolf2,IV,Type 1a,P. grandis
+Wolf2_3E,3E,NA,NA,Ecuador,Galapagos Northern,Wolf2,,1.38396,-91.82057,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Wolf2,IV,Type 1a,P. grandis
+Wolf2_4E,4E,NA,NA,Ecuador,Galapagos Northern,Wolf2,,1.38396,-91.82057,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Wolf2,IV,Type 1a,P. grandis
+Wolf2_5E,5E,NA,NA,Ecuador,Galapagos Northern,Wolf2,,1.38396,-91.82057,USFQ_CSUMB,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,Galapagos:Wolf2,IV,Type 1a,P. grandis
 Perlas_334_AP3XG25,334,AP3XG25,USNM 1666068,Panama,Panama,Contadora,3/3/22,8.63388,-79.0292,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,FALSE,Panama:Contadora,NA,NA,P. grandis
-Perlas_336_AP3XG27,336,AP3XG27,NA,Panama,Panama,Contadora,3/3/22,8.63388,-79.0292,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,TRUE,Panama:Contadora,III,Type 1a,P. grandis
-Perlas_337b_AP3XG28,337,AP3XG28,NA,Panama,Panama,Contadora,3/3/22,8.63388,-79.0292,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,FALSE,Panama:Contadora,III,Type 1a,P. grandis
-Perlas_338_AP3XG29,338,AP3XG29,NA,Panama,Panama,Contadora,3/3/22,8.63388,-79.0292,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,TRUE,Panama:Contadora,III,Type 1a,P. grandis
+Perlas_336_AP3XG27,336,AP3XG27,NA,Panama,Panama,Contadora,3/3/22,8.63388,-79.0292,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,TRUE,Panama:Contadora,IV,Type 1a,P. grandis
+Perlas_337b_AP3XG28,337,AP3XG28,NA,Panama,Panama,Contadora,3/3/22,8.63388,-79.0292,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,FALSE,Panama:Contadora,IV,Type 1a,P. grandis
+Perlas_338_AP3XG29,338,AP3XG29,NA,Panama,Panama,Contadora,3/3/22,8.63388,-79.0292,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,TRUE,Panama:Contadora,IV,Type 1a,P. grandis
 Perlas_342_AP3XG33,342,AP3XG33,NA,Panama,Panama,Contadora,3/3/22,8.63388,-79.0292,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,FALSE,Panama:Contadora,I,Type 3a,P. verrucosa 3a
 Perlas_345_AP3XG36,345,AP3XG36,USNM 1666065,Panama,Panama,Contadora,3/3/22,8.63388,-79.0292,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,FALSE,Panama:Contadora,I,Type 3a,P. verrucosa 3a
-Perlas_348_AP3XG39,348,AP3XG39,USNM 1666075,Panama,Panama,Contadora,3/3/22,8.63388,-79.0292,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,FALSE,Panama:Contadora,III,Type 1a,P. grandis
+Perlas_348_AP3XG39,348,AP3XG39,USNM 1666075,Panama,Panama,Contadora,3/3/22,8.63388,-79.0292,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,FALSE,Panama:Contadora,IV,Type 1a,P. grandis
 Perlas_349_AP3XG40,349,AP3XG40,NA,Panama,Panama,Contadora,3/3/22,8.63388,-79.0292,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,FALSE,Panama:Contadora,I,Type 3a,P. verrucosa 3a
-Coiba_698_AP3XF39,698,AP3XF39,USNM 1666043,Panama,Chiriqui,Wahoo,11/29/21,7.686389,-81.60889,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,TRUE,Chiriqui:Wahoo,III,Type 1a,P. grandis
-Coiba_909_AP3XF42,909,AP3XF42,USNM 1666057,Panama,Chiriqui,Wahoo,11/29/21,7.686389,-81.60889,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,TRUE,Chiriqui:Wahoo,III,Type 1a,P. grandis
+Coiba_698_AP3XF39,698,AP3XF39,USNM 1666043,Panama,Chiriqui,Wahoo,11/29/21,7.686389,-81.60889,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,TRUE,Chiriqui:Wahoo,IV,Type 1a,P. grandis
+Coiba_909_AP3XF42,909,AP3XF42,USNM 1666057,Panama,Chiriqui,Wahoo,11/29/21,7.686389,-81.60889,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,TRUE,Chiriqui:Wahoo,IV,Type 1a,P. grandis
 Coiba_677_AP3XF57,677,AP3XF57,USNM 1666060,Panama,Chiriqui,Canales,11/29/21,7.695942,-81.632929,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,TRUE,Chiriqui:Canales,I,Type 3a,P. verrucosa 3a
-Coiba_680_AP3XF41,680,AP3XF41,USNM 1666110,Panama,Chiriqui,Wahoo,11/29/21,7.686389,-81.60889,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,TRUE,Chiriqui:Wahoo,III,Type 1a,P. grandis
-Coiba_682_AP3XF51,682,AP3XF51,USNM 1666034,Panama,Chiriqui,Wahoo,11/29/21,7.686389,-81.60889,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,TRUE,Chiriqui:Wahoo,III,Type 1a,P. grandis
-Coiba_683_AP3XF56,683,AP3XF56,USNM 1666051,Panama,Chiriqui,Canales,11/29/21,7.695942,-81.632929,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,FALSE,Chiriqui:Canales,III,Type 1a,P. grandis
-Coiba_697_AP3XF37,697,AP3XF37,USNM 1666045,Panama,Chiriqui,Wahoo,11/29/21,7.686389,-81.60889,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,TRUE,Chiriqui:Wahoo,III,Type 1a,P. grandis
-Coiba_901_AP3XF53,901,AP3XF53,USNM 1666056,Panama,Chiriqui,Canales,11/29/21,7.695942,-81.632929,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,TRUE,Chiriqui:Canales,III,Type 1a,P. grandis
+Coiba_680_AP3XF41,680,AP3XF41,USNM 1666110,Panama,Chiriqui,Wahoo,11/29/21,7.686389,-81.60889,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,TRUE,Chiriqui:Wahoo,IV,Type 1a,P. grandis
+Coiba_682_AP3XF51,682,AP3XF51,USNM 1666034,Panama,Chiriqui,Wahoo,11/29/21,7.686389,-81.60889,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,TRUE,Chiriqui:Wahoo,IV,Type 1a,P. grandis
+Coiba_683_AP3XF56,683,AP3XF56,USNM 1666051,Panama,Chiriqui,Canales,11/29/21,7.695942,-81.632929,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,FALSE,Chiriqui:Canales,IV,Type 1a,P. grandis
+Coiba_697_AP3XF37,697,AP3XF37,USNM 1666045,Panama,Chiriqui,Wahoo,11/29/21,7.686389,-81.60889,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,TRUE,Chiriqui:Wahoo,IV,Type 1a,P. grandis
+Coiba_901_AP3XF53,901,AP3XF53,USNM 1666056,Panama,Chiriqui,Canales,11/29/21,7.695942,-81.632929,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,TRUE,Chiriqui:Canales,IV,Type 1a,P. grandis
 Coiba_902_AP3XF54,902,AP3XF54,USNM 1666038,Panama,Chiriqui,Canales,11/29/21,7.695942,-81.632929,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,TRUE,Chiriqui:Canales,I,Type 3a,P. verrucosa 3a
-Coiba_904_AP3XF68,904,AP3XF68,USNM 1666028,Panama,Chiriqui,Uvas,11/30/21,7.815128015,-81.75892202,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,TRUE,Chiriqui:Uvas,III,Type 1a,P. grandis
-Coiba_926_AP3XF52,926,AP3XF52,USNM 1666039,Panama,Chiriqui,Wahoo,11/29/21,7.686389,-81.60889,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,TRUE,Chiriqui:Wahoo,III,Type 1a,P. grandis
-Coiba_931_AP3XF40,931,AP3XF40,USNM 1666035,Panama,Chiriqui,Wahoo,11/29/21,7.686389,-81.60889,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,FALSE,Chiriqui:Wahoo,III,Type 1a,P. grandis
-Coco_646_AP3XF90,646,AP3XF90,NA,Costa Rica,Coco,Manuelita,5/27/21,5.56097,-87.04643,STRI,TRUE,FALSE,TRUE,FALSE,FALSE,TRUE,Coco:Manuelita,III,Type 1a,P. meandrina
-Coco_647_AP3XF91,647,AP3XF91,NA,Costa Rica,Coco,Manuelita,5/27/21,5.56097,-87.04643,STRI,TRUE,FALSE,TRUE,FALSE,FALSE,TRUE,Coco:Manuelita,III,Type 1a,P. meandrina
-Coco_657_AP3XG01,657,AP3XG01,NA,Costa Rica,Coco,Weston,5/27/21,5.55259,-87.05227,STRI,TRUE,FALSE,TRUE,FALSE,FALSE,TRUE,Coco:Weston,III,Type 1a,P. grandis
-Coco_658_AP3XG02,658,AP3XG02,NA,Costa Rica,Coco,Weston,5/27/21,5.55259,-87.05227,STRI,TRUE,FALSE,TRUE,FALSE,FALSE,TRUE,Coco:Weston,III,Type 1a,P. meandrina
-Coco_659_AP3XG03,659,AP3XG03,NA,Costa Rica,Coco,Weston,5/27/21,5.55259,-87.05227,STRI,TRUE,FALSE,TRUE,FALSE,FALSE,TRUE,Coco:Weston,III,Type 1a,P. grandis
-Coco_660_AP3XG04,660,AP3XG04,NA,Costa Rica,Coco,Weston,5/27/21,5.55259,-87.05227,STRI,TRUE,FALSE,TRUE,FALSE,FALSE,TRUE,Coco:Weston,III,Type 1a,P. grandis
-Coco_661_AP3XG05,661,AP3XG05,NA,Costa Rica,Coco,Weston,5/27/21,5.55259,-87.05227,STRI,TRUE,FALSE,TRUE,FALSE,FALSE,TRUE,Coco:Weston,III,Type 1a,P. grandis
+Coiba_904_AP3XF68,904,AP3XF68,USNM 1666028,Panama,Chiriqui,Uvas,11/30/21,7.815128015,-81.75892202,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,TRUE,Chiriqui:Uvas,IV,Type 1a,P. grandis
+Coiba_926_AP3XF52,926,AP3XF52,USNM 1666039,Panama,Chiriqui,Wahoo,11/29/21,7.686389,-81.60889,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,TRUE,Chiriqui:Wahoo,IV,Type 1a,P. grandis
+Coiba_931_AP3XF40,931,AP3XF40,USNM 1666035,Panama,Chiriqui,Wahoo,11/29/21,7.686389,-81.60889,STRI,TRUE,FALSE,TRUE,TRUE,FALSE,FALSE,Chiriqui:Wahoo,IV,Type 1a,P. grandis
+Coco_646_AP3XF90,646,AP3XF90,NA,Costa Rica,Coco,Manuelita,5/27/21,5.56097,-87.04643,STRI,TRUE,FALSE,TRUE,FALSE,FALSE,TRUE,Coco:Manuelita,IV,Type 1a,P. meandrina
+Coco_647_AP3XF91,647,AP3XF91,NA,Costa Rica,Coco,Manuelita,5/27/21,5.56097,-87.04643,STRI,TRUE,FALSE,TRUE,FALSE,FALSE,TRUE,Coco:Manuelita,IV,Type 1a,P. meandrina
+Coco_657_AP3XG01,657,AP3XG01,NA,Costa Rica,Coco,Weston,5/27/21,5.55259,-87.05227,STRI,TRUE,FALSE,TRUE,FALSE,FALSE,TRUE,Coco:Weston,IV,Type 1a,P. grandis
+Coco_658_AP3XG02,658,AP3XG02,NA,Costa Rica,Coco,Weston,5/27/21,5.55259,-87.05227,STRI,TRUE,FALSE,TRUE,FALSE,FALSE,TRUE,Coco:Weston,IV,Type 1a,P. meandrina
+Coco_659_AP3XG03,659,AP3XG03,NA,Costa Rica,Coco,Weston,5/27/21,5.55259,-87.05227,STRI,TRUE,FALSE,TRUE,FALSE,FALSE,TRUE,Coco:Weston,IV,Type 1a,P. grandis
+Coco_660_AP3XG04,660,AP3XG04,NA,Costa Rica,Coco,Weston,5/27/21,5.55259,-87.05227,STRI,TRUE,FALSE,TRUE,FALSE,FALSE,TRUE,Coco:Weston,IV,Type 1a,P. grandis
+Coco_661_AP3XG05,661,AP3XG05,NA,Costa Rica,Coco,Weston,5/27/21,5.55259,-87.05227,STRI,TRUE,FALSE,TRUE,FALSE,FALSE,TRUE,Coco:Weston,IV,Type 1a,P. grandis
 Coco_662_AP3XG06,662,AP3XG06,NA,Costa Rica,Coco,Weston,5/27/21,5.55259,-87.05227,STRI,TRUE,FALSE,TRUE,FALSE,FALSE,TRUE,Coco:Weston,NA,NA,P. grandis
-Coco_664_AP3XG08,664,AP3XG08,NA,Costa Rica,Coco,Weston,5/27/21,5.55259,-87.05227,STRI,TRUE,FALSE,TRUE,FALSE,FALSE,TRUE,Coco:Weston,III,Type 1a,P. grandis
+Coco_664_AP3XG08,664,AP3XG08,NA,Costa Rica,Coco,Weston,5/27/21,5.55259,-87.05227,STRI,TRUE,FALSE,TRUE,FALSE,FALSE,TRUE,Coco:Weston,IV,Type 1a,P. grandis
 Clip_01,NA,NA,NA,France,Clipperton,Clipperton,NA,10.28714487,-109.206346,Clipperton,FALSE,FALSE,TRUE,TRUE,FALSE,TRUE,Clipperton:Clipperton,NA,NA,P. grandis
-Clip_16,NA,NA,NA,France,Clipperton,Clipperton,NA,10.28714487,-109.206346,Clipperton,FALSE,FALSE,TRUE,TRUE,FALSE,TRUE,Clipperton:Clipperton,III,Type 1a,P. meandrina
+Clip_16,NA,NA,NA,France,Clipperton,Clipperton,NA,10.28714487,-109.206346,Clipperton,FALSE,FALSE,TRUE,TRUE,FALSE,TRUE,Clipperton:Clipperton,IV,Type 1a,P. meandrina
 PAN_10b,NA,NA,NA,Panama,Panama,Saboga,NA,8.62807,-79.05462,RSMAS,FALSE,TRUE,TRUE,TRUE,TRUE,FALSE,Panama:Saboga,I,Type 3a,P. verrucosa 3a
 PAN_10c,NA,NA,NA,Panama,Panama,Saboga,NA,8.62807,-79.05462,RSMAS,FALSE,TRUE,TRUE,TRUE,TRUE,FALSE,Panama:Saboga,I,Type 3a,P. verrucosa 3a
 PAN_05b,NA,NA,NA,Panama,Panama,Saboga,NA,8.62807,-79.05462,RSMAS,FALSE,TRUE,TRUE,TRUE,TRUE,FALSE,Panama:Saboga,NA,NA,P. grandis
-PAN_05c,NA,NA,NA,Panama,Panama,Saboga,NA,8.62807,-79.05462,RSMAS,FALSE,TRUE,TRUE,TRUE,TRUE,FALSE,Panama:Saboga,III,Type 1a,P. grandis
-PAN-78b,NA,NA,NA,Panama,Chiriqui,Uvas,NA,7.815128015,-81.75892202,RSMAS,FALSE,TRUE,TRUE,TRUE,TRUE,FALSE,Chiriqui:Uvas,III,Type 1a,P. grandis
-URA-51b,NA,NA,NA,Panama,Panama,Uraba,NA,8.779195994,-79.53109993,RSMAS,FALSE,TRUE,TRUE,TRUE,TRUE,FALSE,Panama:Uraba,III,Type 1a,P. grandis
-Perlas_376b_AP3XG67,376,AP3XG67,NA,Panama,Panama,Saboga Islets,3/4/22,8.6383,-79.05535,STRI,TRUE,FALSE,TRUE,TRUE,TRUE,FALSE,Panama:Saboga Islets,III,Type 1a,P. grandis
-Perlas_376c_AP3XG67,376,AP3XG67,NA,Panama,Panama,Saboga Islets,3/4/22,8.6383,-79.05535,STRI,TRUE,FALSE,TRUE,TRUE,TRUE,FALSE,Panama:Saboga Islets,III,Type 1a,P. grandis
+PAN_05c,NA,NA,NA,Panama,Panama,Saboga,NA,8.62807,-79.05462,RSMAS,FALSE,TRUE,TRUE,TRUE,TRUE,FALSE,Panama:Saboga,IV,Type 1a,P. grandis
+PAN-78b,NA,NA,NA,Panama,Chiriqui,Uvas,NA,7.815128015,-81.75892202,RSMAS,FALSE,TRUE,TRUE,TRUE,TRUE,FALSE,Chiriqui:Uvas,IV,Type 1a,P. grandis
+URA-51b,NA,NA,NA,Panama,Panama,Uraba,NA,8.779195994,-79.53109993,RSMAS,FALSE,TRUE,TRUE,TRUE,TRUE,FALSE,Panama:Uraba,IV,Type 1a,P. grandis
+Perlas_376b_AP3XG67,376,AP3XG67,NA,Panama,Panama,Saboga Islets,3/4/22,8.6383,-79.05535,STRI,TRUE,FALSE,TRUE,TRUE,TRUE,FALSE,Panama:Saboga Islets,IV,Type 1a,P. grandis
+Perlas_376c_AP3XG67,376,AP3XG67,NA,Panama,Panama,Saboga Islets,3/4/22,8.6383,-79.05535,STRI,TRUE,FALSE,TRUE,TRUE,TRUE,FALSE,Panama:Saboga Islets,IV,Type 1a,P. grandis
 Perlas_358b_AP3XG49,358,AP3XG49,NA,Panama,Panama,Saboga,3/4/22,8.62807,-79.05462,STRI,TRUE,FALSE,TRUE,TRUE,TRUE,FALSE,Panama:Saboga,I,Type 3a,P. verrucosa 3a
 Perlas_358c_AP3XG49,358,AP3XG49,NA,Panama,Panama,Saboga,3/4/22,8.62807,-79.05462,STRI,TRUE,FALSE,TRUE,TRUE,TRUE,FALSE,Panama:Saboga,I,Type 3a,P. verrucosa 3a
-Coco_653b_AP3XF97,653,AP3XF97,NA,Costa Rica,Coco,Manuelita,5/27/21,5.56097,-87.04643,STRI,TRUE,FALSE,TRUE,FALSE,TRUE,FALSE,Coco:Manuelita,II,Type 3c,P. verrucosa 3c
-Coco_653c_AP3XF97,653,AP3XF97,NA,Costa Rica,Coco,Manuelita,5/27/21,5.56097,-87.04643,STRI,TRUE,FALSE,TRUE,FALSE,TRUE,FALSE,Coco:Manuelita,II,Type 3c,P. verrucosa 3c
-Coco_618b_AP3XF84,618,AP3XF84,NA,Costa Rica,Coco,Chatham,5/26/21,5.55247,-87.04112,STRI,TRUE,FALSE,TRUE,FALSE,TRUE,FALSE,Coco:Chatham,III,Type 1a,P. meandrina
-Coco_618c_AP3XF84,618,AP3XF84,NA,Costa Rica,Coco,Chatham,5/26/21,5.55247,-87.04112,STRI,TRUE,FALSE,TRUE,FALSE,TRUE,FALSE,Coco:Chatham,III,Type 1a,P. meandrina
-Clip_19b,NA,NA,NA,France,Clipperton,Clipperton,NA,10.28714487,-109.206346,Clipperton,FALSE,FALSE,TRUE,TRUE,TRUE,FALSE,Clipperton:Clipperton,IV,Type 2,P. effusa
-Clip_19c,NA,NA,NA,France,Clipperton,Clipperton,NA,10.28714487,-109.206346,Clipperton,FALSE,FALSE,TRUE,TRUE,TRUE,FALSE,Clipperton:Clipperton,IV,Type 2,P. effusa
+Coco_653b_AP3XF97,653,AP3XF97,NA,Costa Rica,Coco,Manuelita,5/27/21,5.56097,-87.04643,STRI,TRUE,FALSE,TRUE,FALSE,TRUE,FALSE,Coco:Manuelita,II,Type 3b,P. verrucosa 3b
+Coco_653c_AP3XF97,653,AP3XF97,NA,Costa Rica,Coco,Manuelita,5/27/21,5.56097,-87.04643,STRI,TRUE,FALSE,TRUE,FALSE,TRUE,FALSE,Coco:Manuelita,II,Type 3b,P. verrucosa 3b
+Coco_618b_AP3XF84,618,AP3XF84,NA,Costa Rica,Coco,Chatham,5/26/21,5.55247,-87.04112,STRI,TRUE,FALSE,TRUE,FALSE,TRUE,FALSE,Coco:Chatham,IV,Type 1a,P. meandrina
+Coco_618c_AP3XF84,618,AP3XF84,NA,Costa Rica,Coco,Chatham,5/26/21,5.55247,-87.04112,STRI,TRUE,FALSE,TRUE,FALSE,TRUE,FALSE,Coco:Chatham,IV,Type 1a,P. meandrina
+Clip_19b,NA,NA,NA,France,Clipperton,Clipperton,NA,10.28714487,-109.206346,Clipperton,FALSE,FALSE,TRUE,TRUE,TRUE,FALSE,Clipperton:Clipperton,V,Type 2,P. effusa
+Clip_19c,NA,NA,NA,France,Clipperton,Clipperton,NA,10.28714487,-109.206346,Clipperton,FALSE,FALSE,TRUE,TRUE,TRUE,FALSE,Clipperton:Clipperton,V,Type 2,P. effusa

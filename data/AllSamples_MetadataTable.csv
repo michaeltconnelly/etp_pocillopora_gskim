@@ -1,0 +1,343 @@
+Sample ID,Sequence Round,Cattle Tag Number,Biorepository Number,USNM Number,Country,Region,Site,Sampling Date,Latitude,Longitude,Region:Site
+Clip_02,1,NA,NA,NA,France,Clipperton,Clipperton,NA,10.28714487,-109.206346,Clipperton:Clipperton
+Clip_03,1,NA,NA,NA,France,Clipperton,Clipperton,NA,10.28714487,-109.206346,Clipperton:Clipperton
+Clip_15,1,NA,NA,NA,France,Clipperton,Clipperton,NA,10.28714487,-109.206346,Clipperton:Clipperton
+Clip_19,1,NA,NA,NA,France,Clipperton,Clipperton,NA,10.28714487,-109.206346,Clipperton:Clipperton
+Clip_21,1,NA,NA,NA,France,Clipperton,Clipperton,NA,10.28714487,-109.206346,Clipperton:Clipperton
+Clip_26,1,NA,NA,NA,France,Clipperton,Clipperton,NA,10.28714487,-109.206346,Clipperton:Clipperton
+Coco_611,1,611,AP3XF77,NA,Costa Rica,Coco,Chatham,5/26/21,5.55247,-87.04112,Coco:Chatham
+Coco_612,1,612,AP3XF78,NA,Costa Rica,Coco,Chatham,5/26/21,5.55247,-87.04112,Coco:Chatham
+Coco_613,1,613,AP3XF79,NA,Costa Rica,Coco,Chatham,5/26/21,5.55247,-87.04112,Coco:Chatham
+Coco_614,1,614,AP3XF80,NA,Costa Rica,Coco,Chatham,5/26/21,5.55247,-87.04112,Coco:Chatham
+Coco_615,1,615,AP3XF81,NA,Costa Rica,Coco,Chatham,5/26/21,5.55247,-87.04112,Coco:Chatham
+Coco_616,1,616,AP3XF82,NA,Costa Rica,Coco,Chatham,5/26/21,5.55247,-87.04112,Coco:Chatham
+Coco_617,1,617,AP3XF83,NA,Costa Rica,Coco,Chatham,5/26/21,5.55247,-87.04112,Coco:Chatham
+Coco_618,1,618,AP3XF84,NA,Costa Rica,Coco,Chatham,5/26/21,5.55247,-87.04112,Coco:Chatham
+Coco_619,1,619,AP3XF85,NA,Costa Rica,Coco,Chatham,5/26/21,5.55247,-87.04112,Coco:Chatham
+Coco_620,1,620,AP3XF86,NA,Costa Rica,Coco,Chatham,5/26/21,5.55247,-87.04112,Coco:Chatham
+Coco_621,1,621,AP3XF87,NA,Costa Rica,Coco,Chatham,5/26/21,5.55247,-87.04112,Coco:Chatham
+Coco_644,1,644,AP3XF88,NA,Costa Rica,Coco,Manuelita,5/26/21,5.56097,-87.04643,Coco:Manuelita
+Coco_645,1,645,AP3XF89,NA,Costa Rica,Coco,Manuelita,5/27/21,5.56097,-87.04643,Coco:Manuelita
+Coco_648,1,648,AP3XF92,NA,Costa Rica,Coco,Manuelita,5/27/21,5.56097,-87.04643,Coco:Manuelita
+Coco_649,1,649,AP3XF93,NA,Costa Rica,Coco,Manuelita,5/27/21,5.56097,-87.04643,Coco:Manuelita
+Coco_650,1,650,AP3XF94,NA,Costa Rica,Coco,Manuelita,5/27/21,5.56097,-87.04643,Coco:Manuelita
+Coco_651,1,651,AP3XF95,NA,Costa Rica,Coco,Manuelita,5/27/21,5.56097,-87.04643,Coco:Manuelita
+Coco_652,1,652,AP3XF96,NA,Costa Rica,Coco,Manuelita,5/27/21,5.56097,-87.04643,Coco:Manuelita
+Coco_653,1,653,AP3XF97,NA,Costa Rica,Coco,Manuelita,5/27/21,5.56097,-87.04643,Coco:Manuelita
+Coco_654,1,654,AP3XF98,NA,Costa Rica,Coco,Manuelita,5/27/21,5.56097,-87.04643,Coco:Manuelita
+Coco_655,1,655,AP3XF99,NA,Costa Rica,Coco,Weston,5/26/21,5.55259,-87.05227,Coco:Weston
+Coco_656,1,656,AP3XG00,NA,Costa Rica,Coco,Weston,5/27/21,5.55259,-87.05227,Coco:Weston
+Coco_665,1,665,AP3XG09,NA,Costa Rica,Coco,Weston,5/27/21,5.55259,-87.05227,Coco:Weston
+Coco_666,1,666,AP3XG10,NA,Costa Rica,Coco,Weston shallow,5/29/21,5.55239,-87.05061,Coco:Weston shallow
+Coco_667,1,667,AP3XG11,NA,Costa Rica,Coco,Weston shallow,5/29/21,5.55239,-87.05061,Coco:Weston shallow
+Coco_668,1,668,AP3XG12,NA,Costa Rica,Coco,Weston shallow,5/29/21,5.55239,-87.05061,Coco:Weston shallow
+Coiba_679,1,679,AP3XF55,USNM 1666042,Panama,Chiriqui,Canales,11/29/21,7.695942,-81.632929,Chiriqui:Canales
+Coiba_684,1,684,AP3XF75,USNM 1666036,Panama,Chiriqui,Uva Channel,11/30/21,7.861944,-81.78083,Chiriqui:Uva Channel
+Coiba_685,1,685,AP3XF43,USNM 1666046,Panama,Chiriqui,Wahoo,11/29/21,7.686389,-81.60889,Chiriqui:Wahoo
+Coiba_686,1,686,AP3XF47,USNM 1666048,Panama,Chiriqui,Wahoo,11/29/21,7.686389,-81.60889,Chiriqui:Wahoo
+Coiba_688,1,688,AP3XF58,USNM 1666052,Panama,Chiriqui,Canales,11/29/21,7.695942,-81.632929,Chiriqui:Canales
+Coiba_691,1,691,AP3XF49,USNM 1666055,Panama,Chiriqui,Wahoo,11/29/21,7.686389,-81.60889,Chiriqui:Wahoo
+Coiba_692,1,692,AP3XF70,USNM 1666030,Panama,Chiriqui,Uvas,11/30/21,7.815128015,-81.75892202,Chiriqui:Uvas
+Coiba_693,1,693,AP3XF45,USNM 1666026,Panama,Chiriqui,Wahoo,11/29/21,7.686389,-81.60889,Chiriqui:Wahoo
+Coiba_694,1,694,AP3XF73,USNM 1666032,Panama,Chiriqui,Uva Channel,11/30/21,7.861944,-81.78083,Chiriqui:Uva Channel
+Coiba_696,1,696,AP3XF67,USNM 1666041,Panama,Chiriqui,Uvas,11/30/21,7.815128015,-81.75892202,Chiriqui:Uvas
+Coiba_900,1,900,AP3XF69,USNM 1666040,Panama,Chiriqui,Uvas,11/30/21,7.815128015,-81.75892202,Chiriqui:Uvas
+Coiba_903,1,903,AP3XF59,USNM 1666024,Panama,Chiriqui,Canales,11/29/21,7.695942,-81.632929,Chiriqui:Canales
+Coiba_906,1,906,AP3XF65,USNM 1666025,Panama,Chiriqui,Uvas,11/30/21,7.815128015,-81.75892202,Chiriqui:Uvas
+Coiba_907,1,907,AP3XF62,USNM 1666044,Panama,Chiriqui,Uvas,11/30/21,7.815128015,-81.75892202,Chiriqui:Uvas
+Coiba_908,1,908,AP3XF72,USNM 1666033,Panama,Chiriqui,Uva Channel,11/30/21,7.861944,-81.78083,Chiriqui:Uva Channel
+Coiba_910,1,910,AP3XF46,USNM 1666023,Panama,Chiriqui,Wahoo,11/29/21,7.686389,-81.60889,Chiriqui:Wahoo
+Coiba_914,1,914,AP3XF63,USNM 1666059,Panama,Chiriqui,Uvas,11/30/21,7.815128015,-81.75892202,Chiriqui:Uvas
+Coiba_915,1,915,AP3XF66,USNM 1666037,Panama,Chiriqui,Uvas,11/30/21,7.815128015,-81.75892202,Chiriqui:Uvas
+Coiba_917,1,917,AP3XF64,USNM 1666049,Panama,Chiriqui,Uvas,11/30/21,7.815128015,-81.75892202,Chiriqui:Uvas
+Coiba_918,1,918,AP3XF74,USNM 1666053,Panama,Chiriqui,Uva Channel,11/30/21,7.861944,-81.78083,Chiriqui:Uva Channel
+Coiba_919,1,919,AP3XF76,USNM 1666027,Panama,Chiriqui,Uva Channel,11/30/21,7.861944,-81.78083,Chiriqui:Uva Channel
+Coiba_920,1,920,AP3XF71,USNM 1666031,Panama,Chiriqui,Uva Channel,11/30/21,7.861944,-81.78083,Chiriqui:Uva Channel
+Coiba_922,1,922,AP3XF60,USNM 1666022,Panama,Chiriqui,Canales,11/29/21,7.695942,-81.632929,Chiriqui:Canales
+Coiba_925,1,925,AP3XF61,USNM 1666058,Panama,Chiriqui,Uvas,11/30/21,7.815128015,-81.75892202,Chiriqui:Uvas
+Coiba_927,1,927,AP3XF48,USNM 1666047,Panama,Chiriqui,Wahoo,11/29/21,7.686389,-81.60889,Chiriqui:Wahoo
+Coiba_928,1,928,AP3XF50,USNM 1666029,Panama,Chiriqui,Wahoo,11/29/21,7.686389,-81.60889,Chiriqui:Wahoo
+Coiba_929,1,929,AP3XF38,USNM 1666050,Panama,Chiriqui,Wahoo,11/29/21,7.686389,-81.60889,Chiriqui:Wahoo
+Coiba_930,1,930,AP3XF44,USNM 1666054,Panama,Chiriqui,Wahoo,11/29/21,7.686389,-81.60889,Chiriqui:Wahoo
+PAN_05,1,NA,NA,NA,Panama,Panama,Saboga,NA,8.62807,-79.05462,Panama:Saboga
+PAN_10,1,NA,NA,NA,Panama,Panama,Saboga,NA,8.62807,-79.05462,Panama:Saboga
+PAN_32,1,NA,NA,NA,Panama,Chiriqui,Uvas,NA,7.815128015,-81.75892202,Chiriqui:Uvas
+PAN_34,1,NA,NA,NA,Panama,Chiriqui,Uvas,NA,7.815128015,-81.75892202,Chiriqui:Uvas
+PAN_35,1,NA,NA,NA,Panama,Chiriqui,Uvas,NA,7.815128015,-81.75892202,Chiriqui:Uvas
+PAN_37,1,NA,NA,NA,Panama,Panama,Saboga,NA,8.62807,-79.05462,Panama:Saboga
+PAN_39,1,NA,NA,NA,Panama,Panama,Saboga,NA,8.62807,-79.05462,Panama:Saboga
+PAN_41,1,NA,NA,NA,Panama,Panama,Saboga,NA,8.62807,-79.05462,Panama:Saboga
+PAN_43,1,NA,NA,NA,Panama,Panama,Saboga,NA,8.62807,-79.05462,Panama:Saboga
+PAN_44,1,NA,NA,NA,Panama,Panama,Saboga,NA,8.62807,-79.05462,Panama:Saboga
+PAN_78,1,NA,NA,NA,Panama,Chiriqui,Uvas,NA,7.815128015,-81.75892202,Chiriqui:Uvas
+PAN_79,1,NA,NA,NA,Panama,Chiriqui,Uvas,NA,7.815128015,-81.75892202,Chiriqui:Uvas
+PAN_83,1,NA,NA,NA,Panama,Chiriqui,Uvas,NA,7.815128015,-81.75892202,Chiriqui:Uvas
+Perlas_333,1,333,AP3XG24,USNM 1666067,Panama,Panama,Contadora,3/3/22,8.63388,-79.0292,Panama:Contadora
+Perlas_335,1,335,AP3XG26,USNM 1666098,Panama,Panama,Contadora,3/3/22,8.63388,-79.0292,Panama:Contadora
+Perlas_337,1,337,AP3XG28,USNM 1666061,Panama,Panama,Contadora,3/3/22,8.63388,-79.0292,Panama:Contadora
+Perlas_339,1,339,AP3XG30,USNM 1666070,Panama,Panama,Contadora,3/3/22,8.63388,-79.0292,Panama:Contadora
+Perlas_340,1,340,AP3XG31,USNM 1666062,Panama,Panama,Contadora,3/3/22,8.63388,-79.0292,Panama:Contadora
+Perlas_341,1,341,AP3XG32,USNM 1666071,Panama,Panama,Contadora,3/3/22,8.63388,-79.0292,Panama:Contadora
+Perlas_343,1,343,AP3XG34,USNM 1666072,Panama,Panama,Contadora,3/3/22,8.63388,-79.0292,Panama:Contadora
+Perlas_344,1,344,AP3XG35,USNM 1666073,Panama,Panama,Contadora,3/3/22,8.63388,-79.0292,Panama:Contadora
+Perlas_346,1,346,AP3XG37,USNM 1666074,Panama,Panama,Contadora,3/3/22,8.63388,-79.0292,Panama:Contadora
+Perlas_350,1,350,AP3XG41,USNM 1666069,Panama,Panama,Contadora,3/3/22,8.63388,-79.0292,Panama:Contadora
+Perlas_351,1,351,AP3XG42,USNM 1666076,Panama,Panama,Saboga,3/4/22,8.62807,-79.05462,Panama:Saboga
+Perlas_352,1,352,AP3XG43,USNM 1666077,Panama,Panama,Saboga,3/4/22,8.62807,-79.05462,Panama:Saboga
+Perlas_353,1,353,AP3XG44,USNM 1666078,Panama,Panama,Saboga,3/4/22,8.62807,-79.05462,Panama:Saboga
+Perlas_354,1,354,AP3XG45,USNM 1666079,Panama,Panama,Saboga,3/4/22,8.62807,-79.05462,Panama:Saboga
+Perlas_355,1,355,AP3XG46,USNM 1666080,Panama,Panama,Saboga,3/4/22,8.62807,-79.05462,Panama:Saboga
+Perlas_356,1,356,AP3XG47,USNM 1666081,Panama,Panama,Saboga,3/4/22,8.62807,-79.05462,Panama:Saboga
+Perlas_357,1,357,AP3XG48,USNM 1666082,Panama,Panama,Saboga,3/4/22,8.62807,-79.05462,Panama:Saboga
+Perlas_358,1,358,AP3XG49,NA,Panama,Panama,Saboga,3/4/22,8.62807,-79.05462,Panama:Saboga
+Perlas_359,1,359,AP3XG50,USNM 1666083,Panama,Panama,Saboga,3/4/22,8.62807,-79.05462,Panama:Saboga
+Perlas_360,1,360,AP3XG51,USNM 1666084,Panama,Panama,Saboga,3/4/22,8.62807,-79.05462,Panama:Saboga
+Perlas_361,1,361,AP3XG52,USNM 1666085,Panama,Panama,Saboga,3/4/22,8.62807,-79.05462,Panama:Saboga
+Perlas_362,1,362,AP3XG53,USNM 1666086,Panama,Panama,Saboga,3/4/22,8.62807,-79.05462,Panama:Saboga
+Perlas_363,1,363,AP3XG54,USNM 1666087,Panama,Panama,Saboga,3/4/22,8.62807,-79.05462,Panama:Saboga
+Perlas_364,1,364,AP3XG55,NA,Panama,Panama,Saboga,3/4/22,8.62807,-79.05462,Panama:Saboga
+Perlas_365,1,365,AP3XG56,USNM 1666088,Panama,Panama,Saboga,3/4/22,8.62807,-79.05462,Panama:Saboga
+Perlas_366,1,366,AP3XG57,USNM 1666089,Panama,Panama,Saboga Islets,3/4/22,8.6383,-79.05535,Panama:Saboga Islets
+Perlas_367,1,367,AP3XG58,USNM 1666090,Panama,Panama,Saboga Islets,3/4/22,8.6383,-79.05535,Panama:Saboga Islets
+Perlas_368,1,368,AP3XG59,USNM 1666091,Panama,Panama,Saboga Islets,3/4/22,8.6383,-79.05535,Panama:Saboga Islets
+Perlas_369,1,369,AP3XG60,USNM 1666092,Panama,Panama,Saboga Islets,3/4/22,8.6383,-79.05535,Panama:Saboga Islets
+Perlas_370,1,370,AP3XG61,USNM 1666093,Panama,Panama,Saboga Islets,3/4/22,8.6383,-79.05535,Panama:Saboga Islets
+Perlas_371,1,371,AP3XG62,USNM 1666094,Panama,Panama,Saboga Islets,3/4/22,8.6383,-79.05535,Panama:Saboga Islets
+Perlas_372,1,372,AP3XG63,USNM 1666095,Panama,Panama,Saboga Islets,3/4/22,8.6383,-79.05535,Panama:Saboga Islets
+Perlas_373,1,373,AP3XG64,USNM 1666096,Panama,Panama,Saboga Islets,3/4/22,8.6383,-79.05535,Panama:Saboga Islets
+Perlas_374,1,374,AP3XG65,USNM 1666097,Panama,Panama,Saboga Islets,3/4/22,8.6383,-79.05535,Panama:Saboga Islets
+Perlas_375,1,375,AP3XG66,NA,Panama,Panama,Saboga Islets,3/4/22,8.6383,-79.05535,Panama:Saboga Islets
+Perlas_376,1,376,AP3XG67,USNM 1666063,Panama,Panama,Saboga Islets,3/4/22,8.6383,-79.05535,Panama:Saboga Islets
+Perlas_401,1,401,AP3XG68,USNM 1666100,Panama,Panama,San Pedro,3/8/22,8.45996,-78.85208,Panama:San Pedro
+Perlas_402,1,402,AP3XG69,USNM 1666101,Panama,Panama,San Pedro,3/8/22,8.45996,-78.85208,Panama:San Pedro
+Perlas_403,1,403,AP3XG70,USNM 1666064,Panama,Panama,San Pedro,3/8/22,8.45996,-78.85208,Panama:San Pedro
+Perlas_404,1,404,AP3XG71,USNM 1666102,Panama,Panama,San Pedro,3/8/22,8.45996,-78.85208,Panama:San Pedro
+Perlas_405,1,405,AP3XG72,NA,Panama,Panama,San Pedro,3/8/22,8.45996,-78.85208,Panama:San Pedro
+Perlas_406,1,406,AP3XG73,USNM 1666103,Panama,Panama,San Pedro,3/8/22,8.45996,-78.85208,Panama:San Pedro
+Perlas_407,1,407,AP3XG74,USNM 1666066,Panama,Panama,San Pedro,3/8/22,8.45996,-78.85208,Panama:San Pedro
+Perlas_408,1,408,AP3XG75,USNM 1666104,Panama,Panama,San Pedro,3/8/22,8.45996,-78.85208,Panama:San Pedro
+Perlas_409,1,409,AP3XG76,USNM 1666105,Panama,Panama,San Pedro,3/8/22,8.45996,-78.85208,Panama:San Pedro
+Perlas_410,1,410,AP3XG77,USNM 1666106,Panama,Panama,San Pedro,3/8/22,8.45996,-78.85208,Panama:San Pedro
+Perlas_411,1,411,AP3XG78,USNM 1666107,Panama,Panama,San Pedro,3/8/22,8.45996,-78.85208,Panama:San Pedro
+Perlas_412,1,412,AP3XG79,USNM 1666108,Panama,Panama,San Pedro,3/8/22,8.45996,-78.85208,Panama:San Pedro
+URA_12,1,NA,NA,NA,Panama,Panama,Uraba,NA,8.779195994,-79.53109993,Panama:Uraba
+URA_16,1,NA,NA,NA,Panama,Panama,Uraba,NA,8.779195994,-79.53109993,Panama:Uraba
+URA_51,1,NA,NA,NA,Panama,Panama,Uraba,NA,8.779195994,-79.53109993,Panama:Uraba
+Clip_01,2,NA,NA,NA,France,Clipperton,Clipperton,NA,10.28714487,-109.206346,Clipperton:Clipperton
+Clip_16,2,NA,NA,NA,France,Clipperton,Clipperton,NA,10.28714487,-109.206346,Clipperton:Clipperton
+Clip_19b,2,NA,NA,NA,France,Clipperton,Clipperton,NA,10.28714487,-109.206346,Clipperton:Clipperton
+Clip_19c,2,NA,NA,NA,France,Clipperton,Clipperton,NA,10.28714487,-109.206346,Clipperton:Clipperton
+Coco_618b,2,618,AP3XF84,NA,Costa Rica,Coco,Chatham,5/26/21,5.55247,-87.04112,Coco:Chatham
+Coco_618c,2,618,AP3XF84,NA,Costa Rica,Coco,Chatham,5/26/21,5.55247,-87.04112,Coco:Chatham
+Coco_646,2,646,AP3XF90,NA,Costa Rica,Coco,Manuelita,5/27/21,5.56097,-87.04643,Coco:Manuelita
+Coco_647,2,647,AP3XF91,NA,Costa Rica,Coco,Manuelita,5/27/21,5.56097,-87.04643,Coco:Manuelita
+Coco_653b,2,653,AP3XF97,NA,Costa Rica,Coco,Manuelita,5/27/21,5.56097,-87.04643,Coco:Manuelita
+Coco_653c,2,653,AP3XF97,NA,Costa Rica,Coco,Manuelita,5/27/21,5.56097,-87.04643,Coco:Manuelita
+Coco_657,2,657,AP3XG01,NA,Costa Rica,Coco,Weston,5/27/21,5.55259,-87.05227,Coco:Weston
+Coco_658,2,658,AP3XG02,NA,Costa Rica,Coco,Weston,5/27/21,5.55259,-87.05227,Coco:Weston
+Coco_659,2,659,AP3XG03,NA,Costa Rica,Coco,Weston,5/27/21,5.55259,-87.05227,Coco:Weston
+Coco_660,2,660,AP3XG04,NA,Costa Rica,Coco,Weston,5/27/21,5.55259,-87.05227,Coco:Weston
+Coco_661,2,661,AP3XG05,NA,Costa Rica,Coco,Weston,5/27/21,5.55259,-87.05227,Coco:Weston
+Coco_662,2,662,AP3XG06,NA,Costa Rica,Coco,Weston,5/27/21,5.55259,-87.05227,Coco:Weston
+Coco_664,2,664,AP3XG08,NA,Costa Rica,Coco,Weston,5/27/21,5.55259,-87.05227,Coco:Weston
+Coiba_677,2,677,AP3XF57,USNM 1666060,Panama,Chiriqui,Canales,11/29/21,7.695942,-81.632929,Chiriqui:Canales
+Coiba_680,2,680,AP3XF41,USNM 1666110,Panama,Chiriqui,Wahoo,11/29/21,7.686389,-81.60889,Chiriqui:Wahoo
+Coiba_682,2,682,AP3XF51,USNM 1666034,Panama,Chiriqui,Wahoo,11/29/21,7.686389,-81.60889,Chiriqui:Wahoo
+Coiba_683,2,683,AP3XF56,USNM 1666051,Panama,Chiriqui,Canales,11/29/21,7.695942,-81.632929,Chiriqui:Canales
+Coiba_697,2,697,AP3XF37,USNM 1666045,Panama,Chiriqui,Wahoo,11/29/21,7.686389,-81.60889,Chiriqui:Wahoo
+Coiba_698,2,698,AP3XF39,USNM 1666043,Panama,Chiriqui,Wahoo,11/29/21,7.686389,-81.60889,Chiriqui:Wahoo
+Coiba_901,2,901,AP3XF53,USNM 1666056,Panama,Chiriqui,Canales,11/29/21,7.695942,-81.632929,Chiriqui:Canales
+Coiba_902,2,902,AP3XF54,USNM 1666038,Panama,Chiriqui,Canales,11/29/21,7.695942,-81.632929,Chiriqui:Canales
+Coiba_904,2,904,AP3XF68,USNM 1666028,Panama,Chiriqui,Uvas,11/30/21,7.815128015,-81.75892202,Chiriqui:Uvas
+Coiba_909,2,909,AP3XF42,USNM 1666057,Panama,Chiriqui,Wahoo,11/29/21,7.686389,-81.60889,Chiriqui:Wahoo
+Coiba_926,2,926,AP3XF52,USNM 1666039,Panama,Chiriqui,Wahoo,11/29/21,7.686389,-81.60889,Chiriqui:Wahoo
+Coiba_931,2,931,AP3XF40,USNM 1666035,Panama,Chiriqui,Wahoo,11/29/21,7.686389,-81.60889,Chiriqui:Wahoo
+Darwin_1A,2,1A,NA,NA,Ecuador,Galapagos,Darwin,NA,1.67211,-91.999483,Galapagos:Darwin
+Darwin_2A,2,2A,NA,NA,Ecuador,Galapagos,Darwin,NA,1.67211,-91.999483,Galapagos:Darwin
+Darwin_3A,2,3A,NA,NA,Ecuador,Galapagos,Darwin,NA,1.67211,-91.999483,Galapagos:Darwin
+Darwin_4A,2,4A,NA,NA,Ecuador,Galapagos,Darwin,NA,1.67211,-91.999483,Galapagos:Darwin
+Darwin_534,2,534,NA,NA,Ecuador,Galapagos,Darwin,NA,1.67211,-91.999483,Galapagos:Darwin
+Darwin_539,2,539,NA,NA,Ecuador,Galapagos,Darwin,NA,1.67211,-91.999483,Galapagos:Darwin
+Darwin_548,2,548,NA,NA,Ecuador,Galapagos,Darwin,NA,1.67211,-91.999483,Galapagos:Darwin
+Darwin_549,2,549,NA,NA,Ecuador,Galapagos,Darwin,NA,1.67211,-91.999483,Galapagos:Darwin
+Darwin_550,2,550,NA,NA,Ecuador,Galapagos,Darwin,NA,1.67211,-91.999483,Galapagos:Darwin
+Darwin_551,2,551,NA,NA,Ecuador,Galapagos,Darwin,NA,1.67211,-91.999483,Galapagos:Darwin
+Darwin_553,2,553,NA,NA,Ecuador,Galapagos,Darwin,NA,1.67211,-91.999483,Galapagos:Darwin
+Darwin_556,2,556,NA,NA,Ecuador,Galapagos,Darwin,NA,1.67211,-91.999483,Galapagos:Darwin
+Darwin_557,2,557,NA,NA,Ecuador,Galapagos,Darwin,NA,1.67211,-91.999483,Galapagos:Darwin
+Darwin_558,2,558,NA,NA,Ecuador,Galapagos,Darwin,NA,1.67211,-91.999483,Galapagos:Darwin
+Darwin_563,2,563,NA,NA,Ecuador,Galapagos,Darwin,NA,1.67211,-91.999483,Galapagos:Darwin
+Darwin_563b,2,563,NA,NA,Ecuador,Galapagos,Darwin,NA,1.67211,-91.999483,Galapagos:Darwin
+Darwin_564,2,564,NA,NA,Ecuador,Galapagos,Darwin,NA,1.67211,-91.999483,Galapagos:Darwin
+Darwin_567,2,567,NA,NA,Ecuador,Galapagos,Darwin,NA,1.67211,-91.999483,Galapagos:Darwin
+Darwin_576,2,576,NA,NA,Ecuador,Galapagos,Darwin,NA,1.67211,-91.999483,Galapagos:Darwin
+Darwin_584,2,584,NA,NA,Ecuador,Galapagos,Darwin,NA,1.67211,-91.999483,Galapagos:Darwin
+Darwin_589,2,589,NA,NA,Ecuador,Galapagos,Darwin,NA,1.67211,-91.999483,Galapagos:Darwin
+Darwin_591,2,591,NA,NA,Ecuador,Galapagos,Darwin,NA,1.67211,-91.999483,Galapagos:Darwin
+Darwin_594,2,594,NA,NA,Ecuador,Galapagos,Darwin,NA,1.67211,-91.999483,Galapagos:Darwin
+Darwin_5A,2,5A,NA,NA,Ecuador,Galapagos,Darwin,NA,1.67211,-91.999483,Galapagos:Darwin
+Darwin_617,2,617,NA,NA,Ecuador,Galapagos,Darwin,NA,1.67211,-91.999483,Galapagos:Darwin
+Espanola_1A,2,1A,NA,NA,Ecuador,Galapagos,Espanola,NA,-1.35207,-89.6548,Galapagos:Espanola
+Espanola_2A,2,2A,NA,NA,Ecuador,Galapagos,Espanola,NA,-1.35207,-89.6548,Galapagos:Espanola
+Espanola_3A,2,3A,NA,NA,Ecuador,Galapagos,Espanola,NA,-1.35207,-89.6548,Galapagos:Espanola
+Espanola_4A,2,4A,NA,NA,Ecuador,Galapagos,Espanola,NA,-1.35207,-89.6548,Galapagos:Espanola
+Espanola_5A,2,5A,NA,NA,Ecuador,Galapagos,Espanola,NA,-1.35207,-89.6548,Galapagos:Espanola
+Floreana_1E,2,1E,NA,NA,Ecuador,Galapagos,Floreana,NA,-1.216193,-90.422824,Galapagos:Floreana
+Floreana_2E,2,2E,NA,NA,Ecuador,Galapagos,Floreana,NA,-1.216193,-90.422824,Galapagos:Floreana
+Floreana_3E,2,3E,NA,NA,Ecuador,Galapagos,Floreana,NA,-1.216193,-90.422824,Galapagos:Floreana
+Floreana_473,2,473,NA,NA,Ecuador,Galapagos,Floreana,NA,-1.216193,-90.422824,Galapagos:Floreana
+Floreana_4E,2,4E,NA,NA,Ecuador,Galapagos,Floreana,NA,-1.216193,-90.422824,Galapagos:Floreana
+Floreana_567,2,No tag,NA,NA,Ecuador,Galapagos,Floreana,NA,-1.216193,-90.422824,Galapagos:Floreana
+Floreana_581,2,No tag,NA,NA,Ecuador,Galapagos,Floreana,NA,-1.216193,-90.422824,Galapagos:Floreana
+Floreana_584,2,No tag,NA,NA,Ecuador,Galapagos,Floreana,NA,-1.216193,-90.422824,Galapagos:Floreana
+Floreana_589,2,No tag,NA,NA,Ecuador,Galapagos,Floreana,NA,-1.216193,-90.422824,Galapagos:Floreana
+Floreana_590,2,No tag,NA,NA,Ecuador,Galapagos,Floreana,NA,-1.216193,-90.422824,Galapagos:Floreana
+Floreana_5E,2,5E,NA,NA,Ecuador,Galapagos,Floreana,NA,-1.216193,-90.422824,Galapagos:Floreana
+Gorgona_121,2,121,NA,NA,Colombia,Gorgona,Playa Blanca S,NA,2.92975,-78.20268,Gorgona:Playa Blanca S
+Gorgona_123,2,123,NA,NA,Colombia,Gorgona,Playa Blanca S,NA,2.92975,-78.20268,Gorgona:Playa Blanca S
+Gorgona_124,2,124-Li,NA,NA,Colombia,Gorgona,Playa Blanca S,NA,2.92975,-78.20268,Gorgona:Playa Blanca S
+Gorgona_125,2,125,NA,NA,Colombia,Gorgona,Playa Blanca S,NA,2.92975,-78.20268,Gorgona:Playa Blanca S
+Gorgona_126,2,126,NA,NA,Colombia,Gorgona,Playa Blanca S,NA,2.92975,-78.20268,Gorgona:Playa Blanca S
+Gorgona_127,2,127,NA,NA,Colombia,Gorgona,Playa Blanca S,NA,2.92975,-78.20268,Gorgona:Playa Blanca S
+Gorgona_128,2,128,NA,NA,Colombia,Gorgona,Playa Blanca S,NA,2.92975,-78.20268,Gorgona:Playa Blanca S
+Gorgona_129,2,129,NA,NA,Colombia,Gorgona,Playa Blanca S,NA,2.92975,-78.20268,Gorgona:Playa Blanca S
+Gorgona_130,2,130-li,NA,NA,Colombia,Gorgona,Playa Blanca S,NA,2.92975,-78.20268,Gorgona:Playa Blanca S
+Gorgona_131,2,131,NA,NA,Colombia,Gorgona,Playa Blanca S,NA,2.92975,-78.20268,Gorgona:Playa Blanca S
+Gorgona_132,2,132,NA,NA,Colombia,Gorgona,Playa Blanca S,NA,2.92975,-78.20268,Gorgona:Playa Blanca S
+Gorgona_134,2,134,NA,NA,Colombia,Gorgona,Playa Blanca S,NA,2.92975,-78.20268,Gorgona:Playa Blanca S
+Gorgona_135,2,135,NA,NA,Colombia,Gorgona,Playa Blanca S,NA,2.92975,-78.20268,Gorgona:Playa Blanca S
+Gorgona_142,2,142,NA,NA,Colombia,Gorgona,Playa Blanca S,NA,2.92975,-78.20268,Gorgona:Playa Blanca S
+Gorgona_143,2,143,NA,NA,Colombia,Gorgona,Playa Blanca S,NA,2.92975,-78.20268,Gorgona:Playa Blanca S
+Gorgona_144,2,144,NA,NA,Colombia,Gorgona,Playa Blanca S,NA,2.92975,-78.20268,Gorgona:Playa Blanca S
+Gorgona_145,2,145,NA,NA,Colombia,Gorgona,Playa Blanca S,NA,2.92975,-78.20268,Gorgona:Playa Blanca S
+Gorgona_146,2,146,NA,NA,Colombia,Gorgona,Playa Blanca S,NA,2.92975,-78.20268,Gorgona:Playa Blanca S
+Gorgona_147,2,147,NA,NA,Colombia,Gorgona,Playa Blanca S,NA,2.92975,-78.20268,Gorgona:Playa Blanca S
+Gorgona_149,2,149,NA,NA,Colombia,Gorgona,Playa Blanca S,NA,2.92975,-78.20268,Gorgona:Playa Blanca S
+Gorgona_150,2,150,NA,NA,Colombia,Gorgona,Playa Blanca S,NA,2.92975,-78.20268,Gorgona:Playa Blanca S
+Gorgona_151,2,151,NA,NA,Colombia,Gorgona,Playa Blanca S,NA,2.92975,-78.20268,Gorgona:Playa Blanca S
+Gorgona_166,2,166,NA,NA,Colombia,Gorgona,La Ventana S Int,NA,2.92975,-78.20268,Gorgona:La Ventana S Int
+Gorgona_167,2,167,NA,NA,Colombia,Gorgona,La Ventana S Int,NA,2.92975,-78.20268,Gorgona:La Ventana S Int
+Gorgona_168,2,168,NA,NA,Colombia,Gorgona,La Ventana S Int,NA,2.92975,-78.20268,Gorgona:La Ventana S Int
+Gorgona_171,2,171,NA,NA,Colombia,Gorgona,La Ventana S Int,NA,2.92975,-78.20268,Gorgona:La Ventana S Int
+Gorgona_173,2,173,NA,NA,Colombia,Gorgona,La Ventana S Int,NA,2.92975,-78.20268,Gorgona:La Ventana S Int
+Gorgona_179,2,179,NA,NA,Colombia,Gorgona,La Ventana N Ext,NA,2.92975,-78.20268,Gorgona:La Ventana N Ext
+Gorgona_180,2,180,NA,NA,Colombia,Gorgona,La Ventana N Ext,NA,2.92975,-78.20268,Gorgona:La Ventana N Ext
+Gorgona_181,2,181,NA,NA,Colombia,Gorgona,La Ventana N Ext,NA,2.92975,-78.20268,Gorgona:La Ventana N Ext
+Gorgona_22,2,22A,NA,NA,Colombia,Gorgona,Azufrada N,NA,2.92975,-78.20268,Gorgona:Azufrada N
+Gorgona_23,2,23-1A,NA,NA,Colombia,Gorgona,Azufrada N,NA,2.92975,-78.20268,Gorgona:Azufrada N
+Gorgona_24,2,24-1A,NA,NA,Colombia,Gorgona,Azufrada N,NA,2.92975,-78.20268,Gorgona:Azufrada N
+Gorgona_26,2,26,NA,NA,Colombia,Gorgona,Azufrada N,NA,2.92975,-78.20268,Gorgona:Azufrada N
+Gorgona_27,2,27,NA,NA,Colombia,Gorgona,Azufrada N,NA,2.92975,-78.20268,Gorgona:Azufrada N
+Gorgona_28,2,28,NA,NA,Colombia,Gorgona,Azufrada N,NA,2.92975,-78.20268,Gorgona:Azufrada N
+Gorgona_30,2,30,NA,NA,Colombia,Gorgona,Azufrada N,NA,2.92975,-78.20268,Gorgona:Azufrada N
+Gorgona_31,2,31,NA,NA,Colombia,Gorgona,Azufrada N,NA,2.92975,-78.20268,Gorgona:Azufrada N
+Gorgona_41,2,41,NA,NA,Colombia,Gorgona,Azufrada S,NA,2.92975,-78.20268,Gorgona:Azufrada S
+Gorgona_44,2,44,NA,NA,Colombia,Gorgona,Azufrada S,NA,2.92975,-78.20268,Gorgona:Azufrada S
+Gorgona_46,2,46,NA,NA,Colombia,Gorgona,Azufrada S,NA,2.92975,-78.20268,Gorgona:Azufrada S
+Gorgona_47,2,47,NA,NA,Colombia,Gorgona,Azufrada S,NA,2.92975,-78.20268,Gorgona:Azufrada S
+Gorgona_49,2,49,NA,NA,Colombia,Gorgona,Azufrada S,NA,2.92975,-78.20268,Gorgona:Azufrada S
+Gorgona_69,2,69,NA,NA,Colombia,Gorgona,Azufrada S,NA,2.92975,-78.20268,Gorgona:Azufrada S
+Gorgona_70,2,70,NA,NA,Colombia,Gorgona,Azufrada S,NA,2.92975,-78.20268,Gorgona:Azufrada S
+Gorgona_71,2,71,NA,NA,Colombia,Gorgona,Azufrada S,NA,2.92975,-78.20268,Gorgona:Azufrada S
+Gorgona_72,2,72,NA,NA,Colombia,Gorgona,Azufrada S,NA,2.92975,-78.20268,Gorgona:Azufrada S
+Gorgona_73,2,73,NA,NA,Colombia,Gorgona,Azufrada S,NA,2.92975,-78.20268,Gorgona:Azufrada S
+Gorgona_74,2,74,NA,NA,Colombia,Gorgona,Azufrada S,NA,2.92975,-78.20268,Gorgona:Azufrada S
+Gorgona_75,2,75,NA,NA,Colombia,Gorgona,Azufrada S,NA,2.92975,-78.20268,Gorgona:Azufrada S
+Gorgona_76,2,76,NA,NA,Colombia,Gorgona,Azufrada S,NA,2.92975,-78.20268,Gorgona:Azufrada S
+Gorgona_77,2,77,NA,NA,Colombia,Gorgona,Azufrada S,NA,2.92975,-78.20268,Gorgona:Azufrada S
+Gorgona_78,2,78,NA,NA,Colombia,Gorgona,Azufrada S,NA,2.92975,-78.20268,Gorgona:Azufrada S
+Isabela_1E,2,1E,NA,NA,Ecuador,Galapagos,Isabela,NA,-0.96667,-90.95225,Galapagos:Isabela
+Isabela_2E,2,2E,NA,NA,Ecuador,Galapagos,Isabela,NA,-0.96667,-90.95225,Galapagos:Isabela
+Isabela_3E,2,3E,NA,NA,Ecuador,Galapagos,Isabela,NA,-0.96667,-90.95225,Galapagos:Isabela
+Isabela_4E,2,4E,NA,NA,Ecuador,Galapagos,Isabela,NA,-0.96667,-90.95225,Galapagos:Isabela
+Isabela_7A,2,7A,NA,NA,Ecuador,Galapagos,Isabela,NA,-0.96667,-90.95225,Galapagos:Isabela
+PAN-78b,2,NA,NA,NA,Panama,Chiriqui,Uvas,NA,7.815128015,-81.75892202,Chiriqui:Uvas
+PAN_05b,2,NA,NA,NA,Panama,Panama,Saboga,NA,8.62807,-79.05462,Panama:Saboga
+PAN_05c,2,NA,NA,NA,Panama,Panama,Saboga,NA,8.62807,-79.05462,Panama:Saboga
+PAN_10b,2,NA,NA,NA,Panama,Panama,Saboga,NA,8.62807,-79.05462,Panama:Saboga
+PAN_10c,2,NA,NA,NA,Panama,Panama,Saboga,NA,8.62807,-79.05462,Panama:Saboga
+Perlas_334,2,334,AP3XG25,USNM 1666068,Panama,Panama,Contadora,3/3/22,8.63388,-79.0292,Panama:Contadora
+Perlas_336,2,336,AP3XG27,NA,Panama,Panama,Contadora,3/3/22,8.63388,-79.0292,Panama:Contadora
+Perlas_337b,2,337,AP3XG28,NA,Panama,Panama,Contadora,3/3/22,8.63388,-79.0292,Panama:Contadora
+Perlas_338,2,338,AP3XG29,NA,Panama,Panama,Contadora,3/3/22,8.63388,-79.0292,Panama:Contadora
+Perlas_342,2,342,AP3XG33,NA,Panama,Panama,Contadora,3/3/22,8.63388,-79.0292,Panama:Contadora
+Perlas_345,2,345,AP3XG36,USNM 1666065,Panama,Panama,Contadora,3/3/22,8.63388,-79.0292,Panama:Contadora
+Perlas_348,2,348,AP3XG39,USNM 1666075,Panama,Panama,Contadora,3/3/22,8.63388,-79.0292,Panama:Contadora
+Perlas_349,2,349,AP3XG40,NA,Panama,Panama,Contadora,3/3/22,8.63388,-79.0292,Panama:Contadora
+Perlas_358b,2,358,AP3XG49,NA,Panama,Panama,Saboga,3/4/22,8.62807,-79.05462,Panama:Saboga
+Perlas_358c,2,358,AP3XG49,NA,Panama,Panama,Saboga,3/4/22,8.62807,-79.05462,Panama:Saboga
+Perlas_376b,2,376,AP3XG67,NA,Panama,Panama,Saboga Islets,3/4/22,8.6383,-79.05535,Panama:Saboga Islets
+Perlas_376c,2,376,AP3XG67,NA,Panama,Panama,Saboga Islets,3/4/22,8.6383,-79.05535,Panama:Saboga Islets
+SanCristobal_1A,2,1A,NA,NA,Ecuador,Galapagos,Santa Cruz,NA,-0.758707,-90.30522,Galapagos:Santa Cruz
+SanCristobal_2A,2,2A,NA,NA,Ecuador,Galapagos,Santa Cruz,NA,-0.758707,-90.30522,Galapagos:Santa Cruz
+SanCristobal_3A,2,3A,NA,NA,Ecuador,Galapagos,Santa Cruz,NA,-0.758707,-90.30522,Galapagos:Santa Cruz
+SanCristobal_4A,2,4A,NA,NA,Ecuador,Galapagos,Santa Cruz,NA,-0.758707,-90.30522,Galapagos:Santa Cruz
+SanCristobal_5A,2,5A,NA,NA,Ecuador,Galapagos,Santa Cruz,NA,-0.758707,-90.30522,Galapagos:Santa Cruz
+SantaCruz_1A,2,1A,NA,NA,Ecuador,Galapagos,San Cristobal,NA,-0.71281,-89.24040771,Galapagos:San Cristobal
+SantaCruz_2A,2,2A,NA,NA,Ecuador,Galapagos,San Cristobal,NA,-0.71281,-89.24040771,Galapagos:San Cristobal
+SantaCruz_3A,2,3A,NA,NA,Ecuador,Galapagos,San Cristobal,NA,-0.71281,-89.24040771,Galapagos:San Cristobal
+SantaCruz_4A,2,4A,NA,NA,Ecuador,Galapagos,San Cristobal,NA,-0.71281,-89.24040771,Galapagos:San Cristobal
+SantaCruz_5A,2,5A,NA,NA,Ecuador,Galapagos,San Cristobal,NA,-0.71281,-89.24040771,Galapagos:San Cristobal
+Secas_299,2,299-1,NA,NA,Panama,Chiriqui,Secas,NA,7.958645,-82.015012,Chiriqui:Secas
+Secas_302,2,302-1,NA,NA,Panama,Chiriqui,Secas,NA,7.958645,-82.015012,Chiriqui:Secas
+Secas_303,2,303-1,NA,NA,Panama,Chiriqui,Secas,NA,7.958645,-82.015012,Chiriqui:Secas
+Secas_304,2,305-1,NA,NA,Panama,Chiriqui,Secas,NA,7.958645,-82.015012,Chiriqui:Secas
+URA-51b,2,NA,NA,NA,Panama,Panama,Uraba,NA,8.779195994,-79.53109993,Panama:Uraba
+Wolf2_1E,2,1E,NA,NA,Ecuador,Galapagos,Wolf2,NA,1.38396,-91.82057,Galapagos:Wolf2
+Wolf2_2E,2,2E,NA,NA,Ecuador,Galapagos,Wolf2,NA,1.38396,-91.82057,Galapagos:Wolf2
+Wolf2_3E,2,3E,NA,NA,Ecuador,Galapagos,Wolf2,NA,1.38396,-91.82057,Galapagos:Wolf2
+Wolf2_4E,2,4E,NA,NA,Ecuador,Galapagos,Wolf2,NA,1.38396,-91.82057,Galapagos:Wolf2
+Wolf2_5E,2,5E,NA,NA,Ecuador,Galapagos,Wolf2,NA,1.38396,-91.82057,Galapagos:Wolf2
+Wolf_1E,2,1E,NA,NA,Ecuador,Galapagos,Wolf,NA,1.38396,-91.82057,Galapagos:Wolf
+Wolf_2E,2,2E,NA,NA,Ecuador,Galapagos,Wolf,NA,1.38396,-91.82057,Galapagos:Wolf
+Wolf_3E,2,3E,NA,NA,Ecuador,Galapagos,Wolf,NA,1.38396,-91.82057,Galapagos:Wolf
+Wolf_4E,2,4E,NA,NA,Ecuador,Galapagos,Wolf,NA,1.38396,-91.82057,Galapagos:Wolf
+Wolf_5E,2,5E,NA,NA,Ecuador,Galapagos,Wolf,NA,1.38396,-91.82057,Galapagos:Wolf
+BahiaCulebra_1,3,1,NA,NA,Costa Rica,Bahia Culebra,Guiri,NA,10.613675,-85.690042,Bahia Culebra:Guiri
+BahiaCulebra_10,3,10,NA,NA,Costa Rica,Bahia Culebra,Guiri,NA,10.613675,-85.690042,Bahia Culebra:Guiri
+BahiaCulebra_11,3,11,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,NA,10.610535,-85.686379,Bahia Culebra:Playa Blanca
+BahiaCulebra_12,3,12,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,NA,10.610535,-85.686379,Bahia Culebra:Playa Blanca
+BahiaCulebra_13,3,13,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,NA,10.610535,-85.686379,Bahia Culebra:Playa Blanca
+BahiaCulebra_14,3,14,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,NA,10.610535,-85.686379,Bahia Culebra:Playa Blanca
+BahiaCulebra_15,3,15,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,NA,10.610535,-85.686379,Bahia Culebra:Playa Blanca
+BahiaCulebra_16,3,16,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,NA,10.610535,-85.686379,Bahia Culebra:Playa Blanca
+BahiaCulebra_17,3,17,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,NA,10.610535,-85.686379,Bahia Culebra:Playa Blanca
+BahiaCulebra_18,3,18,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,NA,10.610535,-85.686379,Bahia Culebra:Playa Blanca
+BahiaCulebra_19,3,19,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,NA,10.610535,-85.686379,Bahia Culebra:Playa Blanca
+BahiaCulebra_1b,3,1,NA,NA,Costa Rica,Bahia Culebra,Guiri,7/16/22,10.613675,-85.690042,Bahia Culebra:Guiri
+BahiaCulebra_20,3,20,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,NA,10.610535,-85.686379,Bahia Culebra:Playa Blanca
+BahiaCulebra_21,3,21,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,NA,10.610535,-85.686379,Bahia Culebra:Playa Blanca
+BahiaCulebra_22,3,22,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,NA,10.610535,-85.686379,Bahia Culebra:Playa Blanca
+BahiaCulebra_23,3,23,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,NA,10.610535,-85.686379,Bahia Culebra:Playa Blanca
+BahiaCulebra_24,3,24,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,NA,10.610535,-85.686379,Bahia Culebra:Playa Blanca
+BahiaCulebra_25,3,25,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,NA,10.610535,-85.686379,Bahia Culebra:Playa Blanca
+BahiaCulebra_26,3,26,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,NA,10.610535,-85.686379,Bahia Culebra:Playa Blanca
+BahiaCulebra_27,3,27,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,NA,10.610535,-85.686379,Bahia Culebra:Playa Blanca
+BahiaCulebra_28,3,28,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,NA,10.610535,-85.686379,Bahia Culebra:Playa Blanca
+BahiaCulebra_29,3,29,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,NA,10.610535,-85.686379,Bahia Culebra:Playa Blanca
+BahiaCulebra_3,3,3,NA,NA,Costa Rica,Bahia Culebra,Guiri,NA,10.613675,-85.690042,Bahia Culebra:Guiri
+BahiaCulebra_30,3,30,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,NA,10.610535,-85.686379,Bahia Culebra:Playa Blanca
+BahiaCulebra_5,3,5,NA,NA,Costa Rica,Bahia Culebra,Guiri,NA,10.613675,-85.690042,Bahia Culebra:Guiri
+BahiaCulebra_6,3,6,NA,NA,Costa Rica,Bahia Culebra,Guiri,NA,10.613675,-85.690042,Bahia Culebra:Guiri
+BahiaCulebra_7,3,7,NA,NA,Costa Rica,Bahia Culebra,Guiri,NA,10.613675,-85.690042,Bahia Culebra:Guiri
+BahiaCulebra_8,3,8,NA,NA,Costa Rica,Bahia Culebra,Guiri,NA,10.613675,-85.690042,Bahia Culebra:Guiri
+BahiaCulebra_9,3,9,NA,NA,Costa Rica,Bahia Culebra,Guiri,NA,10.613675,-85.690042,Bahia Culebra:Guiri
+GolfoDulce_10,3,10,NA,NA,Costa Rica,Golfo Dulce,La Viuda,7/16/22,8.622939,-83.235286,Golfo Dulce:La Viuda
+GolfoDulce_12,3,12,NA,NA,Costa Rica,Golfo Dulce,La Viuda,7/16/22,8.6229,-83.2352,Golfo Dulce:La Viuda
+GolfoDulce_18,3,18,NA,NA,Costa Rica,Golfo Dulce,La Viuda,7/16/22,8.62297,-83.235145,Golfo Dulce:La Viuda
+GolfoDulce_2,3,2,NA,NA,Costa Rica,Golfo Dulce,Punta Gallardo,7/16/22,8.62627256,-83.23645551,Golfo Dulce:Punta Gallardo
+GolfoDulce_20,3,20,NA,NA,Costa Rica,Golfo Dulce,Punta Gallardo,7/16/22,8.6262,-83.2364,Golfo Dulce:Punta Gallardo
+GolfoDulce_21,3,21,NA,NA,Costa Rica,Golfo Dulce,La Viuda,7/16/22,8.623055,-83.235085,Golfo Dulce:La Viuda
+GolfoDulce_22,3,22,NA,NA,Costa Rica,Golfo Dulce,La Viuda,7/16/22,8.62297,-83.235145,Golfo Dulce:La Viuda
+GolfoDulce_23,3,23,NA,NA,Costa Rica,Golfo Dulce,Punta Islotes,7/16/22,8.72718223,-83.386524,Golfo Dulce:Punta Islotes
+GolfoDulce_25,3,25,NA,NA,Costa Rica,Golfo Dulce,Punta Estrella,7/16/22,8.7128,-83.431989,Golfo Dulce:Punta Estrella
+GolfoDulce_26,3,26,NA,NA,Costa Rica,Golfo Dulce,Punta Islotes,7/16/22,8.72694308,-83.387934,Golfo Dulce:Punta Islotes
+GolfoDulce_2b,3,2,NA,NA,Costa Rica,Golfo Dulce,Punta Gallardo,7/16/22,8.62627256,-83.23645551,Golfo Dulce:Punta Gallardo
+GolfoDulce_30,3,30,NA,NA,Costa Rica,Golfo Dulce,Punta Cativo,7/16/22,8.683245,-83.330335,Golfo Dulce:Punta Cativo
+GolfoDulce_31,3,31,NA,NA,Costa Rica,Golfo Dulce,Punta Gallardo,7/16/22,8.62627256,-83.236456,Golfo Dulce:Punta Gallardo
+GolfoDulce_32,3,32,NA,NA,Costa Rica,Golfo Dulce,La Viuda,7/16/22,8.6229,-83.2352,Golfo Dulce:La Viuda
+GolfoDulce_33,3,33,NA,NA,Costa Rica,Golfo Dulce,La Viuda,7/16/22,8.6229,-83.2352,Golfo Dulce:La Viuda
+GolfoDulce_37,3,37,NA,NA,Costa Rica,Golfo Dulce,Punta Estrella,7/16/22,8.7128,-83.431989,Golfo Dulce:Punta Estrella
+GolfoDulce_47,3,47,NA,NA,Costa Rica,Golfo Dulce,Punta Adela,7/16/22,8.65562,-83.29612,Golfo Dulce:Punta Adela
+GolfoDulce_8,3,8,NA,NA,Costa Rica,Golfo Dulce,La Viuda,7/16/22,8.622939027,-83.235286,Golfo Dulce:La Viuda
+GolfoDulce_8b,3,8,NA,NA,Costa Rica,Golfo Dulce,La Viuda,7/16/22,8.622939027,-83.235286,Golfo Dulce:La Viuda
