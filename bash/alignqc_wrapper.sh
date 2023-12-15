@@ -28,7 +28,7 @@ echo 'echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTN
 echo 'echo + NSLOTS = $NSLOTS' >> $prodir/bash/jobs/alignqc_${set}_${genome}.job
 echo "#" >> $prodir/bash/jobs/alignqc_${set}_${genome}.job
 echo 'prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"' >> $prodir/bash/jobs/alignqc_${set}_${genome}.job
-echo "genome="${genome}" >> $prodir/bash/jobs/alignqc_${set}_${genome}.job
+echo "genome=${genome}" >> $prodir/bash/jobs/alignqc_${set}_${genome}.job
 # produce samtools flagstat reports for alignment QC
 echo 'for i in ${prodir}/outputs/alignments/${genome}/*.sam; do name=$(basename $i | cut -d . -f 1); echo $name; samtools flagstat $i > ${prodir}/outputs/QCs/flagstats/${genome}/${name}_${genome}_flagstat.txt; done' >> $prodir/bash/jobs/alignqc_${set}_${genome}.job
 
