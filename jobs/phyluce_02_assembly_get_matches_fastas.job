@@ -30,12 +30,15 @@ samples=$(cat ${prodir}/data/${set}_samples.txt)
 
 # create the basic configuration file
 echo '[all]' > ${prodir}/data/${set}.conf
+# add desired sample contigs 
 for sample in $samples; do echo ${sample}_contigs  >> ${prodir}/data/${set}.conf ; done
 # add outgroup taxa
 echo "Seriatopora_hystrix_ReFuGe_contigs" >> ${prodir}/data/${set}.conf
 echo "Stylophora_pistillata_ANT17_contigs" >> ${prodir}/data/${set}.conf
+# add reference genome taxa
+if [-n $2]; then
 TAXA="pocillopora_acuta pocillopora_effusa pocillopora_damicornis pocillopora_verrucosa pocillopora_meandrina stylophora_pistillata"
-for taxon in $TAXA; do echo $taxon >> ${prodir}/data/${set}.conf; done
+for taxon in $TAXA; do echo $taxon >> ${prodir}/data/${set}.conf; done; fi
 
 # create the data matrix configuration file
 phyluce_assembly_get_match_counts \
