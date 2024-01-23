@@ -12,7 +12,7 @@
 #$ -M connellym@si.edu
 #
 # ----------------Modules------------------------- #
- module load bioinformatics/angsd
+ module load bio/angsd/0.940 
 # ----------------Your Commands------------------- #
 #
 echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME

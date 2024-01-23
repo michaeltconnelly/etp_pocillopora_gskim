@@ -12,7 +12,7 @@
 #$ -M connellym@si.edu
 #
 # ----------------Modules------------------------- #
- module load bioinformatics/angsd
+ module load bio/angsd/0.940 
 # ----------------Your Commands------------------- #
 #
 echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
@@ -34,6 +34,7 @@ realSFS fst index ${prodir}/outputs/angsd/$pop1.saf.idx ${prodir}/outputs/angsd/
 
 # get the global Fst estimate
 realSFS fst stats ${prodir}/outputs/angsd/$pop1.$pop2.fst.idx 
+# window-based Fst estimates
 realSFS fst stats2 ${prodir}/outputs/angsd/$pop1.$pop2.fst.idx -win 9999 -step 10000 -type 2 > ${prodir}/outputs/angsd/$pop1.$pop2.10kb.fst
 
 echo = `date` job $JOB_NAME done
