@@ -6,8 +6,8 @@
 #$ -l mres=192G,h_data=12G,h_vmem=12G,himem
 #$ -cwd
 #$ -j y
-#$ -N angsd_ibs
-#$ -o angsd_ibs.log
+#$ -N angsd_ibs_v2
+#$ -o angsd_ibs_v2.log
 #$ -m bea
 #$ -M connellym@si.edu
 #
@@ -18,7 +18,7 @@
 echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
 echo + NSLOTS = $NSLOTS
 
-#specify variable containing sequence file prefixes and directory paths
+# specify variable containing sequence file prefixes and directory paths
 mcs="/scratch/nmnh_corals/connellym"
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 
@@ -28,14 +28,20 @@ set=$1
 #samples=$(echo "$files" | cut -d . -f 1 | sort -u)
 samples=$(cat ${prodir}/data/${set}_samples.txt)
 
+# creating an output directory for set output files
+if [ ! -d "${prodir}/outputs/angsd/${set}" ]; then mkdir ${prodir}/outputs/angsd/${set}; fi
+
+# assign variable for output directory
+setdir="${prodir}/outputs/angsd/${set}"
+
 # making a list of bam file paths
-ls ${prodir}/outputs/alignments/*md.rg.bam | grep -f ${prodir}/data/${set}_samples.txt > ${prodir}/outputs/angsd/${set}_bamfile.txt
+ls ${prodir}/outputs/alignments/*md.rg.bam | grep -f ${prodir}/data/${set}_samples.txt > ${setdir}/${set}_bamfile.txt
 
 # verify samples are correct
-echo " These are the samples to be processed: ${samples}, there are $(cat ${prodir}/outputs/angsd/${set}_bamfile.txt | wc -l) in total"
+echo " These are the samples to be processed: ${samples}, there are $(cat ${setdir}/${set}_bamfile.txt | wc -l) in total"
 
 # assign variable to bamfile
-BAMS=${prodir}/outputs/angsd/${set}_bamfile.txt
+BAMS=${setdir}/${set}_bamfile.txt
 
 # from https://github.com/z0on/ClonesAndClades_Ofav_Keys/blob/master/read_processing_walkthrough.txt
 # Manzello et al. 2018
@@ -46,24 +52,28 @@ BAMS=${prodir}/outputs/angsd/${set}_bamfile.txt
 # Suggested filters :
 # -snp_pval 1e-5 : high confidence that the SNP is not just sequencing error 
 # -minMaf 0.05 : only common SNPs, with allele frequency 0.05 or more.
-# set minInd to 75-80% of total number of samples
-nsamps=$(cat ${prodir}/outputs/angsd/${set}_bamfile.txt | wc -l) 
+# set minInd to 85% of total number of samples
+nsamps=$(cat $BAMS | wc -l) 
 minindv=$(echo "$nsamps*0.85" | bc | awk '{print int($1+0.5)}')
 # also adding  filters against very badly non-HWE sites (such as, all calls are heterozygotes => lumped paralog situation) and sites with really bad strand bias:
 FILTERS="-uniqueOnly 1 -remove_bads 1 -minMapQ 30 -minQ 30 -dosnpstat 1 -doHWE 1 -sb_pval 1e-5 -hetbias_pval 1e-5 -skipTriallelic 1 -minInd $minindv -snp_pval 1e-5 -minMaf 0.05"
 
 #TODO: 
-# -GL 1 : samtools likelihood model
-# -doGlf 2 : output beagle format (for admixture)
-# -doGeno 8 : bgenotype likelihoods format for ngsLD
+# -GL 1 : use samtools likelihood model
+# -doMajorMinor 1 : infer major and minor alleles from genotype likelihoods (-skipTriallelic 1 : skip tri-allelic sites)
+# -doMaf 1 : estimate allele frequency w/ fixed major and minor alleles 
+# -doCounts 1 : 
 # -makeMatrix 1 -doIBS 1 -doCov 1 : identity-by-state and covariance matrices based on single-read resampling (robust to variation in coverage across samples)
-TODO="-doMajorMinor 1 -doMaf 1 -doCounts 1 -makeMatrix 1 -doIBS 1 -doCov 1 -doGeno 8 -doVcf 1 -doPost 1 -doGlf 2"
+# -doGeno 8 : bgenotype likelihoods format for ngsLD
+# -doPost 1 : calculate posterior allele frequencies using frequency as prior
+# -doGlf 2 : output beagle format (for admixture)
+TODO="-doMajorMinor 1 -doMaf 1 -doCounts 1 -makeMatrix 1 -doIBS 1 -doCov 1 -doGeno 8 -doPost 1 -doGlf 2"
 
-angsd -b $BAMS -GL 1 $FILTERS $TODO -P $NSLOTS -out ${prodir}/outputs/angsd/${set}_ibs05
+angsd -b $BAMS -GL 1 $FILTERS $TODO -P $NSLOTS -out ${setdir}/${set}_ibs05
 
 # how many SNPs?
-zcat ${prodir}/outputs/angsd/${set}_ibs05.mafs.gz | wc -l
+zcat ${setdir}/${set}_ibs05.mafs.gz | wc -l
 
-# scp ibs05.ibsMat and bams to laptop, use step1_IBS.R to analyze
+# scp ibsMat and bam file list to laptop
 
 echo = `date` job $JOB_NAME done
