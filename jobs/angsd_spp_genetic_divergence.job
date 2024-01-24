@@ -35,6 +35,7 @@ echo "For ${set}, There are $(cat ${angsddir}/bamfiles/${set}_bamfile.txt | wc -
 done
 
 # filter sites to work on - use only filters that do not distort allele frequency
+echo "Begin basic site filtering"
 # assign variable to bamfile
 BAMLIST="${angsddir}/bamfiles/full_noclones_bamfile.txt"
 # set minInd to 85% of total number of samples
@@ -85,11 +86,13 @@ realSFS ${angsddir}/pverrucosa3b.saf.idx ${angsddir}/pmeandrina.saf.idx -P $NSLO
 realSFS ${angsddir}/peffusa.saf.idx ${angsddir}/pmeandrina.saf.idx -P $NSLOTS > ${angsddir}/peffusa.pmeandrina.ml
 
 # 3) prepare the Fst 
+echo "Begin Fst calculations"
 realSFS fst index ${angsddir}/pgrandis.saf.idx ${angsddir}/pverrucosa3a.saf.idx ${angsddir}/pverrucosa3b.saf.idx ${angsddir}/pmeandrina.saf.idx ${angsddir}/peffusa.saf.idx \
  -sfs ${angsddir}/pgrandis.peffusa.ml -sfs ${angsddir}/pgrandis.pmeandrina.ml -sfs ${angsddir}/pgrandis.pverrucosa3a.ml -sfs ${angsddir}/pgrandis.pverrucosa3b.ml -sfs ${angsddir}/pverrucosa3a.peffusa.ml -sfs ${angsddir}/pverrucosa3a.pmeandrina.ml -sfs ${angsddir}/pverrucosa3a.pverrucosa3b.ml -sfs ${angsddir}/pverrucosa3b.peffusa.ml -sfs ${angsddir}/pverrucosa3a.pmeandrina.ml -sfs ${angsddir}/peffusa.pmeandrina.ml \
  -fstout ${angsddir}/spp_pairwise
 
 # 4) get the global Fst estimate
+echo "Obtain the global pairwise Fst estimates and PBS statistics"
 realSFS fst stats ${angsddir}/spp_pairwise.fst.idx > ${angsddir}/spp_pairwise_fst_results.txt
 #
 
