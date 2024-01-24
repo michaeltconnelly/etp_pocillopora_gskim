@@ -1,0 +1,109 @@
+#!/bin/sh
+# ----------------Parameters---------------------- #
+#$ -S /bin/sh
+#$ -pe mthread 16
+#$ -q mThM.q
+#$ -l mres=192G,h_data=12G,h_vmem=12G,himem
+#$ -cwd
+#$ -j y
+#$ -N angsd_spp_genetic_divergence
+#$ -o angsd_spp_genetic_divergence.log
+#$ -m bea
+#$ -M connellym@si.edu
+#
+# ----------------Modules------------------------- #
+ module load bio/angsd/0.940 
+# ----------------Your Commands------------------- #
+#
+echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
+echo + NSLOTS = $NSLOTS
+
+#specify variable containing sequence file prefixes and directory paths
+mcs="/scratch/nmnh_corals/connellym"
+prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
+angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/angsd"
+
+# making a list of no-clones sample names and bam file paths for each population / species
+# P. grandis (173), P. verrucosa 3a (38), P. meandrina (10), P. verrucosa 3b (5), P. effusa (4)
+spp="peffusa pgrandis pmeandrina pverrucosa3a pverrucosa3b"
+
+for set in $spp; do 
+# make bam file list
+ls ${prodir}/outputs/alignments/*md.rg.bam | grep -f ${prodir}/data/pops/${set} > ${angsddir}/bamfiles/${set}_bamfile.txt
+# verify sample numbers are correct
+echo "For ${set}, There are $(cat ${angsddir}/bamfiles/${set}_bamfile.txt | wc -l) samples in total"
+done
+
+# filter sites to work on - use only filters that do not distort allele frequency
+# assign variable to bamfile
+BAMLIST="${angsddir}/bamfiles/full_noclones_bamfile.txt"
+# set minInd to 85% of total number of samples
+nsamps=$(cat $BAMLIST | wc -l) 
+minindv=$(echo "$nsamps*0.85" | bc | awk '{print int($1+0.5)}')
+#
+FILTERS="-uniqueOnly 1 -remove_bads 1 -skipTriallelic 1 -minMapQ 30 -minQ 30 -doHWE 1 -sb_pval 1e-5 -hetbias_pval 1e-5 -minInd $minindv"
+TODO="-doMajorMinor 1 -doMaf 1 -dosnpstat 1 -doPost 2 -doGeno 8"
+angsd -b $BAMLIST -GL 1 $FILTERS $TODO -P $NSLOTS -out ${angsddir}/AllSites
+angsd sites index ${angsddir}/AllSites
+
+# 1) calculate SAF for each species/population
+echo "Begin SAF estimation for each species/population"
+for set in $spp; do 
+# ----- SAF with ANGSD
+# specify variable with bam file list for each population / species
+BAMS="${angsddir}/bamfiles/${set}_bamfile.txt"
+#
+nsamps=$(cat $BAMS | wc -l) 
+minindv=$(echo "$nsamps*0.85" | bc | awk '{print int($1+0.5)}')
+# filters are not needed since we are restricting the SAF estimation to previously filtered sites (AllSites)
+# -doSaf 1: perform multisample GL estimation
+TODO=" -doSaf 1"
+# set ancestral reference genome fasta file
+#ANC="/scratch/nmnh_corals/connellym/sequences/pdam/pdam_genome.fasta"
+ANC="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/data/seqs/peffusa_reference_ancestral.fa"
+
+# estimate the site allele frequency likelihood
+angsd -sites ${angsddir}/AllSites -b $BAMS -anc $ANC -GL 1 -P $NSLOTS $TODO -out ${angsddir}/${set} 
+done
+
+
+# 2) now calculate the 2D SFS for all pairwise comparisons
+echo "Begin 2D SFS calculation for all combinations"
+#
+realSFS ${angsddir}/pgrandis.saf.idx ${angsddir}/peffusa.saf.idx -P $NSLOTS > ${angsddir}/pgrandis.peffusa.ml
+realSFS ${angsddir}/pgrandis.saf.idx ${angsddir}/pmeandrina.saf.idx -P $NSLOTS > ${angsddir}/pgrandis.pmeandrina.ml
+realSFS ${angsddir}/pgrandis.saf.idx ${angsddir}/pverrucosa3a.saf.idx -P $NSLOTS > ${angsddir}/pgrandis.pverrucosa3a.ml
+realSFS ${angsddir}/pgrandis.saf.idx ${angsddir}/pverrucosa3b.saf.idx -P $NSLOTS > ${angsddir}/pgrandis.pverrucosa3b.ml
+#
+realSFS ${angsddir}/pverrucosa3a.saf.idx ${angsddir}/peffusa.saf.idx -P $NSLOTS > ${angsddir}/pverrucosa3a.peffusa.ml
+realSFS ${angsddir}/pverrucosa3a.saf.idx ${angsddir}/pmeandrina.saf.idx -P $NSLOTS > ${angsddir}/pverrucosa3a.pmeandrina.ml
+realSFS ${angsddir}/pverrucosa3a.saf.idx ${angsddir}/pverrucosa3b.saf.idx -P $NSLOTS > ${angsddir}/pverrucosa3a.pverrucosa3b.ml
+#
+realSFS ${angsddir}/pverrucosa3b.saf.idx ${angsddir}/peffusa.saf.idx -P $NSLOTS > ${angsddir}/pverrucosa3b.peffusa.ml
+realSFS ${angsddir}/pverrucosa3b.saf.idx ${angsddir}/pmeandrina.saf.idx -P $NSLOTS > ${angsddir}/pverrucosa3a.pmeandrina.ml
+#
+realSFS ${angsddir}/peffusa.saf.idx ${angsddir}/pmeandrina.saf.idx -P $NSLOTS > ${angsddir}/peffusa.pmeandrina.ml
+
+# 3) prepare the Fst 
+realSFS fst index ${angsddir}/pgrandis.saf.idx ${angsddir}/pverrucosa3a.saf.idx ${angsddir}/pverrucosa3b.saf.idx ${angsddir}/pmeandrina.saf.idx ${angsddir}/peffusa.saf.idx \
+ -sfs ${angsddir}/pgrandis.peffusa.ml -sfs ${angsddir}/pgrandis.pmeandrina.ml -sfs ${angsddir}/pgrandis.pverrucosa3a.ml -sfs ${angsddir}/pgrandis.pverrucosa3b.ml -sfs ${angsddir}/pverrucosa3a.peffusa.ml -sfs ${angsddir}/pverrucosa3a.pmeandrina.ml -sfs ${angsddir}/pverrucosa3a.pverrucosa3b.ml -sfs ${angsddir}/pverrucosa3b.peffusa.ml -sfs ${angsddir}/pverrucosa3a.pmeandrina.ml -sfs ${angsddir}/peffusa.pmeandrina.ml \
+ -fstout ${angsddir}/spp_pairwise
+
+# 4) get the global Fst estimate
+realSFS fst stats ${angsddir}/spp_pairwise.fst.idx > ${angsddir}/spp_pairwise_fst_results.txt
+#
+
+echo = `date` job $JOB_NAME done
+
+
+# Species pairwise comparisons:
+#   P. grandis vs. P. verrucosa 3a
+#   P. grandis vs. P. verrucosa 3b
+#   P. grandis vs. P. meandrina
+#   P. grandis vs. P. effusa
+#   P. verrucosa 3a vs. P. verrucosa 3b
+#   P. verrucosa 3a vs. P. meandrina
+#   P. verrucosa 3a vs. P. effusa
+#   P. verrucosa 3b vs. P. meandrina
+#   P. verrucosa 3b vs. P. effusa
+#   P. meandrina vs. P. effusa 
