@@ -30,7 +30,7 @@ samples <- filter(all_samples, `Sequence Round` == 1 | `Sequence Round` == 2)
 ```
 
 ## Import/inspect genome skimming pipeline QC metrics
-  Note: Run MultiQC on R1 reads only to create reports for all analysis samples (124 + 165), with low-depth (<1M reads, 18 + 5) samples already excluded.
+  Note: Run MultiQC on R1 reads only to create reports for all 337 analysis samples (124 + 165 + 48), with low-depth (<1M reads, 18 + 5) samples already excluded.
         
 ### Raw reads
 ```{r import_multiqc_data}
@@ -41,12 +41,23 @@ multiqc_fastqc <- read_tsv("./outputs/QCs/fastqcs/multiqc_data/multiqc_fastqc.tx
 ```
 ```{r inspect_read_depth}
 # quick check of sample depth
+pdf("./outputs/figures/nobones/totalread.pdf", width = 6.5, height = 4.76)
 multiqc_fastqc %>%
   mutate(Sample = fct_reorder(Sample, desc(`Total Sequences`))) %>%
   ggplot(aes(Sample, `Total Sequences`)) +
   geom_point(size = 0.5) +
   geom_hline(yintercept = 1000000, color = "red") +
-  theme(axis.text.x = element_text(size = 5, angle = 90))
+  theme(axis.text.x = element_blank()) +
+  ggtitle("Total number of Raw Reads per sample")
+dev.off()
+```
+```{r}
+sum(multiqc_fastqc$`Total Sequences`)
+# 2,920,422,943
+mean(multiqc_fastqc$`Total Sequences`)
+# 8,665,943
+sd(multiqc_fastqc$`Total Sequences`)
+# 4,570,452
 ```
 
 
@@ -65,7 +76,60 @@ multiqc_trimqc %>%
   theme(axis.text.x = element_text(size = 5, angle = 90))
 ```
 
-### *Pocillopora* coral BWA mapped reads
+### Mapped reads
+  Note: Compare alignment rates to *P. damicornis* (RSMAS, Cunning et al. 2018), *P. verrucosa* (KAUST, Buitrago-Lopez et al. 2020), and *P. verrucosa* (CSIRO) reference genomes
+
+#### P. damicornis (RSMAS)
+```{r}
+# samtools alignment flagstat files
+multiqc_flagstat_pdam_rsmas <-  read_tsv("./outputs/QCs/flagstats/flagstats/pdam_rsmas/multiqc_data/multiqc_samtools_flagstat.txt")  %>%
+  mutate("Sample ID" = gsub("_S.*_flagstat", "", Sample)) 
+
+mapped_pdam_rsmas <- multiqc_flagstat_pdam_rsmas %>% 
+  select(`Sample ID`, mapped_passed) %>% 
+  rename("pdam_rsmas" = mapped_passed)
+```
+
+#### P. verrucosa (KAUST)
+```{r}
+# samtools alignment flagstat files
+multiqc_flagstat_pver_kaust <-  read_tsv("./outputs/QCs/flagstats/flagstats/pver_kaust/multiqc_data/multiqc_samtools_flagstat.txt")  %>%
+  mutate("Sample ID" = gsub("_S.*_flagstat", "", Sample)) 
+  
+mapped_pver_kaust <- multiqc_flagstat_pver_kaust %>% 
+  select(`Sample ID`, mapped_passed) %>% 
+  rename("pver_kaust" = mapped_passed)
+```
+
+#### P. verrucosa (CSIRO)
+```{r}
+# samtools alignment flagstat files
+multiqc_flagstat_pver_csiro <-  read_tsv("./outputs/QCs/flagstats/flagstats/pver_csiro/multiqc_data/multiqc_samtools_flagstat.txt")  %>%
+  mutate("Sample ID" = gsub("_S.*_flagstat", "", Sample))
+
+mapped_pver_csiro <- multiqc_flagstat_pver_csiro %>% 
+  select(`Sample ID`, mapped_passed) %>% 
+  rename("pver_csiro" = mapped_passed)
+```
+
+#### Join and compare
+```{r}
+multiqc_flagstat_comparison <- left_join(mapped_pdam_rsmas, mapped_pver_kaust, by = "Sample ID") %>% left_join(.,  mapped_pver_csiro, by = "Sample ID")
+```
+
+```{r}
+multiqc_flagstat_comparison_tidy <- multiqc_flagstat_comparison %>% pivot_longer(cols = c("pdam_rsmas", "pver_kaust", "pver_csiro"), names_to = "reference", values_to = "mapped_reads")
+```
+
+```{r}
+multiqc_flagstat_comparison_tidy %>% ggplot(aes(`reference`, `mapped_reads`)) + geom_violin()
+```
+```{r}
+multiqc_flagstat_comparison_tidy %>% ggplot(aes(`reference`, `mapped_reads`)) + geom_point() + geom_line(aes(group = `Sample ID`))
+```
+Note: No significant difference in mapping rates between assemblies, marginal increase in number of mapped reads in KAUST and CSIRO assemblies relative to RSMAS, but IMO not enough to justify switching assemblies.
+
+### Mapped reads to best reference
 ```{r}
 # samtools alignment flagstat files
 multiqc_flagstat <-  read_tsv("./outputs/QCs/flagstats/multiqc_data/multiqc_samtools_flagstat.txt")  %>%
@@ -79,6 +143,8 @@ multiqc_flagstat %>%
   geom_hline(yintercept = 1000000, color = "red") +
   theme(axis.text.x = element_text(size = 5, angle = 90))
 ```
+
+
 
 ## Read QC, trim, coral alignment pipeline metrics plot
 ### Summarize QC, trim, alignment data
@@ -163,14 +229,15 @@ pipeQC_counts <- multiqc_plot_data %>%
 pipeQC_counts
 ```
 ```{r}
+pdf("./outputs/figures/nobones/PROPread.pdf", width = 6.5, height = 4.76)
 pipeQC_proportions <- multiqc_plot_data %>%
   # dplyr::filter(pipeline_step != "Input Reads" & pipeline_step != "Assigned Reads") %>%
   ggplot(aes(pipeline_step, proportion)) +
   geom_path(aes(group = `Sample ID`), show.legend = FALSE) +
   geom_point(size = 2, shape = 21, color = "black", alpha = 0.5, stroke = 0.5, show.legend = FALSE) + 
   # facet_grid(.~Region, scales = "free") +
-    facet_grid(.~Species, scales = "free") +
-  scale_y_continuous(limits = c(0.0, 1.02)) +
+    # facet_grid(.~Species, scales = "free") +
+  scale_y_continuous(limits = c(0.0, 1.0)) +
   # scale_color_manual(values = genocolors) +
   # scale_shape_manual(values = colshapes) + 
   # scale_fill_manual(values = genocolors) +
@@ -182,6 +249,7 @@ pipeQC_proportions <- multiqc_plot_data %>%
   xlab("pipeline step") + 
   ggtitle("read proportions")
 pipeQC_proportions
+dev.off()
 ```
 
 ## Find samples with most reads in a given species/clone group

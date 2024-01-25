@@ -33,11 +33,12 @@ samples <- filter(all_samples, ANALYSIS ==T)
 # samples_out <- rbind(samples, outgroups)
 ```
 
-## Phylogenetic trees from PHYLUCE UCE alignment
+## Phylogenetic trees from PHYLUCE UCE alignments
 
 ### IQ-TREE
 ```{r}
 tree <- read.newick("./outputs/iqtree/iqtree_phyluce_all_noclones.treefile")
+tree <- read.newick("./outputs/iqtree/iqtree_phyluce_spptest_clean.treefile")
 # midpoint root
 tree <- midpoint.root(tree)
 # set root-edge
@@ -99,6 +100,23 @@ dev.off()
 pdf("./outputs/figures/iqtree_nodes.pdf", width = 11.5, height = 8)
 tree %>% ggtree() + geom_text(aes(label=node), size = 2, hjust=.45)
 dev.off()
+```
+#### Spp. Subset Samples Tree
+```{r}
+tree <- read.newick("./outputs/iqtree/iqtree_phyluce_sppsubset.treefile")
+# midpoint root
+tree <- midpoint.root(tree)
+# set root-edge
+tree$root.edge <- 1
+gg_tree(tree)
+```
+```{r}
+ggtree(tree, ladderize = T)
+```
+
+#### Spp. Subset Samples Plus Ref. Genomes Tree
+```{r}
+
 ```
 
 

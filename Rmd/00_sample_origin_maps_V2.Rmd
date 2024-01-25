@@ -63,7 +63,7 @@ par(mar = c(0.5, 0.5, 0.5, 0.5))
 quickCheck
 ```
 
-```{r}
+```{r etp_define}
 etp_countries <- c("Mexico", "Guatemala", "El Salvador", "Nicaragua", "Honduras", "Costa Rica", "Panama", "Colombia", "Ecuador", "Peru")
 focalArea <- map %>% filter(admin %in% etp_countries)
 ```
@@ -142,7 +142,6 @@ PerlasMapTest +
              show.legend = F)
 ```
 
-
 ## Plot proportions of *Pocillopora* mtORF lineages on map with scatterpie
 ```{r sample_data_import}
 source("./R/sample_import.R")
@@ -151,6 +150,10 @@ samples <- all_samples
 ```{r select_samples}
 samples <- filter(all_samples, ANALYSIS ==T)
 # samples <- filter(all_samples, `PANAMA_MANUSCRIPT` == T)
+```
+```{r}
+# use only unique genotypes 
+samples <- samples_noclones
 ```
 
 ```{r sample_data_tidy}
@@ -180,7 +183,7 @@ regions_mtorfs <- samples %>%
   dplyr::count() %>% 
   pivot_wider(names_from = mtorf_type, values_from = n, values_fill = 0) %>% 
   # dplyr::rename("Type 1" = Type_1, "Type 3" = Type_3) %>% 
-  mutate("radius" = (`Type 1a` + `Type 2` + `Type 3a` + `Type 3c`)/50) %>% 
+  mutate("radius" = (`Type 1a` + `Type 2` + `Type 3a` + `Type 3b`)/50) %>% 
   left_join(region_coords, by = "Region")
 #
 sites_mtorfs <- samples %>% 
@@ -188,7 +191,7 @@ sites_mtorfs <- samples %>%
   dplyr::count() %>% 
   pivot_wider(names_from = mtorf_type, values_from = n, values_fill = 0) %>% 
   # dplyr::rename("Type 1" = Type_1, "Type 3" = Type_3) %>% 
-  mutate("radius" = (`Type 1a` + `Type 2` + `Type 3a` + `Type 3c`)/20) %>% 
+  mutate("radius" = (`Type 1a` + `Type 2` + `Type 3a` + `Type 3b`)/20) %>% 
   left_join(samples_sites, by = "Region:Site") %>% dplyr::select(-n)
 #
 regions_species <- samples %>% 
@@ -196,15 +199,15 @@ regions_species <- samples %>%
   dplyr::count() %>% 
   pivot_wider(names_from = Species, values_from = n, values_fill = 0) %>% 
   # dplyr::rename("Type 1" = Type_1, "Type 3" = Type_3) %>% 
-  mutate("sum" = (`P. effusa` + `P. grandis` + `P. meandrina` + `P. verrucosa 3a` + `P. verrucosa 3c`)) %>%
-  mutate("radius" = (`P. effusa` + `P. grandis` + `P. meandrina` + `P. verrucosa 3a` + `P. verrucosa 3c`)/50) %>% 
+  mutate("sum" = (`P. effusa` + `P. grandis` + `P. meandrina` + `P. verrucosa 3a` + `P. verrucosa 3b`)) %>%
+  mutate("radius" = (`P. effusa` + `P. grandis` + `P. meandrina` + `P. verrucosa 3a` + `P. verrucosa 3b`)/50) %>% 
   left_join(region_coords, by = "Region")
 ```
 
 ### Figure 1A
 #### Species Scatterpie
 ```{r figure 1A: powerpoint}
-pdf(file="./outputs/figures/Pocillopora_origins_map_scatterpie.pdf", width = 8, height = 4)
+pdf(file="./outputs/figures/sicb/Pocillopora_origins_map_scatterpie.pdf", width = 8, height = 4.25)
 par(mar = c(0.5, 0.5, 0.5, 0.5))
 elevMapTest <-
   ggplot() +
@@ -217,22 +220,29 @@ elevMapTest <-
     ylim = c(-2, 16)) +
   #
   new_scale_fill() +
-  geom_scatterpie(aes(x = Longitude, y = Latitude, group = `Region`, r = radius),
-                    data = regions_species, cols = c("P. effusa", "P. grandis", "P. meandrina", "P. verrucosa 3a", "P. verrucosa 3c"), size = 5, alpha = .8) + 
+  geom_scatterpie(aes(x = Longitude, y = Latitude, group = `Region`, r = 1),
+                    data = regions_species, cols = c("P. effusa", "P. grandis", "P. meandrina", "P. verrucosa 3a", "P. verrucosa 3b"), size = 5, alpha = .8) + 
   scale_fill_manual(values = c("purple", "darkorange1", "gold", "turquoise2", "turquoise4"), name = "Species") +
   #
-  geom_text_repel(aes(x = Longitude, y = Latitude, label = sum), size = 2.5, box.padding = 1, min.segment.length = 2, seed = 3, data = regions_species) +
+  geom_label_repel(aes(x = Longitude, y = Latitude, label = sum), size = 2, box.padding = 0.5, min.segment.length = 2, seed = 3, data = regions_species) +
   labs(x="Longitude", y="Latitude", elevation = "Elevation") +
   theme(panel.grid.major = element_blank(),
         panel.background = element_rect(fill = "#f0f8ff"),
         panel.border = element_rect(fill = NA),
-        plot.title = element_text(size = 16),
+        plot.title = element_blank(),
+        plot.subtitle = element_blank(),
         axis.title = element_blank(), 
-        axis.text = element_text(size = 10),
-        legend.title = element_text(size = 12),
-        legend.text = element_text(size = 10, face = "italic"),
-        legend.position = c(0.14, 0.26)) +
-  ggtitle(expression(italic("Pocillopora")*' sample origins and species identification'), subtitle = "All East Pacific samples (n= 289)")
+        axis.text = element_text(size = 8),
+        legend.title = element_text(size = 10),
+        legend.text = element_text(size = 8, face = "italic"),
+        legend.position = c(0.14, 0.28)) +
+  ggtitle(expression(italic("Pocillopora")*' species distribution and genotype counts'), subtitle = "All unique genotypes (N = 229)")
+# subtitle = "All East Pacific samples (N = 337)")
+elevMapTest
+dev.off()
+```
+```{r}
+png(file="./outputs/figures/sicb/Pocillopora_origins_map_scatterpie.png", width = 8, height = 3.75, units = "in", res = 300, type = "cairo-png")
 elevMapTest
 dev.off()
 ```
@@ -255,6 +265,7 @@ map_samplenumbers <-
   geom_point(aes(x = Longitude, y = Latitude, size = n, fill = Region),
                     data = samples_regions, shape = 21, alpha = .8, color = "black", show.legend = F) +
   scale_size_continuous(range = c(0.4, 10), limits = c(0, 80), breaks = c(10, 20, 40, 80), name = "# samples") +
+  scale_fill_manual(values = region_colors) +
   #
   labs(x="Longitude", y="Latitude") +
   theme(panel.grid.major = element_blank(),
@@ -270,43 +281,28 @@ map_samplenumbers <-
 map_samplenumbers
 dev.off()
 ```
-### Scatterpie
-```{r figure 1A: powerpoint}
-pdf(file="./outputs/figures/Pocillopora_origins_map_scatterpie_numbersR2.pdf", width = 8, height = 4)
-title <- expression('East Pacific '*italic("Pocillopora")*' sample origins and species identification')
-par(mar = c(0.5, 0.5, 0.5, 0.5))
-elevMapTest <-
-  ggplot() +
-  geom_sf(data = ocean, color = "black", size = 0.1, fill = "aliceblue") +
-  geom_sf(data = rivers, color = "#d7f2fa", size = 0.5)+
-  geom_sf(data = states, color = "darkgrey", size = 0.1, fill = "antiquewhite", alpha = 0.5) +
-  geom_sf(data = map, color = "black", size = 0.1, fill = "antiquewhite", alpha = 0.5) +
-    coord_sf(
-    xlim = c(-112, -76),
-    ylim = c(-2, 16)) +
-  #
-  new_scale_fill() +
-geom_scatterpie(aes(x = Longitude, y = Latitude, group = `Region`, r = 1.5),
-                    data = regions_species, cols = c("P. effusa", "P. grandis", "P. meandrina", "P. verrucosa 3a", "P. verrucosa 3c"), size = 5, alpha = .8) + 
-  scale_fill_manual(values = c("purple", "darkorange1", "gold", "turquoise2", "turquoise4"), name = "Species") +
-  #
-  new_scale_fill() +
-geom_point(aes(x = Longitude, y = Latitude, size = n),
-                    data = samples_regions_2, shape = 21, alpha = .8, fill = "grey40", color = "black", show.legend = FALSE) + 
-  scale_size_continuous(range = c(0.4, 10), limits = c(0, 60), breaks = c(5, 15, 30, 60), name = "# samples") +
-  #
-  labs(x="Longitude", y="Latitude") +
-  theme(panel.grid.major = element_blank(),
-        panel.background = element_rect(fill = "#f0f8ff"),
-        panel.border = element_rect(fill = NA),
-        plot.title = element_text(size = 16),
-        axis.title = element_blank(), 
-        axis.text = element_text(size = 11),
-        legend.title = element_text(size = 14),
-        legend.text = element_text(size = 12, face = "italic"),
-        legend.position = c(0.14, 0.26)) +
-  ggtitle(title)
-elevMapTest
+```{r}
+png(file="./outputs/figures/Pocillopora_origins_map_numbers.png", type = "cairo-png", width = 7.2, height = 4, units = "in", res = 300)
+map_samplenumbers
 dev.off()
+```
+```{r}
+ggsave()
+ggsave("./outputs/figures/Pocillopora_origins_map_numbers.png", plot = map_samplenumbers, device = "png", dpi = 300, width = 7.2, height = 4, units = "in")
+```
+
+
+### Table S1 
+```{r table S1}
+
+```
+
+```{r basic sample info table}
+# write out basic sample information table to host on GitHub
+samples %>%
+  arrange(`Sequence Round`, `Sample ID`) %>%
+  dplyr::select(-Set:-SINGLETON, -haplotype:-Species) %>% 
+  mutate(`Sample ID` = str_remove_all(`Sample ID`, "_AP3X.*")) %>%
+  write_csv(., "./data/AllSamples_MetadataTable.csv")
 ```
 

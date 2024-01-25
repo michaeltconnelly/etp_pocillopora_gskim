@@ -103,17 +103,17 @@ dev.off()
 ## Perform PCA of no-clones samples
 ```{r pca}
 # pop<-read.table("Demo/Data/Demo1pop.info")
-C <- as.matrix(read.table("./outputs/angsd/all_noclones.cov"))
+C <- as.matrix(read.table("./outputs/angsd/full_noclones.cov"))
 e <- eigen(C)
 ```
 ```{r pca_test_plot}
-plot(e$vectors[,1:2],xlab="PC1",ylab="PC2", main="individual allele frequency")
+plot(e$vectors[,c(1,2)],xlab="PC1",ylab="PC2", main="individual allele frequency")
 #
 ```
 
 ```{r bamfile_sample_order_check}
 # reading list of bam files = order of samples in IBS matrix
-bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/all_noclones_bamfile.txt",header=F)[,1]
+bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/full_noclones_bamfile.txt",header=F)[,1]
 #
 bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/", "", bams, perl=T)
 bam_ids <- sub(".sorted.md.rg.bam", "", bam_ids, perl=T)
@@ -127,7 +127,6 @@ samples_noclones <- samples[match(bam_ids, samples$`Sample ID`),]
 # do all the sample ids match the bam file ids in the correct order?
 all(samples_noclones$`Sample ID` == bam_ids) # TRUE
 ```
-
 ```{r combine_pca_metadata}
 # combine pc coordinates with sample metadata
 pcs <- as.data.frame(e$vectors) %>% cbind(samples_noclones)
@@ -137,13 +136,13 @@ pcvar <- round(e$values, 2)
 ```
 
 ```{r}
-pdf(file="./outputs/figures/nobones/pcangsd_species.pdf", width = 5.5, height = 3.75)
-title <- expression(paste("East Pacific ", italic("Pocillopora"), " PCA (4,644,899 SNPs)"))
-pcs %>% ggplot(aes(x = V1, y = V2)) +
+pdf(file="./outputs/figures/sicb/pcangsd_species.pdf", width = 5.5, height = 3.75)
+title <- expression(paste("East Pacific ", italic("Pocillopora"), " PCA (4,233,691 SNPs)"))
+pca <- pcs %>% ggplot(aes(x = V1, y = V2)) +
   geom_point(aes(fill = `Species`), shape = 21, size = 3, alpha = 0.75, show.legend = F) +
   scale_fill_manual(values = spp_colors) +
   # facet_grid(Region ~ .) +
-  # coord_fixed(pcvar[2]/pcvar[1]) + 
+  # coord_fixed(pcvar[2]/pcvar[1]) +
   xlab(paste0( "PC1 (", pcvar[1], "%)")) + 
   ylab(paste0( "PC2 (", pcvar[2], "%)")) +
   theme(plot.title = element_text(size = 16, hjust = -0.2),
@@ -154,19 +153,24 @@ pcs %>% ggplot(aes(x = V1, y = V2)) +
   ggtitle(title)
 dev.off()
 ```
+```{r}
+png(file="./outputs/figures/sicb/pcangsd_species.png", width = 5.5, height = 3.75, units = "in",  res = 300, type = "cairo-png")
+pca
+dev.off()
+```
+
 
 ### PCA of all samples by species
-
 ```{r}
 pdf(file="./outputs/figures/etp_spp_pca_color.pdf", width = 4, height = 2.5)
 title <- expression(paste("PCA of East Pacific ", italic("Pocillopora"), " spp."))
 pcs %>% ggplot(aes(x = V1, y = V2)) +
-  geom_jitter(aes(fill = `Species`), shape = 21, size = 4, alpha = 0.6, show.legend = F, width = 0.005, height = 0.005) +
+  geom_jitter(aes(fill = `Species`), shape = 21, size = 4, alpha = 0.6, show.legend = T, width = 0.005, height = 0.005) +
   scale_fill_manual(values = spp_colors) +
-  # facet_grid(Region ~ .) +
-  # coord_fixed(pcvar[2]/pcvar[1]) + 
-  xlab(paste0( "PC1 (", pcvar[1], "%)")) + 
-  ylab(paste0( "PC2 (", pcvar[2], "%)")) +
+  facet_wrap(Region ~ .) +
+  coord_fixed(pcvar[3]/pcvar[2]) +
+  xlab(paste0( "PC1 (", pcvar[2], "%)")) + 
+  ylab(paste0( "PC2 (", pcvar[3], "%)")) +
   theme(plot.title = element_text(size = 16, hjust = 1.4),
         axis.title = element_text(size = 12),
         axis.text = element_text(size = 11),
@@ -179,12 +183,9 @@ dev.off()
 
 ## Perform separate PCAs for different species
 
-### Plot PCAs for *P. grandis*
+### Plot PCAs for *P. grandis* - no clones
 ```{r pca_c1}
-pgrandis <- read_csv("./data/pgrandis_samples.txt", col_names = "Sample ID") %>% arrange(`Sample ID`)
-pgrandis_samples <- pgrandis %>% left_join(samples)
-# pop<-read.table("Demo/Data/Demo1pop.info")
-C1 <- as.matrix(read.table("./outputs/angsd/pgrandis.cov"))
+C1 <- as.matrix(read.table("./outputs/angsd/pgrandis_noclones.cov"))
 e1 <- eigen(C1)
 ```
 ```{r pca_test_plot}
@@ -193,19 +194,39 @@ plot(e1$vectors[,1:2],xlab="PC1",ylab="PC2", main="individual allele frequency")
 plot(e1$vectors[,2:3],xlab="PC2",ylab="PC3", main="individual allele frequency")
 # 
 ```
+```{r bamfile_sample_order_check}
+# reading list of bam files = order of samples in IBS matrix
+bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/pgrandis_noclones_bamfile.txt",header=F)[,1]
+#
+bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/", "", bams, perl=T)
+bam_ids <- sub(".sorted.md.rg.bam", "", bam_ids, perl=T)
+bam_ids <- sub("_S[[:digit:]]+$", "", bam_ids)
+#
+# bam_ids
+```
+```{r select_samples}
+# aligning sample metadata with bams list, then check again
+samples_pgrandis <- samples[match(bam_ids, samples$`Sample ID`),] 
+# do all the sample ids match the bam file ids in the correct order?
+all(samples_pgrandis$`Sample ID` == bam_ids) # TRUE
+```
 ```{r combine_pca_metadata}
 # combine pc coordinates with sample metadata
-pcs_c1 <- as.data.frame(e1$vectors) %>% cbind(pgrandis_samples)
+pcs_c1 <- as.data.frame(e1$vectors) %>% cbind(samples_pgrandis)
 # store variable with % variance explained by each PC
 pcvar_c1 <- round(e1$values, 2)
 #
 ```
+```{r pca_metadata_factors}
+pcs_c1$Region <- factor(pcs_c1$Region, levels = c("Panama", "Chiriqui", "Golfo Dulce", "Bahia Culebra", "Gorgona", "Coco", "Galapagos Central", "Galapagos Northern", "Clipperton"), ordered = T)
+```
+
 ```{r pca_ggplot}
 # test ggplot 
 pcs_c1 %>% ggplot(aes(x = V1, y = V2)) +
   geom_point(aes(fill = `Region`), shape = 21, size = 2, alpha = 0.75) +
   scale_fill_manual(values = region_colors) +
-  # facet_grid(Region ~ .) +
+  facet_wrap(~ `Region:Site`) +
   coord_fixed(pcvar_c1[2]/pcvar_c1[1]) + 
   theme(legend.position = "right") +
   xlab(paste0( "PC1 (", pcvar_c1[1], "%)")) + 
@@ -214,7 +235,7 @@ pcs_c1 %>% ggplot(aes(x = V1, y = V2)) +
 # test ggplot 
 pcs_c1 %>% ggplot(aes(x = V1, y = V2)) +
   geom_point(aes(fill = `Region:Site`), shape = 21, size = 2, alpha = 0.75) +
-  scale_fill_manual(values = site_colors) +
+  # scale_fill_manual(values = site_colors) +
   # facet_grid(Region ~ .) +
   coord_fixed(pcvar_c1[2]/pcvar_c1[1]) + 
   theme(legend.position = "right") +
@@ -224,7 +245,7 @@ pcs_c1 %>% ggplot(aes(x = V1, y = V2)) +
 ```
 ```{r pgrandis_region_pca}
 pdf("./outputs/figures/pgrandis_region_pca.pdf", height = 4.5, width = 6)
-title <- expression(paste("PCA of ETP ", italic("P. grandis"), " samples (n = 73)"))
+title <- expression(paste("PCA of ETP ", italic("P. grandis"), " samples (n = 173)"))
 #
 pcs_c1 %>% ggplot(aes(x = V1, y = V2)) +
   geom_point(aes(fill = `Region`), shape = 21, size = 2, alpha = 0.75) +
@@ -242,12 +263,9 @@ dev.off()
 ### Plot PCAs for P. grandis - Panama
 ```{r pca_c1}
 pgrandis <- read_csv("./data/pgrandis_panama_samples.txt", col_names = "Sample ID") %>% arrange(`Sample ID`)
-pgrandis <- read_csv("./data/pgrandis_noclones_samples.txt", col_names = "Sample ID") %>% arrange(`Sample ID`)
-pgrandis$`Sample ID` <- gsub("_S.*", "", pgrandis$`Sample ID`)
 pgrandis_samples <- pgrandis %>% left_join(samples)
 #
 C1 <- as.matrix(read.table("./outputs/angsd/pgrandis_panama.cov"))
-C1 <- as.matrix(read.table("./outputs/angsd/pgrandis_noclones.cov"))
 e1 <- eigen(C1)
 ```
 ```{r pca_test_plot}
@@ -291,12 +309,52 @@ pcs_c1 %>% ggplot(aes(x = V1, y = V2)) +
 ```{r}
 pcs_c1_spp <- pcs_c1 %>% mutate(SubSpecies = ifelse(V2 < -0.05, "C", (ifelse(V1 < -0.05, "B", ifelse(V1 > 0, "A", "D"))))) 
 ```
+```{r}
+pdf(file="./outputs/figures/sicb/pcangsd_pgrandis_region.pdf", width = 7.5, height = 5)
+title <- expression(paste("East Pacific ", italic("P. grandis"), " population-level PCA (3,273,302 SNPs)"))
+# no bone Pcas 
+pcs_c1 %>% ggplot(aes(x = V1, y = V2)) +
+  geom_point(aes(fill = `Region`), shape = 21, size = 2, alpha = 0.75, show.legend = T) +
+  scale_fill_manual(values = region_colors) +
+  # facet_wrap(~ Region) +
+  coord_fixed(pcvar_c1[2]/pcvar_c1[1]) + 
+  xlab(paste0( "PC1 (", pcvar_c1[1], "%)")) + 
+  ylab(paste0( "PC2 (", pcvar_c1[2], "%)")) + 
+  theme(plot.title = element_text(size = 16, hjust = 0),
+        axis.title = element_text(size = 14),
+        axis.text = element_text(size = 12),
+        legend.position = "right", 
+        legend.spacing.y = unit(2, "mm"),
+        legend.title = element_blank(),
+        legend.text = element_text(size = 12)) +
+  ggtitle(title)
+dev.off()
+```
+```{r}
+png(file="./outputs/figures/sicb/pcangsd_pgrandis_region.png", width = 8, height = 3.75, units = "in", res = 300)
+title <- expression(paste(italic("P. grandis"), " population-level PCA (3,273,302 SNPs)"))
+# no bone Pcas 
+pcs_c1 %>% ggplot(aes(x = V1, y = V2)) +
+  geom_point(aes(fill = `Region`), shape = 21, size = 2, alpha = 0.75, show.legend = T) +
+  scale_fill_manual(values = region_colors) +
+  # facet_wrap(~ Region) +
+  coord_fixed(pcvar_c1[2]/pcvar_c1[1]) + 
+  xlab(paste0( "PC1 (", pcvar_c1[1], "%)")) + 
+  ylab(paste0( "PC2 (", pcvar_c1[2], "%)")) + 
+  theme(plot.title = element_text(size = 16, hjust = 0.1),
+        axis.title = element_text(size = 14),
+        axis.text = element_text(size = 12),
+        legend.position = "right", 
+        legend.spacing.y = unit(2, "mm"),
+        legend.title = element_blank(),
+        legend.text = element_text(size = 12)) +
+  ggtitle(title)
+dev.off()
+```
 
-### Plot PCAs for *P. verrucosa*
+### Plot PCAs for *P. verrucosa* (3a + 3b + 3d) - no clones
 ```{r pca_c3}
-pverrucosa <- read_csv("./data/pverrucosa_samples.txt", col_names = "Sample ID") %>% arrange(`Sample ID`)
-# pop<-read.table("Demo/Data/Demo1pop.info")
-C <- as.matrix(read.table("./outputs/angsd/pverrucosa.cov"))
+C <- as.matrix(read.table("./outputs/angsd/pverrucosa_full_noclones.cov"))
 e <- eigen(C)
 ```
 ```{r pca_test_plot}
@@ -305,9 +363,32 @@ plot(e$vectors[,1:2],xlab="PC1",ylab="PC2", main="individual allele frequency")
 plot(e$vectors[,2:3],xlab="PC2",ylab="PC3", main="individual allele frequency")
 # 
 ```
+```{r bamfile_sample_order_check}
+# reading list of bam files = order of samples in IBS matrix
+bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/pverrucosa_full_noclones_bamfile.txt",header=F)[,1]
+#
+bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/", "", bams, perl=T)
+bam_ids <- sub(".sorted.md.rg.bam", "", bam_ids, perl=T)
+bam_ids <- sub("_S[[:digit:]]+$", "", bam_ids)
+#
+# bam_ids
+```
+```{r select_samples}
+# aligning sample metadata with bams list, then check again
+samples_pverrucosa <- samples[match(bam_ids, samples$`Sample ID`),] 
+# do all the sample ids match the bam file ids in the correct order?
+all(samples_pverrucosa$`Sample ID` == bam_ids) # TRUE
+```
 ```{r combine_pca_metadata}
 # combine pc coordinates with sample metadata
-pcs <- as.data.frame(e$vectors) %>% cbind(pverrucosa) %>% left_join(samples)
+pcs <- as.data.frame(e$vectors)# %>% cbind(pverrucosa) %>% left_join(samples)
+# store variable with % variance explained by each PC
+pcvar <- round(e$values, 2)
+#
+```
+```{r combine_pca_metadata}
+# combine pc coordinates with sample metadata
+pcs <- as.data.frame(e$vectors) %>% cbind(samples_pverrucosa)
 # store variable with % variance explained by each PC
 pcvar <- round(e$values, 2)
 #
@@ -316,24 +397,33 @@ pcvar <- round(e$values, 2)
 # test ggplot 
 pcs %>% ggplot(aes(x = V1, y = V2)) +
   geom_point(aes(fill = `Region`), shape = 21, size = 2, alpha = 0.75) +
-  # scale_fill_manual(values = region_colors)# +
+  scale_fill_manual(values = region_colors) +
   # facet_grid(Region ~ .) +
   coord_fixed(pcvar[2]/pcvar[1]) +
   xlab(paste0( "PC1 (", pcvar[1], "%)")) +
   ylab(paste0( "PC2 (", pcvar[2], "%)"))
 # 
 ```
-
-### Sept testing
-```{r pca_c3}
-pverrucosa <- read_csv("./data/pverrucosa3a_noclones_samples.txt", col_names = "Sample ID") %>% arrange(`Sample ID`)
-# pop<-read.table("Demo/Data/Demo1pop.info")
-C <- as.matrix(read.table("./outputs/angsd/pverrucosa3a_noclones.cov"))
-e <- eigen(C)
-```
-```{r pca_test_plot}
-plot(e$vectors[,1:2],xlab="PC1",ylab="PC2", main="individual allele frequency")
+```{r pverrucosa_region_pca}
+pdf("./outputs/figures/pverrucosa_region_pca.pdf", width = 8, height = 3.75)
+title <- expression(paste(italic("P. verrucosa"), " population-level PCA (42 samples, 13,224,661 SNPs)"))
 #
-plot(e$vectors[,2:3],xlab="PC2",ylab="PC3", main="individual allele frequency")
+pcs %>% ggplot(aes(x = V1, y = V2)) +
+  geom_point(aes(fill = `Region`), shape = 21, size = 2, alpha = 0.75) +
+  scale_fill_manual(values = region_colors) +
+  # facet_grid(Region ~ .) +
+  coord_fixed(pcvar[2]/pcvar[1]) + 
+  theme(legend.position = "right") +
+  xlab(paste0( "PC1 (", pcvar[1], "%)")) + 
+  ylab(paste0( "PC2 (", pcvar[2], "%)")) +
+  theme(plot.title = element_text(size = 16, hjust = 0.1),
+        axis.title = element_text(size = 14),
+        axis.text = element_text(size = 12),
+        legend.position = "right", 
+        legend.spacing.y = unit(2, "mm"),
+        legend.title = element_blank(),
+        legend.text = element_text(size = 12)) +
+  ggtitle(title)
 # 
+dev.off()
 ```

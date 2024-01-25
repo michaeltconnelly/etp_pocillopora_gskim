@@ -4,7 +4,7 @@ author: "Mike Connelly"
 date: "2023-05-10"
 output: html_document
 ---
-Code for Panama *Pocillopora* genome skimming manuscript
+Code for *Pocillopora* genome skimming manuscript
 
 ## Setup and packages
 ```{r setup, include=FALSE}
@@ -14,6 +14,7 @@ knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ```
 ```{r packages}
 library("tidyverse")
+library("magrittr")
 library("ggtree")
 #
 library("WGCNA") # for coloring clonal groups
@@ -34,7 +35,7 @@ samples <- filter(all_samples, ANALYSIS ==T)
 
 ```{r bamfile_sample_order_check}
 # reading list of bam files = order of samples in IBS matrix
-bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/all_analysis_bamfile.txt",header=F)[,1]
+bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/full_analysis_bamfile.txt",header=F)[,1]
 #
 bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/", "", bams, perl=T)
 bam_ids <- sub(".sorted.md.rg.bam", "", bam_ids, perl=T)
@@ -71,7 +72,10 @@ all(samples$`Sample ID` == bam_ids) # TRUE
 # ma <- as.matrix(read.table("./outputs/angsd/panama_manuscript_ibs05.ibsMat"))
 # ma <- as.matrix(read.table("./outputs/angsd/all_ibs05.ibsMat"))
 # ma <- as.matrix(read.table("./outputs/angsd/round2_ibs05.ibsMat"))
-ma <- as.matrix(read.table("./outputs/angsd/all_analysis_ibs05.ibsMat"))
+# ma <- as.matrix(read.table("./outputs/angsd/all_analysis_ibs05.ibsMat"))
+# ma <- as.matrix(read.table("./outputs/angsd/costarica_ibs05.ibsMat"))
+ma <- as.matrix(read.table("./outputs/angsd/full_analysis_ibs05.ibsMat"))
+
 ```
 ```{r import_ibs_matrix}
 # remove biorepository codes from sample labels
@@ -81,7 +85,8 @@ dimnames(ma) <- list(samples$`Sample ID`, samples$`Sample ID`)
 # dimnames(ma) <- list(sample_names, sample_names)
 #
 # dimnames(ma)=list(samples$Site,samples$Site)
-
+# OR
+# dimnames(ma) <- list(bam_ids, bam_ids)
 ```
 ### Plot IBS hierarchical clustering dendrograms
 ```{r ibs_dendrogram_test}
@@ -121,7 +126,7 @@ abline(h=0.105,col="turquoise2",lty=3)
 dev.off()
 ```
 ```{r ibs_dendrogram_galapagos}
-# retaining only isla del coco samples
+# retaining only galapagos samples
 ma_usfq <- ma[samples$Set == "USFQ_CSUMB", samples$Set == "USFQ_CSUMB"]
 # re-clustering
 hc_usfq <- hclust(as.dist(ma_usfq),"ave")
@@ -140,7 +145,7 @@ abline(h=0.15,col="red",lty=3)
 
 ## Plot IBS clustering dendrogram with ggtree for all samples
 ```{r}
-tree_title <- expression(paste("Identity-by-state clustering of all ", italic("Pocillopora"), " samples (n=", 289, ")"))
+tree_title <- expression(paste("Identity-by-state clustering of all ", italic("Pocillopora"), " samples (n=", 337, ")"))
 ```
 ```{r ibs_ggtree}
 # pdf("./outputs/figures/ibs_dendrogram_all_analysis_site.pdf",width = 8.5, height = 16)
@@ -171,15 +176,15 @@ hc %>% ggtree() %<+% samples +
   theme_dendrogram(legend.position = c(0.8, 0.85),
         legend.margin = margin(0,0,0,0, unit = "mm"),
         plot.margin = margin(5,5,5,5, unit = "mm")) +
-  ggtitle(expression(paste(italic("Pocillopora"), " identity-by-state clustering dendrogram")), subtitle = "All East Pacific samples (n= 289)")
+  ggtitle(expression(paste(italic("Pocillopora"), " identity-by-state clustering dendrogram")), subtitle = "All East Pacific samples (n= 337)")
 # dev.off()
 ```
 
 ### No Bones IBS figures
 
 ```{r}
-pdf("./outputs/figures/nobones/ibs_dendrogram_all_analysis_black.pdf", width = 8.5, height = 4.85)
-hc %>% ggtree() %<+% samples + 
+pdf("./outputs/figures/sicb/ibs_dendrogram_all_analysis_black.pdf", width = 8.5, height = 4.85)
+hc_black <- hc %>% ggtree() %<+% samples + 
   layout_dendrogram() + 
   geom_tippoint(shape = 21, fill = "grey40", color = "black", alpha = 0.8, stroke = 0.5, hjust = 0.3, show.legend = FALSE) +
   # geom_tiplab(size = 2, hjust = 1.05) +
@@ -190,36 +195,67 @@ hc %>% ggtree() %<+% samples +
   xlab("Genetic distance (1-IBS)")
 dev.off()
 ```
+```{r}
+png("./outputs/figures/sicb/ibs_dendrogram_all_analysis_black.png", width = 8.5, height = 4.85, units = "in", type = "cairo-png", res = 300)
+hc_black
+dev.off()
+```
 
 ```{r}
-pdf("./outputs/figures/nobones/ibs_dendrogram_all_analysis_mtorf.pdf", width = 8.5, height = 4.85)
-hc %>% ggtree() %<+% samples + 
+pdf("./outputs/figures/sicb/ibs_dendrogram_all_analysis_mtorf.pdf", width = 8.5, height = 4.85)
+hc_mtorf <- hc %>% ggtree() %<+% samples + 
   layout_dendrogram() + 
-  geom_tippoint(aes(fill = `mtorf_type`), shape = 21, color = "black", alpha = 0.8, stroke = 0.5, hjust = 0.3, show.legend = FALSE) +
+  geom_tippoint(aes(fill = `mtorf_type`), shape = 21, color = "black", alpha = 0.8, stroke = 0.5, hjust = 0.3, show.legend = TRUE) +
   # geom_tiplab(size = 2, hjust = 1.05) +
   scale_fill_manual(values = mtorf_colors, name = "mtORF haplotype") +
   scale_y_continuous(expand = expansion(mult = c(0.02, 0))) +
-  theme_dendrogram(legend.position = c(0.75, 0.85),
+  theme_dendrogram(legend.position = c(0.9, 0.82),
         legend.margin = margin(0,0,0,0, unit = "mm"),
         plot.margin = margin(2,2,2,2, unit = "mm")) +
   xlab("Genetic distance (1-IBS)")
+dev.off()
+```
+```{r}
+png("./outputs/figures/sicb/ibs_dendrogram_all_analysis_mtorf.png", width = 8.5, height = 4.85, units = "in", type = "cairo-png", res = 300)
+hc_mtorf
 dev.off()
 ```
 
 ```{r}
-pdf("./outputs/figures/nobones/ibs_dendrogram_all_analysis_mtorf_replicates.pdf", width = 8.5, height = 4.85)
-hc %>% ggtree() %<+% samples + 
+pdf("./outputs/figures/sicb/ibs_dendrogram_all_analysis_mtorf_replicates.pdf", width = 8.5, height = 4.85)
+hc_mtorf_rep <- hc %>% ggtree() %<+% samples + 
   layout_dendrogram() + 
-  geom_tippoint(aes(fill = `mtorf_type`, color = `REPLICATE`), shape = 21, alpha = 0.8, stroke = 0.5, hjust = 0.3, show.legend = FALSE) +
+  geom_tippoint(aes(fill = `mtorf_type`, color = `REPLICATE`), shape = 21, alpha = 0.8, stroke = 0.5, hjust = 0.3, show.legend = F) +
   scale_fill_manual(values = mtorf_colors, name = "mtORF haplotype") +
   scale_color_manual(values = c("black", "red")) +
   scale_y_continuous(expand = expansion(mult = c(0.02, 0))) +
-  theme_dendrogram(legend.position = c(0.75, 0.85),
+  theme_dendrogram(legend.position = c(0.9, 0.82),
         legend.margin = margin(0,0,0,0, unit = "mm"),
         plot.margin = margin(2,2,2,2, unit = "mm")) +
   xlab("Genetic distance (1-IBS)")
 dev.off()
 ```
+```{r}
+png("./outputs/figures/sicb/ibs_dendrogram_all_analysis_mtorf_reps.png", width = 8.5, height = 4.85, units = "in", type = "cairo-png", res = 300)
+hc_mtorf_rep
+dev.off()
+```
+
+```{r}
+hc_site <- hc %>% ggtree() %<+% samples + 
+  layout_dendrogram() + 
+  geom_tippoint(aes(fill = `Region:Site`), shape = 21, color = "black", alpha = 0.8, stroke = 0.5, hjust = 0.3, show.legend = TRUE) +
+  # geom_tiplab(size = 2, hjust = 1.05) +
+  # scale_fill_manual(values = mtorf_colors, name = "mtORF haplotype") +
+  scale_y_continuous(expand = expansion(mult = c(0.02, 0))) +
+  # theme_dendrogram(legend.position = c(0.9, 0.82),
+  #       legend.margin = margin(0,0,0,0, unit = "mm"),
+  #       plot.margin = margin(2,2,2,2, unit = "mm")) +
+  xlab("Genetic distance (1-IBS)")
+
+hc_site
+```
+
 
 ### Figure 2
 ```{r}
@@ -471,11 +507,11 @@ dev.off()
 
 ## Plot IBS clustering with clones removed
 ```{r}
-ma <- as.matrix(read.table("./outputs/angsd/all_noclones_ibs05.ibsMat"))
+ma <- as.matrix(read.table("./outputs/angsd/full_noclones_ibs05.ibsMat"))
 ```
 ```{r bamfile_sample_order_check}
 # reading list of bam files = order of samples in IBS matrix
-bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/all_noclones_bamfile.txt",header=F)[,1]
+bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/full_noclones_bamfile.txt",header=F)[,1]
 #
 bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/", "", bams, perl=T)
 bam_ids <- sub(".sorted.md.rg.bam", "", bam_ids, perl=T)
@@ -499,17 +535,32 @@ hc <- hclust(as.dist(ma), "ave")
 plot(hc, cex = 0.4)
 ```
 ```{r}
-pdf("./outputs/figures/nobones/ibs_dendrogram_all_noclones_mtorf.pdf", width = 8.5, height = 4.85)
-hc %>% ggtree() %<+% samples + 
+pdf("./outputs/figures/sicb/ibs_dendrogram_all_noclones_mtorf.pdf", width = 8.5, height = 4.85)
+hc_noclones <- hc %>% ggtree() %<+% samples + 
   layout_dendrogram() + 
-  geom_tippoint(aes(fill = `mtorf_type`), shape = 21, color = "black", alpha = 0.8, stroke = 0.5, hjust = 0.3, show.legend = FALSE) +
+  geom_tippoint(aes(fill = `mtorf_type`), shape = 21, color = "black", alpha = 0.8, stroke = 0.5, hjust = 0.3, show.legend = T) +
   # geom_tiplab(size = 2, hjust = 1.05) +
-  scale_fill_manual(values = mtorf_colors, name = "mtORF haplotype") +
+  scale_fill_manual(values = c(mtorf_colors), name = "mtORF haplotype") +
   scale_y_continuous(expand = expansion(mult = c(0.02, 0))) +
-  theme_dendrogram(legend.position = c(0.75, 0.85),
+  theme_dendrogram(legend.position = c(0.9, 0.82),
         legend.margin = margin(0,0,0,0, unit = "mm"),
         plot.margin = margin(2,2,2,2, unit = "mm")) +
   xlab("Genetic distance (1-IBS)")
 dev.off()
+```
+
+```{r}
+png("./outputs/figures/sicb/ibs_dendrogram_all_noclones_mtorf.png", width = 8.5, height = 4.85, units = "in", type = "cairo-png", res = 300)
+hc_noclones
+dev.off()
+```
+
+```{r}
+# histogram of pairwise distances 
+
+# need to select only columns of samples 
+ma_type1a <- madf %>% filter(mtorf_type == "Type 1a") %>% select(.$`Sample ID`) %>% as.matrix() %>% hist()
+
+hist(madf[madf$mtorf_type == "Type 1a", madf$mtorf_type == "Type 1a"])
 ```
 
