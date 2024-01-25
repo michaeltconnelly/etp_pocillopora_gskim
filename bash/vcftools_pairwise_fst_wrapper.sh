@@ -6,7 +6,7 @@
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 # list of populations
 VCF_NAME="$1"
-POPS="$2"
+POPFILE="$2"
 
 touch ${prodir}/bash/jobs/vcftools_pairwise_fst.job
 
@@ -39,10 +39,11 @@ VCF_IN="${prodir}/outputs/${VCF_NAME}.vcf.gz"
 #
 #' >> ${prodir}/bash/jobs/vcftools_pairwise_fst.job
 #
-#
+# generate list of populations
+POPS=$(cat ${prodir}/data/$POPFILE)
 # calculate genome-wide per-site pairwise Fst
 # script to create commands for all pairwise comparisons
-set -- $spp
+set -- $POPS
 for a; do
     shift
     for b; do
