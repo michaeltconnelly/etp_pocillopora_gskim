@@ -1,9 +1,9 @@
 #!/bin/sh
 # ----------------Parameters---------------------- #
 #$ -S /bin/sh
-#$ -pe mthread 16
+#$ -pe mthread 8
 #$ -q mThM.q
-#$ -l mres=192G,h_data=12G,h_vmem=12G,himem
+#$ -l mres=96G,h_data=12G,h_vmem=12G,himem
 #$ -cwd
 #$ -j y
 #$ -N angsd_spp_genetic_divergence
@@ -45,11 +45,16 @@ minindv=$(echo "$nsamps*0.85" | bc | awk '{print int($1+0.5)}')
 FILTERS="-uniqueOnly 1 -remove_bads 1 -skipTriallelic 1 -minMapQ 30 -minQ 30 -doHWE 1 -sb_pval 1e-5 -hetbias_pval 1e-5 -minInd $minindv"
 TODO="-doMajorMinor 1 -doMaf 1 -dosnpstat 1 -doPost 2 -doGeno 8"
 angsd -b $BAMLIST -GL 1 $FILTERS $TODO -P $NSLOTS -out ${angsddir}/AllSites
-angsd sites index ${angsddir}/AllSites
+# extract and index sites
+zcat ${angsddir}/AllSites.mafs.gz | cut -f 1,2 | tail -n +2 > ${angsddir}/AllSites.txt
+# obtain list of scaffolds containing sites
+cat ${angsddir}/AllSites.txt | cut -f 1 | sort | uniq > ${angsddir}/SczhEnG.txt
+angsd sites index ${angsddir}/AllSites.txt
 
 # 1) calculate SAF for each species/population
 echo "Begin SAF estimation for each species/population"
 for set in $spp; do 
+echo "${set} SAF estimation"
 # ----- SAF with ANGSD
 # specify variable with bam file list for each population / species
 BAMS="${angsddir}/bamfiles/${set}_bamfile.txt"
@@ -64,9 +69,9 @@ TODO=" -doSaf 1"
 ANC="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/data/seqs/peffusa_reference_ancestral.fa"
 
 # estimate the site allele frequency likelihood
-angsd -sites ${angsddir}/AllSites -b $BAMS -anc $ANC -GL 1 -P $NSLOTS $TODO -out ${angsddir}/${set} 
+angsd -sites ${angsddir}/AllSites.txt -rf ${angsddir}/SczhEnG.txt -b $BAMS -anc $ANC -GL 1 -P $NSLOTS $TODO -out ${angsddir}/${set} 
+echo "DONE!"
 done
-
 
 # 2) now calculate the 2D SFS for all pairwise comparisons
 echo "Begin 2D SFS calculation for all combinations"
