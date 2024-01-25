@@ -64,6 +64,7 @@ outputs/snapp/
 outputs/symbiont_counts/
 outputs/oury_pipeline/
 outputs/figures/
+outputs/*vcf.gz
 #
 
 logs/
