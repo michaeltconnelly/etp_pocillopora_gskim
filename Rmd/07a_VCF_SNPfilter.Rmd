@@ -1,0 +1,381 @@
+---
+title: "Pocillopora VCF SNP filtering w/ SNPFILTR"
+author: "Mike Connelly"
+date: "10/11/2023"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+# O'Leary et al. 
+# modified from https://github.com/sjoleary/SNPFILT/blob/master/filteringsnapper.Rmd
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+
+```
+```{r}
+library("tidyverse")
+library("vcfR")
+library("SNPfiltR")
+# 
+source("./R/VCFfilterstats_edit.R")
+source("./R/VCFfilterviz.R")
+# need to build custom functions in the repository (ex. multiplot())
+```
+
+## Preliminary filtered dataset stats
+The raw VCF was filtered on Hydra for loci with <25% missing data, Q > 30, depth 20 - 300, and minor allele frequency > 0.01
+
+The preliminary all analysis samples VCF contains ###,### sites in ### individuals.
+The preliminary no-clones VCF contains ###,### sites in ###
+
+Target several thousand (~1,000 - 10,000) SNPs for downstream analyses
+## Import VCF file
+```{r imporf_vcf}
+# vcf <- vcfR::read.vcfR(file = "./outputs/phylotrans_pdam/metapocillopora_004_filtered_primary.vcf")
+```
+```{r imporf_vcf}
+# Final samples both genotype-specific VCF
+vcf <- vcfR::read.vcfR(file = "./outputs/phylotrans_pdam/metapocillopora_final_samples_both_filtered_primary.vcf")
+```
+
+```{r}
+### check the metadata present in your vcf
+vcf
+# Full-cohort VCF
+# ***** Object of Class vcfR *****
+# 217 samples
+# 1306 CHROMs
+# 720,086 variants
+# Object size: 3310.9 Mb
+# 0 percent missing data
+# *****        *****         *****
+# 
+# Genotype-specific VCF
+# ***** Object of Class vcfR *****
+# 30 samples
+# 1430 CHROMs
+# 913,935 variants
+# Object size: 755 Mb
+# 0 percent missing data
+# *****        *****         *****
+#
+# Final samples both genotype-specific VCF
+# ***** Object of Class vcfR *****
+# 57 samples
+# 1522 CHROMs
+# 717,733 variants
+# Object size: 1253.4 Mb
+# 0 percent missing data
+# *****        *****         *****
+```
+```{r popmap}
+# generate popmap file. Two column popmap with the same format as stacks, and the columns must be named 'id' and 'pop'
+# consider which population to assign samples - study, species ID, other groupings?
+popmap <- data.frame(id = colnames(vcf@gt)[2:length(colnames(vcf@gt))],
+                     pop = substr(colnames(vcf@gt)[2:length(colnames(vcf@gt))], 1,4))
+#
+popmap <- popmap %>% 
+  dplyr::mutate(Sample_ID = str_replace(`id`, "_1$", "")) %>% 
+  left_join(samples, by = "Sample_ID") %>% 
+  dplyr::select(id:Species)
+
+#save popmap for SNAPP, other assignments
+write_csv(popmap, "./data/popmap_genotypes.csv")
+```
+## Inspect with vcfR
+```{r}
+# pdam_genome <- ape::read.dna("/Users/mikeconnelly/computing/sequences/genomes/coral/pocillopora/pdam/pdam_genome.fasta", format = "fasta")
+# pdam_gff <- read.table("/Users/mikeconnelly/computing/sequences/genomes/coral/pocillopora/pdam/pdam_genome.gff", sep="\t", quote="")
+# 
+# pdam_meta_chrom <- create.chromR(name="Supercontig", vcf = vcf, seq = pdam_genome, ann = pdam_gff, verbose = FALSE)
+# chrom <- proc.chromR(pdam_meta_chrom, verbose = TRUE)
+```
+
+## Filter VCF file
+```{r}
+vcf %>% SNPfiltR::hard_filter(.)
+```
+### Step 1: Minimum Depth and Read Quality
+```{r}
+#hard filter to minimum depth of 15, and minimum genotype quality of 30
+vcf_001 <- hard_filter(vcfR = vcf, depth = 20, gq = 30)
+# Genotype-specific VCF
+# 44.23% of genotypes fall below a read depth of 20 and were converted to NA
+# 1.86% of genotypes fall below a genotype quality of 30 and were converted to NA
+# 
+# Final samples both genotype-specific VCF
+# 35.68% of genotypes fall below a read depth of 20 and were converted to NA
+# 2.3% of genotypes fall below a genotype quality of 30 and were converted to NA
+vcf_001
+```
+### Step 2: Allele Balance
+```{r}
+ vcf_002 <- vcf_001 %>%  
+  filter_allele_balance() #%>% 
+# Genotype-specific VCF
+# 41.04% of het genotypes (8.45% of all genotypes) fall outside of 0.25 - 0.75 allele balance ratio and were converted to NA
+#
+# Final samples both genotype-specific VCF
+# 31.09% of het genotypes (6.81% of all genotypes) fall outside of 0.25 - 0.75 allele balance ratio and were converted to NA
+vcf_002
+```
+```{r}
+max_depth(vcf_002)
+# Genotype-specific VCF
+# dashed line indicates a mean depth across all SNPs of 73.5
+# 
+# Final samples both genotype-specific VCF
+# dashed line indicates a mean depth across all SNPs of 69.7
+```
+
+```{r}
+#run function to visualize samples
+missing_by_sample(vcfR = vcf_002, popmap = popmap)
+```
+### Step 3: Apply missing data cutoff by sample
+```{r}
+vcf_003 <- vcf_002 %>% missing_by_sample(., cutoff = .85) #0.95
+# 2 samples are above a 0.95 missing data cutoff, and were removed from VCF - Grupstra2022
+#
+# Final samples both genotype-specific VCF
+# 4 samples are above a 0.95 missing data cutoff, and were removed from VCF - all Connelly EAPSI
+# 7 samples are above a 0.85 missing data cutoff, and were removed from VCF
+# 13 samples are above a 0.6 missing data cutoff, and were removed from VCF
+
+#subset popmap to only include retained individuals
+popmap <- popmap[popmap$id %in% colnames(vcf_003@gt),]
+#if there are still problematic samples, drop them using the following syntax
+#vcfR <- vcfR[,colnames(vcfR@gt) != "A_woodhouseii_24711" & colnames(vcfR@gt) != "A_californica_45901"]
+```
+
+### Step 4: Remove invariant sites generated by dropping individuals
+```{r}
+#remove invariant sites generated by dropping individuals
+vcf_004 <- min_mac(vcf_003, min.mac = 1)
+# 
+vcf_004
+# Genotype-specific VCF
+# 11.63% of SNPs fell below a minor allele count of 1 and were removed from the VCF
+# 
+# Final samples both genotype-specific VCF
+# 3.37% of SNPs fell below a minor allele count of 1 and were removed from the VCF
+# ***** Object of Class vcfR *****
+# 53 samples
+# 1513 CHROMs
+# 693,513 variants
+# Object size: 936.4 Mb
+# 37.02 percent missing data
+# *****        *****         *****
+```
+
+### Step 5: Apply missing data cutoff by SNP
+```{r}
+missing_by_snp(vcf_004)
+#
+vcf_005 <- vcf_004 %>% missing_by_snp(., cutoff = 1)
+# note, SNAPP requires that all taxa/species have data at each position, so for all-samples are unique species models, cutoff = 1
+
+# Genotype-specific VCF
+# 99.63% of SNPs fell below a completeness cutoff of 0.9 and were removed from the VCF
+# 98.32% of SNPs fell below a completeness cutoff of 0.85 and were removed from the VCF
+# 96.99% of SNPs fell below a completeness cutoff of 0.8 and were removed from the VCF
+# 77.7% of SNPs fell below a completeness cutoff of 0.65 and were removed from the VCF
+# 
+# Final samples both genotype-specific VCF
+# 99.59% of SNPs fell below a completeness cutoff of 0.95 and were removed from the VCF
+# ***** Object of Class vcfR *****
+# 53 samples
+# 481 CHROMs
+# 2,841 variants
+# Object size: 6.2 Mb
+# 3.128 percent missing data
+# *****        *****         *****
+# 94.4% of SNPs fell below a completeness cutoff of 0.9 and were removed from the VCF
+# ***** Object of Class vcfR *****
+# 53 samples
+# 795 CHROMs
+# 38,843 variants
+# Object size: 72.6 Mb
+# 7.531 percent missing data
+# *****        *****         *****
+# 88.61% of SNPs fell below a completeness cutoff of 0.85 and were removed from the VCF
+
+vcf_005
+```
+```{r}
+missing_by_sample(vcfR = vcf_005, popmap = popmap)
+# 
+missing_by_snp(vcf_005)
+```
+
+### Step 6: Investigate the effect of a minor allele count (MAC) cutoff on downstream inferences.
+```{r}
+#investigate clustering patterns with and without a minor allele cutoff
+#use min.mac() to investigate the effect of multiple cutoffs
+vcf_mac <- vcf_005 %>% min_mac(., min.mac = 2)
+# Genotype-specific VCF
+# 36.14% of SNPs fell below a minor allele count of 2 and were removed from the VCF
+#
+# Final samples both genotype-specific VCF
+# 0% of SNPs fell below a minor allele count of 2 and were removed from the VCF
+
+```
+```{r}
+#assess clustering without MAC cutoff
+miss <- assess_missing_data_tsne(vcf_005, popmap, clustering = FALSE)
+
+#assess clustering wit MAC cutoff
+miss <- assess_missing_data_tsne(vcf_mac, popmap, clustering = FALSE)
+```
+
+```{r}
+
+#plot depth per snp and per sample
+dp <- extract.gt(vcf_005, element = "DP", as.numeric=TRUE)
+heatmap.bp(dp, rlabels = FALSE)
+
+#plot genotype quality per snp and per sample
+gq <- extract.gt(vcf_005, element = "GQ", as.numeric=TRUE)
+heatmap.bp(gq, rlabels = FALSE)
+```
+
+### Step 7: Write out files for downstream analysis
+```{r}
+
+vcf_006 <- distance_thin(vcf_005, min.distance = 1000)
+# Genotype-specific VCF
+# 2945 out of 13570 input SNPs were not located within 1000 base-pairs of another SNP and were retained despite filtering
+# 1173 out of 2995 input SNPs were not located within 1000 base-pairs of another SNP and were retained despite filtering - 0.95
+
+#
+# Final samples both genotype-specific VCF
+# 0.95 - 1131 out of 2841 input SNPs were not located within 1000 base-pairs of another SNP and were retained despite filtering
+# 0.9 - 6260 out of 38843 input SNPs were not located within 1000 base-pairs of another SNP and were retained despite filtering
+vcf_006
+```
+```{r}
+vcf_thin <- vcf_006
+
+# for vcf analysis
+vcf <- vcf_005 # 0.9 linked, 38843 SNPs
+                         # 0.95 linked, 2841 SNPs
+#
+vcf <- vcf_006 # 0.9 unlinked, 6260 SNPs
+                         # 0.95 unlinked, 1131 SNPs
+```
+  
+## Final VCF summary statistics and figures
+### 95% complete... linked
+```{r}
+vcf_0.95_linked <- vcf_005[is.biallelic(vcf_005), ] 
+vcf_0.95_linked
+# ***** Object of Class vcfR *****
+# 53 samples
+# 481 CHROMs
+# 2,834 variants
+# Object size: 6.2 Mb
+# 3.129 percent missing data
+# *****        *****         *****
+max_depth(vcf_0.95_linked)
+# mean depth across all SNPs of 96.8
+missing_by_sample(vcfR = vcf_0.95_linked, popmap = popmap)
+
+#plot depth per snp and per sample
+dp <- extract.gt(vcf_0.95_linked, element = "DP", as.numeric=TRUE)
+heatmap.bp(dp, rlabels = FALSE)
+
+#plot genotype quality per snp and per sample
+gq <- extract.gt(vcf_0.95_linked, element = "GQ", as.numeric=TRUE)
+heatmap.bp(gq, rlabels = FALSE)
+
+#write out vcf with all SNPs
+vcfR::write.vcf(vcf_0.95_linked, "./outputs/vcfs/vcf_snapp_0.95_linked.vcf.gz")
+```
+
+### 95% complete... thinned, unlinked
+Ran SNAPP on this 1,131 x 53 sample matrix --> 1101 SNPs dropped in all-taxa model
+```{r}
+vcf_0.95_unlinked <- vcf_006[is.biallelic(vcf_006), ] 
+vcf_0.95_unlinked
+# ***** Object of Class vcfR *****
+# 53 samples
+# 481 CHROMs
+# 1,130 variants
+# Object size: 3 Mb
+# 3.229 percent missing data
+# *****        *****         *****
+max_depth(vcf_0.95_unlinked)
+# mean depth across all SNPs of 92.4
+missing_by_sample(vcfR = vcf_0.95_unlinked, popmap = popmap)
+
+pdf("./outputs/figures/vcf_DP_GQ_heatmaps.pdf", width = 6.5, height = 4)
+#plot depth per snp and per sample
+dp <- extract.gt(vcf_0.95_unlinked, element = "DP", as.numeric=TRUE)
+heatmap.bp(dp, rlabels = FALSE)
+
+#plot genotype quality per snp and per sample
+gq <- extract.gt(vcf_0.95_unlinked, element = "GQ", as.numeric=TRUE)
+heatmap.bp(gq, rlabels = FALSE)
+dev.off()
+
+#write out vcf with all SNPs
+vcfR::write.vcf(vcf_0.95_unlinked, "./outputs/vcfs/vcf_snapp_0.95_unlinked.vcf.gz")
+```
+
+Now, convert vcfs to phylip and NEXUS format with vcf2phylip.py scripts, and use in RAxML and SNAPP phylogenetic analysis. Also use for PCA and clustering analyses to discover patterns within data and create discovery-based species hypotheses.
+
+### 95% complete... thinned, unlinked
+Ran SNAPP on this 1,131 x 53 sample matrix
+```{r}
+vcf_1_unlinked <- vcf_006[is.biallelic(vcf_006), ] 
+vcf_1_unlinked
+# ***** Object of Class vcfR *****
+# 53 samples
+# 70 CHROMs
+# 76 variants
+# Object size: 0.7 Mb
+# 0 percent missing data
+# *****        *****         *****
+max_depth(vcf_1_unlinked)
+# mean depth across all SNPs of 95.8
+missing_by_sample(vcfR = vcf_1_unlinked, popmap = popmap)
+
+#plot depth per snp and per sample
+dp <- extract.gt(vcf_1_unlinked, element = "DP", as.numeric=TRUE)
+heatmap.bp(dp, rlabels = FALSE)
+
+#plot genotype quality per snp and per sample
+gq <- extract.gt(vcf_1_unlinked, element = "GQ", as.numeric=TRUE)
+heatmap.bp(gq, rlabels = FALSE)
+
+#write out vcf with all SNPs
+vcfR::write.vcf(vcf_1_unlinked, "./outputs/vcfs/vcf_snapp_1_unlinked.vcf.gz")
+```
+
+### 85% complete samples, 100% complete SNPs... thinned, unlinked
+Ran SNAPP on this 1,198 x 50 sample matrix
+```{r}
+vcf_2_unlinked <- vcf_006[is.biallelic(vcf_006), ] 
+vcf_2_unlinked
+# ***** Object of Class vcfR *****
+# 50 samples
+# 482 CHROMs
+# 1,198 variants
+# Object size: 3.1 Mb
+# 0 percent missing data
+# *****        *****         *****
+max_depth(vcf_2_unlinked)
+# mean depth across all SNPs of 85.6
+missing_by_sample(vcfR = vcf_2_unlinked, popmap = popmap)
+
+#plot depth per snp and per sample
+dp <- extract.gt(vcf_2_unlinked, element = "DP", as.numeric=TRUE)
+heatmap.bp(dp, rlabels = FALSE)
+
+#plot genotype quality per snp and per sample
+gq <- extract.gt(vcf_2_unlinked, element = "GQ", as.numeric=TRUE)
+heatmap.bp(gq, rlabels = FALSE)
+
+#write out vcf with all SNPs
+vcfR::write.vcf(vcf_2_unlinked, "./outputs/vcfs/vcf_snapp_2_unlinked.vcf.gz")
+```

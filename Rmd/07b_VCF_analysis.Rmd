@@ -1,0 +1,97 @@
+---
+title: "VCF_analysis"
+author: "Mike Connelly"
+date: "2023-10-16"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = TRUE)
+options(stringsAsFactors = FALSE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+```{r}
+library("vcfR")
+library("tidyverse")
+library("adegenet")
+library("ggrepel")
+#
+library("extrafont")
+library("extrafontdb")
+```
+```{r import_vcf}
+# 
+vcf <- vcfR::read.vcfR(file = "./outputs/all_analysis_strict_filtered_spptest_unlinked.vcf.gz")
+#
+vcf <- vcfR::read.vcfR(file = "./outputs/full_analysis_noclones_strict_filtered.vcf.gz")
+#
+vcf <- vcfR::read.vcfR(file = "./outputs/full_analysis_sppsubset_strict_filtered.vcf.gz")
+# 
+vcf <- vcfR::read.vcfR(file = "./outputs/full_analysis_sppsubset_snapp_filtered.vcf.gz")
+```
+## Convert to GENIND object
+```{r genind convert}
+genind <- vcfR2genind(vcf)
+# class(genind_meta)
+genind
+```
+```{r genind summary}
+# genind_summary_meta <- summary(genind_meta)
+n_snps <- length(genind$all.names)
+as.character(n_snps)
+```
+
+## PCA
+```{r pca}
+# 
+x <- tab(genind, freq = TRUE, NA.method = "mean")
+# 
+pca <- dudi.pca(x, center = TRUE)#, scale = FALSE, scannf = FALSE, nf = 60)
+# ?dudi.pca()
+```
+```{r pca plot check}
+s.label(pca$li, xax=1, yax=2, boxes = F, clabel = 0.6)
+```
+
+
+
+## DAPC
+## Find clusters in data
+```{r dapc_clusters}
+# Find clusters
+
+# grp_meta <- find.clusters(genind_meta, max.n.clust = 100, n.pca = 300)
+# All PCs retained, 37 clusters identified
+# Final samples both genotype-specific VCF
+grp <- find.clusters(genind, max.n.clust = 10, n.pca = 30)
+# All 36 PCs retained, # clusters identified
+
+# How many clusters are useful to describe the data? 
+# A fundamental point in this question is that clusters are merely tools used to summarise and understand the data. There is no longer a ”true k”, but some values of k are better, more efficient summaries of the data than others.
+# For this dataset, values of K between 6 - 12 provide useful descriptions of the data, regardless of input VCF
+```
+```{r}
+pdf("./outputs/figures/pca_find-clusters.pdf", height = 4, width = 6.5)
+grp <- find.clusters(genind, max.n.clust = 30, n.pca = 60)
+dev.off()
+```
+```{r}
+# Inspect output of find.clusters
+grp$Kstat
+grp$stat
+grp$grp
+grp$size
+#
+n_pcs <- length(grp$grp)
+n_groups <- length(grp$size)
+```
+## DAPC
+```{r dapc_test}
+# Run the analysis on the dataset using the previously inferred groups
+dapc <- dapc(genind, grp$grp)
+# choose the number of PC's to get just above ~75% variance, and then pick number of DF's to the first or second drop-off
+```
+```{r}
+scatter(dapc)
+```
+

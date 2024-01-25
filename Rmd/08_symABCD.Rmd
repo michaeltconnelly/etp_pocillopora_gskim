@@ -46,7 +46,7 @@ df_abcd_pdam$Genus <- factor(df_abcd_pdam$Genus, levels = c("Symbiodinium", "Bre
 plot_abcd_pdam <- df_abcd_pdam %>% 
   ggplot() + 
   geom_bar(aes(y = frac, x = sample, fill = Genus), stat="identity") +
-  # facet_grid(~Region, scales = "free") +
+  facet_grid(~Region, scales = "free") +
   # facet_grid(Region ~ cluster, scales = "free") +
   scale_fill_brewer(palette="Spectral", name = "Genus")+
   theme_classic()+
@@ -56,14 +56,18 @@ plot_abcd_pdam <- df_abcd_pdam %>%
         axis.ticks.x=element_blank())
 ```
 ```{r}
-pdf("./outputs/figures/nobones/pocillopora_symbiont_proportions_species_facet.pdf", width = 8.5, height = 4.75)
+pdf("./outputs/figures/sicb/pocillopora_symbiont_proportions_species_facet.pdf", width = 7, height = 4.75)
 print(plot_abcd_pdam)
 dev.off()
 ```
 ### Supplementary Figure 6
 ```{r }
-df_abcd_pdam %<>% left_join(samples, by = "Sample ID")
-  
+df_abcd_pdam %<>% left_join(samples, by = "Sample ID") 
+###
+
+df_abcd_pdam %<>% filter(`Sample ID` %in% samples_noclones$`Sample ID`)
+df_abcd_pdam %<>% filter(Species == "P. grandis")
+
 df_abcd_pdam %<>% filter(Set == "USFQ_CSUMB")
 # df_abcd_pdam$Genotype
 # 
@@ -89,6 +93,7 @@ plot_abcd_pdam <- df_abcd_pdam %>%
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank())
 
+# THIS ONE
 plot_abcd_pdam <- df_abcd_pdam %>% 
   ggplot() + 
   geom_bar(aes(y = frac, x = sample, fill = Genus), stat="identity")+
@@ -99,19 +104,25 @@ plot_abcd_pdam <- df_abcd_pdam %>%
   xlab(NULL)+
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank(),
-        legend.position = c(0.85, 0.25))
+        legend.position = c(0.85, 0.25)) +
+  theme(plot.title = element_text(size = 16, hjust = -0.2),
+        axis.title = element_text(size = 14),
+        axis.text = element_text(size = 12),
+        legend.title = element_text(size = 14),
+        legend.text = element_text(size = 12)) +
+  ggtitle(expression(paste("East Pacific ", italic("Pocillopora"), " species symbiont community variation")))
 
 plot_abcd_pdam <- df_abcd_pdam %>% 
   ggplot() + 
   geom_bar(aes(y = frac, x = sample, fill = Genus), stat="identity")+
-  facet_wrap(`Site` + `Species` ~ ., scales = "free") +
+  facet_wrap(`Region` + `Site` ~ ., scales = "free") +
   scale_fill_brewer(palette="Spectral", name = "Genus")+
   theme_classic()+
   ylab("Proportion of Symbiont Reads")+
   xlab(NULL)+
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank(),
-        legend.position = c(0.85, 0.2))
+        legend.position = "right")
 
 plot_abcd_pdam <- df_abcd_pdam %>% 
   filter(PANAMA_MANUSCRIPT) %>% 
@@ -125,17 +136,14 @@ plot_abcd_pdam <- df_abcd_pdam %>%
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank())
 ```
-```{r}
-pdf("./outputs/figures/pocillopora_spp_symbiont_proportions_galapagos.pdf", width = 6.5, height = 6.5)
-print(plot_abcd_pdam)
-dev.off()
-```
 
 ## Scatterpie plot on map 
 to examine geographic patterns
 ```{r}
 all(df_abcd_pdam$`Sample ID` %in% samples$`Sample ID`)
 ```
+
+
 
 ## Pie chart tips on IBS clustering tree
 to examine phylogenetic and within-clone patterns
