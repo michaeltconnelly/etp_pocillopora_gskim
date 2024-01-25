@@ -4,11 +4,32 @@
 
 # project-wide colors and theme
 region_colors <- c("gold1", "steelblue", "darkorange", "darkturquoise")
+
+region_colors<- c("Bahia Culebra"="aquamarine3",
+                  "Chiriqui"="coral",
+                  "Clipperton"="goldenrod1",
+                  "Coco"="dodgerblue",
+                  "Galapagos Northern"="lightslateblue",
+                  "Galapagos Central"="cyan3",
+                  "Golfo Dulce"="lightcoral",
+                  "Gorgona"="mediumaquamarine",
+                  "Panama"="cornflowerblue")
+
+region_colors<- c("Bahia Culebra"="darkgoldenrod3",
+                  "Chiriqui"="coral2",
+                  "Clipperton"="deepskyblue",
+                  "Coco"="lightseagreen",
+                  "Galapagos Northern"="dodgerblue",
+                  "Galapagos Central"="dodgerblue3",
+                  "Golfo Dulce"="goldenrod1",
+                  "Gorgona"="orchid",
+                  "Panama"="lightcoral")
+
 # 
 site_colors <- c("gold1", "blue", "darkblue", "steelblue", "lightblue", "darkorange3","darkorange", "orange", "orangered", "cyan", "cyan3", "cyan4", "turquoise", "lightgreen")
 names(site_colors)
 #
-mtorf_colors <- c("darkorange1", "purple", "turquoise2", "turquoise4")
+mtorf_colors <- c("darkorange1", "purple", "turquoise2", "turquoise4", "darkslategrey")
 #
 spp_colors <- c("purple", "darkorange1", "gold", "turquoise2", "turquoise4")
 

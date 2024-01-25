@@ -23,4 +23,5 @@ metadata_col_types <- cols(
 
 samples_r1 <- readr::read_csv("./data/pocillopora_samples_r1_metadata.csv", col_types = metadata_col_types)
 samples_r2 <- readr::read_csv("./data/pocillopora_samples_r2_metadata.csv", col_types = metadata_col_types)
-all_samples <- dplyr::bind_rows(samples_r1, samples_r2, .id = "Sequence Round") %>% relocate(`Sequence Round`, .after = `Sample ID`) %>% arrange(`Sample ID`) 
+samples_r3 <- readr::read_csv("./data/pocillopora_samples_r3_metadata.csv", col_types = metadata_col_types)
+all_samples <- dplyr::bind_rows(samples_r1, samples_r2, samples_r3, .id = "Sequence Round") %>% relocate(`Sequence Round`, .after = `Sample ID`) %>% arrange(`Sample ID`) 
