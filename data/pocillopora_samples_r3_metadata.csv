@@ -1,49 +1,49 @@
-﻿Sample ID,Cattle Tag Number,Biorepository Number,USNM Number,Country,Region,Site,Sampling Date,Latitude,Longitude,Set,STRI,RSMAS,ANALYSIS,PANAMA_MANUSCRIPT,REPLICATE,SINGLETON,Region:Site,haplotype,mtorf_type,Species
-BahiaCulebra_1,1,NA,NA,Costa Rica,Bahia Culebra,Guiri,,10.613675,-85.690042,UCR,FALSE,FALSE,TRUE,FALSE,TRUE,,Bahia Culebra:Guiri,IV,Type 1a,P. grandis
-BahiaCulebra_3,3,NA,NA,Costa Rica,Bahia Culebra,Guiri,,10.613675,-85.690042,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Bahia Culebra:Guiri,IV,Type 1a,P. grandis
-BahiaCulebra_5,5,NA,NA,Costa Rica,Bahia Culebra,Guiri,,10.613675,-85.690042,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Bahia Culebra:Guiri,IV,Type 1a,P. grandis
-BahiaCulebra_6,6,NA,NA,Costa Rica,Bahia Culebra,Guiri,,10.613675,-85.690042,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Bahia Culebra:Guiri,IV,Type 1a,P. grandis
-BahiaCulebra_7,7,NA,NA,Costa Rica,Bahia Culebra,Guiri,,10.613675,-85.690042,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Bahia Culebra:Guiri,IV,Type 1a,P. grandis
-BahiaCulebra_8,8,NA,NA,Costa Rica,Bahia Culebra,Guiri,,10.613675,-85.690042,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Bahia Culebra:Guiri,IV,Type 1a,P. grandis
-BahiaCulebra_9,9,NA,NA,Costa Rica,Bahia Culebra,Guiri,,10.613675,-85.690042,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Bahia Culebra:Guiri,IV,Type 1a,P. grandis
-BahiaCulebra_10,10,NA,NA,Costa Rica,Bahia Culebra,Guiri,,10.613675,-85.690042,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Bahia Culebra:Guiri,IV,Type 1a,P. grandis
-BahiaCulebra_11,11,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Bahia Culebra:Playa Blanca,I,Type 3a,P. verrucosa 3a
-BahiaCulebra_12,12,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Bahia Culebra:Playa Blanca,I,Type 3a,P. verrucosa 3a
-BahiaCulebra_13,13,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Bahia Culebra:Playa Blanca,IV,Type 1a,P. grandis
-BahiaCulebra_14,14,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Bahia Culebra:Playa Blanca,I,Type 3a,P. verrucosa 3a
-BahiaCulebra_15,15,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Bahia Culebra:Playa Blanca,IV,Type 1a,P. grandis
-BahiaCulebra_16,16,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Bahia Culebra:Playa Blanca,IV,Type 1a,P. grandis
-BahiaCulebra_17,17,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Bahia Culebra:Playa Blanca,IV,Type 1a,P. grandis
-BahiaCulebra_18,18,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Bahia Culebra:Playa Blanca,IV,Type 1a,P. grandis
-BahiaCulebra_19,19,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Bahia Culebra:Playa Blanca,IV,Type 1a,P. grandis
-BahiaCulebra_20,20,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Bahia Culebra:Playa Blanca,I,Type 3a,P. verrucosa 3a
-BahiaCulebra_21,21,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Bahia Culebra:Playa Blanca,IV,Type 1a,P. grandis
-BahiaCulebra_22,22,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Bahia Culebra:Playa Blanca,IV,Type 1a,P. grandis
-BahiaCulebra_23,23,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Bahia Culebra:Playa Blanca,IV,Type 1a,P. grandis
-BahiaCulebra_24,24,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Bahia Culebra:Playa Blanca,IV,Type 1a,P. grandis
-BahiaCulebra_25,25,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Bahia Culebra:Playa Blanca,I,Type 3a,P. verrucosa 3a
-BahiaCulebra_26,26,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Bahia Culebra:Playa Blanca,I,Type 3a,P. verrucosa 3a
-BahiaCulebra_27,27,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Bahia Culebra:Playa Blanca,I,Type 3a,P. verrucosa 3a
-BahiaCulebra_28,28,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Bahia Culebra:Playa Blanca,I,Type 3a,P. verrucosa 3a
-BahiaCulebra_29,29,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Bahia Culebra:Playa Blanca,I,Type 3a,P. verrucosa 3a
-BahiaCulebra_30,30,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Bahia Culebra:Playa Blanca,I,Type 3a,P. verrucosa 3a
-GolfoDulce_2,2,NA,NA,Costa Rica,Golfo Dulce,Punta Gallardo,7/16/22,8.62627256,-83.23645551,RCCR,FALSE,FALSE,TRUE,FALSE,TRUE,,Golfo Dulce:Punta Gallardo,I,Type 3a,P. verrucosa 3a
-GolfoDulce_8,8,NA,NA,Costa Rica,Golfo Dulce,La Viuda,7/16/22,8.622939027,-83.235286,RCCR,FALSE,FALSE,TRUE,FALSE,TRUE,,Golfo Dulce:La Viuda,IV,Type 1a,P. grandis
-GolfoDulce_10,10,NA,NA,Costa Rica,Golfo Dulce,La Viuda,7/16/22,8.622939,-83.235286,RCCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Golfo Dulce:La Viuda,,,P. grandis
-GolfoDulce_12,12,NA,NA,Costa Rica,Golfo Dulce,La Viuda,7/16/22,8.6229,-83.2352,RCCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Golfo Dulce:La Viuda,I,Type 3a,P. verrucosa 3a
-GolfoDulce_18,18,NA,NA,Costa Rica,Golfo Dulce,La Viuda,7/16/22,8.62297,-83.235145,RCCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Golfo Dulce:La Viuda,IV,Type 1a,P. grandis
-GolfoDulce_20,20,NA,NA,Costa Rica,Golfo Dulce,Punta Gallardo,7/16/22,8.6262,-83.2364,RCCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Golfo Dulce:Punta Gallardo,IV,Type 1a,P. grandis
-GolfoDulce_21,21,NA,NA,Costa Rica,Golfo Dulce,La Viuda,7/16/22,8.623055,-83.235085,RCCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Golfo Dulce:La Viuda,I,Type 3a,P. verrucosa 3a
-GolfoDulce_22,22,NA,NA,Costa Rica,Golfo Dulce,La Viuda,7/16/22,8.62297,-83.235145,RCCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Golfo Dulce:La Viuda,IV,Type 1a,P. grandis
-GolfoDulce_23,23,NA,NA,Costa Rica,Golfo Dulce,Punta Islotes,7/16/22,8.72718223,-83.386524,RCCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Golfo Dulce:Punta Islotes,I,Type 3a,P. verrucosa 3a
-GolfoDulce_25,25,NA,NA,Costa Rica,Golfo Dulce,Punta Estrella,7/16/22,8.7128,-83.431989,RCCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Golfo Dulce:Punta Estrella,IV,Type 1a,P. grandis
-GolfoDulce_26,26,NA,NA,Costa Rica,Golfo Dulce,Punta Islotes,7/16/22,8.72694308,-83.387934,RCCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Golfo Dulce:Punta Islotes,III,Type 3d,P. verrucosa 3a
-GolfoDulce_30,30,NA,NA,Costa Rica,Golfo Dulce,Punta Cativo,7/16/22,8.683245,-83.330335,RCCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Golfo Dulce:Punta Cativo,I,Type 3a,P. verrucosa 3a
-GolfoDulce_31,31,NA,NA,Costa Rica,Golfo Dulce,Punta Gallardo,7/16/22,8.62627256,-83.236456,RCCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Golfo Dulce:Punta Gallardo,I,Type 3a,P. verrucosa 3a
-GolfoDulce_32,32,NA,NA,Costa Rica,Golfo Dulce,La Viuda,7/16/22,8.6229,-83.2352,RCCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Golfo Dulce:La Viuda,I,Type 3a,P. verrucosa 3a
-GolfoDulce_33,33,NA,NA,Costa Rica,Golfo Dulce,La Viuda,7/16/22,8.6229,-83.2352,RCCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Golfo Dulce:La Viuda,IV,Type 1a,P. grandis
-GolfoDulce_37,37,NA,NA,Costa Rica,Golfo Dulce,Punta Estrella,7/16/22,8.7128,-83.431989,RCCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Golfo Dulce:Punta Estrella,I,Type 3a,P. verrucosa 3a
-GolfoDulce_47,47,NA,NA,Costa Rica,Golfo Dulce,Punta Adela,7/16/22,8.65562,-83.29612,RCCR,FALSE,FALSE,TRUE,FALSE,FALSE,,Golfo Dulce:Punta Adela,I,Type 3a,P. verrucosa 3a
-BahiaCulebra_1b,1,NA,NA,Costa Rica,Bahia Culebra,Guiri,7/16/22,10.613675,-85.690042,UCR,FALSE,FALSE,TRUE,FALSE,TRUE,,Bahia Culebra:Guiri,IV,Type 1a,P. grandis
-GolfoDulce_2b,2,NA,NA,Costa Rica,Golfo Dulce,Punta Gallardo,7/16/22,8.62627256,-83.23645551,RCCR,FALSE,FALSE,TRUE,FALSE,TRUE,,Golfo Dulce:Punta Gallardo,I,Type 3a,P. verrucosa 3a
-GolfoDulce_8b,8,NA,NA,Costa Rica,Golfo Dulce,La Viuda,7/16/22,8.622939027,-83.235286,RCCR,FALSE,FALSE,TRUE,FALSE,TRUE,,Golfo Dulce:La Viuda,IV,Type 1a,P. grandis
+﻿Sample ID,Genotype ID,Cattle Tag Number,Biorepository Number,USNM Number,Country,Region,Site,Sampling Date,Latitude,Longitude,Set,STRI,RSMAS,ANALYSIS,TECHNICAL_REPLICATE,SINGLE_GENOTYPE,CLONAL_GENOTYPE,NOCLONES_SAMPLE,Region:Site,haplotype,mtorf_type,Species
+BahiaCulebra_1,BahiaCulebra_D,1,NA,NA,Costa Rica,Bahia Culebra,Guiri,5/22/22,10.613675,-85.690042,UCR,FALSE,FALSE,TRUE,TRUE,FALSE,TRUE,,Bahia Culebra:Guiri,IV,Type 1a,P. grandis
+BahiaCulebra_3,BahiaCulebra_B,3,NA,NA,Costa Rica,Bahia Culebra,Guiri,5/22/22,10.613675,-85.690042,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,,Bahia Culebra:Guiri,IV,Type 1a,P. grandis
+BahiaCulebra_5,BahiaCulebra_A,5,NA,NA,Costa Rica,Bahia Culebra,Guiri,5/22/22,10.613675,-85.690042,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,,Bahia Culebra:Guiri,IV,Type 1a,P. grandis
+BahiaCulebra_6,BahiaCulebra_B,6,NA,NA,Costa Rica,Bahia Culebra,Guiri,5/22/22,10.613675,-85.690042,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,,Bahia Culebra:Guiri,IV,Type 1a,P. grandis
+BahiaCulebra_7,BahiaCulebra_B,7,NA,NA,Costa Rica,Bahia Culebra,Guiri,5/22/22,10.613675,-85.690042,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,,Bahia Culebra:Guiri,IV,Type 1a,P. grandis
+BahiaCulebra_8,BahiaCulebra_B,8,NA,NA,Costa Rica,Bahia Culebra,Guiri,5/22/22,10.613675,-85.690042,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,,Bahia Culebra:Guiri,IV,Type 1a,P. grandis
+BahiaCulebra_9,BahiaCulebra_A,9,NA,NA,Costa Rica,Bahia Culebra,Guiri,5/22/22,10.613675,-85.690042,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,,Bahia Culebra:Guiri,IV,Type 1a,P. grandis
+BahiaCulebra_10,BahiaCulebra_C,10,NA,NA,Costa Rica,Bahia Culebra,Guiri,5/22/22,10.613675,-85.690042,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,,Bahia Culebra:Guiri,IV,Type 1a,P. grandis
+BahiaCulebra_11,BahiaCulebra_F,11,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,5/22/22,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,,Bahia Culebra:Playa Blanca,I,Type 3a,P. verrucosa 3a
+BahiaCulebra_12,BahiaCulebra_F,12,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,5/22/22,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,,Bahia Culebra:Playa Blanca,I,Type 3a,P. verrucosa 3a
+BahiaCulebra_13,BahiaCulebra_D,13,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,5/22/22,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,,Bahia Culebra:Playa Blanca,IV,Type 1a,P. grandis
+BahiaCulebra_14,BahiaCulebra_F,14,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,5/22/22,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,,Bahia Culebra:Playa Blanca,I,Type 3a,P. verrucosa 3a
+BahiaCulebra_15,BahiaCulebra_A,15,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,5/22/22,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,,Bahia Culebra:Playa Blanca,IV,Type 1a,P. grandis
+BahiaCulebra_16,,16,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,5/22/22,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,Bahia Culebra:Playa Blanca,IV,Type 1a,P. grandis
+BahiaCulebra_17,BahiaCulebra_C,17,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,5/22/22,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,,Bahia Culebra:Playa Blanca,IV,Type 1a,P. grandis
+BahiaCulebra_18,BahiaCulebra_D,18,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,5/22/22,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,,Bahia Culebra:Playa Blanca,IV,Type 1a,P. grandis
+BahiaCulebra_19,,19,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,5/22/22,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,Bahia Culebra:Playa Blanca,IV,Type 1a,P. grandis
+BahiaCulebra_20,,20,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,5/22/22,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,Bahia Culebra:Playa Blanca,I,Type 3a,P. verrucosa 3a
+BahiaCulebra_21,BahiaCulebra_D,21,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,5/22/22,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,,Bahia Culebra:Playa Blanca,IV,Type 1a,P. grandis
+BahiaCulebra_22,,22,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,5/22/22,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,Bahia Culebra:Playa Blanca,IV,Type 1a,P. grandis
+BahiaCulebra_23,,23,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,5/22/22,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,Bahia Culebra:Playa Blanca,IV,Type 1a,P. grandis
+BahiaCulebra_24,BahiaCulebra_D,24,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,5/22/22,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,,Bahia Culebra:Playa Blanca,IV,Type 1a,P. grandis
+BahiaCulebra_25,BahiaCulebra_E,25,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,5/22/22,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,,Bahia Culebra:Playa Blanca,I,Type 3a,P. verrucosa 3a
+BahiaCulebra_26,,26,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,5/22/22,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,Bahia Culebra:Playa Blanca,I,Type 3a,P. verrucosa 3a
+BahiaCulebra_27,,27,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,5/22/22,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,Bahia Culebra:Playa Blanca,I,Type 3a,P. verrucosa 3a
+BahiaCulebra_28,BahiaCulebra_E,28,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,5/22/22,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,,Bahia Culebra:Playa Blanca,I,Type 3a,P. verrucosa 3a
+BahiaCulebra_29,,29,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,5/22/22,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,Bahia Culebra:Playa Blanca,I,Type 3a,P. verrucosa 3a
+BahiaCulebra_30,BahiaCulebra_F,30,NA,NA,Costa Rica,Bahia Culebra,Playa Blanca,5/22/22,10.610535,-85.686379,UCR,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,,Bahia Culebra:Playa Blanca,I,Type 3a,P. verrucosa 3a
+GolfoDulce_2,GolfoDulce_B,2,NA,NA,Costa Rica,Golfo Dulce,Punta Gallardo,7/16/22,8.62627256,-83.23645551,RCCR,FALSE,FALSE,TRUE,TRUE,FALSE,TRUE,,Golfo Dulce:Punta Gallardo,I,Type 3a,P. verrucosa 3a
+GolfoDulce_8,GolfoDulce_A,8,NA,NA,Costa Rica,Golfo Dulce,La Viuda,7/16/22,8.622939027,-83.235286,RCCR,FALSE,FALSE,TRUE,TRUE,FALSE,TRUE,,Golfo Dulce:La Viuda,IV,Type 1a,P. grandis
+GolfoDulce_10,GolfoDulce_A,10,NA,NA,Costa Rica,Golfo Dulce,La Viuda,7/16/22,8.622939,-83.235286,RCCR,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,,Golfo Dulce:La Viuda,,,P. grandis
+GolfoDulce_12,GolfoDulce_C,12,NA,NA,Costa Rica,Golfo Dulce,La Viuda,7/16/22,8.6229,-83.2352,RCCR,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,,Golfo Dulce:La Viuda,I,Type 3a,P. verrucosa 3a
+GolfoDulce_18,,18,NA,NA,Costa Rica,Golfo Dulce,La Viuda,7/16/22,8.62297,-83.235145,RCCR,FALSE,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,Golfo Dulce:La Viuda,IV,Type 1a,P. grandis
+GolfoDulce_20,,20,NA,NA,Costa Rica,Golfo Dulce,Punta Gallardo,7/16/22,8.6262,-83.2364,RCCR,FALSE,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,Golfo Dulce:Punta Gallardo,IV,Type 1a,P. grandis
+GolfoDulce_21,,21,NA,NA,Costa Rica,Golfo Dulce,La Viuda,7/16/22,8.623055,-83.235085,RCCR,FALSE,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,Golfo Dulce:La Viuda,I,Type 3a,P. verrucosa 3a
+GolfoDulce_22,,22,NA,NA,Costa Rica,Golfo Dulce,La Viuda,7/16/22,8.62297,-83.235145,RCCR,FALSE,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,Golfo Dulce:La Viuda,IV,Type 1a,P. grandis
+GolfoDulce_23,,23,NA,NA,Costa Rica,Golfo Dulce,Punta Islotes,7/16/22,8.72718223,-83.386524,RCCR,FALSE,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,Golfo Dulce:Punta Islotes,I,Type 3a,P. verrucosa 3a
+GolfoDulce_25,,25,NA,NA,Costa Rica,Golfo Dulce,Punta Estrella,7/16/22,8.7128,-83.431989,RCCR,FALSE,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,Golfo Dulce:Punta Estrella,IV,Type 1a,P. grandis
+GolfoDulce_26,,26,NA,NA,Costa Rica,Golfo Dulce,Punta Islotes,7/16/22,8.72694308,-83.387934,RCCR,FALSE,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,Golfo Dulce:Punta Islotes,III,Type 3d,P. verrucosa 3a
+GolfoDulce_30,,30,NA,NA,Costa Rica,Golfo Dulce,Punta Cativo,7/16/22,8.683245,-83.330335,RCCR,FALSE,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,Golfo Dulce:Punta Cativo,I,Type 3a,P. verrucosa 3a
+GolfoDulce_31,,31,NA,NA,Costa Rica,Golfo Dulce,Punta Gallardo,7/16/22,8.62627256,-83.236456,RCCR,FALSE,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,Golfo Dulce:Punta Gallardo,I,Type 3a,P. verrucosa 3a
+GolfoDulce_32,GolfoDulce_C,32,NA,NA,Costa Rica,Golfo Dulce,La Viuda,7/16/22,8.6229,-83.2352,RCCR,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,,Golfo Dulce:La Viuda,I,Type 3a,P. verrucosa 3a
+GolfoDulce_33,GolfoDulce_A,33,NA,NA,Costa Rica,Golfo Dulce,La Viuda,7/16/22,8.6229,-83.2352,RCCR,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,,Golfo Dulce:La Viuda,IV,Type 1a,P. grandis
+GolfoDulce_37,,37,NA,NA,Costa Rica,Golfo Dulce,Punta Estrella,7/16/22,8.7128,-83.431989,RCCR,FALSE,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,Golfo Dulce:Punta Estrella,I,Type 3a,P. verrucosa 3a
+GolfoDulce_47,,47,NA,NA,Costa Rica,Golfo Dulce,Punta Adela,7/16/22,8.65562,-83.29612,RCCR,FALSE,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,Golfo Dulce:Punta Adela,I,Type 3a,P. verrucosa 3a
+BahiaCulebra_1b,BahiaCulebra_D,1,NA,NA,Costa Rica,Bahia Culebra,Guiri,7/16/22,10.613675,-85.690042,UCR,FALSE,FALSE,TRUE,TRUE,FALSE,TRUE,,Bahia Culebra:Guiri,IV,Type 1a,P. grandis
+GolfoDulce_2b,GolfoDulce_B,2,NA,NA,Costa Rica,Golfo Dulce,Punta Gallardo,7/16/22,8.62627256,-83.23645551,RCCR,FALSE,FALSE,TRUE,TRUE,FALSE,TRUE,,Golfo Dulce:Punta Gallardo,I,Type 3a,P. verrucosa 3a
+GolfoDulce_8b,GolfoDulce_A,8,NA,NA,Costa Rica,Golfo Dulce,La Viuda,7/16/22,8.622939027,-83.235286,RCCR,FALSE,FALSE,TRUE,TRUE,FALSE,TRUE,,Golfo Dulce:La Viuda,IV,Type 1a,P. grandis
