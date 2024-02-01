@@ -26,8 +26,8 @@ prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 set=$1
 
 pcangsd.py \
--beagle ${prodir}/outputs/angsd/${set}_ibs05.beagle.gz \
--o ${prodir}/outputs/angsd/${set} \
+-beagle ${prodir}/outputs/angsd/${set}/${set}_ibs05.beagle.gz \
+-o ${prodir}/outputs/angsd/${set}/${set} \
 -admix \
 -threads $NSLOTS
 
