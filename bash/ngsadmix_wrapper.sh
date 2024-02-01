@@ -46,7 +46,7 @@ echo 'echo + NSLOTS = $NSLOTS' >> ${prodir}/bash/jobs/ngsadmix_${set}_K${j}_${i}
 #
 #   input command for NGSadmix --> nested while loop runs for 10 iterations!
 #
-echo "NGSadmix -likes ${prodir}/outputs/angsd/${set}_ibs05.beagle.gz -K $j -P 16 -o ${prodir}/outputs/ngsadmix/${set}/K${j}/${set}_K${j}_${i} -minMaf 0.05" >> ${prodir}/bash/jobs/ngsadmix_${set}_K${j}_${i}.job
+echo "NGSadmix -likes ${prodir}/outputs/angsd/${set}/${set}_ibs05.beagle.gz -K $j -P 16 -o ${prodir}/outputs/ngsadmix/${set}/K${j}/${set}_K${j}_${i} -minMaf 0.05" >> ${prodir}/bash/jobs/ngsadmix_${set}_K${j}_${i}.job
 #
 echo 'echo = `date` job $JOB_NAME done' >> ${prodir}/bash/jobs/ngsadmix_${set}_K${j}_${i}.job
 #
