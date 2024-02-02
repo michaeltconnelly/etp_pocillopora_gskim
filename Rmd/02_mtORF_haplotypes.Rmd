@@ -9,24 +9,23 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ```
-```{r packages}
+```{r packages, message=FALSE}
 library("tidyverse")
 library("ape")
 library("pegas")
 #
 source("./R/pocillopora_etp_gksim_functions.R")
 ```
+
 ## Import sample metadata
 ```{r import_sample_metadata}
 source("./R/sample_import.R")
 samples <- all_samples
-# NOTE: Perform mtORF barcoding for all samples before clone correction
+# NOTE: Perform mtORF barcode extraction and alignment for all samples before clone correction
 ```
 
 ## Import mtORF sequence alignment 
 ```{r import_alignment}
-# data <- read.dna("./outputs/mitofinder/all_mtORF_extracted.fasta", format = "fasta")
-# data <- read.dna("./outputs/mitofinder/mtORF.fasta", format = "fasta")
 data <- read.dna("./outputs/mitofinder/mtorf_hits_aligned.fasta", format = "fasta")
 checkAlignment(data)
 # 325 sequences, 829 sites, no gaps
@@ -67,15 +66,15 @@ good$`Sample ID` <- gsub("_S.*", "", good$seq)
 #
 sample_haplotypes <- good %>% dplyr::select(`Sample ID`, `haplotype`)
 ```
-```{r}
+```{r mtORF names}
 # correspondence table between identified haplotypes and mtORF type/ORF name, etc.
-mtorf_types <- c(I = "Type 3a", II = "Type 3b", III = "Type3m", IV = "Type 1a", V = "Type 2")
-ORF_types <- c(I = "ORF46", II = "ORF47", III = "ORFNN", IV = "ORF27", V = "ORF01")
+mtorf_types <- c(I = "Type 3a", II = "Type 3b", III = "Type3d", IV = "Type 1a", V = "Type 2")
+ORF_types <- c(I = "ORF46", II = "ORF47", III = "ORF54", IV = "ORF27", V = "ORF01")
 #
 sample_haplotypes$mtorf_type <-  mtorf_types[sample_haplotypes$haplotype]
 ```
 
-```{r}
+```{r match samples}
 ## need sample order to match to order of aligned sequences in FASTA file
 samples_fasta <- samples[match(seq_ids, samples$`Sample ID`),]
 ```
@@ -123,24 +122,13 @@ plot(dataNet,
      legend = c(-3,18))
 dev.off()
 ```
-```{r}
-pdf(file="./outputs/figures/mtORF_haplotypes_site.pdf", width = 4, height = 5, pointsize = 6)
-plot(dataNet,
-     size = attr(dataNet, "freq"),
-     pie = Site,
-     # bg = site_colors,
-     show.mutation = 1,
-     labels = FALSE,
-     legend = c(-3,18))
-dev.off()
-```
 
-### Figure ##
+### Figure 2A
 ```{r}
 setHaploNetOptions(mutations.font = 20)
 ```
 
-```{r figure ##: powerpoint}
+```{r figure 2A: powerpoint}
 pdf(file="./outputs/figures/sicb/mtORF_haplotypes_type.pdf", width = 4.5, height = 3, pointsize = 6)
 plot(dataNet,
      size = sqrt(attr(dataNet, "freq")),
@@ -151,7 +139,6 @@ plot(dataNet,
      legend = FALSE)
 dev.off()
 ```
-### Figure 1B
 ```{r}
 pdf(file="./outputs/figures/mtORF_haplotypes_species.pdf", width = 4, height = 2, pointsize = 6)
 plot(dataNet,

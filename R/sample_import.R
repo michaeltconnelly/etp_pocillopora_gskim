@@ -2,6 +2,7 @@
 
 metadata_col_types <- cols(
   `Sample ID` = col_character(),
+  `Genotype ID` = col_character(),
   `Cattle Tag Number` = col_character(),
   `Biorepository Number` = col_character(),
   Country = col_character(),
@@ -13,8 +14,10 @@ metadata_col_types <- cols(
   Set = col_character(),
   STRI = col_logical(),
   RSMAS = col_logical(),
-  PANAMA_MANUSCRIPT = col_logical(),
-  REPLICATE = col_logical(),
+  TECHNICAL_REPLICATE = col_logical(),
+  SINGLE_GENOTYPE = col_logical(),
+  CLONAL_GENOTYPE = col_logical(),
+  NOCLONES_SAMPLE = col_logical(),
   `Region:Site` = col_character(),
   haplotype = col_character(),
   mtorf_type = col_character(),

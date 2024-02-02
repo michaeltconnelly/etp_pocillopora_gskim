@@ -30,7 +30,6 @@ samples <- all_samples
 ```
 ```{r select_samples}
 samples <- filter(all_samples, ANALYSIS ==T)
-# samples <- filter(all_samples, `PANAMA_MANUSCRIPT` == T)
 ```
 
 ```{r bamfile_sample_order_check}
@@ -64,26 +63,20 @@ samples <- samples[match(bam_ids, samples$`Sample ID`),]
 # do all the sample ids match the bam file ids in the correct order?
 all(samples$`Sample ID` == bam_ids) # TRUE
 ```
-# All analysis samples, clones included
-## Import IBS matrix
+# All analysis samples (including clones)
+### Import IBS matrix
 ```{r import_ibs_matrix}
 # reading IBS matrix based on SNPs with allele frequency >= 0.05:
-# ma <- as.matrix(read.table("./outputs/angsd/etp_ibs05.ibsMat"))
-# ma <- as.matrix(read.table("./outputs/angsd/panama_manuscript_ibs05.ibsMat"))
-# ma <- as.matrix(read.table("./outputs/angsd/all_ibs05.ibsMat"))
-# ma <- as.matrix(read.table("./outputs/angsd/round2_ibs05.ibsMat"))
-# ma <- as.matrix(read.table("./outputs/angsd/all_analysis_ibs05.ibsMat"))
-# ma <- as.matrix(read.table("./outputs/angsd/costarica_ibs05.ibsMat"))
 ma <- as.matrix(read.table("./outputs/angsd/full_analysis_ibs05.ibsMat"))
-
 ```
-```{r import_ibs_matrix}
+```{r ibs_matrix_names}
 # remove biorepository codes from sample labels
 sample_names <- gsub("_AP3X.*", "", samples$`Sample ID`)
 # IMPORTANT: verify that the order of ids in sample metadata and in the bam file list used for IBS in ANGSD match
 dimnames(ma) <- list(samples$`Sample ID`, samples$`Sample ID`)
+# OR
 # dimnames(ma) <- list(sample_names, sample_names)
-#
+# OR
 # dimnames(ma)=list(samples$Site,samples$Site)
 # OR
 # dimnames(ma) <- list(bam_ids, bam_ids)
@@ -94,7 +87,7 @@ dimnames(ma) <- list(samples$`Sample ID`, samples$`Sample ID`)
 hc <- hclust(as.dist(ma), "ave")
 plot(hc, cex = 0.4)
 ```
-### IBS matrix subsets dendrograms
+### Exploratory IBS matrix subsets dendrograms
 ```{r ibs_dendrogram_rsmas}
 # retaining only rsmas samples
 ma_rsmas <- ma[samples$RSMAS,samples$RSMAS]
@@ -114,17 +107,6 @@ plot(hc_stri, cex=0.4)
 abline(h=0.145,col="darkorange",lty=3)
 abline(h=0.105,col="turquoise2",lty=3)
 ```
-```{r ibs_dendrogram_manuscript}
-pdf("./outputs/figures/Fig2_ibs_dendrogram_species_basic.pdf", height = 6, width = 6.5)
-# retaining only Panama samples (STRI, RSMAS, Ana's) and JFF Clipperton samples - these have pictures, Panama have skeleton vouchers, or are already published
-ma_panpopgen <- ma[samples$PANAMA_MANUSCRIPT, samples$PANAMA_MANUSCRIPT]
-# re-clustering
-hc_panpopgen <- hclust(as.dist(ma_panpopgen),"ave")
-plot(hc_panpopgen, cex=0.4)
-abline(h=0.145,col="darkorange",lty=3)
-abline(h=0.105,col="turquoise2",lty=3)
-dev.off()
-```
 ```{r ibs_dendrogram_galapagos}
 # retaining only galapagos samples
 ma_usfq <- ma[samples$Set == "USFQ_CSUMB", samples$Set == "USFQ_CSUMB"]
@@ -134,14 +116,17 @@ plot(hc_usfq,cex=0.4)
 abline(h=0.145,col="darkorange",lty=3)
 abline(h=0.105,col="turquoise2",lty=3)
 ```
-```{r ibs_dendrogram_coco}
-# retaining only isla del coco samples
-ma_coco <- ma[samples$Region == "Coco",samples$Region == "Coco"]
+```{r ibs_dendrogram_region_subsets}
+# retaining only samples from specified regions for ease in manual clonegroup identification
+select_region <- "Clipperton"
+# 
+ma_select <- ma[samples$Region == select_region, samples$Region == select_region]
 # re-clustering
-hc_coco <- hclust(as.dist(ma_coco),"ave")
-plot(hc_coco,cex=0.6)
+hc_select <- hclust(as.dist(ma_select),"ave")
+plot(hc_select,cex=0.6)
 abline(h=0.15,col="red",lty=3)
 ```
+
 
 ## Plot IBS clustering dendrogram with ggtree for all samples
 ```{r}
@@ -180,7 +165,7 @@ hc %>% ggtree() %<+% samples +
 # dev.off()
 ```
 
-### No Bones IBS figures
+### No Bones / SICB presentation IBS figures
 
 ```{r}
 pdf("./outputs/figures/sicb/ibs_dendrogram_all_analysis_black.pdf", width = 8.5, height = 4.85)
@@ -200,7 +185,6 @@ png("./outputs/figures/sicb/ibs_dendrogram_all_analysis_black.png", width = 8.5,
 hc_black
 dev.off()
 ```
-
 ```{r}
 pdf("./outputs/figures/sicb/ibs_dendrogram_all_analysis_mtorf.pdf", width = 8.5, height = 4.85)
 hc_mtorf <- hc %>% ggtree() %<+% samples + 
@@ -225,7 +209,7 @@ dev.off()
 pdf("./outputs/figures/sicb/ibs_dendrogram_all_analysis_mtorf_replicates.pdf", width = 8.5, height = 4.85)
 hc_mtorf_rep <- hc %>% ggtree() %<+% samples + 
   layout_dendrogram() + 
-  geom_tippoint(aes(fill = `mtorf_type`, color = `REPLICATE`), shape = 21, alpha = 0.8, stroke = 0.5, hjust = 0.3, show.legend = F) +
+  geom_tippoint(aes(fill = `mtorf_type`, color = `TECHNICAL_REPLICATE`), shape = 24, alpha = 0.8, stroke = 0.5, hjust = 0.3, show.legend = F) +
   scale_fill_manual(values = mtorf_colors, name = "mtORF haplotype") +
   scale_color_manual(values = c("black", "red")) +
   scale_y_continuous(expand = expansion(mult = c(0.02, 0))) +
@@ -245,50 +229,39 @@ dev.off()
 hc_site <- hc %>% ggtree() %<+% samples + 
   layout_dendrogram() + 
   geom_tippoint(aes(fill = `Region:Site`), shape = 21, color = "black", alpha = 0.8, stroke = 0.5, hjust = 0.3, show.legend = TRUE) +
-  # geom_tiplab(size = 2, hjust = 1.05) +
+  geom_tiplab(size = 2, hjust = 1.05) +
   # scale_fill_manual(values = mtorf_colors, name = "mtORF haplotype") +
   scale_y_continuous(expand = expansion(mult = c(0.02, 0))) +
-  # theme_dendrogram(legend.position = c(0.9, 0.82),
-  #       legend.margin = margin(0,0,0,0, unit = "mm"),
-  #       plot.margin = margin(2,2,2,2, unit = "mm")) +
+  theme_dendrogram(legend.position = "bottom",
+        legend.margin = margin(0,0,0,0, unit = "mm"),
+        plot.margin = margin(2,2,2,2, unit = "mm")) +
+  guides(fill=guide_legend(nrow = 4)) + 
   xlab("Genetic distance (1-IBS)")
 
+pdf("/Users/mikeconnelly/Documents/3_Research/1_Projects/PociGSkim/IBS_sites_labels.pdf", height = 8.5, width = 18)
 hc_site
+dev.off()
 ```
 
 
-### Figure 2
+### Figure 2B
 ```{r}
-# pdf("./outputs/figures/Fig2_ibs_dendrogram_species_091423.pdf", width = 6.5, height = 5)
-hc_panpopgen %>% ggtree() %<+% samples + 
-  layout_dendrogram() +
-  # geom_vline(xintercept = -0.15, stroke = 0.5, color = mtorf_colors[1], linetype = 2) +
-  # geom_vline(xintercept = -0.05, stroke = 0.5, color = mtorf_colors[2], linetype = 2) +
-  # geom_vline(xintercept = -0.105, stroke = 0.5, color = mtorf_colors[3], linetype = 2) +
-  # geom_vline(xintercept = -0.103, stroke = 0.5, color = mtorf_colors[4], linetype = 2) +
-  # geom_tippoint(aes(fill = `Species`), shape = 21, alpha = 0.8, stroke = 0.5, color = "black", hjust = 0.3, show.legend = TRUE) +
-  geom_tippoint(aes(fill = `Species`), shape = 21, alpha = 0.8, stroke = 0.5, color = art.clones, hjust = 0.3) + 
-  
-  # I WANT TO COLOR THE TIP POINTS BY CLONE GROUPS! THEN ADD NODE POINTS FOR EACH SPP
-  
-  # geom_tiplab(size = 2, hjust = 1.05) +
-  # geom_treescale(width = 0.5)
-  theme_dendrogram() +
-  scale_fill_manual(values = spp_colors, name = "Species") +
-   theme(legend.position = c(0.8, 0.8),
+pdf("./outputs/figures/Fig2B_ibs_dendrogram_all_analysis_mtorf_replicates.pdf", width = 8.5, height = 4.85)
+hc_mtorf_rep <- hc %>% ggtree() %<+% samples + 
+  layout_dendrogram() + 
+  geom_tippoint(aes(fill = `mtorf_type`, color = `TECHNICAL_REPLICATE`), shape = 24, alpha = 0.8, stroke = 0.5, hjust = 0.3, show.legend = F) +
+  scale_fill_manual(values = mtorf_colors, name = "mtORF haplotype") +
+  scale_color_manual(values = c("black", "red")) +
+  scale_y_continuous(expand = expansion(mult = c(0.02, 0))) +
+  theme_dendrogram(legend.position = c(0.9, 0.82),
         legend.margin = margin(0,0,0,0, unit = "mm"),
-        plot.margin = margin(5,5,5,5, unit = "mm")) +
-  ggtitle(expression(paste(italic("Pocillopora"), " identity-by-state clustering dendrogram")), subtitle = "Panama and Clipperton (n= 136)")
-# dev.off()
-```
-```{r}
-# color artificial clones red
-art.clones <- rep("black", nrow(ma_panpopgen))
-art.clones[rownames(ma_panpopgen) %in% replicates]="red"
-# inferred clones
-inf.clones <- rep("black", nrow(ma_panpopgen))
+        plot.margin = margin(2,2,2,2, unit = "mm")) +
+  xlab("Genetic distance (1-IBS)")
+hc_mtorf_rep
+dev.off()
 ```
 
+## Other IBS subsets w/ ggtree
 ```{r}
 pdf("./outputs/figures/galapagos_ibs_clones.pdf", height = 4.5, width = 6)
 hc_usfq %>% ggtree() %<+% samples + 
@@ -305,7 +278,6 @@ hc_usfq %>% ggtree() %<+% samples +
   ggtitle(expression(paste("Galapagos ", italic("Pocillopora"), " (n=", 40, ")", " identity-by-state clustering dendrogram")))
 dev.off()
 ```
-
 ```{r}
 pdf("./outputs/figures/ibs_dendrogram_coco_mtorf.pdf", width = 6.5, height = 8.5)
 tree_title <- expression(paste("Identity-by-state clustering of Isla del Coco ", italic("Pocillopora"), " samples (n=", 26, ")"))
@@ -327,7 +299,7 @@ dev.off()
 ```
 
 ## Threshold clonegroup identification
-```{r}
+```{r technical_replicates}
 # "artificial clones" (technical replicates)
 # samples %>% filter(REPLICATE) %>% View()
 perlas358 <- c("Perlas_358_AP3XG49", "Perlas_358b_AP3XG49", "Perlas_358c_AP3XG49")
@@ -351,7 +323,7 @@ art.clones[samples$`Sample ID` %in% replicates]="red"
 # 
 ColorDendrogram(hclust(as.dist(mafa),"ave"), y = art.clones, branchlength=0.05)
 ```
-#### P. grandis clonegroups
+### P. grandis clonegroups
 ```{r}
 # subset matrix into species to define clonegroups
 ma_pgra <- ma[samples$Species == "P. grandis", samples$Species == "P. grandis"]
@@ -399,8 +371,7 @@ for (i in unique(samples_clonegroups_pgrandis$clone_number)) {
 write(sel$`Sample ID`, "~/Desktop/pgrandis_noclones.txt")
 ```
 
-
-#### P. verrucosa 3a clonegroups
+### P. verrucosa 3a clonegroups
 ```{r}
 ma_pver3a <- ma[samples$Species == "P. verrucosa 3a", samples$Species == "P. verrucosa 3a"]
 # color artificial clones red
@@ -446,66 +417,9 @@ for (i in unique(samples_clonegroups_pverrucosa3a$clone_number)) {
 }
 write(sel$`Sample ID`, "./data/pverrucosa3a_noclones_samples.txt")
 ```
-```{r}
-# join clonegroup information
-samples_all_clones <- bind_rows(samples_clonegroups_pgrandis, samples_clonegroups_pverrucosa3a) %>% 
-  select(-SINGLETON, -CLONE) %>% 
-  right_join(samples, by = "Sample ID") %>% relocate(`clone_number`:`clone_code`, .after = `Species`)
 
-write_excel_csv("~/Desktop/samples_all_clonegroups.csv")
-```
-```{r}
-# find top samples within clonegroups and species for phylogenetic reconstructions
-
-samples_clones_subspp_qcdata <- samples_all_clones %>% left_join(., pgrandis_subspp, by = "Sample ID") %>% left_join(., multiqc_data, , by = "Sample ID")
-```
-
-
-### Panama manuscript samples
-```{r}
-pdf("./outputs/figures/FigS2_ibs_clones.pdf", width = 6.5, height = 6)
-# subset matrix into species to define clonegroups
-ma_panpopgen <- ma[samples$PANAMA_MANUSCRIPT, samples$PANAMA_MANUSCRIPT]
-# re-clustering
-hc_panpopgen <- hclust(as.dist(ma_panpopgen),"ave")
-plot(hc_panpopgen, cex=0.4)
-abline(h=0.145,col="darkorange",lty=3)
-abline(h=0.105,col="turquoise2",lty=3)
-
-# color artificial clones red
-art.clones <- rep("black", nrow(ma_panpopgen))
-art.clones[rownames(ma_panpopgen) %in% replicates]="red"
-#
-hc_panpopgen <- hclust(as.dist(ma_panpopgen),"ave")
-#
-ColorDendrogram(hc_panpopgen, y = art.clones, branchlength=0.035)
-
-# sorting samples into clone groups; singletons go into the same "color" group (for plotting) but different "cn" groups (for GLM modeling later)
-cc <- cutree(hc_panpopgen, h = 0.145)
-cc1 <- cc
-
-# count number of samples in each clone group
-tc <- table(cc)
-# identify singletons, set to same color group
-singletons <- as.numeric(names(tc)[tc==1])
-cc1[cc1 %in% singletons] <- singletons[1]
-
-# assign color sequence to clone groups
-clone_colors <- labels2colors(as.numeric(as.factor(as.numeric(cc1))))
-names(clone_colors) <- names(cc1)
-# changing some colors manually for better visibility
-clone_colors[clone_colors=="white"]="khaki3"
-clone_colors[clone_colors=="black"]="goldenrod"
-clone_colors[clone_colors=="turquoise"]="black"
-  
-# record sample ID and clone group assignments
-samples_clonegroups_panama_manuscript <- tibble(`Sample ID` = names(cc), clone_number = cc, clone_color = clone_colors, SINGLETON = ifelse(clone_color == "black", "TRUE", "FALSE"))
-  
-ColorDendrogram(hc_panpopgen, y = clone_colors, labels = F, branchlength=0.035)
-dev.off()
-```
-
-## Plot IBS clustering with clones removed
+# No-clones samples
+### Import IBS matrix
 ```{r}
 ma <- as.matrix(read.table("./outputs/angsd/full_noclones_ibs05.ibsMat"))
 ```
@@ -529,6 +443,7 @@ all(samples_noclones$`Sample ID` == bam_ids) # TRUE
 # IMPORTANT: verify that the order of ids in sample metadata and in the bam file list used for IBS in ANGSD match
 dimnames(ma) <- list(samples_noclones$`Sample ID`, samples_noclones$`Sample ID`)
 ```
+### Plot IBS hierarchical clustering dendrograms
 ```{r}
 # plotting hierarchical clustering dendrogram
 hc <- hclust(as.dist(ma), "ave")
@@ -562,5 +477,13 @@ dev.off()
 ma_type1a <- madf %>% filter(mtorf_type == "Type 1a") %>% select(.$`Sample ID`) %>% as.matrix() %>% hist()
 
 hist(madf[madf$mtorf_type == "Type 1a", madf$mtorf_type == "Type 1a"])
+```
+## No-clones summary
+```{r}
+samples_spp_regions_summary <- samples_noclones %>% group_by(Species, Region) %>% count() %>% pivot_wider(names_from = Species, values_from = n)
+```
+```{r}
+pgrandis_noclones <- samples_noclones %>% filter(Species == "P. verrucosa 3b") %>% group_by(Region) 
+write_lines(pgrandis_noclones$`Sample ID`, "~/Desktop/pverrucosa3a")
 ```
 

@@ -80,10 +80,10 @@ q_pop_tidy %>%
 ```{r import_qopt_files}
 # how to make combination of plots for multiple values of K?
 # for example, K from 2 - 10
-maxK <- 10
+maxK <- 12
 popcolors <- brewer.pal(maxK, "Set1")
 qopt_list <- list()
-for (i in 2:maxK){
+for (i in 1:maxK){
   print(i)
   kcols <- c()
   # internal loop to create column header names
@@ -91,14 +91,14 @@ for (i in 2:maxK){
   kcols <- append(kcols, paste0("pop",j))
   }
   # print(kcols)
-  qopt_list[[i]] <- read_table(paste0("./outputs/ngsadmix/all_noclones_K",i,"_1.qopt"), col_names = kcols)
+  qopt_list[[i]] <- read_table(paste0("./outputs/ngsadmix/final_noclones/final_noclones_K",i,"_1.qopt"), col_names = kcols)
 }
 qopt_list
 ```
 
 ```{r}
 plot_list <- list()
-for (i in 2:8){
+for (i in 2:maxK){
 q <- qopt_list[[i]]
 q_pop <- cbind(pop, q)
   ## ggplot attempt
@@ -133,11 +133,18 @@ dev.off()
 ## Choose best K
 ```{r choose_best_K}
 # https://github.com/alexkrohn/AmargosaVoleTutorials/blob/master/ngsAdmix_tutorial.md
-logs <- read_delim("./outputs/ngsadmix/pgrandis_noclones_ngsadmix_likeKlogs.txt", trim_ws = TRUE, col_names = c("K", "value"), col_types = cols("K" = col_character(), "value" = col_double()))
+logs <- read_delim("./outputs/ngsadmix/final_noclones_ngsadmix_likeKlogs.txt", trim_ws = TRUE, col_names = c("K", "value"), col_types = cols("K" = col_character(), "value" = col_double()))
 
-logs %>% group_by(K) %>% 
+logKdf <- logs %>% group_by(K) %>% 
   summarise(mK = (mean(abs(value), na.rm = T))/sd(abs(value), na.rm = T)) %>%  
-  arrange(desc(mK))
+  arrange(mK)
+
+Kvec <- c("K1", "K2", "K3", "K4", "K5", "K6", "K7", "K8", "K9", "K10", "K11", "K12")
+
+logKdf$K <- factor(logKdf$K, levels = Kvec, ordered = T)
+facto
+
+logKdf %>% ggplot(aes(K, log(mK))) + geom_point()
 ```
 
 ## Plot ancestry proportions for best K
@@ -145,13 +152,13 @@ logs %>% group_by(K) %>%
 # code adapted from: https://baylab.github.io/MarineGenomics/week-9-population-structure-using-ngsadmix.html
 
 # read in the data 
-q <- read_table("./outputs/ngsadmix/full_noclones_K3_1.qopt", col_names = c("pop1","pop2","pop3"))
+q <- read_table("./outputs/ngsadmix/final_noclones/final_noclones_K6_1.qopt", col_names = c("pop1","pop2","pop3", "pop4", "pop5", "pop6"))
 
 # read in the population information file located in the bam.filelist
-bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/full_noclones_bamfile.txt",header=F)[,1]
-bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/", "", bams, perl=T)
-bam_ids <- sub(".sorted.md.rg.bam", "", bam_ids, perl=T)
-bam_ids <- sub("_S[[:digit:]]+$", "", bam_ids)
+# bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/full_noclones_bamfile.txt",header=F)[,1]
+# bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/", "", bams, perl=T)
+# bam_ids <- sub(".sorted.md.rg.bam", "", bam_ids, perl=T)
+# bam_ids <- sub("_S[[:digit:]]+$", "", bam_ids)
 #
 pop <- data_frame("Sample ID" = bam_ids) %>% left_join(samples, by = "Sample ID")
 
@@ -167,21 +174,21 @@ ord <- order(q_pop$pop1)
 q_pop_tidy <- q_pop %>%
   mutate("Sample ID" = fct_reorder2(`Sample ID`, pop2, pop1),
          "Country" = as_factor(`Country`)) %>% 
-  pivot_longer(cols = `pop1`:`pop3`, names_to = "pop") 
+  pivot_longer(cols = `pop1`:`pop6`, names_to = "pop") 
 #
 q_plot_tidy <- q_pop_tidy %>%
   ggplot(aes(x = `Sample ID`, y = value)) +
   geom_col(aes(fill = `pop`), position = "stack") + 
-  scale_fill_manual(values = spp_colors[c(2,4,1)]) +
+  # scale_fill_manual(values = spp_colors) +
   facet_grid(~Country, scales = "free", space = "free") + 
   xlab("Individuals") + 
-  ylab("Admixture proportions for K=3") +
+  ylab("Admixture proportions for K=5") +
   theme(axis.text.x = element_text(size = 5, angle = 90))
 ```
 ```{r}
-pdf("./outputs/figures/ngsadmix.pdf", width = 11.5, height = 4.5)
+# pdf("./outputs/figures/ngsadmix.pdf", width = 11.5, height = 4.5)
 q_plot_tidy
-dev.off()
+# dev.off()
 ```
 
 # P. grandis only - no clones
@@ -190,9 +197,13 @@ dev.off()
 # https://github.com/alexkrohn/AmargosaVoleTutorials/blob/master/ngsAdmix_tutorial.md
 logs <- read_delim("./outputs/ngsadmix/pgrandis_noclones_ngsadmix_likeKlogs.txt", trim_ws = TRUE, col_names = c("K", "value"), col_types = cols("K" = col_character(), "value" = col_double()))
 
-logs %>% group_by(K) %>% 
+logKdf <- logs %>% group_by(K) %>% 
   summarise(mK = (mean(abs(value), na.rm = T))/sd(abs(value), na.rm = T)) %>%  
-  arrange(desc(mK))
+  arrange(mK)
+
+logKdf
+
+logKdf %>% ggplot(aes(K, mK)) + geom_point()
 ```
 
 ## Obtain sample info

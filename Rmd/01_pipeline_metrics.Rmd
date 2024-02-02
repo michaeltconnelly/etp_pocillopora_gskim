@@ -163,6 +163,34 @@ multiqc_data <- left_join(multiqc_fastqc_reads, multiqc_trimqc_reads, by = "Samp
 ```{r}
 multiqc_data[duplicated(multiqc_data$`Sample ID`),]
 ```
+### Pick clonegroup samples with highest total read depth
+```{r}
+samples_fastqc <- left_join(samples, multiqc_fastqc_reads, by = "Sample ID")
+# view clonegroup samples ordered by raw reads descending
+samples_fastqc %>% filter(!is.na(`Genotype ID`)) %>% arrange(`Genotype ID`, desc(`Raw Reads`)) %>% select(`Sample ID`, `Genotype ID`, `Region:Site`, `Raw Reads`)
+# select sample with most reads per clonegroup
+clonegroup_samples_keep <- samples_fastqc %>% filter(!is.na(`Genotype ID`)) %>% group_by(`Genotype ID`) %>%  slice_max(`Raw Reads`)
+```
+```{r}
+# write out singleton samples
+singleton_samples <- samples %>% filter(SINGLE_GENOTYPE)
+write_lines(singleton_samples$`Sample ID`, "./data/singleton_samples.txt")
+# write out clonegroup keeper samples
+write_lines(clonegroup_samples_keep$`Sample ID`, "./data/clonegroup_keep_samples_5X.txt")
+```
+
+### Pick clonegroup samples with highest proportion of sites w/ 5x coverage
+```{r}
+qc_5X <- read_tsv("./outputs/quality_5X.txt", col_names = c("ID", "5X Coverage")) %>% 
+  mutate("Sample ID" = str_remove(ID, "_S.*")) %>% select(`Sample ID`, `5X Coverage`)
+#
+samples_5X <- left_join(samples, qc_5X, by = "Sample ID")
+# view clonegroup samples ordered by 5X coverage
+samples_5X %>% filter(!is.na(`Genotype ID`)) %>% arrange(`Genotype ID`, desc(`5X Coverage`)) %>% select(`Sample ID`, `Genotype ID`, `Region:Site`, `5X Coverage`)
+# select sample with most reads per clonegroup
+clonegroup_samples_keep <- samples_5X %>% filter(!is.na(`Genotype ID`)) %>% group_by(`Genotype ID`) %>%  slice_max(`5X Coverage`)
+```
+
 
 ```{r}
 multiqc_sample_data <- multiqc_data %>%

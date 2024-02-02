@@ -23,12 +23,12 @@ source("./R/sample_import.R")
 samples <- all_samples
 ```
 ```{r select_samples}
-samples <- filter(all_samples, ANALYSIS ==T)
-# samples <- filter(all_samples, `PANAMA_MANUSCRIPT` == T)
+samples <- all_samples %>% filter(ANALYSIS)
+# NOTE: Remove clones from the dataset using IBS analysis before running PCAngsd
+samples_noclones <- all_samples %>% filter(NOCLONES_SAMPLE)
 ```
-Note: Remove clones from the dataset using IBS analysis before running PCAngsd
 
-## Perform PCA of all samples
+## Perform PCA of all samples (clones included)
 ```{r pca}
 # pop<-read.table("Demo/Data/Demo1pop.info")
 C <- as.matrix(read.table("./outputs/angsd/all_analysis.cov"))
@@ -80,7 +80,6 @@ pcs %>% ggplot(aes(x = V1, y = V2)) +
   ggtitle(title)
 # 
 ```
-
 ```{r figure 1: pca_1-2}
 # use custom function to plot PCA colored by Region:Site
 pdf("./outputs/figures/pca12.pdf", width = 8, height = 6)
@@ -103,17 +102,20 @@ dev.off()
 ## Perform PCA of no-clones samples
 ```{r pca}
 # pop<-read.table("Demo/Data/Demo1pop.info")
-C <- as.matrix(read.table("./outputs/angsd/full_noclones.cov"))
+C <- as.matrix(read.table("./outputs/angsd/final_noclones.cov"))
 e <- eigen(C)
 ```
 ```{r pca_test_plot}
 plot(e$vectors[,c(1,2)],xlab="PC1",ylab="PC2", main="individual allele frequency")
 #
+plot(e$vectors[,c(2,3)],xlab="PC2",ylab="PC3", main="individual allele frequency")
+#
+plot(e$vectors[,c(3,4)],xlab="PC3",ylab="PC4", main="individual allele frequency")
 ```
 
 ```{r bamfile_sample_order_check}
 # reading list of bam files = order of samples in IBS matrix
-bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/full_noclones_bamfile.txt",header=F)[,1]
+bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/final_noclones_bamfile.txt",header=F)[,1]
 #
 bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/", "", bams, perl=T)
 bam_ids <- sub(".sorted.md.rg.bam", "", bam_ids, perl=T)
@@ -137,11 +139,12 @@ pcvar <- round(e$values, 2)
 
 ```{r}
 pdf(file="./outputs/figures/sicb/pcangsd_species.pdf", width = 5.5, height = 3.75)
-title <- expression(paste("East Pacific ", italic("Pocillopora"), " PCA (4,233,691 SNPs)"))
+title <- expression(paste("East Pacific ", italic("Pocillopora"), " PCA (5,314,313 SNPs)"))
 pca <- pcs %>% ggplot(aes(x = V1, y = V2)) +
-  geom_point(aes(fill = `Species`), shape = 21, size = 3, alpha = 0.75, show.legend = F) +
-  scale_fill_manual(values = spp_colors) +
+  geom_point(aes(fill = `mtorf_type`), shape = 21, size = 3, alpha = 0.75, show.legend = F) +
+  # scale_fill_manual(values = spp_colors) +
   # facet_grid(Region ~ .) +
+  facet_wrap(mtorf_type ~ .) +
   # coord_fixed(pcvar[2]/pcvar[1]) +
   xlab(paste0( "PC1 (", pcvar[1], "%)")) + 
   ylab(paste0( "PC2 (", pcvar[2], "%)")) +
@@ -167,10 +170,10 @@ title <- expression(paste("PCA of East Pacific ", italic("Pocillopora"), " spp."
 pcs %>% ggplot(aes(x = V1, y = V2)) +
   geom_jitter(aes(fill = `Species`), shape = 21, size = 4, alpha = 0.6, show.legend = T, width = 0.005, height = 0.005) +
   scale_fill_manual(values = spp_colors) +
-  facet_wrap(Region ~ .) +
-  coord_fixed(pcvar[3]/pcvar[2]) +
-  xlab(paste0( "PC1 (", pcvar[2], "%)")) + 
-  ylab(paste0( "PC2 (", pcvar[3], "%)")) +
+  # facet_wrap(Region ~ .) +
+  coord_fixed(pcvar[2]/pcvar[1]) +
+  xlab(paste0( "PC1 (", pcvar[1], "%)")) + 
+  ylab(paste0( "PC2 (", pcvar[2], "%)")) +
   theme(plot.title = element_text(size = 16, hjust = 1.4),
         axis.title = element_text(size = 12),
         axis.text = element_text(size = 11),
@@ -179,6 +182,7 @@ pcs %>% ggplot(aes(x = V1, y = V2)) +
   ggtitle(title)
 dev.off()
 ```
+## Figure 3A
 
 
 ## Perform separate PCAs for different species
@@ -243,9 +247,11 @@ pcs_c1 %>% ggplot(aes(x = V1, y = V2)) +
   ylab(paste0( "PC2 (", pcvar_c1[2], "%)"))
 # 
 ```
+
+### Figure 4A
 ```{r pgrandis_region_pca}
 pdf("./outputs/figures/pgrandis_region_pca.pdf", height = 4.5, width = 6)
-title <- expression(paste("PCA of ETP ", italic("P. grandis"), " samples (n = 173)"))
+title <- expression(paste("PCA of ETP ", italic("P. grandis"), " samples (n = 176)"))
 #
 pcs_c1 %>% ggplot(aes(x = V1, y = V2)) +
   geom_point(aes(fill = `Region`), shape = 21, size = 2, alpha = 0.75) +
@@ -404,6 +410,8 @@ pcs %>% ggplot(aes(x = V1, y = V2)) +
   ylab(paste0( "PC2 (", pcvar[2], "%)"))
 # 
 ```
+
+## Figure 4B
 ```{r pverrucosa_region_pca}
 pdf("./outputs/figures/pverrucosa_region_pca.pdf", width = 8, height = 3.75)
 title <- expression(paste(italic("P. verrucosa"), " population-level PCA (42 samples, 13,224,661 SNPs)"))
