@@ -47,15 +47,12 @@ echo 'echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTN
 #
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/angsd"
-set="$1"
 #' >> $JOBFILE
 # input ANGSD commands
 printf 'realSFS ${angsddir}/%s.saf.idx ${angsddir}/%s.saf.idx -P $NSLOTS > ${angsddir}/%s.%s.ml \n' "$pop1" "$pop2" "$pop1" "$pop2" >> $JOBFILE
 # input job finished statment
 echo '#
 echo = `date` job $JOB_NAME done' >> $JOBFILE
-#qsub $JOBFILE
+qsub $JOBFILE
 done
 done
-
-echo = `date` job $JOB_NAME done
