@@ -1,0 +1,43 @@
+#!/bin/sh
+# ----------------Parameters---------------------- #
+#$ -S /bin/sh
+#$ -pe mthread 8
+#$ -q mThM.q
+#$ -l mres=96G,h_data=12G,h_vmem=12G,himem
+#$ -cwd
+#$ -j y
+#$ -N angsd_SAF_site_filtering
+#$ -o angsd_SAF_site_filtering.log
+#$ -m bea
+#$ -M connellym@si.edu
+#
+# ----------------Modules------------------------- #
+ module load bio/angsd/0.940 
+# ----------------Your Commands------------------- #
+#
+echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
+echo + NSLOTS = $NSLOTS
+
+#specify variable containing sequence file prefixes and directory paths
+mcs="/scratch/nmnh_corals/connellym"
+prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
+angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/angsd"
+
+# filter sites to work on - use only filters that do not distort allele frequency
+echo "Begin basic site filtering"
+# assign variable to bamfile
+BAMLIST="${angsddir}/bamfiles/full_noclones_bamfile.txt"
+# set minInd to 85% of total number of samples
+nsamps=$(cat $BAMLIST | wc -l) 
+minindv=$(echo "$nsamps*0.85" | bc | awk '{print int($1+0.5)}')
+#
+FILTERS="-uniqueOnly 1 -remove_bads 1 -skipTriallelic 1 -minMapQ 30 -minQ 30 -doHWE 1 -sb_pval 1e-5 -hetbias_pval 1e-5 -minInd $minindv"
+TODO="-doMajorMinor 1 -doMaf 1 -dosnpstat 1 -doPost 2 -doGeno 8"
+angsd -b $BAMLIST -GL 1 $FILTERS $TODO -P $NSLOTS -out ${angsddir}/AllSites
+# extract and index sites
+zcat ${angsddir}/AllSites.mafs.gz | cut -f 1,2 | tail -n +2 > ${angsddir}/AllSites.txt
+# obtain list of scaffolds containing sites
+cat ${angsddir}/AllSites.txt | cut -f 1 | sort | uniq > ${angsddir}/SczhEnG.txt
+angsd sites index ${angsddir}/AllSites.txt
+
+echo = `date` job $JOB_NAME done
