@@ -31,7 +31,7 @@ echo "#!/bin/sh
 #$ -q mThM.q
 #$ -l mres=96G,h_data=12G,h_vmem=12G,himem
 #$ -cwd
-#$ -j y' > $JOBFILE
+#$ -j y
 #$ -N angsd_2DSFS_${pop1}.${pop2}
 #$ -o ${prodir}/bash/jobs/angsd_2DSFS_${pop1}.${pop2}.log
 #$ -m bea
