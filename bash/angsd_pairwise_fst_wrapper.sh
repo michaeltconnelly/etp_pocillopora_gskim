@@ -29,7 +29,7 @@ echo "#!/bin/sh
 #$ -cwd
 #$ -j y
 #$ -N angsd_pairwise_fst_${pop1}.${pop2}
-#$ -o angsd_pairwise_fst_${pop1}.${pop2}.log
+#$ -o ${prodir}/bash/jobs/angsd_pairwise_fst_${pop1}.${pop2}.log
 #$ -m bea
 #$ -M connellym@si.edu
 #
