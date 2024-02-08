@@ -3,6 +3,7 @@
 #purpose: calculate pairwise fst values using ANGSD for a given list of populations
 #input: ANGSD SAF and pairwise SFS files and list of populations pointing to files with lists of sample names
 
+#specify variable containing sequence file prefixes and directory paths
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 # list of populations
 POPFILE="$1"
