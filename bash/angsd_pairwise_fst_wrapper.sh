@@ -54,6 +54,7 @@ printf 'realSFS fst stats ${angsddir}/%s_%s.fst.idx > ${angsddir}/%s_%s_fst_resu
 # input job finished statment
 echo '#
 echo = `date` job $JOB_NAME done' >> $JOBFILE
+# submit job
 qsub $JOBFILE
 done
 done

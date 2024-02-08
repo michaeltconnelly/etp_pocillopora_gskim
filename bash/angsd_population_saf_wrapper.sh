@@ -12,17 +12,15 @@ POPFILE="$1"
 # generate list of populations
 POPS=$(cat ${prodir}/data/pops/$POPFILE)
 
-# make bam file lists
 for set in $POPS; do 
+# make bam file lists
 ls ${prodir}/outputs/alignments/*md.rg.bam | grep -f ${prodir}/data/pops/${set} > ${angsddir}/bamfiles/${set}_bamfile.txt
 # verify sample numbers are correct
 echo "For ${set}, There are $(cat ${angsddir}/bamfiles/${set}_bamfile.txt | wc -l) samples in total"
-
 # create job file
 echo "Creating job file for SAF estimation of ${set}"
 JOBFILE="${prodir}/bash/jobs/angsd_saf_${set}.job"
 touch $JOBFILE
-
 # input QSUB commands
 echo "#!/bin/sh
 # ----------------Parameters---------------------- #
@@ -42,7 +40,6 @@ module load bio/angsd/0.940
 #
 # ----------------Your Commands------------------- #
 #" > $JOBFILE
-
 # input job-specific variables
 echo 'echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
 #
@@ -50,7 +47,6 @@ prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/angsd"
 set="$1"
 #' >> $JOBFILE
-
 # input ANGSD commands
 echo "${set} SAF estimation" >> $JOBFILE
 echo '# ----- SAF with ANGSD
@@ -62,9 +58,12 @@ TODO=" -doSaf 1"
 # set ancestral reference genome fasta file
 #ANC="/scratch/nmnh_corals/connellym/sequences/pdam/pdam_genome.fasta"
 ANC="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/data/seqs/peffusa_reference_ancestral.fa"' >> $JOBFILE
-
 echo '# estimate the site allele frequency likelihood
 angsd -sites ${angsddir}/AllSites.txt -rf ${angsddir}/SczhEnG.txt -b $BAMS -anc $ANC -GL 1 -P $NSLOTS $TODO -out ${angsddir}/${set} 
 echo "DONE!"' >> $JOBFILE
-#qsub $JOBFILE $set
+# input job finished statment
+echo '#
+echo = `date` job $JOB_NAME done' >> $JOBFILE
+# submit job
+qsub $JOBFILE $set
 done
