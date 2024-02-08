@@ -5,6 +5,7 @@
 
 #specify variable containing sequence file prefixes and directory paths
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
+angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/angsd"
 # list of populations
 POPFILE="$1"
 
