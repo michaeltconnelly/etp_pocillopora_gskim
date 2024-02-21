@@ -27,13 +27,13 @@ prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 set=$1
 #
 iqtree2 \
--s ${prodir}/outputs/uce-taxon-sets/${set}-mafft-nexus-internal-trimmed-gblocks-clean-75p-raxml/${set}-mafft-nexus-internal-trimmed-gblocks-clean-75p.phylip \
--p ${prodir}/outputs/uce-taxon-sets/${set}-mafft-nexus-internal-trimmed-gblocks-clean-75p-raxml/${set}-mafft-nexus-internal-trimmed-gblocks-clean-75p.partitions \
+-s ${prodir}/outputs/uce-taxon-sets/${set}-mafft-nexus-internal-trimmed-gblocks-clean-${2}p-raxml/${set}-mafft-nexus-internal-trimmed-gblocks-clean-${2}p.phylip \
+-p ${prodir}/outputs/uce-taxon-sets/${set}-mafft-nexus-internal-trimmed-gblocks-clean-${2}p-raxml/${set}-mafft-nexus-internal-trimmed-gblocks-clean-${2}p.partitions \
 --seqtype DNA \
 -m MFP+MERGE \
 -bb 1000 \
 -alrt 1000 \
 -nt $NSLOTS \
---prefix ${prodir}/outputs/iqtree/iqtree_${set}
+--prefix ${prodir}/outputs/iqtree/iqtree_${set}_${2}
 
 echo = `date` job $JOB_NAME done
