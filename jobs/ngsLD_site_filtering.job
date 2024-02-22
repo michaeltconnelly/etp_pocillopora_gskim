@@ -24,8 +24,8 @@ prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/angsd"
 NGSLD="/home/connellym/programs/ngsLD/ngsLD"
 
-NS=$(zcat mafs.gz | wc -l)
-NB=$(wc -l bamfile.txt)
+NS=$(zcat ${angsddir}/final_noclones/final_noclones_ibs05.mafs.gz | wc -l)
+NB=$(wc -l ${angsddir}/final_noclones/final_noclones_bamfile.txt)
 
 ./ngsLD --geno ${angsddir}/final_noclones/final_noclones_ibs05.geno.gz --probs 1 \
 --n_ind $NB --n_sites $NS \
