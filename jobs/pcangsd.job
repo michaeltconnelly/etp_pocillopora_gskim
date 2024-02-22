@@ -28,7 +28,15 @@ set=$1
 pcangsd.py \
 -beagle ${prodir}/outputs/angsd/${set}/${set}_ibs05.beagle.gz \
 -o ${prodir}/outputs/angsd/${set}/${set} \
+-selection \
 -admix \
 -threads $NSLOTS
+
+# Outputs the following files:
+# log-file (pcangsd.log)
+# covariance matrix (pcangsd.cov)
+# selection statistics (pcangsd.selection)
+# admixture proportions (pcangsd.admix.3.Q)
+# ancestral allele frequencies (pcangsd.admix.3.F)
 
 echo = `date` job $JOB_NAME done
