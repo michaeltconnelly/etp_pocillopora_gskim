@@ -1,0 +1,35 @@
+#!/bin/sh
+# ----------------Parameters---------------------- #
+#$ -S /bin/sh
+#$ -pe mthread 8
+#$ -q mThM.q
+#$ -l mres=96G,h_data=12G,h_vmem=12G,himem
+#$ -cwd
+#$ -j y
+#$ -N ngsLD_site_filtering
+#$ -o ngsLD_site_filtering.log
+#$ -m bea
+#$ -M connellym@si.edu
+#
+# ----------------Modules------------------------- #
+ module load gcc/7.3/gsl
+# ----------------Your Commands------------------- #
+#
+echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
+echo + NSLOTS = $NSLOTS
+
+#specify variable containing sequence file prefixes and directory paths
+mcs="/scratch/nmnh_corals/connellym"
+prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
+angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/angsd"
+NGSLD="/home/connellym/programs/ngsLD/ngsLD"
+
+NS=$(zcat mafs.gz | wc -l)
+NB=$(wc -l bamfile.txt)
+
+./ngsLD --geno ${angsddir}/final_noclones/final_noclones_ibs05.geno.gz --probs 1 \
+--n_ind $NB --n_sites $NS \
+--max_kb_dist 0 --pos ${angsddir}/final_noclones/final_noclones_ibs05.sites.txt \
+--out ${angsddir}/final_noclones/LD.out --n_threads $NSLOTS --extend_out 1
+
+echo = `date` job $JOB_NAME done
