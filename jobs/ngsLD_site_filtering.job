@@ -27,9 +27,13 @@ NGSLD="/home/connellym/programs/ngsLD/ngsLD"
 NS=$(zcat ${angsddir}/final_noclones/final_noclones_ibs05.geno.gz | wc -l)
 NB=$(wc -l ${angsddir}/final_noclones/final_noclones_bamfile.txt)
 
+# run ngsLD command
 $NGSLD --geno ${angsddir}/final_noclones/final_noclones_ibs05.geno.gz --probs 1 \
---n_ind $NB --n_sites $NS \
---max_kb_dist 0 --pos ${angsddir}/final_noclones/final_noclones_ibs05.sites.txt \
+--n_ind $NB --n_sites $NS --pos ${angsddir}/final_noclones/final_noclones_ibs05.sites.txt \
+--max_kb_dist 100 \
 --out ${angsddir}/final_noclones/LD.out --n_threads $NSLOTS --extend_out 1
+
+# --min_maf 0.05 \
+#  If the option --extend_out is used, then an extra 8 columns are printed with number of samples, minor allele frequency (MAF) of both loci, haplotype frequencies for all four haplotypes, and a chi2 (1 d.f.) for the strength of association
 
 echo = `date` job $JOB_NAME done
