@@ -38,7 +38,7 @@ echo "Stylophora_pistillata_ANT17_contigs" >> ${prodir}/data/${set}.conf
 # add reference genome taxa
 if [-n $2]; then
 echo "adding reference genome UCE sequences to pipeline"
-TAXA=$(ls ${prodir}/data/outgroups/scleractinia-genome-fasta/* | cut -d . -f 1)
+TAXA=$(ls ${prodir}/data/outgroups/scleractinia-genome-fasta/ | cut -d / -f 9 | cut -d . -f 1)
 for taxon in $TAXA; do echo $taxon >> ${prodir}/data/${set}.conf; done
 else echo "skipping reference genome UCE sequences" ;fi
 

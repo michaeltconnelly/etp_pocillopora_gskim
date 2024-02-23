@@ -39,4 +39,6 @@ pcangsd.py \
 # admixture proportions (pcangsd.admix.3.Q)
 # ancestral allele frequencies (pcangsd.admix.3.F)
 
+# In the newer version of PCAngsd, you can still perform selection scans for more PCs by using "--selection_e INT"
+
 echo = `date` job $JOB_NAME done
