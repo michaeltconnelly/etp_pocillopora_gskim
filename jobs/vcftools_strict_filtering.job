@@ -1,4 +1,4 @@
-# /bin/sh
+#!/bin/sh
 # ----------------Parameters---------------------- #
 #$  -S /bin/sh
 #$ -q lThC.q
@@ -24,11 +24,11 @@ prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 VCF_IN="${prodir}/outputs/${VCF_NAME}.vcf.gz"
 VCF_OUT="${prodir}/outputs/${VCF_NAME}_strict_filtered.vcf.gz"
 # vcf filtering settings
-# minimum minor allele frequency
+# minimum minor allele frequency: 0.05 - 0.1
 MAF="0.05"
-# maximum percent missing data per variant
+# maximum percent missing data per variant: 0 for all missing, 1 for no missing
 MISS="$3"
-# minimum quality score 
+# minimum quality score: 20-30
 QUAL="30"
 # minimum depth: 10-30 
 MIN_DEPTH="$2"

@@ -10,7 +10,7 @@ POPFILE="$2"
 
 touch ${prodir}/bash/jobs/vcftools_pairwise_fst_${POPFILE}.job
 
-echo "Preparing script for ${POPS}"
+echo "Preparing script for ${POPFILE}"
 #   input QSUB commands
 echo '#!/bin/sh
 # ----------------Parameters---------------------- #
@@ -43,6 +43,7 @@ VCF_IN="${prodir}/outputs/${VCF_NAME}.vcf.gz"
 POPS=$(cat ${prodir}/data/pops/$POPFILE)
 # calculate genome-wide per-site pairwise Fst
 # script to create commands for all pairwise comparisons
+# TO DO NEXT: adjust output directory slightly, scrape global results estimates
 set -- $POPS
 for a; do
     shift
@@ -52,4 +53,8 @@ for a; do
 done
 #
 
-echo 'echo = `date` job $JOB_NAME done' >> ${prodir}/bash/jobs/vcftools_pairwise_fst_${POPFILE}.job
+echo '#
+#
+echo = `date` job $JOB_NAME done' >> ${prodir}/bash/jobs/vcftools_pairwise_fst_${POPFILE}.job
+
+qsub ${prodir}/bash/jobs/vcftools_pairwise_fst_${POPFILE}.job $VCF_NAME
