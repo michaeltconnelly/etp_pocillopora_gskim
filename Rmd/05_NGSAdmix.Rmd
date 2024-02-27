@@ -16,6 +16,8 @@ library("RColorBrewer")
 library("patchwork")
 # 
 source("./R/pocillopora_etp_gksim_functions.R")
+#
+# code adapted from: https://baylab.github.io/MarineGenomics/week-9-population-structure-using-ngsadmix.html and https://github.com/alexkrohn/AmargosaVoleTutorials/blob/master/ngsAdmix_tutorial.md
 ```
 
 ## Import sample metadata
@@ -25,62 +27,42 @@ samples <- all_samples
 ```
 ```{r select_samples}
 samples <- filter(all_samples, ANALYSIS ==T)
-# samples <- filter(all_samples, `PANAMA_MANUSCRIPT` == T)
 ```
 
-# All ETP samples together - no clones
-## Import and visualize NGSAdmix results
-```{r import_viz_test}
-# code adapted from: https://baylab.github.io/MarineGenomics/week-9-population-structure-using-ngsadmix.html
+# All ETP samples - no-clones
+### Choose best K
+```{r choose_best_K}
+logs <- read_delim("./outputs/ngsadmix/final_noclones/final_noclones_ngsadmix_likeKlogs.txt", trim_ws = TRUE, col_names = c("K", "value"), col_types = cols("K" = col_character(), "value" = col_double()))
 
-# read in the data 
-q <- read_table("./outputs/ngsadmix/all_noclones_K3_1.qopt", col_names = c("pop1","pop2","pop3"))
+logKdf <- logs %>% group_by(K) %>% 
+  summarise(mK = (mean(abs(value), na.rm = T))/sd(abs(value), na.rm = T)) %>%  
+  arrange(mK)
 
+Kvec <- c("K1", "K2", "K3", "K4", "K5", "K6", "K7", "K8", "K9", "K10", "K11", "K12")
+
+logKdf$K <- factor(logKdf$K, levels = Kvec, ordered = T)
+
+bestKplot <- logKdf %>% ggplot(aes(K, log(mK))) + geom_point()
+print(bestKplot)
+
+bestK <- as.numeric(gsub("K", "", logKdf$K[1]))
+```
+### Obtain sample info
+```{r bam_list}
 # read in the population information file located in the bam.filelist
-bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/all_noclones_bamfile.txt",header=F)[,1]
+bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/final_noclones_bamfile.txt",header=F)[,1]
 bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/", "", bams, perl=T)
 bam_ids <- sub(".sorted.md.rg.bam", "", bam_ids, perl=T)
 bam_ids <- sub("_S[[:digit:]]+$", "", bam_ids)
 #
 # bam_ids
 pop <- data_frame("Sample ID" = bam_ids) %>% left_join(samples, by = "Sample ID")
-
-# combine
-q_pop <- cbind(pop, q)
-
-# order it by population
-ord <- order(q_pop$pop1)
-# ord <- order(pop$mtorf_type)
-
-# 
-barplot(t(q)[,ord],
-        col=1:4,
-        names = pop$`Sample ID`[ord],
-        las = 2,
-        cex.names = 0.2,
-        space = 0,
-        border=NA,
-        xlab="Individuals",
-        ylab="Admixture proportions for K=3")
 ```
-```{r ggplot_K_proportions}
-## ggplot attempt
-q_pop_tidy <- q_pop %>%
-  mutate("Sample ID" = fct_reorder2(`Sample ID`, desc(pop1), pop2)) %>% 
-  pivot_longer(cols = `pop1`:`pop3`, names_to = "pop") 
-#
-q_pop_tidy %>%
-  ggplot(aes(x = `Sample ID`, y = value)) +
-  geom_col(aes(fill = `pop`), position = "stack") + 
-  facet_grid(~Country, scales = "free", space = "free") + 
-  xlab("Individuals") + 
-  ylab("Admixture proportions for K=3") +
-  theme(axis.text.x = element_text(size = 4, angle = 90))
-```
+### Plot ancestry proportions per K
 ```{r import_qopt_files}
-# how to make combination of plots for multiple values of K?
-# for example, K from 2 - 10
-maxK <- 12
+# make combination of plots for multiple values of K
+# for example, K from 1 - 10
+maxK <- 10
 popcolors <- brewer.pal(maxK, "Set1")
 qopt_list <- list()
 for (i in 1:maxK){
@@ -95,16 +77,15 @@ for (i in 1:maxK){
 }
 qopt_list
 ```
-
-```{r}
+```{r produce_plots}
+qpop_list <- list()
 plot_list <- list()
-for (i in 2:maxK){
+for (i in 1:maxK){
 q <- qopt_list[[i]]
 q_pop <- cbind(pop, q)
   ## ggplot attempt
 q_pop_tidy <- q_pop %>%
-  mutate("Sample ID" = fct_reorder(`Sample ID`, desc(Species)),
-         "Country" = as_factor(`Country`)) %>% 
+  mutate("Sample ID" = fct_reorder(`Sample ID`, desc(Species))) %>% 
   pivot_longer(cols = contains("pop"), names_to = "pop") %>%
   arrange(Region, mtorf_type)
 #
@@ -113,7 +94,7 @@ q_pop_tidy_plot <- q_pop_tidy %>%
   ggplot(aes(x = `Sample ID`, y = value)) +
   geom_col(aes(fill = `pop`), position = "stack", show.legend = F) +
   scale_fill_manual(values = popcolors) +
-    facet_grid(~Country, scales = "free", space = "free") + 
+    facet_grid(~Region, scales = "free", space = "free") + 
   xlab("Individuals") +
   ylab(paste0("K=",i)) +
   theme(axis.text.x = element_blank(),
@@ -121,19 +102,131 @@ q_pop_tidy_plot <- q_pop_tidy %>%
         legend.text = element_text(size = 2))
 #
 # print(q_pop_tidy_plot)
-plot_list[[i-1]] <- q_pop_tidy_plot
+qpop_list[[i]] <- q_pop
+plot_list[[i]] <- q_pop_tidy_plot
 }
 ```
-```{r}
-pdf("./outputs/figures/ngsadmix_K2-8.pdf")
+
+```{r print_plots}
+pdf("./outputs/figures/ngsadmix_final_noclones_K1-6.pdf", width = 8.5, height = 8.5)
 # print(plot_list[[1]])
-plot_list[[1]] / plot_list[[2]] / plot_list[[3]] / plot_list[[4]] / plot_list[[5]] / plot_list[[6]] / plot_list[[7]]
+title <- expression(paste("NGSadmix results for K=2-9 on East Pacific ", italic("Pocillopora"), " (5,314,313 SNPs)"))
+plot_list[[2]] / plot_list[[3]] / plot_list[[4]] / plot_list[[5]] / plot_list [[6]] / plot_list[[7]] / plot_list[[8]] / plot_list[[9]] +
 dev.off()
 ```
-## Choose best K
+
+### Plot best K ancestry proportions
+```{r print_plot_bestK}
+plot_list[[bestK]]
+```
+```{r}
+pdf("./outputs/figures/ngsadmix_final_noclones_K5.pdf", width = 8.5, height = 4.5)
+title <- expression(paste("NGSadmix results for best K on East Pacific ", italic("Pocillopora"), " (5,314,313 SNPs)"))
+
+plot_list[[bestK]] + ggtitle(title)
+dev.off()
+```
+
+Exploratory plots of best K results
+
+```{r}
+# explore assigned ancestry proportions in best K
+qpop_best <- qpop_list[[bestK]]
+#
+q_pop_besttidy <- qpop_best %>%
+  mutate("Sample ID" = fct_reorder(`Sample ID`, desc(Species))) %>% 
+  pivot_longer(cols = contains("pop"), names_to = "pop") %>%
+  arrange(Region, mtorf_type)
+#
+q_pop_besttidy %>% 
+  filter(value > 0.85) %>% 
+  group_by(pop) %>% count()
+
+# 209 non-admixed individuals
+# pop1 = Offshore P. grandis  (31)
+# pop2 = P. verrucosa 3a (33)
+# pop3 = P. meandrina (10)
+# pop4 = Continental P. grandis (131)
+# pop5 = P. effusa (4)
+popcolors_mod <- c("darkorange1", "turquoise2", "gold", "darkorange4", "purple")
+spp_colors
+```
+
+```{r}
+qpop_best %>% filter(pop5 > 0.85) %>% select(`Sample ID`, `Region:Site`, mtorf_type, Species) %>% View()
+```
+
+TO-DO: using best K admixture results, identify representative samples from clusters (q > 0.85) and admixed samples
+
+```{r}
+# identify representative individuals
+qpop_rep_samples <- q_pop_besttidy %>% 
+  filter(value > 0.85)
+  
+# identify admixed individuals
+q_pop_besttidy %>% 
+  filter(value > 0.10, value < 0.85) %>% 
+  filter(pop == "pop5") %>% # ggplot(aes(value)) + geom_histogram(binwidth = 0.01)
+  group_by(pop) %>% # count()
+  View()
+
+# 5 samples from Coco are admixed from pop2 and pop5!
+```
+
+```{r}
+pdf("./outputs/figures/NGSAdmix_K5_results_plots.pdf", width = 11.5, height = 3.5)
+q_pop_besttidy %>%
+  # filter(`Sample ID` %in% qpop_rep_samples$`Sample ID`) %>% 
+  ggplot(aes(x = `Sample ID`, y = value)) +
+  geom_col(aes(fill = `pop`), position = "stack", show.legend = T) +
+  scale_fill_manual(values = popcolors_mod) +
+    facet_grid(~Region, scales = "free", space = "free") +
+  xlab("Individuals") +
+  # ylab(paste0("K=",i)) +
+  theme(axis.text.x = element_blank(),
+        strip.text.x = element_text(size = 6),
+        axis.title.x = element_blank(),
+        legend.text = element_text(size = 8)) +
+    ggtitle("All no-clones individuals")
+
+q_pop_besttidy %>%
+  filter(`Sample ID` %in% qpop_rep_samples$`Sample ID`) %>% 
+  ggplot(aes(x = `Sample ID`, y = value)) +
+  geom_col(aes(fill = `pop`), position = "stack", show.legend = T) +
+  scale_fill_manual(values = popcolors_mod) +
+    facet_grid(~Region, scales = "free", space = "free") +
+  xlab("Individuals") +
+  # ylab(paste0("K=",i)) +
+  theme(axis.text.x = element_blank(),
+        strip.text.x = element_text(size = 6),
+        axis.title.x = element_blank(),
+        legend.text = element_text(size = 8)) +
+    ggtitle("Representative individuals (q > 0.85)")
+
+`%notin%` <- Negate(`%in%`)
+
+q_pop_besttidy %>%
+  filter(`Sample ID` %notin% qpop_rep_samples$`Sample ID`) %>% 
+  ggplot(aes(x = `Sample ID`, y = value)) +
+  geom_col(aes(fill = `pop`), position = "stack", show.legend = T) +
+  scale_fill_manual(values = popcolors_mod) +
+    facet_grid(~Region, scales = "free", space = "free") +
+  xlab("Individuals") +
+  # ylab(paste0("K=",i)) +
+  theme(axis.text.x = element_blank(),
+        strip.text.x = element_text(size = 6),
+        axis.title.x = element_blank(),
+        legend.text = element_text(size = 8)) + 
+  ggtitle("Admixed individuals")
+
+dev.off()
+```
+
+
+# P. grandis only - no-clones
+### Choose best K
 ```{r choose_best_K}
-# https://github.com/alexkrohn/AmargosaVoleTutorials/blob/master/ngsAdmix_tutorial.md
-logs <- read_delim("./outputs/ngsadmix/final_noclones_ngsadmix_likeKlogs.txt", trim_ws = TRUE, col_names = c("K", "value"), col_types = cols("K" = col_character(), "value" = col_double()))
+logs <- read_delim("./outputs/ngsadmix/pgrandis_noclones/pgrandis_noclones_ngsadmix_likeKlogs.txt", trim_ws = TRUE, col_names = c("K", "value"), col_types = cols("K" = col_character(), "value" = col_double()))
 
 logKdf <- logs %>% group_by(K) %>% 
   summarise(mK = (mean(abs(value), na.rm = T))/sd(abs(value), na.rm = T)) %>%  
@@ -142,71 +235,12 @@ logKdf <- logs %>% group_by(K) %>%
 Kvec <- c("K1", "K2", "K3", "K4", "K5", "K6", "K7", "K8", "K9", "K10", "K11", "K12")
 
 logKdf$K <- factor(logKdf$K, levels = Kvec, ordered = T)
-facto
 
 logKdf %>% ggplot(aes(K, log(mK))) + geom_point()
+
+bestK <- as.numeric(gsub("K", "", logKdf$K[1]))
 ```
-
-## Plot ancestry proportions for best K
-```{r}
-# code adapted from: https://baylab.github.io/MarineGenomics/week-9-population-structure-using-ngsadmix.html
-
-# read in the data 
-q <- read_table("./outputs/ngsadmix/final_noclones/final_noclones_K6_1.qopt", col_names = c("pop1","pop2","pop3", "pop4", "pop5", "pop6"))
-
-# read in the population information file located in the bam.filelist
-# bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/full_noclones_bamfile.txt",header=F)[,1]
-# bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/", "", bams, perl=T)
-# bam_ids <- sub(".sorted.md.rg.bam", "", bam_ids, perl=T)
-# bam_ids <- sub("_S[[:digit:]]+$", "", bam_ids)
-#
-pop <- data_frame("Sample ID" = bam_ids) %>% left_join(samples, by = "Sample ID")
-
-# combine
-q_pop <- cbind(pop, q)
-
-# order it by population
-ord <- order(q_pop$pop1)
-# ord <- order(pop$mtorf_type)
-```
-```{r}
-## ggplot attempt
-q_pop_tidy <- q_pop %>%
-  mutate("Sample ID" = fct_reorder2(`Sample ID`, pop2, pop1),
-         "Country" = as_factor(`Country`)) %>% 
-  pivot_longer(cols = `pop1`:`pop6`, names_to = "pop") 
-#
-q_plot_tidy <- q_pop_tidy %>%
-  ggplot(aes(x = `Sample ID`, y = value)) +
-  geom_col(aes(fill = `pop`), position = "stack") + 
-  # scale_fill_manual(values = spp_colors) +
-  facet_grid(~Country, scales = "free", space = "free") + 
-  xlab("Individuals") + 
-  ylab("Admixture proportions for K=5") +
-  theme(axis.text.x = element_text(size = 5, angle = 90))
-```
-```{r}
-# pdf("./outputs/figures/ngsadmix.pdf", width = 11.5, height = 4.5)
-q_plot_tidy
-# dev.off()
-```
-
-# P. grandis only - no clones
-## Choose best K
-```{r choose_best_K}
-# https://github.com/alexkrohn/AmargosaVoleTutorials/blob/master/ngsAdmix_tutorial.md
-logs <- read_delim("./outputs/ngsadmix/pgrandis_noclones_ngsadmix_likeKlogs.txt", trim_ws = TRUE, col_names = c("K", "value"), col_types = cols("K" = col_character(), "value" = col_double()))
-
-logKdf <- logs %>% group_by(K) %>% 
-  summarise(mK = (mean(abs(value), na.rm = T))/sd(abs(value), na.rm = T)) %>%  
-  arrange(mK)
-
-logKdf
-
-logKdf %>% ggplot(aes(K, mK)) + geom_point()
-```
-
-## Obtain sample info
+### Obtain sample info
 ```{r bam_list}
 # read in the population information file located in the bam.filelist
 bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/pgrandis_noclones_bamfile.txt",header=F)[,1]
@@ -217,12 +251,11 @@ bam_ids <- sub("_S[[:digit:]]+$", "", bam_ids)
 # bam_ids
 pop <- data_frame("Sample ID" = bam_ids) %>% left_join(samples, by = "Sample ID")
 ```
-
-## Plot sample ancestry proportions per K
+### Plot ancestry proportions per K
 ```{r import_qopt_files}
-# how to make combination of plots for multiple values of K?
-# for example, K from 2 - 10
-maxK <- 6
+# make combination of plots for multiple values of K
+# for example, K from 1 - 10
+maxK <- 10
 popcolors <- brewer.pal(maxK, "Set1")
 qopt_list <- list()
 for (i in 1:maxK){
@@ -239,7 +272,7 @@ qopt_list
 ```
 ```{r produce_plots}
 plot_list <- list()
-for (i in 1:6){
+for (i in 1:maxK){
 q <- qopt_list[[i]]
 q_pop <- cbind(pop, q)
   ## ggplot attempt
@@ -267,14 +300,18 @@ plot_list[[i]] <- q_pop_tidy_plot
 ```{r print_plot}
 pdf("./outputs/figures/ngsadmix_pgrandis_noclones_K1-6.pdf", width = 8.5, height = 8.5)
 # print(plot_list[[1]])
-title <- expression(paste("NGSadmix results for K=1-3 on East Pacific ", italic("P. grandis"), " (3,273,301 SNPs)"))
+title <- expression(paste("NGSadmix results for K=1-6 on East Pacific ", italic("P. grandis"), " (4,415,509 SNPs)"))
 plot_list[[1]] / plot_list[[2]] / plot_list[[3]] / plot_list[[4]] / plot_list[[5]] / plot_list [[6]] +
   plot_annotation(title = title)
 dev.off()
 ```
+### Plot best K ancestry proportions
+```{r print_plot_bestK}
+plot_list[[bestK]]
+```
 
 # P. verrucosa (3a + 3b + 3d) only - no clones
-## Choose best K
+### Choose best K
 ```{r choose_best_K}
 # https://github.com/alexkrohn/AmargosaVoleTutorials/blob/master/ngsAdmix_tutorial.md
 logs <- read_delim("./outputs/ngsadmix/pverrucosa_full_noclones_ngsadmix_likeKlogs.txt", trim_ws = TRUE, col_names = c("K", "value"), col_types = cols("K" = col_character(), "value" = col_double()))
@@ -283,7 +320,8 @@ logs %>% group_by(K) %>%
   summarise(mK = (mean(abs(value), na.rm = T))/sd(abs(value), na.rm = T)) %>%  
   arrange(desc(mK))
 ```
-## Obtain sample info
+
+### Obtain sample info
 ```{r bam_list}
 # read in the population information file located in the bam.filelist
 bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/pverrucosa_full_noclones_bamfile.txt",header=F)[,1]
@@ -295,7 +333,7 @@ bam_ids <- sub("_S[[:digit:]]+$", "", bam_ids)
 pop <- data_frame("Sample ID" = bam_ids) %>% left_join(samples, by = "Sample ID")
 ```
 
-## Plot sample ancestry proportions per K
+### Plot ancestry proportions per K
 ```{r import_qopt_files}
 # how to make combination of plots for multiple values of K?
 # for example, K from 2 - 10
@@ -349,3 +387,9 @@ plot_list[[1]] / plot_list[[2]] / plot_list[[3]] / plot_list[[4]] / plot_list[[5
   plot_annotation(title = title)
 dev.off()
 ```
+
+### Plot best K ancestry proportions
+```{r}
+
+```
+

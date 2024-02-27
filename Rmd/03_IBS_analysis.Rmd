@@ -119,6 +119,7 @@ abline(h=0.105,col="turquoise2",lty=3)
 ```{r ibs_dendrogram_region_subsets}
 # retaining only samples from specified regions for ease in manual clonegroup identification
 select_region <- "Clipperton"
+select_region <- "Coco"
 # 
 ma_select <- ma[samples$Region == select_region, samples$Region == select_region]
 # re-clustering
@@ -280,17 +281,17 @@ dev.off()
 ```
 ```{r}
 pdf("./outputs/figures/ibs_dendrogram_coco_mtorf.pdf", width = 6.5, height = 8.5)
-tree_title <- expression(paste("Identity-by-state clustering of Isla del Coco ", italic("Pocillopora"), " samples (n=", 26, ")"))
+tree_title <- expression(paste("Identity-by-state clustering of Isla del Coco ", italic("Pocillopora"), " samples (n=", 39, ")"))
 #
 # hc$labels <- gsub("_AP3X.*", "", hc$labels)
 #
-hc %>% ggtree() %<+% samples + 
+hc_select %>% ggtree() %<+% samples + 
   # geom_vline(xintercept = -0.15, stroke = 0.5, color = "grey25", linetype = 2) +
-  geom_tippoint(aes(fill = `mtorf_type`), shape = 21, alpha = 0.8, stroke = 0.5, color = "black", hjust = 0.3, show.legend = TRUE) +
+  geom_tippoint(aes(fill = `Species`), shape = 21, alpha = 0.8, stroke = 0.5, color = "black", hjust = 0.3, show.legend = TRUE) +
   geom_tiplab(size = 3, hjust = -0.05) +
   ggplot2::xlim(-0.35, 0.01) +
   geom_treescale(x = -0.35, y = 0.9, width = 0.05) +
-  scale_fill_manual(values = mtorf_colors[c(1,3,4)], name = "mtORF Type") +
+  scale_fill_manual(values = spp_colors[2:5], name = "Species") +
    theme(legend.position = c(0.08, 0.8),
         legend.margin = margin(0,0,0,0, unit = "mm"),
         plot.margin = margin(5,5,5,5, unit = "mm")) +

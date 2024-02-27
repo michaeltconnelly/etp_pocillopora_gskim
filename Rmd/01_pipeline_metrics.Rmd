@@ -163,6 +163,7 @@ multiqc_data <- left_join(multiqc_fastqc_reads, multiqc_trimqc_reads, by = "Samp
 ```{r}
 multiqc_data[duplicated(multiqc_data$`Sample ID`),]
 ```
+
 ### Pick clonegroup samples with highest total read depth
 ```{r}
 samples_fastqc <- left_join(samples, multiqc_fastqc_reads, by = "Sample ID")
@@ -189,6 +190,17 @@ samples_5X <- left_join(samples, qc_5X, by = "Sample ID")
 samples_5X %>% filter(!is.na(`Genotype ID`)) %>% arrange(`Genotype ID`, desc(`5X Coverage`)) %>% select(`Sample ID`, `Genotype ID`, `Region:Site`, `5X Coverage`)
 # select sample with most reads per clonegroup
 clonegroup_samples_keep <- samples_5X %>% filter(!is.na(`Genotype ID`)) %>% group_by(`Genotype ID`) %>%  slice_max(`5X Coverage`)
+```
+
+### Pick representative samples (NGSadmix K=5 q > 0.85) with most mapped reads or highest 5X coverage
+```{r}
+samples_rep_depth <- left_join(qpop_rep_samples, mapped_pdam_rsmas, by = "Sample ID") %>% 
+  group_by(pop) %>% slice_max(pdam_rsmas, n = 10) %>% arrange(pop, desc(pdam_rsmas)) %>% ungroup() %>% select(`Sample ID`)
+
+samples_rep_5X <- left_join(qpop_rep_samples, qc_5X, by = "Sample ID") %>% 
+  group_by(pop) %>% slice_max(`5X Coverage`, n = 10) %>% arrange(pop, desc(`5X Coverage`)) %>% ungroup() %>%  select(`Sample ID`)
+
+table(samples_rep_depth$`Sample ID` %in% samples_rep_5X$`Sample ID`)
 ```
 
 

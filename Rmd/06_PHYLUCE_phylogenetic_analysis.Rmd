@@ -37,7 +37,11 @@ samples <- filter(all_samples, ANALYSIS ==T)
 
 ### IQ-TREE
 ```{r}
-tree <- read.newick("./outputs/iqtree/iqtree_phyluce_all_noclones.treefile")
+tree <- read.nexus("./outputs/iqtree/iqtree_phyluce_all_noclones.treefile")
+
+
+tree <- treeio::read.iqtree("./outputs/iqtree/iqtree_phyluce_all_noclones.treefile")
+
 tree <- read.newick("./outputs/iqtree/iqtree_phyluce_spptest_clean.treefile")
 # midpoint root
 tree <- midpoint.root(tree)
@@ -51,22 +55,24 @@ tips <- gsub("_S.*_contigs$", "", tree$tip.label)
 tree$tip.label <- tips
 # remove biorepository codes 
 tips_short <- gsub("_AP.*", "", tips)
+tree$tip.label <- tips_short
 ```
 
 ```{r basic_ggtree_viz}
-pdf("./outputs/figures/iqtree_02.pdf", width = 8, height = 8)
+pdf("./outputs/figures/iqtree_03.pdf", width = 8.5, height = 11)
 tree_title <- expression(paste("IQ-TREE Maximum Likelihood Tree of ", italic("Pocillopora"), " samples"))
+loci_info <- c("1,986 UCE loci, 714,025 bp, 67,422 informative sites")
 #
 tree %>% ggtree(., right = TRUE) %<+% samples + 
-  geom_tippoint(aes(fill = `mtorf_type`), shape = 21, alpha = 0.8, stroke = 0.5, color = "black", hjust = 0.3, show.legend = TRUE) +
-  geom_tiplab(size = 2, hjust = -0.05) +
-  ggplot2::xlim(-0.1, 0.33) +
-  geom_treescale(width = 0.04, x = -0.05, y = 1) +
-  scale_fill_manual(values = mtorf_colors, name = "mtORF Type") +
-   theme(legend.position = "right",
+  geom_tippoint(aes(fill = `Species`), shape = 21, alpha = 0.8, stroke = 0.5, color = "black", hjust = 0.3, show.legend = TRUE) +
+  geom_tiplab(size = 1.5, hjust = -0.08) +
+  ggplot2::xlim(-0.05, 0.25) +
+  geom_treescale(width = 0.04, x = -0.025, y = 1) +
+  scale_fill_manual(values = spp_colors, name = "Species") +
+   theme(legend.position = c(0.12, 0.88),
         legend.margin = margin(0,0,0,0, unit = "mm"),
         plot.margin = margin(5,5,5,5, unit = "mm")) +
-  ggtitle(tree_title)
+  ggtitle(tree_title, subtitle = loci_info)
 dev.off()
 ```
 ```{r annotated_ggtree_viz}
@@ -101,6 +107,7 @@ pdf("./outputs/figures/iqtree_nodes.pdf", width = 11.5, height = 8)
 tree %>% ggtree() + geom_text(aes(label=node), size = 2, hjust=.45)
 dev.off()
 ```
+
 #### Spp. Subset Samples Tree
 ```{r}
 tree <- read.newick("./outputs/iqtree/iqtree_phyluce_sppsubset.treefile")
@@ -115,6 +122,43 @@ ggtree(tree, ladderize = T)
 ```
 
 #### Spp. Subset Samples Plus Ref. Genomes Tree
+```{r}
+
+```
+
+#### All No-Clones Samples Tree
+```{r}
+tree <- read.nexus("./outputs/iqtree/iqtree_phyluce_all_noclones.treefile")
+# midpoint root
+tree <- midpoint.root(tree)
+# set root-edge
+tree$root.edge <- 1
+gg_tree(tree)
+```
+```{r modify_tip_labels}
+# remove contigs suffix 
+tips <- gsub("_S.*_contigs$", "", tree$tip.label)
+tree$tip.label <- tips
+```
+```{r}
+tree_title <- expression(paste("IQ-TREE Maximum Likelihood Tree of ", italic("Pocillopora"), " samples"))
+#
+loci_info <- c("619 UCE loci, 241,332 sites, 21,325 informative sites")
+#
+tree %>% ggtree(., right = TRUE) %<+% samples + 
+  geom_tippoint(aes(fill = `Species`), shape = 21, alpha = 0.8, stroke = 0.5, color = "black", hjust = 0.3, show.legend = TRUE) +
+  geom_tiplab(size = 1.5, hjust = -0.08) +
+  ggplot2::xlim(-0.05, 0.25) +
+  geom_treescale(width = 0.04, x = -0.025, y = 1) +
+  scale_fill_manual(values = spp_colors, name = "Species") +
+   theme(legend.position = c(0.12, 0.88),
+        legend.margin = margin(0,0,0,0, unit = "mm"),
+        plot.margin = margin(5,5,5,5, unit = "mm")) +
+  ggtitle(tree_title, subtitle = loci_info)
+```
+
+
+#### All No-Clones Samples Plus Ref. Genomes Tree
 ```{r}
 
 ```

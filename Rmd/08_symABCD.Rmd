@@ -28,7 +28,7 @@ samples <- filter(all_samples, ANALYSIS ==T)
 
 ## Plot the proportion of reads mapping to A, B, C, and D in Pocillopora corals
 ```{r}
-abcd_pdam <- read.delim("./outputs/symbiont_counts/allcounts_symABCD.txt")
+abcd_pdam <- read.delim("./outputs/symbiont_counts/allcounts_symCD.txt")
 
 df_abcd_pdam <- abcd_pdam %>% 
   dplyr::select(sample, fracA, fracB, fracC, fracD) %>% drop_na() %>% 
@@ -56,7 +56,7 @@ plot_abcd_pdam <- df_abcd_pdam %>%
         axis.ticks.x=element_blank())
 ```
 ```{r}
-pdf("./outputs/figures/sicb/pocillopora_symbiont_proportions_species_facet.pdf", width = 7, height = 4.75)
+pdf("./outputs/figures/pocillopora_symbiont_proportions_species_region_facet.pdf", width = 8, height = 8.75)
 print(plot_abcd_pdam)
 dev.off()
 ```
@@ -65,7 +65,7 @@ dev.off()
 df_abcd_pdam %<>% left_join(samples, by = "Sample ID") 
 ###
 
-df_abcd_pdam %<>% filter(`Sample ID` %in% samples_noclones$`Sample ID`)
+df_abcd_pdam %<>% filter(NOCLONES_SAMPLE)
 df_abcd_pdam %<>% filter(Species == "P. grandis")
 
 df_abcd_pdam %<>% filter(Set == "USFQ_CSUMB")
@@ -115,6 +115,24 @@ plot_abcd_pdam <- df_abcd_pdam %>%
 plot_abcd_pdam <- df_abcd_pdam %>% 
   ggplot() + 
   geom_bar(aes(y = frac, x = sample, fill = Genus), stat="identity")+
+  facet_wrap(`Species` + `Region` ~ ., scales = "free") +
+  scale_fill_brewer(palette="Spectral", name = "Genus")+
+  theme_classic()+
+  ylab("Proportion of Symbiont Reads")+
+  xlab(NULL)+
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        legend.position = c(0.85, 0.1)) +
+  theme(plot.title = element_text(size = 16, hjust = -0.2),
+        axis.title = element_text(size = 14),
+        axis.text = element_text(size = 12),
+        legend.title = element_text(size = 14),
+        legend.text = element_text(size = 12)) +
+  ggtitle(expression(paste("East Pacific ", italic("Pocillopora"), " species symbiont community variation")))
+
+plot_abcd_pdam <- df_abcd_pdam %>% 
+  ggplot() + 
+  geom_bar(aes(y = frac, x = sample, fill = Genus), stat="identity")+
   facet_wrap(`Region` + `Site` ~ ., scales = "free") +
   scale_fill_brewer(palette="Spectral", name = "Genus")+
   theme_classic()+
@@ -124,17 +142,6 @@ plot_abcd_pdam <- df_abcd_pdam %>%
         axis.ticks.x=element_blank(),
         legend.position = "right")
 
-plot_abcd_pdam <- df_abcd_pdam %>% 
-  filter(PANAMA_MANUSCRIPT) %>% 
-  ggplot() + 
-  geom_bar(aes(y = frac, x = sample, fill = Genus), stat="identity")+
-  facet_wrap(~ `Species`, scales = "free") +
-  scale_fill_brewer(palette="Spectral", name = "Genus")+
-  theme_classic()+
-  ylab("Proportion of Symbiont Reads")+
-  xlab(NULL)+
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
 ```
 
 ## Scatterpie plot on map 

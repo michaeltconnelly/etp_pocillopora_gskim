@@ -435,3 +435,119 @@ pcs %>% ggplot(aes(x = V1, y = V2)) +
 # 
 dev.off()
 ```
+
+## Explore admixture
+```{r}
+#open R
+##Requires previous installation of the library RcppCNPy
+
+library("RcppCNPy") # Numpy library for R
+
+pop<-read.table("Demo/Data/Demo1pop.info",as.is=T)
+
+q <- npyLoad("./outputs/angsd/final_noclones.admix.Q.npy") 
+
+q_pop <- cbind(samples_noclones, q)
+
+barplot(t(q),col=2:10,space=0,border=NA,xlab="Individuals",ylab="Admixture proportions")
+
+barplot(t(q)[,ord],col=2:10,space=0,border=NA,xlab="Individuals",ylab="Admixture proportions")
+text(tapply(1:nrow(pop),pop[ord,1],mean),-0.05,unique(pop[ord,1]),xpd=T)
+abline(v=cumsum(sapply(unique(pop[ord,1]),function(x){sum(pop[ord,1]==x)})),col=1,lwd=1.2)
+
+## close R
+```
+```{r}
+q_pop_tidy <- q_pop %>%
+  mutate("Sample ID" = fct_reorder(`Sample ID`, desc(Species))) %>% 
+  pivot_longer(cols = `1`:`5`, names_to = "pop") %>%
+  arrange(Region, mtorf_type)
+#
+#
+q_pop_tidy_plot <- q_pop_tidy %>%
+  ggplot(aes(x = `Sample ID`, y = value)) +
+  geom_col(aes(fill = `pop`), position = "stack", show.legend = F) +
+  # scale_fill_manual(values = popcolors) +
+    facet_grid(~Region, scales = "free", space = "free") + 
+  xlab("Individuals") +
+  # ylab(paste0("K=",i)) +
+  theme(axis.text.x = element_blank(),
+        axis.title.x = element_blank(),
+        legend.text = element_text(size = 2))
+
+print(q_pop_tidy_plot)
+```
+
+
+
+## Explore selection
+```{r}
+# modified from: https://www.popgen.dk/software/index.php/PCAngsdTutorial#Infer_selection_along_the_genome
+library("RcppCNPy") # Numpy library for R
+
+## function for QQplot
+qqchi <- function(x,...){
+lambda <- round(median(x)/qchisq(0.5, 1), 2)
+  qqplot(qchisq((1:length(x)-0.5)/(length(x)), 1), x, ylab = "Observed", xlab = "Expected",...); abline(0, 1, col = 2, lwd = 2)
+legend("topleft", paste("lambda=", lambda))
+}
+
+### read in seleciton statistics (chi2 distributed)
+s <- npyLoad("./outputs/angsd/final_noclones.selection.npy")
+# Each column reflect the selection statistics along a tested PC and they are χ²-distributed with 1 degree of freedom.
+
+## make QQ plot to QC the test statistics
+qqchi(s)
+```
+```{r}
+# convert test statistic to p-value
+pval <- 1 - pchisq(s, 1)
+
+colnames(pval) <- c("PC1", "PC2", "PC3", "PC4")
+
+## read positions (hg38)
+p <- read.table("./outputs/angsd/final_noclones_ibs05.sites.txt", colC = c("factor", "integer"), sep = "\t")
+
+names(p) <- c("chr", "pos")
+
+## make manhatten plot
+plot(-log10(pval), col = p$chr, xlab = "Chromosomes", main = "Manhattan plot")
+```
+```{r}
+## zoom into region
+w <- range(which(pval < 1e-7)) + c(-100, 100)
+keep <- w[1]:w[2]
+ 
+plot(p$pos[keep], -log10(pval[keep]), col = p$chr[keep], xlab="HG38 Position chr2")
+
+## see the position of the most significant SNP
+ p$chr[which.max(s[,1])]
+ p$pos[which.max(s[,1])]
+ 
+ ?which.max()
+```
+
+```{r manhattan_plots}
+sites_pvals <- cbind(p, pval) 
+#
+sites_pvals %>% 
+  # dplyr::filter(`chr` == "SczhEnG_1") %>%
+  ggplot(aes(chr, -log10(PC1))) + geom_point()
+
+sites_pvals %>% 
+  # dplyr::filter(`chr` == "SczhEnG_1") %>%
+  ggplot(aes(-log10(PC1))) + geom_histogram(binwidth = 0.05)
+```
+
+```{r}
+C <- as.matrix(read.table("pcangsd.cov")) # Reads estimated covariance matrix
+D <- as.matrix(read.table("pcangsd.selection")) # Reads PC based selection statistics
+
+# Plot PCA plot
+e <- eigen(C)
+plot(e$vectors[,1:2], xlab="PC1", ylab="PC2", main="PCAngsd")
+
+# Obtain p-values from PC-based selection scan
+p <- pchisq(D, 1, lower.tail=FALSE)
+```
+
