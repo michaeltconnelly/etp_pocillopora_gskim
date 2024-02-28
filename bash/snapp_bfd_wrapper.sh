@@ -17,9 +17,9 @@ touch $JOBFILE
 echo "#!/bin/sh
 # ----------------Parameters---------------------- #
 #$ -S /bin/sh
-#$ -pe mthread 24
+#$ -pe mthread 8
 #$ -q lThC.q
-#$ -l mres=48G,h_data=2G,h_vmem=2G
+#$ -l mres=32G,h_data=4G,h_vmem=4G
 #$ -cwd
 #$ -j y
 #$ -N SNAPP_${run}
