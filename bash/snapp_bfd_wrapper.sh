@@ -23,7 +23,7 @@ echo "#!/bin/sh
 #$ -cwd
 #$ -j y
 #$ -N SNAPP_${run}
-#$ -o ${bfddir}/snapp_BFD_${run}.log
+#$ -o ${bfddir}/${run}/snapp_BFD_${run}.log
 #$ -m bea
 #$ -M connellym@si.edu
 #
