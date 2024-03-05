@@ -11,19 +11,19 @@ run=$1
 
 # create job file
 echo "Creating job for SNAPP ${run}"
-JOBFILE="${prodir}/bash/jobs/snapp_${run}.job"
+JOBFILE="${bfddir}/${run}/snapp_${run}.job"
 touch $JOBFILE
 # input QSUB commands
 echo "#!/bin/sh
 # ----------------Parameters---------------------- #
 #$ -S /bin/sh
-#$ -pe mthread 8
+#$ -pe mthread 48
 #$ -q lThC.q
-#$ -l mres=32G,h_data=4G,h_vmem=4G
+#$ -l mres=256G,h_data=8G,h_vmem=8G
 #$ -cwd
 #$ -j y
 #$ -N SNAPP_${run}
-#$ -o ${bfddir}/${run}/snapp_BFD_${run}.log
+#$ -o ${bfddir}/${run}/snapp_path_${run}.log
 #$ -m bea
 #$ -M connellym@si.edu
 #
