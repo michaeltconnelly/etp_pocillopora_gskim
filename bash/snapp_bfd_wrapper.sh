@@ -19,10 +19,10 @@ echo "#!/bin/sh
 #$ -S /bin/sh
 #$ -pe mthread 48
 #$ -q lThC.q
-#$ -l mres=256G,h_data=8G,h_vmem=8G
+#$ -l mres=96G,h_data=2G,h_vmem=2G
 #$ -cwd
 #$ -j y
-#$ -N SNAPP_${run}
+#$ -N SNAPP_path_${run}
 #$ -o ${bfddir}/${run}/snapp_path_${run}.log
 #$ -m bea
 #$ -M connellym@si.edu
