@@ -28,7 +28,7 @@ echo "#!/bin/sh
 #$ -M connellym@si.edu
 #
 # ----------------Modules------------------------- #
-#
+module load bioinformatics/beast/2.7.6-beagle
 # ----------------Your Commands------------------- #
 #" > $JOBFILE
 
@@ -44,7 +44,7 @@ run="$1"
 # note - call the qsub command from the intended output directory
 echo 'cd ${bfddir}/${run}' >> $JOBFILE
 echo '# start SNAPP job
-/scratch/nmnh_corals/connellym/programs/beast/bin/beast -threads $NSLOTS ${run}.xml
+beast -threads $NSLOTS ${run}.xml
 echo "DONE!"' >> $JOBFILE
 
 # input job finished statment
