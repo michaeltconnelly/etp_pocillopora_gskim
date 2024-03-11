@@ -22,10 +22,10 @@ do \
 echo "Creating jobs for ${group}"
 #
 NSGLD_JOB="${angsddir}/final_noclones/LD_pruning/jobs/ngsLD_${group}.job"
-touch $NGSLD_JOB
+#touch $NGSLD_JOB
 #
 PRUNE_JOB="${angsddir}/final_noclones/LD_pruning/jobs/prune_${group}.job"
-touch $PRUNE_JOB
+#touch $PRUNE_JOB
 
 # populate ngsLD filtering job file
 echo "#!/bin/sh
