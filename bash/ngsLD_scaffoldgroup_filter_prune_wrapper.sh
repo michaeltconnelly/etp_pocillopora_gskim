@@ -35,7 +35,7 @@ echo "#!/bin/sh
 #$ -cwd
 #$ -j y
 #$ -N ngsLD_${group}_10k_filter
-#$ -o ngsLD_${group}_10k_filter.log
+#$ -o ${angsddir}/final_noclones/LD_pruning/logs/ngsLD_${group}_10k_filter.log
 #$ -m bea
 #$ -M connellym@si.edu
 #
@@ -76,7 +76,7 @@ echo "#!/bin/sh
 #$ -cwd
 #$ -j y
 #$ -N ngsLD_prune_${group}
-#$ -o ngsLD_prune_${group}.log
+#$ -o ${angsddir}/final_noclones/LD_pruning/logs/ngsLD_prune_${group}.log
 #$ -m bea
 #$ -M connellym@si.edu
 #
