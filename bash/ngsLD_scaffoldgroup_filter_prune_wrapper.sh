@@ -51,7 +51,7 @@ angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/
 NGSLD="/home/connellym/programs/ngsLD/ngsLD"
 group=$1' >> $NGSLD_JOB
 
-echo 'NS=$(zcat ${angsddir}/final_noclones/final_noclones_ibs05.geno.gz | wc -l)
+echo 'NS=$(wc -l ${angsddir}/final_noclones/LD_pruning/sites/${group}_sites.txt)
 NB=$(wc -l ${angsddir}/final_noclones/final_noclones_bamfile.txt)' >> $NGSLD_JOB
 
 echo '# run ngsLD command
