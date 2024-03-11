@@ -21,7 +21,7 @@ do \
 # create empty ngsLD filtering job and pruning job files
 echo "Creating jobs for ${group}"
 #
-NSGLD_JOB="${angsddir}/final_noclones/LD_pruning/jobs/ngsLD_${group}.job"
+NGSLD_JOB="${angsddir}/final_noclones/LD_pruning/jobs/ngsLD_${group}.job"
 #
 PRUNE_JOB="${angsddir}/final_noclones/LD_pruning/jobs/prune_${group}.job"
 
