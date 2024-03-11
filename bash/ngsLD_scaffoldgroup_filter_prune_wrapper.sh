@@ -22,6 +22,7 @@ do \
 echo "Creating jobs for ${group}"
 #
 NSGLD_JOB="${angsddir}/final_noclones/LD_pruning/jobs/ngsLD_${group}.job"
+echo $NGSLD_JOB
 #touch $NGSLD_JOB
 #
 PRUNE_JOB="${angsddir}/final_noclones/LD_pruning/jobs/prune_${group}.job"
