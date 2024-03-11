@@ -58,7 +58,7 @@ echo '# run ngsLD command
 $NGSLD --geno ${angsddir}/final_noclones/final_noclones_ibs05.geno.gz --probs 1 \
 --n_ind $NB --n_sites $NS --pos ${angsddir}/final_noclones/LD_pruning/sites/${group}_sites.txt \
 --max_kb_dist 10 \
---out ${angsddir}/final_noclones/LD_pruning/${group}_LD.out --n_threads $NSLOTS --extend_out 1' >> $NGSLD_JOB
+--out ${angsddir}/final_noclones/LD_pruning/filter_out/${group}_LD.out --n_threads $NSLOTS --extend_out 1' >> $NGSLD_JOB
 
 echo "# submit prune_graph job when finished
 qsub $PRUNE_JOB $group" >> $NGSLD_JOB
@@ -93,12 +93,12 @@ PRUNE="/home/connellym/programs/prune_graph/target/release/prune_graph"
 group=$1' >> $PRUNE_JOB
 
 echo '# run prune_graph command
-$PRUNE --in ${angsddir}/final_noclones/LD_pruning/${group}_LD.out --header \
+$PRUNE --in ${angsddir}/final_noclones/LD_pruning/filter_out/${group}_LD.out --header \
 --weight-field "r2" --weight-filter "dist <= 10000 && r2 >= 0.5" \
---out ${angsddir}/final_noclones/${group}_LD_prune.out -n $NSLOTS -v -v' >> $PRUNE_JOB
+--out ${angsddir}/final_noclones/prune_out/${group}_LD_prune.out -n $NSLOTS -v -v' >> $PRUNE_JOB
 
 echo 'echo = `date` job $JOB_NAME done' >> $PRUNE_JOB
 
-#qsub $NGSLD_JOB $group #(that calls prune job when finished)
+qsub $NGSLD_JOB $group #(calls prune job when finished)
 #
 done
