@@ -22,11 +22,8 @@ do \
 echo "Creating jobs for ${group}"
 #
 NSGLD_JOB="${angsddir}/final_noclones/LD_pruning/jobs/ngsLD_${group}.job"
-echo $NGSLD_JOB
-#touch $NGSLD_JOB
 #
 PRUNE_JOB="${angsddir}/final_noclones/LD_pruning/jobs/prune_${group}.job"
-#touch $PRUNE_JOB
 
 # populate ngsLD filtering job file
 echo "#!/bin/sh
@@ -52,7 +49,6 @@ mcs="/scratch/nmnh_corals/connellym"
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/angsd"
 NGSLD="/home/connellym/programs/ngsLD/ngsLD"
-#
 group=$1' >> $NGSLD_JOB
 
 NS=$(zcat ${angsddir}/final_noclones/final_noclones_ibs05.geno.gz | wc -l)
