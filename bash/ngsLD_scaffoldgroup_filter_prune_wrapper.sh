@@ -98,7 +98,7 @@ group=$1' >> $PRUNE_JOB
 echo '# run prune_graph command
 $PRUNE --in ${angsddir}/final_noclones/LD_pruning/filter_out/${group}_LD.out --header \
 --weight-field "r2" --weight-filter "dist <= 10000 && r2 >= 0.5" \
---out ${angsddir}/final_noclones/prune_out/${group}_LD_prune.out -n $NSLOTS -v -v' >> $PRUNE_JOB
+--out ${angsddir}/final_noclones/LD_pruning/prune_out/${group}_LD_prune.out -n $NSLOTS -v -v' >> $PRUNE_JOB
 
 echo 'echo = `date` job $JOB_NAME done' >> $PRUNE_JOB
 
