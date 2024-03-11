@@ -10,6 +10,10 @@ angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/
 # making a list of scaffold classes and scaffolds
 groups=$(ls ${angsddir}/final_noclones/LD_pruning/sites | sed 's/_sites.txt//g')
 
+#lets me know which files are being processed
+echo "These are the groups:"
+echo $groups
+
 # loop to create and submit job scripts
 for group in $groups
 do \
