@@ -52,7 +52,7 @@ NGSLD="/home/connellym/programs/ngsLD/ngsLD"
 group=$1' >> $NGSLD_JOB
 
 echo '# parse down genotype likelihoods file
-zcat ${angsddir}/final_noclones/final_noclones_ibs05.geno.gz | grep -f ${angsddir}/final_noclones/LD_pruning/sites/${group}_sites.txt > ${angsddir}/final_noclones/geno/final_noclones_ibs05_${group}.geno.gz'
+zcat ${angsddir}/final_noclones/final_noclones_ibs05.geno.gz | grep -f ${angsddir}/final_noclones/LD_pruning/sites/${group}_sites.txt > ${angsddir}/final_noclones/geno/final_noclones_ibs05_${group}.geno.gz' >> $NGSLD_JOB
 
 echo 'NS=$(wc -l ${angsddir}/final_noclones/LD_pruning/sites/${group}_sites.txt)
 NB=$(wc -l ${angsddir}/final_noclones/final_noclones_bamfile.txt)' >> $NGSLD_JOB
