@@ -51,11 +51,14 @@ angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/
 NGSLD="/home/connellym/programs/ngsLD/ngsLD"
 group=$1' >> $NGSLD_JOB
 
+echo '# parse down genotype likelihoods file
+zcat ${angsddir}/final_noclones/final_noclones_ibs05.geno.gz | grep -f ${angsddir}/final_noclones/LD_pruning/sites/${group}_sites.txt > ${angsddir}/final_noclones/geno/final_noclones_ibs05_${group}.geno.gz'
+
 echo 'NS=$(wc -l ${angsddir}/final_noclones/LD_pruning/sites/${group}_sites.txt)
 NB=$(wc -l ${angsddir}/final_noclones/final_noclones_bamfile.txt)' >> $NGSLD_JOB
 
 echo '# run ngsLD command
-$NGSLD --geno ${angsddir}/final_noclones/final_noclones_ibs05.geno.gz --probs 1 \
+$NGSLD --geno ${angsddir}/final_noclones/geno/final_noclones_ibs05_${group}.geno.gz --probs 1 \
 --n_ind $NB --n_sites $NS --pos ${angsddir}/final_noclones/LD_pruning/sites/${group}_sites.txt \
 --max_kb_dist 10 \
 --out ${angsddir}/final_noclones/LD_pruning/filter_out/${group}_LD.out --n_threads $NSLOTS --extend_out 1' >> $NGSLD_JOB
