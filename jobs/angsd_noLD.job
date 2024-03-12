@@ -40,8 +40,9 @@ ls ${prodir}/outputs/alignments/*md.rg.bam | grep -f ${prodir}/data/${set}_sampl
 # verify samples are correct
 echo " These are the samples to be processed: ${samples}, there are $(cat ${setdir}/${set}_bamfile.txt | wc -l) in total"
 
-# assign variable to sites file (sorted and indexed)
+# assign variable to sites and chrs files (sorted and indexed)
 SITES=${setdir}/${set}_noLD_sorted.sites.txt
+CHRS=${setdir}/${set}_noLD.chrs.txt
 
 # assign variable to bamfile
 BAMS=${setdir}/${set}_bamfile.txt
@@ -72,7 +73,7 @@ FILTERS="-uniqueOnly 1 -remove_bads 1 -minMapQ 30 -minQ 30 -dosnpstat 1 -doHWE 1
 # -doGlf 2 : output beagle format (for admixture)
 TODO="-doMajorMinor 1 -doMaf 1 -doCounts 1 -makeMatrix 1 -doIBS 1 -doCov 1 -doGeno 8 -doPost 1 -doGlf 2"
 
-angsd -sites $SITES -b $BAMS -GL 1 $FILTERS $TODO -P $NSLOTS -out ${setdir}/${set}_noLD
+angsd -sites $SITES -rf $CHRS -b $BAMS -GL 1 $FILTERS $TODO -P $NSLOTS -out ${setdir}/${set}_noLD
 
 # how many SNPs?
 zcat ${setdir}/${set}_noLD.mafs.gz | wc -l
