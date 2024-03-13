@@ -40,10 +40,6 @@ ls ${prodir}/outputs/alignments/*md.rg.bam | grep -f ${prodir}/data/${set}_sampl
 # verify samples are correct
 echo " These are the samples to be processed: ${samples}, there are $(cat ${setdir}/${set}_bamfile.txt | wc -l) in total"
 
-# assign variable to sites and chrs files (sorted and indexed)
-SITES=${setdir}/${set}_noLD_sorted.sites.txt
-CHRS=${setdir}/${set}_noLD.chrs.txt
-
 # assign variable to bamfile
 BAMS=${setdir}/${set}_bamfile.txt
 
@@ -60,7 +56,8 @@ BAMS=${setdir}/${set}_bamfile.txt
 nsamps=$(cat $BAMS | wc -l) 
 minindv=$(echo "$nsamps*0.85" | bc | awk '{print int($1+0.5)}')
 # also adding  filters against very badly non-HWE sites (such as, all calls are heterozygotes => lumped paralog situation) and sites with really bad strand bias:
-FILTERS="-uniqueOnly 1 -remove_bads 1 -minMapQ 30 -minQ 30 -dosnpstat 1 -doHWE 1 -sb_pval 1e-5 -hetbias_pval 1e-5 -skipTriallelic 1 -minInd $minindv -snp_pval 1e-5 -minMaf 0.05"
+FILTERS="-uniqueOnly 1 -minMapQ 30 -minQ 30 -dosnpstat 1 -doHWE 1 -sb_pval 1e-5 -hetbias_pval 1e-5 -skipTriallelic 1 -minInd $minindv -snp_pval 1e-5 -minMaf 0.05"
+# -remove_bads 1
 
 #TODO: 
 # -GL 1 : use samtools likelihood model
@@ -72,6 +69,10 @@ FILTERS="-uniqueOnly 1 -remove_bads 1 -minMapQ 30 -minQ 30 -dosnpstat 1 -doHWE 1
 # -doPost 1 : calculate posterior allele frequencies using frequency as prior
 # -doGlf 2 : output beagle format (for admixture)
 TODO="-doMajorMinor 1 -doMaf 1 -doCounts 1 -makeMatrix 1 -doIBS 1 -doCov 1 -doGeno 8 -doPost 1 -doGlf 2"
+
+# assign variable to sites and chrs files (sorted and indexed)
+SITES=${setdir}/${set}_noLD_sorted_v2.sites.txt
+CHRS=${setdir}/${set}_noLD.SczhEnG.txt
 
 angsd -sites $SITES -rf $CHRS -b $BAMS -GL 1 $FILTERS $TODO -P $NSLOTS -out ${setdir}/${set}_noLD
 
