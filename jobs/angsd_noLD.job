@@ -6,8 +6,8 @@
 #$ -l mres=192G,h_data=12G,h_vmem=12G,himem
 #$ -cwd
 #$ -j y
-#$ -N angsd_ibs_v2
-#$ -o angsd_ibs_v2.log
+#$ -N angsd_noLD
+#$ -o angsd_noLD.log
 #$ -m bea
 #$ -M connellym@si.edu
 #
@@ -56,8 +56,7 @@ BAMS=${setdir}/${set}_bamfile.txt
 nsamps=$(cat $BAMS | wc -l) 
 minindv=$(echo "$nsamps*0.85" | bc | awk '{print int($1+0.5)}')
 # also adding  filters against very badly non-HWE sites (such as, all calls are heterozygotes => lumped paralog situation) and sites with really bad strand bias:
-FILTERS="-uniqueOnly 1 -minMapQ 30 -minQ 30 -dosnpstat 1 -doHWE 1 -sb_pval 1e-5 -hetbias_pval 1e-5 -skipTriallelic 1 -minInd $minindv -snp_pval 1e-5 -minMaf 0.05"
-# -remove_bads 1
+FILTERS="-uniqueOnly 1 -remove_bads 1 -minMapQ 30 -minQ 30 -dosnpstat 1 -doHWE 1 -sb_pval 1e-5 -hetbias_pval 1e-5 -skipTriallelic 1 -minInd $minindv -snp_pval 1e-5 -minMaf 0.05"
 
 #TODO: 
 # -GL 1 : use samtools likelihood model
@@ -71,13 +70,13 @@ FILTERS="-uniqueOnly 1 -minMapQ 30 -minQ 30 -dosnpstat 1 -doHWE 1 -sb_pval 1e-5 
 TODO="-doMajorMinor 1 -doMaf 1 -doCounts 1 -makeMatrix 1 -doIBS 1 -doCov 1 -doGeno 8 -doPost 1 -doGlf 2"
 
 # assign variable to sites and chrs files (sorted and indexed)
-SITES=${setdir}/${set}_noLD_sorted_v2.sites.txt
-CHRS=${setdir}/${set}_noLD.SczhEnG.txt
+SITES=${setdir}/${set}_noLD_sorted_v3.sites.txt
+CHRS=${setdir}/${set}_noLD.SczhEnG_v3.txt 
 
-angsd -sites $SITES -rf $CHRS -b $BAMS -GL 1 $FILTERS $TODO -P $NSLOTS -out ${setdir}/${set}_noLD
+angsd -sites $SITES -rf $CHRS -b $BAMS -GL 1 $FILTERS $TODO -P $NSLOTS -out ${setdir}/${set}_noLD_v3
 
 # how many SNPs?
-zcat ${setdir}/${set}_noLD.mafs.gz | wc -l
+zcat ${setdir}/${set}_noLD_v3.mafs.gz | wc -l
 
 # scp ibsMat and bam file list to laptop
 
