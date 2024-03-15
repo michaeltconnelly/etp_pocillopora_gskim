@@ -7,7 +7,7 @@
 #$ -cwd
 #$ -j y
 #$ -N angsd_noLD
-#$ -o angsd_noLD.log
+#$ -o angsd_noLD_final.log
 #$ -m bea
 #$ -M connellym@si.edu
 #
@@ -56,7 +56,7 @@ BAMS=${setdir}/${set}_bamfile.txt
 nsamps=$(cat $BAMS | wc -l) 
 minindv=$(echo "$nsamps*0.85" | bc | awk '{print int($1+0.5)}')
 # also adding  filters against very badly non-HWE sites (such as, all calls are heterozygotes => lumped paralog situation) and sites with really bad strand bias:
-#FILTERS="-uniqueOnly 1 -remove_bads 1 -minMapQ 30 -minQ 30 -dosnpstat 1 -doHWE 1 -sb_pval 1e-5 -hetbias_pval 1e-5 -skipTriallelic 1 -minInd $minindv -snp_pval 1e-5 -minMaf 0.05"
+FILTERS="-uniqueOnly 1 -remove_bads 1 -minMapQ 30 -minQ 30 -dosnpstat 1 -doHWE 1 -sb_pval 1e-5 -hetbias_pval 1e-5 -skipTriallelic 1 -minInd $minindv -snp_pval 1e-5 -minMaf 0.05"
 #FILTERS="-uniqueOnly 1 -remove_bads 1 -minMapQ 20 -minQ 25 -dosnpstat 1 -doHWE 1 -sb_pval 1e-5 -hetbias_pval 1e-5 -skipTriallelic 1 -minInd 132 -snp_pval 1e-5 -minMaf 0.05"
 
 
@@ -76,10 +76,10 @@ TODO="-doMajorMinor 1 -doMaf 1 -doCounts 1 -dumpCounts 2 -makeMatrix 1 -doIBS 1 
 SITES=${setdir}/${set}_noLD_sorted_v3.sites.txt
 CHRS=${setdir}/${set}_noLD.SczhEnG_v3.txt 
 
-angsd -sites $SITES -rf $CHRS -b $BAMS -GL 1 $FILTERS $TODO -P $NSLOTS -out ${setdir}/${set}_noLD_v3
+angsd -sites $SITES -rf $CHRS -b $BAMS -GL 1 $FILTERS $TODO -P $NSLOTS -out ${setdir}/${set}_noLD_filtered
 
 # how many SNPs?
-zcat ${setdir}/${set}_noLD_v3.mafs.gz | wc -l
+zcat ${setdir}/${set}_noLD_filtered.mafs.gz | wc -l
 
 # scp ibsMat and bam file list to laptop
 
