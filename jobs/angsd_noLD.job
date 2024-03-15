@@ -12,7 +12,7 @@
 #$ -M connellym@si.edu
 #
 # ----------------Modules------------------------- #
- module load bioinformatics/angsd
+ module load bio/angsd/0.940
 # ----------------Your Commands------------------- #
 #
 echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
@@ -64,7 +64,7 @@ minindv=$(echo "$nsamps*0.85" | bc | awk '{print int($1+0.5)}')
 # -GL 1 : use samtools likelihood model
 # -doMajorMinor 1 : infer major and minor alleles from genotype likelihoods (-skipTriallelic 1 : skip tri-allelic sites)
 # -doMaf 1 : estimate allele frequency w/ fixed major and minor alleles 
-# -doCounts 1 : calculate the frequency of the different bases
+# -doCounts 1 : count the number A,C,G,T. All sites, All samples
 # -dumpCounts 2: prints the depth of each individual
 # -makeMatrix 1 -doIBS 1 -doCov 1 : identity-by-state and covariance matrices based on single-read resampling (robust to variation in coverage across samples)
 # -doGeno 8 : bgenotype likelihoods format for ngsLD
