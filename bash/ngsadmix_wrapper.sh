@@ -11,47 +11,50 @@ set=$1
 # set a value for max number of K populations
 K=$2
 
-# make output directory
+# make output directory structure
 mkdir -p ${prodir}/outputs/ngsadmix/${set}
 for j in `seq 1 $K` ; do 
 mkdir ${prodir}/outputs/ngsadmix/${set}/K${j}
 done
 
-# while loop to perform 5 iterations of NGSadmix analysis
+# while loop to perform 10 iterations of NGSadmix analysis
 i=1
-while [ $i -le 5 ] ; do
-# for loop to automate generation of scripts to perform NGSAdmix from 1:K 
+while [ $i -le 10 ] ; do
+# for loop to automate generation of scripts to perform NGSadmix from 1:K 
 for j in `seq 1 $K` ; do 
 echo "NGSadmix for K=${j}, iteration #${i}"
-#   input QSUB commands
-echo "# /bin/sh" > ${prodir}/bash/jobs/ngsadmix_${set}_K${j}_${i}.job
-echo "# ----------------Parameters---------------------- #" >> ${prodir}/bash/jobs/ngsadmix_${set}_K${j}_${i}.job
-echo "#$  -S /bin/sh
+# create job file
+JOBFILE="${prodir}/bash/jobs/ngsadmix_${set}_K${j}_${i}.job"
+touch $JOBFILE
+# input QSUB commands
+echo "# /bin/sh" > $JOBFILE
+echo "# ----------------Parameters---------------------- #
+#$  -S /bin/sh
 #$ -pe mthread 16
 #$ -q mThM.q
-#$ -l mres=192G,h_data=12G,h_vmem=12G,himem" >> ${prodir}/bash/jobs/ngsadmix_${set}_K${j}_${i}.job
-echo "#$ -j y
+#$ -l mres=192G,h_data=12G,h_vmem=12G,himem
+#$ -j y
 #$ -N ngsadmix_${set}_K${j}_${i}.job
 #$ -o ${prodir}/bash/jobs/ngsadmix_${set}_K${j}_${i}.log
 #$ -m bea
-#$ -M connellym@si.edu" >> ${prodir}/bash/jobs/ngsadmix_${set}_K${j}_${i}.job
+#$ -M connellym@si.edu
+# ----------------Modules------------------------- #
+module load bioinformatics/ngsadmix
+# ----------------Your Commands------------------- #" >> $JOBFILE
 #
-echo "# ----------------Modules------------------------- #" >> ${prodir}/bash/jobs/ngsadmix_${set}_K${j}_${i}.job
-echo "module load bioinformatics/ngsadmix" >> ${prodir}/bash/jobs/ngsadmix_${set}_K${j}_${i}.job
+echo 'echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
+echo + NSLOTS = $NSLOTS' >> $JOBFILE
 #
-echo "# ----------------Your Commands------------------- #" >> ${prodir}/bash/jobs/ngsadmix_${set}_K${j}_${i}.job
+# input command for NGSadmix 
+echo "NGSadmix -likes ${prodir}/outputs/angsd/${set}/${set}_noLD_filtered.beagle.gz \
+-K $j -P 16 \
+-o ${prodir}/outputs/ngsadmix/${set}/K${j}/${set}_noLD_K${j}_${i} \
+-minMaf 0.05" >> $JOBFILE
 #
-echo 'echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME' >> ${prodir}/bash/jobs/ngsadmix_${set}_K${j}_${i}.job
-echo 'echo + NSLOTS = $NSLOTS' >> ${prodir}/bash/jobs/ngsadmix_${set}_K${j}_${i}.job
-#
-#   input command for NGSadmix --> nested while loop runs for 10 iterations!
-#
-echo "NGSadmix -likes ${prodir}/outputs/angsd/${set}/${set}_noLD_filtered.beagle.gz -K $j -P 16 -o ${prodir}/outputs/ngsadmix/${set}/K${j}/${set}_noLD_K${j}_${i} -minMaf 0.05" >> ${prodir}/bash/jobs/ngsadmix_${set}_K${j}_${i}.job
-#
-echo 'echo = `date` job $JOB_NAME done' >> ${prodir}/bash/jobs/ngsadmix_${set}_K${j}_${i}.job
+echo 'echo = `date` job $JOB_NAME done' >> $JOBFILE
 #
 # submit job
-qsub ${prodir}/bash/jobs/ngsadmix_${set}_K${j}_${i}.job
+qsub $JOBFILE
 done
 #
 i=$(( $i + 1 ))
