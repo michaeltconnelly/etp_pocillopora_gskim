@@ -10,11 +10,11 @@ angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/
 POPFILE="$1"
 
 # generate list of populations
-POPS=$(cat ${prodir}/data/pops/$POPFILE)
+POPS=$(cat ${prodir}/data/pops_ngsadmix/$POPFILE)
 
 for set in $POPS; do 
 # make bam file lists
-ls ${prodir}/outputs/alignments/*md.rg.bam | grep -f ${prodir}/data/pops/${set} > ${angsddir}/bamfiles/${set}_bamfile.txt
+ls ${prodir}/outputs/alignments/*md.rg.bam | grep -f ${prodir}/data/pops_ngsadmix/${set} > ${angsddir}/bamfiles/${set}_bamfile.txt
 # verify sample numbers are correct
 echo "For ${set}, There are $(cat ${angsddir}/bamfiles/${set}_bamfile.txt | wc -l) samples in total"
 # create job file
