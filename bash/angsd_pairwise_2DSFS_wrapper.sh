@@ -10,7 +10,7 @@ angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/
 POPFILE="$1"
 
 # generate list of populations
-POPS=$(cat ${prodir}/data/pops/$POPFILE)
+POPS=$(cat ${prodir}/data/pops_ngsadmix/$POPFILE)
 echo "Begin 2D SFS calculation for all combinations"
 
 # script to create and submit separate jobs to calculate the 2D SFS for all pairwise comparisons
