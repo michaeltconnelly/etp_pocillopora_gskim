@@ -1,9 +1,9 @@
 #!/bin/sh
 # ----------------Parameters---------------------- #
 #$ -S /bin/sh
-#$ -pe mthread 3
-#$ -q sThC.q
-#$ -l mres=24G,h_data=8G,h_vmem=8G
+#$ -pe mthread 4
+#$ -q sThM.q
+#$ -l mres=160G,h_data=40G,h_vmem=40G,himem
 #$ -cwd
 #$ -j y
 #$ -N sharkmer
@@ -26,18 +26,8 @@ gunzip ${prodir}/data/trimmed/${SAMPLE}_R1_PE_trimmed.fastq.gz
 gunzip ${prodir}/data/trimmed/${SAMPLE}_R2_PE_trimmed.fastq.gz
 
  sharkmer \
- --max-reads 1000000 \
+ --max-reads 5000000 \
  -s ${SAMPLE} -o ${prodir}/outputs/sharkmer/${SAMPLE}_sharkmer_output/ \
- --pcr "AACCTGGTTGATCCTGCCAGT,TGATCCTTCCGCAGGTTCACCT,3500,18S-AB-complete" \
-  --pcr "AACCTGGTTGATCCTGCCAGT,CCAACTACGAGCTTTTTAACTG,1000,18S-AL-piece1" \
-  --pcr "CGGTAATTCCAGCTCCAATAG,CAGACAAATCGCTCCACCAAC,1000,18S-CY-piece2" \
-  --pcr "AAGGGCACCACCAGGAGTGGAG,TGATCCTTCCGCAGGTTCACCT,1000,18S-OB-piece3"  \
-  --pcr "CCCSSGTAATTTAAGCATATTA,TCGGAAGGAACCAGCTAC,2000,28SrD1-B-piece1" \
-  --pcr "CAAGGAGTCTAACACGTGCG,GAGTTGTTACACACTCCTTAGC,1000,28SHHW-piece2" \
-  --pcr "ACCTATTCTCAAACTTTAAATGG,GACTTCCCTTACCTACAT,1000,28Srd48a-rd7-piece3" \
-  --pcr "CCCSSGTAATTTAAGCATATTA,GACTTCCCTTACCTACAT,3500,28Srd1-rd7-complete"  \
-  --pcr "CACGAGACCGATAGCGAACAAGTA,TCATTTCGACCCTAAGACCTC,4000,28SFar-28SRar" \
-  --pcr "CACGAGACCGATAGCGAACAAGTA,TCGCTACGAGCTTCCACCAGTGTTT,4000,28SFar-28SRab" \
   --pcr "TTTGGGSATTCGTTTAGCAG,SCCAATATGTTAAACASCATGTCA,1500,mtORF" \
   --pcr "ATTCAGTCTCACTCACTCACTCAC,TATCTTCGAACAGACCCACCAAAT,1500,PocHistone" \
  ${prodir}/data/trimmed/${SAMPLE}_R1_PE_trimmed.fastq ${prodir}/data/trimmed/${SAMPLE}_R2_PE_trimmed.fastq 
