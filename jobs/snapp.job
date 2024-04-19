@@ -1,4 +1,4 @@
-# /bin/sh
+#!/bin/sh
 # ----------------Parameters---------------------- #
 #$ -S /bin/sh
 #$ -pe mthread 24

@@ -13,6 +13,7 @@
 #
 # ----------------Modules------------------------- #
 module load bioinformatics/bcftools
+module load bioinformatics/vcftools
 #
 # ----------------Your Commands------------------- #
 
@@ -55,3 +56,10 @@ bcftools merge ${prodir}/outputs/oury_pipeline/${set}_Calls_1559SNP_DP3_SP6_sort
 echo "Finished!"
 #
 echo = `date` job $JOB_NAME done
+
+# 1089  bcftools stats Pocillopora_361ADN_1559SNP.vcf 
+ #1090  cp Pocillopora_361ADN_1559SNP.vcf Pocillopora_361ADN_1559SNP_original.vcf 
+ #1091  bcftools view Pocillopora_361ADN_1559SNP.vcf -Oz -o Pocillopora_361ADN_1559SNP.vcf.gz
+ #1092  bcftools index Pocillopora_361ADN_1559SNP.vcf.gz 
+ #1096  bcftools merge all_noclones_Calls_1559SNP_DP3_SP6_sorted.vcf.gz ../../data/Pocillopora_361ADN_1559SNP.vcf.gz -m all -Oz -o ${prodir}/outputs/oury_pipeline/${set}_DP3_SP6_merged361ref.vcf.gz
+ #1099  bcftools stats all_noclones_DP3_SP6_merged361ref.vcf.gz 
