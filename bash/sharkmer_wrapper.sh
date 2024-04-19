@@ -22,7 +22,7 @@ echo "#!/bin/sh
 #$ -j y
 #$ -N sharkmer_${SAMPLE}
 #$ -o ${prodir}/outputs/sharkmer/${SAMPLE}/sharkmer_${SAMPLE}.log
-#" >> $JOBFILE
+#" > $JOBFILE
 # add modules 
 echo '# ----------------Modules------------------------- #
   module load bio/sharkmer/0.2.0_93ee045
