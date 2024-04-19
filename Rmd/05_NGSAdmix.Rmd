@@ -26,12 +26,14 @@ source("./R/sample_import.R")
 samples <- all_samples
 ```
 ```{r select_samples}
-samples <- filter(all_samples, ANALYSIS ==T)
+samples <- filter(all_samples, ANALYSIS)
+# NOTE: Remove clones from the dataset using IBS analysis before running NGSadmix
+samples_noclones <- all_samples %>% filter(NOCLONES_SAMPLE)
 ```
 
-# All ETP samples - no-clones
-### Choose best K
+## No-clones samples (w/ linked SNPs)
 ```{r choose_best_K}
+# Choose best K
 logs <- read_delim("./outputs/ngsadmix/final_noclones/final_noclones_ngsadmix_likeKlogs.txt", trim_ws = TRUE, col_names = c("K", "value"), col_types = cols("K" = col_character(), "value" = col_double()))
 
 logKdf <- logs %>% group_by(K) %>% 
@@ -39,16 +41,25 @@ logKdf <- logs %>% group_by(K) %>%
   arrange(mK)
 
 Kvec <- c("K1", "K2", "K3", "K4", "K5", "K6", "K7", "K8", "K9", "K10", "K11", "K12")
+# Kvec <- seq(1,12)
 
 logKdf$K <- factor(logKdf$K, levels = Kvec, ordered = T)
 
-bestKplot <- logKdf %>% ggplot(aes(K, log(mK))) + geom_point()
-print(bestKplot)
-
 bestK <- as.numeric(gsub("K", "", logKdf$K[1]))
+
+bestKplot <- logKdf %>% ggplot(aes(K, log(mK))) + 
+  geom_vline(xintercept = bestK, color = "grey50") +
+  geom_point()
+
+print(bestKplot)
 ```
-### Obtain sample info
+```{r save_bestK_plot}
+pdf("./outputs/figures/ngsadmix_bestK_plot.pdf", width = 5.5, height = 3.5)
+print(bestKplot)
+dev.off()
+```
 ```{r bam_list}
+# Obtain sample info
 # read in the population information file located in the bam.filelist
 bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/final_noclones_bamfile.txt",header=F)[,1]
 bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/", "", bams, perl=T)
@@ -58,6 +69,7 @@ bam_ids <- sub("_S[[:digit:]]+$", "", bam_ids)
 # bam_ids
 pop <- data_frame("Sample ID" = bam_ids) %>% left_join(samples, by = "Sample ID")
 ```
+
 ### Plot ancestry proportions per K
 ```{r import_qopt_files}
 # make combination of plots for multiple values of K
@@ -106,7 +118,6 @@ qpop_list[[i]] <- q_pop
 plot_list[[i]] <- q_pop_tidy_plot
 }
 ```
-
 ```{r print_plots}
 pdf("./outputs/figures/ngsadmix_final_noclones_K1-6.pdf", width = 8.5, height = 8.5)
 # print(plot_list[[1]])
@@ -114,21 +125,18 @@ title <- expression(paste("NGSadmix results for K=2-9 on East Pacific ", italic(
 plot_list[[2]] / plot_list[[3]] / plot_list[[4]] / plot_list[[5]] / plot_list [[6]] / plot_list[[7]] / plot_list[[8]] / plot_list[[9]] +
 dev.off()
 ```
-
 ### Plot best K ancestry proportions
 ```{r print_plot_bestK}
 plot_list[[bestK]]
 ```
-```{r}
+```{r save_plot_bestK}
 pdf("./outputs/figures/ngsadmix_final_noclones_K5.pdf", width = 8.5, height = 4.5)
 title <- expression(paste("NGSadmix results for best K on East Pacific ", italic("Pocillopora"), " (5,314,313 SNPs)"))
 
 plot_list[[bestK]] + ggtitle(title)
 dev.off()
 ```
-
-Exploratory plots of best K results
-
+### Explore ancestry in best K results
 ```{r}
 # explore assigned ancestry proportions in best K
 qpop_best <- qpop_list[[bestK]]
@@ -140,7 +148,8 @@ q_pop_besttidy <- qpop_best %>%
 #
 q_pop_besttidy %>% 
   filter(value > 0.85) %>% 
-  group_by(pop) %>% count()
+  group_by(pop) %>%
+  count()
 
 # 209 non-admixed individuals
 # pop1 = Offshore P. grandis  (31)
@@ -148,16 +157,10 @@ q_pop_besttidy %>%
 # pop3 = P. meandrina (10)
 # pop4 = Continental P. grandis (131)
 # pop5 = P. effusa (4)
-popcolors_mod <- c("darkorange1", "turquoise2", "gold", "darkorange4", "purple")
-spp_colors
 ```
-
 ```{r}
 qpop_best %>% filter(pop5 > 0.85) %>% select(`Sample ID`, `Region:Site`, mtorf_type, Species) %>% View()
 ```
-
-TO-DO: using best K admixture results, identify representative samples from clusters (q > 0.85) and admixed samples
-
 ```{r}
 # identify representative individuals
 qpop_rep_samples <- q_pop_besttidy %>% 
@@ -172,14 +175,13 @@ q_pop_besttidy %>%
 
 # 5 samples from Coco are admixed from pop2 and pop5!
 ```
-
 ```{r}
 pdf("./outputs/figures/NGSAdmix_K5_results_plots.pdf", width = 11.5, height = 3.5)
 q_pop_besttidy %>%
   # filter(`Sample ID` %in% qpop_rep_samples$`Sample ID`) %>% 
   ggplot(aes(x = `Sample ID`, y = value)) +
   geom_col(aes(fill = `pop`), position = "stack", show.legend = T) +
-  scale_fill_manual(values = popcolors_mod) +
+  scale_fill_manual(values = popcolors) +
     facet_grid(~Region, scales = "free", space = "free") +
   xlab("Individuals") +
   # ylab(paste0("K=",i)) +
@@ -193,7 +195,7 @@ q_pop_besttidy %>%
   filter(`Sample ID` %in% qpop_rep_samples$`Sample ID`) %>% 
   ggplot(aes(x = `Sample ID`, y = value)) +
   geom_col(aes(fill = `pop`), position = "stack", show.legend = T) +
-  scale_fill_manual(values = popcolors_mod) +
+  scale_fill_manual(values = popcolors) +
     facet_grid(~Region, scales = "free", space = "free") +
   xlab("Individuals") +
   # ylab(paste0("K=",i)) +
@@ -209,7 +211,7 @@ q_pop_besttidy %>%
   filter(`Sample ID` %notin% qpop_rep_samples$`Sample ID`) %>% 
   ggplot(aes(x = `Sample ID`, y = value)) +
   geom_col(aes(fill = `pop`), position = "stack", show.legend = T) +
-  scale_fill_manual(values = popcolors_mod) +
+  scale_fill_manual(values = popcolors) +
     facet_grid(~Region, scales = "free", space = "free") +
   xlab("Individuals") +
   # ylab(paste0("K=",i)) +
@@ -222,28 +224,37 @@ q_pop_besttidy %>%
 dev.off()
 ```
 
-
-# P. grandis only - no-clones
-### Choose best K
+## No-clones samples (unlinked SNPs after LD pruning)
 ```{r choose_best_K}
-logs <- read_delim("./outputs/ngsadmix/pgrandis_noclones/pgrandis_noclones_ngsadmix_likeKlogs.txt", trim_ws = TRUE, col_names = c("K", "value"), col_types = cols("K" = col_character(), "value" = col_double()))
+# Choose best K
+logs <- read_delim("./outputs/ngsadmix/final_noclones/final_noclones_noLD_ngsadmix_likeKlogs.txt", trim_ws = TRUE, col_names = c("K", "value"), col_types = cols("K" = col_character(), "value" = col_double()))
 
 logKdf <- logs %>% group_by(K) %>% 
   summarise(mK = (mean(abs(value), na.rm = T))/sd(abs(value), na.rm = T)) %>%  
   arrange(mK)
 
 Kvec <- c("K1", "K2", "K3", "K4", "K5", "K6", "K7", "K8", "K9", "K10", "K11", "K12")
+Kvec <- seq(1,12)
 
 logKdf$K <- factor(logKdf$K, levels = Kvec, ordered = T)
 
-logKdf %>% ggplot(aes(K, log(mK))) + geom_point()
-
 bestK <- as.numeric(gsub("K", "", logKdf$K[1]))
+
+bestKplot <- logKdf %>% ggplot(aes(K, log(mK))) + 
+  geom_vline(xintercept = bestK, color = "grey50") +
+  geom_point()
+
+print(bestKplot)
 ```
-### Obtain sample info
+```{r save_bestK_plot}
+pdf("./outputs/figures/ngsadmix_noLD_bestK_plot.pdf", width = 6.5, height = 3.5)
+print(bestKplot)
+dev.off()
+```
 ```{r bam_list}
+# Obtain sample info
 # read in the population information file located in the bam.filelist
-bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/pgrandis_noclones_bamfile.txt",header=F)[,1]
+bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/final_noclones_bamfile.txt",header=F)[,1]
 bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/", "", bams, perl=T)
 bam_ids <- sub(".sorted.md.rg.bam", "", bam_ids, perl=T)
 bam_ids <- sub("_S[[:digit:]]+$", "", bam_ids)
@@ -255,8 +266,10 @@ pop <- data_frame("Sample ID" = bam_ids) %>% left_join(samples, by = "Sample ID"
 ```{r import_qopt_files}
 # make combination of plots for multiple values of K
 # for example, K from 1 - 10
-maxK <- 10
-popcolors <- brewer.pal(maxK, "Set1")
+maxK <- 12
+# define color set
+popcolors_maxK <- brewer.pal(maxK, "Set1")
+
 qopt_list <- list()
 for (i in 1:maxK){
   print(i)
@@ -266,21 +279,25 @@ for (i in 1:maxK){
   kcols <- append(kcols, paste0("pop",j))
   }
   # print(kcols)
-  qopt_list[[i]] <- read_table(paste0("./outputs/ngsadmix/pgrandis_noclones/pgrandis_noclones_K",i,"_1.qopt"), col_names = kcols)
+  qopt_list[[i]] <- read_table(paste0("./outputs/ngsadmix/final_noclones/final_noclones_noLD_K",i,"_1.qopt"), col_names = kcols)
 }
-qopt_list
+# qopt_list
 ```
 ```{r produce_plots}
+qpop_list <- list()
 plot_list <- list()
 for (i in 1:maxK){
 q <- qopt_list[[i]]
 q_pop <- cbind(pop, q)
   ## ggplot attempt
 q_pop_tidy <- q_pop %>%
-  mutate("Sample ID" = fct_reorder(`Sample ID`, desc(Species))) %>% 
+  mutate("Sample ID" = fct_reorder(`Sample ID`, desc(Species)),
+         "Region" = factor(`Region`, levels = region_order_longitude, ordered = T)) %>% 
   pivot_longer(cols = contains("pop"), names_to = "pop") %>%
   arrange(Region, mtorf_type)
 #
+# define color set
+popcolors <- popcolors_maxK[1:i]
 #
 q_pop_tidy_plot <- q_pop_tidy %>%
   ggplot(aes(x = `Sample ID`, y = value)) +
@@ -294,102 +311,179 @@ q_pop_tidy_plot <- q_pop_tidy %>%
         legend.text = element_text(size = 2))
 #
 # print(q_pop_tidy_plot)
+qpop_list[[i]] <- q_pop
 plot_list[[i]] <- q_pop_tidy_plot
 }
 ```
-```{r print_plot}
-pdf("./outputs/figures/ngsadmix_pgrandis_noclones_K1-6.pdf", width = 8.5, height = 8.5)
+```{r print_plots_K1-9}
+pdf("./outputs/figures/ngsadmix_final_noclones_noLD_K1-9.pdf", width = 8.5, height = 8.5)
 # print(plot_list[[1]])
-title <- expression(paste("NGSadmix results for K=1-6 on East Pacific ", italic("P. grandis"), " (4,415,509 SNPs)"))
-plot_list[[1]] / plot_list[[2]] / plot_list[[3]] / plot_list[[4]] / plot_list[[5]] / plot_list [[6]] +
-  plot_annotation(title = title)
+title <- expression(paste("NGSadmix results for K=2-10 on East Pacific ", italic("Pocillopora"), " (1,061,287 SNPs)"))
+plot_list[[2]] / plot_list[[3]] / plot_list[[4]] / plot_list[[5]] / plot_list [[6]] / plot_list[[7]] / plot_list[[8]] / plot_list[[9]]
+dev.off()
+```
+```{r print_plots_K4-6}
+pdf("./outputs/figures/ngsadmix_final_noclones_noLD_K4-6.pdf", width = 6.5, height = 4.5)
+# print(plot_list[[1]])
+title <- expression(paste("NGSadmix results for K=4-6 on East Pacific ", italic("Pocillopora"), " (1,061,287 SNPs)"))
+plot_list[[5]] / plot_list [[6]] 
 dev.off()
 ```
 ### Plot best K ancestry proportions
 ```{r print_plot_bestK}
 plot_list[[bestK]]
 ```
+```{r save_plot_bestK}
+pdf("./outputs/figures/ngsadmix_final_noclones_noLD_K5.pdf", width = 8.5, height = 4.5)
+title <- expression(paste("NGSadmix results for best K on East Pacific ", italic("Pocillopora"), " (1,061,290 SNPs)"))
 
-# P. verrucosa (3a + 3b + 3d) only - no clones
-### Choose best K
-```{r choose_best_K}
-# https://github.com/alexkrohn/AmargosaVoleTutorials/blob/master/ngsAdmix_tutorial.md
-logs <- read_delim("./outputs/ngsadmix/pverrucosa_full_noclones_ngsadmix_likeKlogs.txt", trim_ws = TRUE, col_names = c("K", "value"), col_types = cols("K" = col_character(), "value" = col_double()))
-
-logs %>% group_by(K) %>% 
-  summarise(mK = (mean(abs(value), na.rm = T))/sd(abs(value), na.rm = T)) %>%  
-  arrange(desc(mK))
+plot_list[[bestK]] + ggtitle(title)
+dev.off()
 ```
 
-### Obtain sample info
-```{r bam_list}
-# read in the population information file located in the bam.filelist
-bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/pverrucosa_full_noclones_bamfile.txt",header=F)[,1]
-bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/", "", bams, perl=T)
-bam_ids <- sub(".sorted.md.rg.bam", "", bam_ids, perl=T)
-bam_ids <- sub("_S[[:digit:]]+$", "", bam_ids)
+### Explore ancestry in best K results
+```{r bestK_ancestry_assignments}
+# explore assigned ancestry proportions in best K
+qpop_best <- qpop_list[[bestK]]
+# Using best K admixture results, identify representative samples from clusters (q > 0.85)
+representative <- function(x) {x >= 0.85}
+
+# create new metadata columns to identify representative vs. admixed samples and assign population labels
+samples_noclones_ngsadmix <- qpop_best %>% mutate(`NGSADMIX_REPRESENTATIVE` = if_any(contains("pop"), representative),
+                     `NGSAdmix Species` = ifelse(representative(pop1), "P. effusa", 
+                                           ifelse(representative(pop2), "P. grandis - Continent",
+                                                  ifelse(representative(pop3), "P. grandis - Offshore",
+                                                         ifelse(representative(pop4), "P. meandrina",
+                                                                ifelse(representative(pop5), "P. verrucosa 3a", "Unassigned")))))) %>%
+  select(`Sample ID`, `NGSADMIX_REPRESENTATIVE`, `NGSAdmix Species`)
+# next, join this to no-clones sample data for use in maps, PCA plots, etc.
+write_csv(samples_noclones_ngsadmix, "./data/samples_noclones_ngsadmix_assignments.csv")
+```
+
+
+```{r bestK_representative_samples}
+qpop_rep_samples <- qpop_best %>% filter(if_any(contains("pop"), representative))
 #
-# bam_ids
-pop <- data_frame("Sample ID" = bam_ids) %>% left_join(samples, by = "Sample ID")
-```
-
-### Plot ancestry proportions per K
-```{r import_qopt_files}
-# how to make combination of plots for multiple values of K?
-# for example, K from 2 - 10
-maxK <- 6
-popcolors <- brewer.pal(maxK, "Set1")
-qopt_list <- list()
-for (i in 1:maxK){
-  print(i)
-  kcols <- c()
-  # internal loop to create column header names
-  for (j in c(1:i)){
-  kcols <- append(kcols, paste0("pop",j))
-  }
-  # print(kcols)
-  qopt_list[[i]] <- read_table(paste0("./outputs/ngsadmix/pverrucosa_full_noclones/pverrucosa_full_noclones_K",i,"_1.qopt"), col_names = kcols)
-}
-qopt_list
-```
-```{r produce_plots}
-plot_list <- list()
-for (i in 1:6){
-q <- qopt_list[[i]]
-q_pop <- cbind(pop, q)
-  ## ggplot attempt
-q_pop_tidy <- q_pop %>%
+rep_samples <- qpop_rep_samples$`Sample ID`
+#
+q_pop_besttidy <- qpop_best %>%
   mutate("Sample ID" = fct_reorder(`Sample ID`, desc(Species))) %>% 
   pivot_longer(cols = contains("pop"), names_to = "pop") %>%
   arrange(Region, mtorf_type)
 #
-#
-q_pop_tidy_plot <- q_pop_tidy %>%
-  ggplot(aes(x = `Sample ID`, y = value)) +
-  geom_col(aes(fill = `pop`), position = "stack", show.legend = F) +
-  scale_fill_manual(values = popcolors) +
-    facet_grid(~Region, scales = "free", space = "free") + 
-  xlab("Individuals") +
-  ylab(paste0("K=",i)) +
-  theme(axis.text.x = element_blank(),
-        axis.title.x = element_blank(),
-        legend.text = element_text(size = 2))
-#
-# print(q_pop_tidy_plot)
-plot_list[[i]] <- q_pop_tidy_plot
-}
+q_pop_besttidy %>% 
+  filter(value >= 0.85) %>% 
+  group_by(pop) %>%
+  count()
+
+# 211 non-admixed individuals
+# pop1 = P. effusa (4)
+# pop2 = Continental P. grandis (132) (P. capitata?)
+# pop3 = Offshore P. grandis  (32)
+# pop4 = P. meandrina (10)
+# pop5 = P. verrucosa 3a (33) (P. lacera?)
 ```
-```{r print_plot}
-pdf("./outputs/figures/ngsadmix_pverrucosa_noclones_K1-6.pdf", width = 8.5, height = 8.5)
-# print(plot_list[[1]])
-title <- expression(paste("NGSadmix results for K=1-6 on East Pacific ", italic("P. verrucosa"), " (4,949,366 SNPs)"))
-plot_list[[1]] / plot_list[[2]] / plot_list[[3]] / plot_list[[4]] / plot_list[[5]] / plot_list [[6]] +
-  plot_annotation(title = title)
+
+```{r bestK_admixed_samples}
+# Using best K admixture results, identify admixed/unassigned samples from clusters (all q < 0.85)
+admixed <- function(x) {x <= 0.85} 
+qpop_admixed_samples <- qpop_best %>% filter(if_all(contains("pop"), admixed))
+#
+admixed_samples <- qpop_admixed_samples$`Sample ID`
+```
+
+```{r compare_representative_admixed_samples_plots}
+pdf("./outputs/figures/NGSAdmix_noLD_K5_results_plots.pdf", width = 11.5, height = 3.5)
+q_pop_besttidy %>%
+ left_join(samples_noclones_ngsadmix, by = "Sample ID") %>% 
+ mutate("Region" = factor(`Region`, levels = region_order_longitude, ordered = T),
+        "NGSAdmix Species" = factor(`NGSAdmix Species`, levels = ngsadmix_spp, ordered = T),
+        "pop" = factor(`pop`, levels = c("pop1", "pop4", "pop3", "pop2", "pop5"), ordered = T),
+        "Sample ID" = fct_reorder2(`Sample ID`, `NGSAdmix Species`, desc(`NGSAdmix Species`))) %>% 
+  ggplot(aes(x = `Sample ID`, y = value)) +
+  geom_col(aes(fill = `pop`), position = "stack", show.legend = T) +
+  scale_fill_manual(values = unname(ngsadmix_pop_colors)) +
+    facet_grid(~Region, scales = "free", space = "free") +
+  xlab("Individuals") +
+  # ylab(paste0("K=",i)) +
+  theme(axis.text.x = element_blank(),
+        strip.text.x = element_text(size = 6),
+        axis.title.x = element_blank(),
+        legend.text = element_text(size = 8)) +
+    ggtitle("All no-clones individuals") 
+
+q_pop_besttidy %>%
+  filter(`Sample ID` %in% rep_samples) %>% 
+    mutate("Sample ID" = fct_reorder2(`Sample ID`, desc(pop), pop),
+         "Region" = factor(`Region`, levels = region_order_longitude, ordered = T)) %>% 
+  ggplot(aes(x = `Sample ID`, y = value)) +
+  geom_col(aes(fill = `pop`), position = "stack", show.legend = T) +
+  scale_fill_manual(values = popcolors) +
+    facet_grid(~Region, scales = "free") +
+  xlab("Individuals") +
+  # ylab(paste0("K=",i)) +
+  theme(axis.text.x = element_blank(),
+        strip.text.x = element_text(size = 6),
+        axis.title.x = element_blank(),
+        legend.text = element_text(size = 8)) +
+    ggtitle("Representative individuals (q > 0.85)")
+
+`%notin%` <- Negate(`%in%`)
+
+q_pop_besttidy %>%
+  filter(`Sample ID` %notin% rep_samples) %>% 
+  ggplot(aes(x = `Sample ID`, y = value)) +
+  geom_col(aes(fill = `pop`), position = "stack", show.legend = T) +
+  scale_fill_manual(values = popcolors) +
+    facet_grid(~Region, scales = "free", space = "free") +
+  xlab("Individuals") +
+  # ylab(paste0("K=",i)) +
+  theme(axis.text.x = element_blank(),
+        strip.text.x = element_text(size = 6),
+        axis.title.x = element_blank(),
+        legend.text = element_text(size = 8)) + 
+  ggtitle("Admixed individuals")
+
 dev.off()
 ```
 
-### Plot best K ancestry proportions
-```{r}
-
+```{r sample_lists}
+# write lists of representative samples for use in Fst estimation, phylogenetic tree construction, SNAPP BFD*, etc.
+peffusa <- qpop_rep_samples %>% filter(pop1 > 0.85) %>% select(`Sample ID`)
+pgrandiscontinent <- qpop_rep_samples %>% filter(pop2 > 0.85) %>% select(`Sample ID`)
+pgrandisoffshore <- qpop_rep_samples %>% filter(pop3 > 0.85) %>% select(`Sample ID`)
+pmeandrina <- qpop_rep_samples %>% filter(pop4 > 0.85) %>% select(`Sample ID`)
+pverrucosa3a <- qpop_rep_samples %>% filter(pop5 > 0.85) %>% select(`Sample ID`)
+#
+write_lines(pgrandiscontinent$`Sample ID`, "~/Desktop/pgrandiscontinent")
+write_lines(pgrandisoffshore$`Sample ID`, "~/Desktop/pgrandisoffshore")
+write_lines(pmeandrina$`Sample ID`, "~/Desktop/pmeandrina")
+write_lines(pverrucosa3a$`Sample ID`, "~/Desktop/pverrucosa3a")
 ```
+
+
+### Figure 1B
+```{r}
+pdf("./outputs/figures/Fig1B_ngsadmix_K5_ancestrybarplot.pdf", width = 12.5, height = 3.5)
+ngsadmix_K5_qopt_barplot <- q_pop_besttidy %>%
+ left_join(samples_noclones_ngsadmix, by = "Sample ID") %>% 
+ # filter(`Sample ID` %in% rep_samples) %>% 
+ mutate("Region" = factor(`Region`, levels = region_order_longitude, ordered = T),
+        "NGSAdmix Species" = factor(`NGSAdmix Species`, levels = ngsadmix_spp, ordered = T),
+        "pop" = factor(`pop`, levels = c("pop1", "pop4", "pop3", "pop2", "pop5"), ordered = T),
+        "Sample ID" = fct_reorder2(`Sample ID`, desc(`NGSAdmix Species`), desc(`NGSAdmix Species`))) %>% 
+  ggplot(aes(x = `Sample ID`, y = value)) +
+  geom_col(aes(fill = `pop`), position = "stack", show.legend = F) +
+  scale_fill_manual(values = unname(ngsadmix_pop_colors)) +
+    facet_grid(. ~ Region, scales = "free", space = "free") + # + `NGSAdmix Species` NGSADMIX_REPRESENTATIVE
+  xlab("Individuals") +
+  ylab("NGSAdmix Proportion Assigned Ancestry") +
+  theme(axis.text.x = element_blank(),
+        strip.text.x = element_text(size = 6),
+        axis.title.x = element_blank(),
+        legend.text = element_text(size = 8)) 
+print(ngsadmix_K5_qopt_barplot)
+dev.off()
+```
+
 

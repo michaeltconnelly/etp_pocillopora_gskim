@@ -3,7 +3,8 @@
 #date: "05/11/2023"
 
 # project-wide colors and theme
-region_colors <- c("gold1", "steelblue", "darkorange", "darkturquoise")
+###----------------------------------------------------------------------------------------------------------------
+region_order_longitude <- c("Clipperton", "Galapagos Northern", "Galapagos Central", "Coco", "Bahia Culebra", "Golfo Dulce", "Chiriqui", "Panama", "Gorgona")
 
 region_colors<- c("Bahia Culebra"="aquamarine3",
                   "Chiriqui"="coral",
@@ -32,7 +33,20 @@ names(site_colors)
 mtorf_colors <- c("darkorange1", "purple", "turquoise2", "turquoise4", "darkslategrey")
 #
 spp_colors <- c("purple", "darkorange1", "gold", "turquoise2", "turquoise4")
-
+#
+ngsadmix_spp <- c("P. effusa",
+                  "P. meandrina",
+                  "P. grandis - Offshore",
+                  "P. grandis - Continent",
+                  "P. verrucosa 3a",
+                  "Unassigned")
+#
+ngsadmix_pop_colors <- c("P. effusa"="purple",
+                         "P. meandrina"="gold",
+                         "P. grandis - Offshore"="darkorange1",
+                         "P. grandis - Continent"="darkorange3",
+                         "P. verrucosa 3a"="turquoise2",
+                         "Unassigned"="grey75")
 
 theme_set(theme_bw())
 

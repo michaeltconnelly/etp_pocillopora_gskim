@@ -28,7 +28,7 @@ samples <- all_samples %>% filter(ANALYSIS)
 samples_noclones <- all_samples %>% filter(NOCLONES_SAMPLE)
 ```
 
-## Perform PCA of all samples (clones included)
+## All samples (clones included) PCA
 ```{r pca}
 # pop<-read.table("Demo/Data/Demo1pop.info")
 C <- as.matrix(read.table("./outputs/angsd/all_analysis.cov"))
@@ -99,7 +99,7 @@ gg_pcangsd(e, samples, pc=c(2,3)) +
 dev.off()
 ```
 
-## Perform PCA of no-clones samples
+## No-clones PCA (w/ linked SNPs)
 ```{r pca}
 # pop<-read.table("Demo/Data/Demo1pop.info")
 C <- as.matrix(read.table("./outputs/angsd/final_noclones.cov"))
@@ -136,16 +136,15 @@ pcs <- as.data.frame(e$vectors) %>% cbind(samples_noclones)
 pcvar <- round(e$values, 2)
 #
 ```
-
 ```{r}
 pdf(file="./outputs/figures/sicb/pcangsd_species.pdf", width = 5.5, height = 3.75)
 title <- expression(paste("East Pacific ", italic("Pocillopora"), " PCA (5,314,313 SNPs)"))
 pca <- pcs %>% ggplot(aes(x = V1, y = V2)) +
-  geom_point(aes(fill = `mtorf_type`), shape = 21, size = 3, alpha = 0.75, show.legend = F) +
-  # scale_fill_manual(values = spp_colors) +
+  geom_point(aes(fill = `Species`), shape = 21, size = 3, alpha = 0.75, show.legend = F) +
+  scale_fill_manual(values = spp_colors) +
   # facet_grid(Region ~ .) +
-  facet_wrap(mtorf_type ~ .) +
-  # coord_fixed(pcvar[2]/pcvar[1]) +
+  # facet_wrap(mtorf_type ~ .) +
+  coord_fixed(pcvar[2]/pcvar[1]) +
   xlab(paste0( "PC1 (", pcvar[1], "%)")) + 
   ylab(paste0( "PC2 (", pcvar[2], "%)")) +
   theme(plot.title = element_text(size = 16, hjust = -0.2),
@@ -157,12 +156,10 @@ pca <- pcs %>% ggplot(aes(x = V1, y = V2)) +
 dev.off()
 ```
 ```{r}
-png(file="./outputs/figures/sicb/pcangsd_species.png", width = 5.5, height = 3.75, units = "in",  res = 300, type = "cairo-png")
+png(file="./outputs/figures/sicb/pcangsd_species_noLD.png", width = 5.5, height = 3.75, units = "in",  res = 300, type = "cairo-png")
 pca
 dev.off()
 ```
-
-
 ### PCA of all samples by species
 ```{r}
 pdf(file="./outputs/figures/etp_spp_pca_color.pdf", width = 4, height = 2.5)
@@ -182,11 +179,120 @@ pcs %>% ggplot(aes(x = V1, y = V2)) +
   ggtitle(title)
 dev.off()
 ```
-## Figure 3A
 
+## No-clones PCA (unlinked SNPs after LD pruning)
+```{r pca}
+C <- as.matrix(read.table("./outputs/angsd/final_noclones_noLD.cov"))
+e <- eigen(C)
+```
+```{r pca_test_plot}
+plot(e$vectors[,c(1,2)],xlab="PC1",ylab="PC2", main="individual allele frequency")
+#
+plot(e$vectors[,c(2,3)],xlab="PC2",ylab="PC3", main="individual allele frequency")
+#
+plot(e$vectors[,c(3,4)],xlab="PC3",ylab="PC4", main="individual allele frequency")
+```
+```{r bamfile_sample_order_check}
+# reading list of bam files = order of samples in IBS matrix
+bams <- read.table("./outputs/angsd/final_noclones_bamfile.txt",header=F)[,1]
+#
+bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/", "", bams, perl=T)
+bam_ids <- sub(".sorted.md.rg.bam", "", bam_ids, perl=T)
+bam_ids <- sub("_S[[:digit:]]+$", "", bam_ids)
+#
+# bam_ids
+```
+```{r select_samples}
+# aligning sample metadata with bams list, then check again
+samples_noclones <- samples[match(bam_ids, samples$`Sample ID`),] 
+# do all the sample ids match the bam file ids in the correct order?
+all(samples_noclones_ngsadmix$`Sample ID` == bam_ids) # TRUE
+```
+```{r combine_pca_metadata}
+# combine pc coordinates with sample metadata
+pcs <- as.data.frame(e$vectors) %>% cbind(samples_noclones_ngsadmix)
+# store variable with % variance explained by each PC
+pcvar <- round(e$values, 2)
+#
+```
+```{r screeplot}
+pcvardf <- data.frame("PC"=seq(1:length(pcvar)), pcvar)
+pcvardf %>% ggplot(aes(PC, pcvar)) + geom_col() + xlim(c(0,10))
+# only first 4 PCs have information
+```
+```{r pca visualization}
+# pdf(file="./outputs/figures/sicb/pcangsd_species.pdf", width = 5.5, height = 3.75)
+title <- expression(paste("East Pacific ", italic("Pocillopora"), " PCA (1,061,287 unlinked SNPs)"))
+pca <- pcs %>% ggplot(aes(x = V1, y = V2)) +
+  geom_point(aes(fill = `NGSAdmix Species`), shape = 21, size = 3, alpha = 0.75, show.legend = T) +
+  scale_fill_manual(values = ngsadmix_pop_colors) +
+  # facet_grid(Region ~ .) +
+  # facet_wrap(mtorf_type ~ .) +
+  coord_fixed(pcvar[2]/pcvar[1]) +
+  xlab(paste0( "PC1 (", pcvar[1], "%)")) + 
+  ylab(paste0( "PC2 (", pcvar[2], "%)")) +
+  theme(plot.title = element_text(size = 16, hjust = -0.2),
+        axis.title = element_text(size = 14),
+        axis.text = element_text(size = 12),
+        legend.title = element_text(size = 14),
+        legend.text = element_text(size = 12)) +
+  ggtitle(title)
+print(pca)
+# dev.off()
+```
+```{r}
+pca <- pcs %>% ggplot(aes(x = V2, y = V3)) +
+  geom_point(aes(fill = `NGSAdmix Species`), shape = 21, size = 3, alpha = 0.75, show.legend = F) +
+  scale_fill_manual(values = ngsadmix_pop_colors) +
+  # facet_grid(Region ~ .) +
+  # facet_wrap(mtorf_type ~ .) +
+  coord_fixed(pcvar[3]/pcvar[2]) +
+  xlab(paste0( "PC2 (", pcvar[2], "%)")) + 
+  ylab(paste0( "PC3 (", pcvar[3], "%)")) +
+  theme(plot.title = element_text(size = 16, hjust = -0.2),
+        axis.title = element_text(size = 14),
+        axis.text = element_text(size = 12),
+        legend.title = element_text(size = 14),
+        legend.text = element_text(size = 12))
+print(pca)
+```
+```{r}
+pca <- pcs %>% ggplot(aes(x = V2, y = V4)) +
+  geom_point(aes(fill = `NGSAdmix Species`), shape = 21, size = 3, alpha = 0.75, show.legend = F) +
+  scale_fill_manual(values = ngsadmix_pop_colors) +
+  # facet_grid(Region ~ .) +
+  # facet_wrap(mtorf_type ~ .) +
+  coord_fixed(pcvar[4]/pcvar[2]) +
+  xlab(paste0( "PC3 (", pcvar[2], "%)")) + 
+  ylab(paste0( "PC4 (", pcvar[4], "%)")) +
+  theme(plot.title = element_text(size = 16, hjust = -0.2),
+        axis.title = element_text(size = 14),
+        axis.text = element_text(size = 12),
+        legend.title = element_text(size = 14),
+        legend.text = element_text(size = 12))
+print(pca)
+```
+### Figure 1A
+```{r fig1A_pca}
+pdf(file="./outputs/figures/Fig1A_pcangsd_ngsadmix_species.pdf", width = 6.5, height = 3.75)
+pca <- pcs %>% ggplot(aes(x = V1, y = V2)) +
+  geom_point(aes(fill = `NGSAdmix Species`), shape = 21, size = 3, alpha = 0.75, show.legend = F) +
+  scale_fill_manual(values = ngsadmix_pop_colors) +
+  # facet_grid(Region ~ .) +
+  # facet_wrap(mtorf_type ~ .) +
+  coord_fixed(pcvar[2]/pcvar[1]) +
+  xlab(paste0( "PC1 (", pcvar[1], "%)")) + 
+  ylab(paste0( "PC2 (", pcvar[2], "%)")) +
+  theme(plot.title = element_text(size = 16, hjust = -0.2),
+        axis.title = element_text(size = 14),
+        axis.text = element_text(size = 12),
+        legend.title = element_text(size = 14),
+        legend.text = element_text(size = 12)) 
+print(pca)
+dev.off()
+```
 
 ## Perform separate PCAs for different species
-
 ### Plot PCAs for *P. grandis* - no clones
 ```{r pca_c1}
 C1 <- as.matrix(read.table("./outputs/angsd/pgrandis_noclones.cov"))
@@ -224,7 +330,6 @@ pcvar_c1 <- round(e1$values, 2)
 ```{r pca_metadata_factors}
 pcs_c1$Region <- factor(pcs_c1$Region, levels = c("Panama", "Chiriqui", "Golfo Dulce", "Bahia Culebra", "Gorgona", "Coco", "Galapagos Central", "Galapagos Northern", "Clipperton"), ordered = T)
 ```
-
 ```{r pca_ggplot}
 # test ggplot 
 pcs_c1 %>% ggplot(aes(x = V1, y = V2)) +
@@ -436,24 +541,23 @@ pcs %>% ggplot(aes(x = V1, y = V2)) +
 dev.off()
 ```
 
-## Explore admixture
+
+## No-clones PCAngsd admixture (unlinked SNPs)
 ```{r}
 #open R
 ##Requires previous installation of the library RcppCNPy
 
 library("RcppCNPy") # Numpy library for R
 
-pop<-read.table("Demo/Data/Demo1pop.info",as.is=T)
+# pop<-read.table("Demo/Data/Demo1pop.info",as.is=T)
 
-q <- npyLoad("./outputs/angsd/final_noclones.admix.Q.npy") 
+# q <- npyLoad("./outputs/angsd/final_noclones.admix.Q.npy") 
+q <- npyLoad("./outputs/angsd/final_noclones_noLD.admix.Q.npy") 
+
 
 q_pop <- cbind(samples_noclones, q)
 
 barplot(t(q),col=2:10,space=0,border=NA,xlab="Individuals",ylab="Admixture proportions")
-
-barplot(t(q)[,ord],col=2:10,space=0,border=NA,xlab="Individuals",ylab="Admixture proportions")
-text(tapply(1:nrow(pop),pop[ord,1],mean),-0.05,unique(pop[ord,1]),xpd=T)
-abline(v=cumsum(sapply(unique(pop[ord,1]),function(x){sum(pop[ord,1]==x)})),col=1,lwd=1.2)
 
 ## close R
 ```
@@ -467,7 +571,7 @@ q_pop_tidy <- q_pop %>%
 q_pop_tidy_plot <- q_pop_tidy %>%
   ggplot(aes(x = `Sample ID`, y = value)) +
   geom_col(aes(fill = `pop`), position = "stack", show.legend = F) +
-  # scale_fill_manual(values = popcolors) +
+  # scale_fill_manual(values = admix_pop_colors) +
     facet_grid(~Region, scales = "free", space = "free") + 
   xlab("Individuals") +
   # ylab(paste0("K=",i)) +
@@ -478,6 +582,38 @@ q_pop_tidy_plot <- q_pop_tidy %>%
 print(q_pop_tidy_plot)
 ```
 
+```{r}
+`%notin%` <- Negate(`%in%`)
+q_pop_rep_samples <- q_pop_tidy %>% filter(value >= 0.85) 
+
+q_pop_tidy %>% 
+  filter(`Sample ID` %in% q_pop_rep_samples$`Sample ID`) %>% 
+      mutate("Sample ID" = fct_reorder2(`Sample ID`, desc(pop), pop),
+         "Region" = factor(`Region`, levels = region_order_longitude, ordered = T)) %>% 
+  ggplot(aes(x = `Sample ID`, y = value)) +
+  geom_col(aes(fill = `pop`), position = "stack", show.legend = F) +
+  scale_fill_manual(values = admix_pop_colors) +
+    facet_grid(~Region, scales = "free", space = "free") + 
+  xlab("Individuals") +
+  # ylab(paste0("K=",i)) +
+  theme(axis.text.x = element_blank(),
+        axis.title.x = element_blank(),
+        legend.text = element_text(size = 2))
+
+q_pop_tidy %>% 
+  filter(`Sample ID` %notin% q_pop_rep_samples$`Sample ID`) %>% 
+      mutate("Sample ID" = fct_reorder2(`Sample ID`, desc(pop), pop),
+         "Region" = factor(`Region`, levels = region_order_longitude, ordered = T)) %>% 
+  ggplot(aes(x = `Sample ID`, y = value)) +
+  geom_col(aes(fill = `pop`), position = "stack", show.legend = F) +
+  scale_fill_manual(values = admix_pop_colors) +
+    facet_grid(~Region, scales = "free", space = "free") + 
+  xlab("Individuals") +
+  # ylab(paste0("K=",i)) +
+  theme(axis.text.x = element_blank(),
+        axis.title.x = element_blank(),
+        legend.text = element_text(size = 2))
+```
 
 
 ## Explore selection

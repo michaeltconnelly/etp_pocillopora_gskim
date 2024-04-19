@@ -205,7 +205,7 @@ regions_species <- samples %>%
 ```
 
 ### Figure 1A
-#### Species Scatterpie
+#### Assigned Species Scatterpie
 ```{r figure 1A: powerpoint}
 pdf(file="./outputs/figures/sicb/Pocillopora_origins_map_scatterpie.pdf", width = 8, height = 4.25)
 par(mar = c(0.5, 0.5, 0.5, 0.5))
@@ -247,7 +247,69 @@ elevMapTest
 dev.off()
 ```
 
-### Sample Numbers 
+#### NGSAdmix clusters (K = 5) Scatterpie
+
+```{r}
+# first, join NGSAdmix no-clones sample species assignments to no-clones sample metadata
+samples_noclones_ngsadmix_meta <- left_join(samples_noclones, samples_noclones_ngsadmix, by = "Sample ID")
+```
+
+```{r prepare_ngsadmix_scatterpie_data}
+# see example at: https://cran.r-project.org/web/packages/scatterpie/vignettes/scatterpie.html
+#
+regions_ngsadmix_pops <- samples_noclones_ngsadmix_meta %>%
+  group_by(`Region`, `NGSAdmix Species`) %>% 
+  dplyr::count() %>% 
+  mutate("Region" = factor(`Region`, levels = region_order_longitude, ordered = T),
+         "NGSAdmix Species" = factor(`NGSAdmix Species`, levels = ngsadmix_spp, ordered = T)) %>% 
+  pivot_wider(names_from = `NGSAdmix Species`, values_from = n, values_fill = 0) %>%
+  mutate("sum" = (rowSums(across(contains("P")))) + Unassigned) %>%
+  mutate("radius" = `sum`/50) %>%
+  left_join(region_coords, by = "Region")
+```
+
+```{r}
+par(mar = c(0.5, 0.5, 0.5, 0.5))
+elevMapTest <-
+  ggplot() +
+  geom_sf(data = ocean, color = "black", size = 0.1, fill = "aliceblue") +
+  geom_sf(data = rivers, color = "#d7f2fa", size = 0.5)+
+  geom_sf(data = states, color = "darkgrey", size = 0.1, fill = "antiquewhite", alpha = 0.5) +
+  geom_sf(data = map, color = "black", size = 0.1, fill = "antiquewhite", alpha = 0.5) +
+    coord_sf(
+    xlim = c(-112, -76),
+    ylim = c(-2, 16)) +
+  #
+  new_scale_fill() +
+  geom_scatterpie(aes(x = Longitude, y = Latitude, group = `Region`, r = 1),
+                    data = regions_ngsadmix_pops, cols = ngsadmix_spp, size = 5, alpha = .8) + 
+  scale_fill_manual(values = ngsadmix_pop_colors, name = "NGSadmix population") +
+  #
+  geom_label_repel(aes(x = Longitude, y = Latitude, label = sum), size = 2, box.padding = 0.5, min.segment.length = 2, seed = 3, data = regions_ngsadmix_pops) +
+  labs(x="Longitude", y="Latitude", elevation = "Elevation") +
+  theme(panel.grid.major = element_blank(),
+        panel.background = element_rect(fill = "#f0f8ff"),
+        panel.border = element_rect(fill = NA),
+        plot.title = element_blank(),
+        plot.subtitle = element_blank(),
+        axis.title = element_blank(), 
+        axis.text = element_text(size = 8),
+        legend.title = element_text(size = 10),
+        legend.text = element_text(size = 8),
+        legend.position = c(0.14, 0.28)) +
+  ggtitle(expression(italic("Pocillopora")*' species distribution and genotype counts'), subtitle = "All non-admixed genotypes (N = 211)")
+# subtitle = "All East Pacific samples (N = 337)")
+elevMapTest
+```
+#### Figure 1C
+```{r}
+pdf("./outputs/figures/Fig1C_ngsadmix_map.pdf", width = 8.5)
+elevMapTest
+dev.off()
+```
+
+
+#### Sample Numbers 
 ```{r figure 1A: powerpoint}
 pdf(file="./outputs/figures/Pocillopora_origins_map_numbers.pdf", width = 7.2, height = 4)
 par(mar = c(0.5, 0.5, 0.5, 0.5))
@@ -290,14 +352,8 @@ dev.off()
 ggsave()
 ggsave("./outputs/figures/Pocillopora_origins_map_numbers.png", plot = map_samplenumbers, device = "png", dpi = 300, width = 7.2, height = 4, units = "in")
 ```
-
-
-### Table S1 
-```{r table S1}
-
-```
-
-```{r basic sample info table}
+### Table S1: Sample metadata
+```{r table S1: basic sample info table}
 # write out basic sample information table to host on GitHub
 samples %>%
   arrange(`Sequence Round`, `Sample ID`) %>%
@@ -305,4 +361,3 @@ samples %>%
   mutate(`Sample ID` = str_remove_all(`Sample ID`, "_AP3X.*")) %>%
   write_csv(., "./data/AllSamples_MetadataTable.csv")
 ```
-

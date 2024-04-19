@@ -198,7 +198,7 @@ samples_rep_depth <- left_join(qpop_rep_samples, mapped_pdam_rsmas, by = "Sample
   group_by(pop) %>% slice_max(pdam_rsmas, n = 10) %>% arrange(pop, desc(pdam_rsmas)) %>% ungroup() %>% select(`Sample ID`)
 
 samples_rep_5X <- left_join(qpop_rep_samples, qc_5X, by = "Sample ID") %>% 
-  group_by(pop) %>% slice_max(`5X Coverage`, n = 10) %>% arrange(pop, desc(`5X Coverage`)) %>% ungroup() %>%  select(`Sample ID`)
+  group_by(pop) %>% slice_max(`5X Coverage`, n = 4) %>% arrange(pop, desc(`5X Coverage`)) %>% ungroup() #%>%  select(`Sample ID`)
 
 table(samples_rep_depth$`Sample ID` %in% samples_rep_5X$`Sample ID`)
 ```
