@@ -34,10 +34,10 @@ echo "gunzip ${prodir}/data/trimmed/${SAMPLE}_R1_PE_trimmed.fastq.gz
 gunzip ${prodir}/data/trimmed/${SAMPLE}_R2_PE_trimmed.fastq.gz" >> $JOBFILE
 
 echo "sharkmer \
- --max-reads 6000000 \
+ --max-reads 6000000 -k 21 \
  -s ${SAMPLE} -o ${prodir}/outputs/sharkmer/${SAMPLE}/ \
-  --pcr "TTTGGGSATTCGTTTAGCAG,SCCAATATGTTAAACASCATGTCA,1500,mtORF,coverage=5,mismatches=1" \
-  --pcr "ATTCAGTCTCACTCACTCACTCAC,TATCTTCGAACAGACCCACCAAAT,1500,PocHistone,coverage=5,mismatches=1" \
+  --pcr "TTTGGGSATTCGTTTAGCAG,SCCAATATGTTAAACASCATGTCA,1500,mtORF,coverage=15,mismatches=1,trim=24" \
+  --pcr "ATTCAGTCTCACTCACTCACTCAC,TATCTTCGAACAGACCCACCAAAT,1500,PocHistone,coverage=15,mismatches=1,trim=24" \
  ${prodir}/data/trimmed/${SAMPLE}_R1_PE_trimmed.fastq ${prodir}/data/trimmed/${SAMPLE}_R2_PE_trimmed.fastq" >> $JOBFILE
 
 echo "gzip ${prodir}/data/trimmed/${SAMPLE}_R1_PE_trimmed.fastq
