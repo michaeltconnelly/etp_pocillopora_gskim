@@ -39,3 +39,4 @@ echo = `date` job $JOB_NAME done
 
 # start next job in pipeline - produce concatenated matrix
 qsub ${prodir}/jobs/phyluce_05_complete_concat_matrix.job $set 75
+qsub ${prodir}/jobs/phyluce_05_complete_concat_matrix.job $set 50

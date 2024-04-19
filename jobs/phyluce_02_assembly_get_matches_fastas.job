@@ -29,23 +29,27 @@ set=$1
 samples=$(cat ${prodir}/data/${set}_samples.txt)
 
 # create the basic configuration file
-echo '[all]' > ${prodir}/data/${set}.conf
+CONFIG="${prodir}/outputs/uce-search-results/${set}/${set}.conf"
+echo '[all]' > $CONFIG
 # add desired sample contigs 
-for sample in $samples; do echo ${sample}_contigs  >> ${prodir}/data/${set}.conf ; done
+for sample in $samples; do echo ${sample}_contigs  >> $CONFIG ; done
 # add outgroup taxa
-echo "Seriatopora_hystrix_ReFuGe_contigs" >> ${prodir}/data/${set}.conf
-echo "Stylophora_pistillata_ANT17_contigs" >> ${prodir}/data/${set}.conf
-# add reference genome taxa
+#echo "Seriatopora_hystrix_ReFuGe_contigs" >> $CONFIG
+echo "Stylophora_pistillata_ANT17_contigs" >> $CONFIG
+# add reference UCEs: genomes and Oury GSHs
 if [ -n $2 ]; then
-echo "adding reference genome UCE sequences to pipeline"
-TAXA=$(ls ${prodir}/data/outgroups/scleractinia-genome-fasta/ | cut -d / -f 9 | cut -d . -f 1)
-for taxon in $TAXA; do echo $taxon >> ${prodir}/data/${set}.conf; done
-else echo "skipping reference genome UCE sequences" ;fi
+# add reference genome taxa
+echo "adding reference UCE sequences to pipeline"
+for i in ${prodir}/data/outgroups/scleractinia-genome-fasta/p*; do basename $i | cut -d . -f 1 >> $CONFIG; done
+# add Oury reference samples
+for i in ${prodir}/data/outgroups/oury_contigs/*.fasta; do basename $i | cut -d . -f 1 >> $CONFIG; done
+else echo "skipping reference UCE sequences" ;fi
+
 
 # create the data matrix configuration file
 phyluce_assembly_get_match_counts \
     --locus-db ${prodir}/outputs/uce-search-results/${set}/probe.matches.sqlite \
-    --taxon-list-config ${prodir}/data/${set}.conf \
+    --taxon-list-config $CONFIG \
     --taxon-group 'all' \
     --incomplete-matrix \
     --output ${prodir}/outputs/uce-taxon-sets/${set}-taxa-incomplete.conf

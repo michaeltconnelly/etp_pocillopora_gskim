@@ -30,10 +30,13 @@ samples=$(cat ${prodir}/data/${set}_samples.txt)
 
 # make directory to hold contigs for a given analysis
 mkdir ${prodir}/outputs/spades/contigs/${set}
-# copy outgroup contigs from data 
-cp ${prodir}/data/outgroups/*.fasta ${prodir}/outputs/spades/contigs/${set}
-# copy reference genome contigs from data
-cp ${prodir}/data/outgroups/scleractinia-genome-fasta/*.fasta ${prodir}/outputs/spades/contigs/${set}
+# copy outgroup contigs from data - use only Stylophora pistillata ANT17 contigs from Quattrini et al. 2018
+cp ${prodir}/data/outgroups/Stylophora_pistillata_ANT17_contigs.fasta ${prodir}/outputs/spades/contigs/${set}
+# copy Pocillopora reference genome contigs from data
+cp ${prodir}/data/outgroups/scleractinia-genome-fasta/p*.fasta ${prodir}/outputs/spades/contigs/${set}
+# copy Oury reference sample contigs to working directory and rename files
+cp ${prodir}/data/oury_contigs/*.fasta ${prodir}/outputs/spades/contigs/${set}
+
 # copy sample contigs to working directory and rename files
 for sample in ${samples} ; do cp ${prodir}/outputs/spades/${sample}/contigs.fasta ${prodir}/outputs/spades/contigs/${set}/${sample}_contigs.fasta ; done
 

@@ -47,4 +47,7 @@ phyluce_align_format_nexus_files_for_raxml \
     --charsets \
     --log-path ${prodir}/outputs/uce-taxon-sets/log
 
+# create formatted partitions file
+bash ${prodir}/bash/sed_partitions.sh ${prodir}/outputs/uce-taxon-sets/${set}-mafft-nexus-internal-trimmed-gblocks-clean-${2}p-raxml
+
 echo = `date` job $JOB_NAME done
