@@ -33,7 +33,7 @@ phyluce_align_remove_locus_name_from_nexus_lines  \
     --alignments ${prodir}/outputs/uce-taxon-sets/${set}-mafft-nexus-internal-trimmed-gblocks \
     --output ${prodir}/outputs/uce-taxon-sets/${set}-mafft-nexus-internal-trimmed-gblocks-clean \
     --cores $NSLOTS \
-    --log-path ${prodir}/outputs/uce-taxon-sets/all/log
+    --log-path ${prodir}/outputs/uce-taxon-sets/log
 
 echo = `date` job $JOB_NAME done
 
