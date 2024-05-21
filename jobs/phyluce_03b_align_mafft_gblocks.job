@@ -33,7 +33,7 @@ ntaxa=$(grep "^\[.*\]" ${prodir}/outputs/uce-taxon-sets/${set}-taxa-incomplete.i
 
 # align the data - turn off trimming and output FASTA
 phyluce_align_seqcap_align \
-    --fasta ${prodir}/outputs/uce-taxon-sets/${set}-taxa-incomplete.fasta \
+    --input ${prodir}/outputs/uce-taxon-sets/${set}-taxa-incomplete.fasta \
     --output ${prodir}/outputs/uce-taxon-sets/${set}-mafft-nexus-internal-trimmed \
     --taxa $ntaxa \
     --aligner mafft \
