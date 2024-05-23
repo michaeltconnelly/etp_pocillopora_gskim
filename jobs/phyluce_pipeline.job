@@ -1,0 +1,168 @@
+#!/bin/sh
+# ----------------Parameters---------------------- #
+#$ -S /bin/sh
+#$ -pe mthread 16
+#$ -q mThM.q
+#$ -l mres=192G,h_data=12G,h_vmem=12G,himem
+#$ -cwd
+#$ -j y
+#$ -N phyluce_pipeline
+#$ -o phyluce_pipeline.log
+#$ -m bea
+#$ -M connellym@si.edu
+#
+# ----------------Modules------------------------- #
+ module load bioinformatics/phyluce
+# ----------------Your Commands------------------- #
+#
+echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
+echo + NSLOTS = $NSLOTS
+
+#specify variable containing sequence file prefixes and directory paths
+mcs="/scratch/nmnh_corals/connellym"
+prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
+
+# making a list of sample names
+set=$1 # argument is the prefix of a list of samples, ie. snapp_subset_K6_5X
+#
+samples=$(cat ${prodir}/data/${set}_samples.txt)
+
+## STEP 1 -----------------------------------------------------------------------------------------
+# make directory to hold contigs for a given analysis
+mkdir ${prodir}/outputs/spades/contigs/${set}
+# copy outgroup contigs from data - use only Stylophora pistillata ANT17 contigs from Quattrini et al. 2018
+cp ${prodir}/data/outgroups/Stylophora_pistillata_ANT17_contigs.fasta ${prodir}/outputs/spades/contigs/${set}
+# copy Pocillopora reference genome contigs from data
+cp ${prodir}/data/outgroups/scleractinia-genome-fasta/p*.fasta ${prodir}/outputs/spades/contigs/${set}
+# copy Oury reference sample contigs to working directory and rename files
+cp ${prodir}/data/outgroups/oury_contigs/*.fasta ${prodir}/outputs/spades/contigs/${set}
+
+# copy sample contigs to working directory and rename files
+for sample in ${samples} ; do cp ${prodir}/outputs/spades/${sample}/contigs.fasta ${prodir}/outputs/spades/contigs/${set}/${sample}_contigs.fasta ; done
+
+# start phyluce contig match to probes
+phyluce_assembly_match_contigs_to_probes \
+    --contigs ${prodir}/outputs/spades/contigs/${set}/ \
+    --probes ${prodir}/data/probes/hexa-v2-final-probes.fasta \
+    --output ${prodir}/outputs/uce-search-results/${set}
+
+## STEP 2 -----------------------------------------------------------------------------------------
+# create the basic configuration file
+CONFIG="${prodir}/outputs/uce-search-results/${set}/${set}.conf"
+#
+echo '[all]' > $CONFIG
+# add desired sample contigs 
+for sample in $samples; do echo ${sample}_contigs  >> $CONFIG ; done
+# add outgroup taxa
+#echo "Seriatopora_hystrix_ReFuGe_contigs" >> $CONFIG
+echo "Stylophora_pistillata_ANT17_contigs" >> $CONFIG
+# add reference UCEs: genomes and Oury GSHs
+#if [ -n $2 ]; then
+# add reference genome taxa
+echo "adding reference UCE sequences to pipeline"
+for i in ${prodir}/data/outgroups/scleractinia-genome-fasta/p*; do basename $i | cut -d . -f 1 >> $CONFIG; done
+# add Oury reference samples
+for i in ${prodir}/data/outgroups/oury_contigs/*.fasta; do basename $i | cut -d . -f 1 >> $CONFIG; done
+#else echo "skipping reference UCE sequences" ;fi
+
+# make output directory for the set files and logs
+mkdir ${prodir}/outputs/uce-taxon-sets/${set}
+mkdir ${prodir}/outputs/uce-taxon-sets/${set}/log
+
+# create the data matrix configuration file
+phyluce_assembly_get_match_counts \
+    --locus-db ${prodir}/outputs/uce-search-results/${set}/probe.matches.sqlite \
+    --taxon-list-config $CONFIG \
+    --taxon-group 'all' \
+    --incomplete-matrix \
+    --output ${prodir}/outputs/uce-taxon-sets/${set}/${set}-taxa-incomplete.conf
+
+# get FASTA data for taxa in our taxon set
+phyluce_assembly_get_fastas_from_match_counts \
+    --contigs ${prodir}/outputs/spades/contigs/${set}/ \
+    --locus-db ${prodir}/outputs/uce-search-results/${set}/probe.matches.sqlite \
+    --match-count-output ${prodir}/outputs/uce-taxon-sets/${set}/${set}-taxa-incomplete.conf \
+    --output ${prodir}/outputs/uce-taxon-sets/${set}/${set}-taxa-incomplete.fasta \
+    --incomplete-matrix ${prodir}/outputs/uce-taxon-sets/${set}/${set}-taxa-incomplete.incomplete \
+    --log-path ${prodir}/outputs/uce-taxon-sets/${set}/log
+
+## STEP 3 -----------------------------------------------------------------------------------------
+# creating a variable with the number of taxa
+ntaxa=$(grep "^\[.*\]" ${prodir}/outputs/uce-taxon-sets/${set}/${set}-taxa-incomplete.incomplete | wc -l)
+
+# align the data - turn off trimming and output FASTA
+phyluce_align_seqcap_align \
+    --input ${prodir}/outputs/uce-taxon-sets/${set}/${set}-taxa-incomplete.fasta \
+    --output ${prodir}/outputs/uce-taxon-sets/${set}/${set}-mafft-nexus-internal-trimmed \
+    --taxa $ntaxa \
+    --aligner mafft \
+    --cores $NSLOTS \
+    --incomplete-matrix \
+    --output-format fasta \
+    --no-trim \
+    --log-path ${prodir}/outputs/uce-taxon-sets/${set}/log
+
+    # run gblocks trimming on the alignments
+phyluce_align_get_gblocks_trimmed_alignments_from_untrimmed \
+    --alignments ${prodir}/outputs/uce-taxon-sets/${set}/${set}-mafft-nexus-internal-trimmed \
+    --output ${prodir}/outputs/uce-taxon-sets/${set}/${set}-mafft-nexus-internal-trimmed-gblocks \
+    --cores $NSLOTS \
+    --log ${prodir}/outputs/uce-taxon-sets/${set}/log
+    
+    # get alignment summary data
+phyluce_align_get_align_summary_data \
+    --alignments ${prodir}/outputs/uce-taxon-sets/${set}/${set}-mafft-nexus-internal-trimmed-gblocks \
+    --cores $NSLOTS \
+    --log-path ${prodir}/outputs/uce-taxon-sets/${set}/log
+
+## STEP 4 -----------------------------------------------------------------------------------------
+# align the data - turn off trimming and output FASTA
+phyluce_align_remove_locus_name_from_nexus_lines  \
+    --alignments ${prodir}/outputs/uce-taxon-sets/${set}/${set}-mafft-nexus-internal-trimmed-gblocks \
+    --output ${prodir}/outputs/uce-taxon-sets/${set}/${set}-mafft-nexus-internal-trimmed-gblocks-clean \
+    --cores $NSLOTS \
+    --log-path ${prodir}/outputs/uce-taxon-sets/${set}/log
+
+## STEP 5 -----------------------------------------------------------------------------------------
+# creating a variable with the number of taxa
+ntaxa=$(grep "^\[.*\]" ${prodir}/outputs/uce-taxon-sets/${set}/${set}-taxa-incomplete.incomplete | wc -l)
+
+# 50% matrix
+phyluce_align_get_only_loci_with_min_taxa \
+    --alignments ${prodir}/outputs/uce-taxon-sets/${set}/${set}-mafft-nexus-internal-trimmed-gblocks-clean \
+    --taxa $ntaxa \
+    --percent 0.5 \
+    --output ${prodir}/outputs/uce-taxon-sets/${set}/${set}-mafft-nexus-internal-trimmed-gblocks-clean-50p \
+    --cores $NSLOTS \
+    --log-path ${prodir}/outputs/uce-taxon-sets/${set}/log
+
+# build the concatenated data matrix
+phyluce_align_format_nexus_files_for_raxml \
+    --alignments ${prodir}/outputs/uce-taxon-sets/${set}/${set}-mafft-nexus-internal-trimmed-gblocks-clean-50p \
+    --output ${prodir}/outputs/uce-taxon-sets/${set}/${set}-mafft-nexus-internal-trimmed-gblocks-clean-50p-raxml \
+    --charsets \
+    --log-path ${prodir}/outputs/uce-taxon-sets/${set}/log
+
+# create formatted partitions file
+bash ${prodir}/bash/sed_partitions.sh ${prodir}/outputs/uce-taxon-sets/${set}/${set}-mafft-nexus-internal-trimmed-gblocks-clean-50p-raxml
+
+# 75% matrix
+phyluce_align_get_only_loci_with_min_taxa \
+    --alignments ${prodir}/outputs/uce-taxon-sets/${set}/${set}-mafft-nexus-internal-trimmed-gblocks-clean \
+    --taxa $ntaxa \
+    --percent 0.75 \
+    --output ${prodir}/outputs/uce-taxon-sets/${set}/${set}-mafft-nexus-internal-trimmed-gblocks-clean-75p \
+    --cores $NSLOTS \
+    --log-path ${prodir}/outputs/uce-taxon-sets/${set}/log
+
+# build the concatenated data matrix
+phyluce_align_format_nexus_files_for_raxml \
+    --alignments ${prodir}/outputs/uce-taxon-sets/${set}/${set}-mafft-nexus-internal-trimmed-gblocks-clean-75p \
+    --output ${prodir}/outputs/uce-taxon-sets/${set}/${set}-mafft-nexus-internal-trimmed-gblocks-clean-75p-raxml \
+    --charsets \
+    --log-path ${prodir}/outputs/uce-taxon-sets/${set}/log
+
+# create formatted partitions file
+bash ${prodir}/bash/sed_partitions.sh ${prodir}/outputs/uce-taxon-sets/${set}/${set}-mafft-nexus-internal-trimmed-gblocks-clean-75p-raxml
+
+echo = `date` job $JOB_NAME done
