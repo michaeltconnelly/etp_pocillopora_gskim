@@ -62,7 +62,7 @@ echo "Stylophora_pistillata_ANT17_contigs" >> $CONFIG
 echo "adding reference UCE sequences to pipeline"
 for i in ${prodir}/data/outgroups/scleractinia-genome-fasta/p*; do basename $i | cut -d . -f 1 >> $CONFIG; done
 # add Oury reference samples
-for i in ${prodir}/data/outgroups/oury_contigs/*.fasta; do basename $i | cut -d . -f 1 >> $CONFIG; done
+for i in ${prodir}/data/outgroups/105_oury_contigs/*.fasta; do basename $i | cut -d . -f 1 >> $CONFIG; done
 #else echo "skipping reference UCE sequences" ;fi
 
 # make output directory for the set files and logs
