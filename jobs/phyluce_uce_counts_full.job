@@ -1,0 +1,50 @@
+#!/bin/sh
+# ----------------Parameters---------------------- #
+#$ -S /bin/sh
+#$ -pe mthread 16
+#$ -q mThM.q
+#$ -l mres=192G,h_data=12G,h_vmem=12G,himem
+#$ -cwd
+#$ -j y
+#$ -N phyluce_uce_counts
+#$ -o phyluce_uce_counts.log
+#$ -m bea
+#$ -M connellym@si.edu
+#
+# ----------------Modules------------------------- #
+ module load bioinformatics/phyluce
+# ----------------Your Commands------------------- #
+#
+echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
+echo + NSLOTS = $NSLOTS
+
+#specify variable containing sequence file prefixes and directory paths
+mcs="/scratch/nmnh_corals/connellym"
+prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
+
+# making a list of sample names
+#set=$1 # argument is the prefix of a list of samples, ie. full_analysis (337)
+#
+samples=$(cat ${prodir}/data/full_analysis_samples.txt)
+
+## STEP 1 -----------------------------------------------------------------------------------------
+# make directory to hold contigs for a given analysis
+mkdir ${prodir}/outputs/spades/contigs/${set}
+# copy outgroup contigs from data - use only Stylophora pistillata ANT17 contigs from Quattrini et al. 2018
+cp ${prodir}/data/outgroups/Stylophora_pistillata_ANT17_contigs.fasta ${prodir}/outputs/spades/contigs/${set}
+# copy Pocillopora reference genome contigs from data
+cp ${prodir}/data/outgroups/scleractinia-genome-fasta/p*.fasta ${prodir}/outputs/spades/contigs/${set}
+# copy Oury reference sample contigs to working directory and rename files
+cp ${prodir}/data/outgroups/105_oury_contigs/*.fasta ${prodir}/outputs/spades/contigs/${set}
+
+# copy sample contigs to working directory and rename files
+for sample in ${samples} ; do cp ${prodir}/outputs/spades/${sample}/contigs.fasta ${prodir}/outputs/spades/contigs/${set}/${sample}_contigs.fasta ; done
+
+# start phyluce contig match to probes
+phyluce_assembly_match_contigs_to_probes \
+    --contigs ${prodir}/outputs/spades/contigs/${set}/ \
+    --probes ${prodir}/data/probes/hexa-v2-final-probes.fasta \
+    --output ${prodir}/outputs/uce-search-results/${set} \
+    --log-path ${prodir}/outputs/uce-search-results/${set}
+
+echo = `date` job $JOB_NAME done
