@@ -23,9 +23,9 @@ mcs="/scratch/nmnh_corals/connellym"
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 
 # making a list of sample names
-#set=$1 # argument is the prefix of a list of samples, ie. full_analysis (337)
+set="full_analysis" # argument is the prefix of a list of samples, ie. full_analysis (337)
 #
-samples=$(cat ${prodir}/data/full_analysis_samples.txt)
+samples=$(cat ${prodir}/data/${set}_samples.txt)
 
 ## STEP 1 -----------------------------------------------------------------------------------------
 # make directory to hold contigs for a given analysis
