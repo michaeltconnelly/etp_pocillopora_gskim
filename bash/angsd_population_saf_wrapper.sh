@@ -36,7 +36,7 @@ echo "#!/bin/sh
 #$ -M connellym@si.edu
 #
 # ----------------Modules------------------------- #
-module load bio/angsd/0.940
+module load bioinformatics/angsd
 #
 # ----------------Your Commands------------------- #
 #" > $JOBFILE
