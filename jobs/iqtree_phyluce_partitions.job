@@ -29,8 +29,8 @@ set=$1
 mkdir ${prodir}/outputs/iqtree/${set}
 #
 iqtree2 \
--s ${prodir}/outputs/uce-taxon-sets/${set}/${set}-mafft-nexus-internal-trimmed-gblocks-clean-${2}p-raxml/${set}-mafft-nexus-internal-trimmed-gblocks-clean-${2}p.phylip \
--p ${prodir}/outputs/uce-taxon-sets/${set}/${set}-mafft-nexus-internal-trimmed-gblocks-clean-${2}p-raxml/${set}-mafft-nexus-internal-trimmed-gblocks-clean-${2}p.partitions \
+-s ${prodir}/outputs/uce-taxon-sets/${set}/${set}-mafft-nexus-internal-trimmed-gblocks-clean-${2}p-raxml/${set}-mafft-nexus-internal-trimmed-gblocks-clean-${2}p-raxml.phylip \
+-p ${prodir}/outputs/uce-taxon-sets/${set}/${set}-mafft-nexus-internal-trimmed-gblocks-clean-${2}p-raxml/${set}-mafft-nexus-internal-trimmed-gblocks-clean-${2}p-raxml.partitions \
 --seqtype DNA \
 -m MFP+MERGE \
 -bb 1000 \
