@@ -36,7 +36,7 @@ echo "#!/bin/sh
 #$ -M connellym@si.edu
 #
 # ----------------Modules------------------------- #
-module load bio/angsd/0.940
+module load bioinformatics/angsd
 #
 # ----------------Your Commands------------------- #
 #" > $JOBFILE
@@ -48,9 +48,9 @@ angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/
 #' >> $JOBFILE
 # input ANGSD commands
 echo '# prepare the Fst' >> $JOBFILE
-printf 'realSFS fst index ${angsddir}/%s.saf.idx ${angsddir}/%s.saf.idx -sfs ${angsddir}/%s.%s.ml -fstout ${angsddir}/%s_%s \n' "$pop1" "$pop2" "$pop1" "$pop2" "$pop1" "$pop2" >> $JOBFILE
+printf '/share/apps/bioinformatics/angsd/0.941/angsd/misc/realSFS fst index ${angsddir}/%s.saf.idx ${angsddir}/%s.saf.idx -sfs ${angsddir}/%s.%s.ml -fstout ${angsddir}/%s_%s \n' "$pop1" "$pop2" "$pop1" "$pop2" "$pop1" "$pop2" >> $JOBFILE
 echo '# get the global Fst estimate' >> $JOBFILE
-printf 'realSFS fst stats ${angsddir}/%s_%s.fst.idx > ${angsddir}/%s_%s_fst_results.txt \n' "$pop1" "$pop2" "$pop1" "$pop2" >> $JOBFILE
+printf '/share/apps/bioinformatics/angsd/0.941/angsd/misc/realSFS fst stats ${angsddir}/%s_%s.fst.idx > ${angsddir}/%s_%s_fst_results.txt \n' "$pop1" "$pop2" "$pop1" "$pop2" >> $JOBFILE
 # input job finished statment
 echo '#
 echo = `date` job $JOB_NAME done' >> $JOBFILE
