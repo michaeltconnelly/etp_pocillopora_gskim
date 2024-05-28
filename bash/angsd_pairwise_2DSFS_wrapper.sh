@@ -49,7 +49,7 @@ prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/angsd"
 #' >> $JOBFILE
 # input ANGSD commands
-printf 'realSFS ${angsddir}/%s.saf.idx ${angsddir}/%s.saf.idx -P $NSLOTS > ${angsddir}/%s.%s.ml \n' "$pop1" "$pop2" "$pop1" "$pop2" >> $JOBFILE
+printf '/share/apps/bioinformatics/angsd/0.941/angsd/misc/realSFS ${angsddir}/%s.saf.idx ${angsddir}/%s.saf.idx -P $NSLOTS > ${angsddir}/%s.%s.ml \n' "$pop1" "$pop2" "$pop1" "$pop2" >> $JOBFILE
 # input job finished statment
 echo '#
 echo = `date` job $JOB_NAME done' >> $JOBFILE
