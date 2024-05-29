@@ -53,9 +53,9 @@ ${prodir}/data/trimmed/${sample}_R2_PE_trimmed.fastq.gz \
 
   #   input command for samtools conversion
 echo "samtools view -b ${prodir}/outputs/contaminant_alignments/${sample}.sam \
--o ${prodir}/outputs/contaminant_alignments/${sample}.bam -@ 8" >> $$JOBFILE
+-o ${prodir}/outputs/contaminant_alignments/${sample}.bam -@ 8" >> $JOBFILE
 
-echo "#" >> $$JOBFILE
+echo "#" >> $JOBFILE
 
   #   input command to filter out aligned contaminant reads
 echo 'echo "Starting samtools bam conversion to fastq"' >> $JOBFILE
