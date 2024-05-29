@@ -20,7 +20,7 @@ echo $samples
 for sample in $samples
 do \
 # create job file
-JOBFILE="${prodir}/bash/jobs/${sample}_bwa_align.job"
+JOBFILE="${prodir}/bash/jobs/${sample}_bwa_decontam_align.job"
 #
 echo "Preparing script for ${sample}"
 #   input QSUB commands
@@ -32,7 +32,7 @@ echo "#$  -S /bin/sh
 #$ -l mres=96G,h_data=12G,h_vmem=12G,himem" >> $JOBFILE
 echo "#$ -j y
 #$ -N ${sample}_bwa_align
-#$ -o ${prodir}/bash/jobs/${sample}_bwa_align.log
+#$ -o ${prodir}/bash/jobs/${sample}_bwa_decontam_align.log
 #$ -m bea
 #$ -M connellym@si.edu" >> $JOBFILE
 #
