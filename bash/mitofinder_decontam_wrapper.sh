@@ -58,6 +58,6 @@ echo 'echo '${sample}' successfully processed' >> "${prodir}"/bash/jobs/${sample
 #
 echo 'echo = `date` job $JOB_NAME done' >> ${prodir}/bash/jobs/${sample}_mitofinder_decontam.job
 # submit job
-qsub -wd ${prodir}/outputs/mitofinder ${prodir}/bash/jobs/${sample}_mitofinder_decontam.job
+qsub -wd ${prodir}/outputs/mitofinder_decontam ${prodir}/bash/jobs/${sample}_mitofinder_decontam.job
 #
 done
