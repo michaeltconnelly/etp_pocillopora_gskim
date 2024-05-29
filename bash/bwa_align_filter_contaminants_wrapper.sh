@@ -50,12 +50,12 @@ echo "bwa mem ${prodir}/data/seqs/sym_mtDNA/sym_mtDNA_seqs.fasta \
 ${prodir}/data/trimmed/${sample}_R1_PE_trimmed.fastq.gz \
 ${prodir}/data/trimmed/${sample}_R2_PE_trimmed.fastq.gz \
 > ${prodir}/outputs/contaminant_alignments/${sample}.sam" >> $JOBFILE
-  #
-echo 'echo '${sample}' successfully aligned' >> $JOBFILE
 
   #   input command for samtools conversion
 echo "samtools view -b ${prodir}/outputs/contaminant_alignments/${sample}.sam \
--o ${prodir}/outputs/contaminant_alignments/${sample}.bam -@ 8"  >> $$JOBFILE
+-o ${prodir}/outputs/contaminant_alignments/${sample}.bam -@ 8" >> $$JOBFILE
+
+echo "#" >> $$JOBFILE
 
   #   input command to filter out aligned contaminant reads
 echo 'echo "Starting samtools bam conversion to fastq"' >> $JOBFILE
@@ -68,6 +68,8 @@ echo "samtools bam2fq \
  -2 ${prodir}/data/decontaminated/${sample}_decontam_R2_PE.fastq \
  -@ 8 \
  ${prodir}/outputs/contaminant_alignments/${sample}.bam" >> $JOBFILE
+
+echo "#" >> $$JOBFILE
 
 echo "gzip ${prodir}/data/decontaminated/${sample}_decontam_*.fastq" >> $JOBFILE
 #
