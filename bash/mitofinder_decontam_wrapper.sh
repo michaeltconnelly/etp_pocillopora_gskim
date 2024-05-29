@@ -49,8 +49,8 @@ echo "mitofinder \
 -j ${sample} \
 -o 4 \
 -r ${mcs}/sequences/pocillopora.gb \
--1 ${prodir}/data/decontaminated/${sample}_R1_PE_decontam.fastq.gz  \
--2 ${prodir}/data/decontaminated/${sample}_R2_PE_decontam.fastq.gz  \
+-1 ${prodir}/data/decontaminated/${sample}_decontam_R1_PE.fastq.gz  \
+-2 ${prodir}/data/decontaminated/${sample}_decontam_R2_PE.fastq.gz  \
 --new-genes" >> "${prodir}"/bash/jobs/${sample}_mitofinder_decontam.job
 
 #
