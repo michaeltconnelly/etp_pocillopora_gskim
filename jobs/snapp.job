@@ -11,12 +11,14 @@
 #$ -m bea
 #$ -M connellym@si.edu
 #
+# ----------------Modules------------------------- #
+module load bioinformatics/beast/2.7.6
 # ----------------Your Commands------------------- #
 #
 echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
 echo + NSLOTS = $NSLOTS
 # note - call the qsub command from the intended output directory
 #
-/scratch/nmnh_corals/connellym/programs/beast/bin/beast -threads $NSLOTS $1
+beast -threads $NSLOTS $1
 #
 echo = `date` job $JOB_NAME done
