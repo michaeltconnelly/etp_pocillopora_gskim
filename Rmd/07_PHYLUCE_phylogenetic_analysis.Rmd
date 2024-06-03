@@ -1,0 +1,435 @@
+---
+title: "PHYLUCE_phylogenetic_analysis"
+author: "Mike Connelly"
+date: "2023-05-24"
+output: html_document
+---
+## Setup and packages
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = TRUE)
+options(stringsAsFactors = FALSE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+```{r packages}
+library("tidyverse")
+library("treeio")
+library("ggtree")
+library("phytools")
+# 
+source("./R/pocillopora_etp_gksim_functions.R")
+```
+
+## Import sample metadata
+```{r import_sample_metadata}
+source("./R/sample_import.R")
+samples <- all_samples
+```
+```{r reference_sample_metadata}
+# Oury contemporary samples
+oury_samples <- read_csv("./data/top5_oury_samples.csv") %>% 
+  mutate(tip_label = str_c(GSH, Sample_Name, sep = " ")) # NCBI_SSR,
+
+# Reference genomes
+
+```
+```{r outgroup_metadata}
+# outgroups <- read_csv("./data/outgroups.csv")
+# samples_out <- rbind(samples, outgroups)
+```
+
+## IQ-TREE w/ PHYLUCE alignments
+### PociGSkim NGSAdmix K=6 top 5 reps (29) + Oury GSH top 5 reps (103) + reference genome samples (6) + outgroups (1) (n = 139 samples)
+#### 75% matrix
+ 139 taxa, 1,280 UCE loci, 616,802 bp, 168,683 informative sites
+```{r import_tree}
+tree <- read.newick("./outputs/iqtree/iqtree_snapp_subset_K6_5X_75.treefile")
+
+# midpoint root
+tree <- midpoint.root(tree)
+
+# drop outgroup tips (easier to view node labels)
+tree <- ape::drop.tip(tree, tip = "Stylophora_pistillata_ANT17_contigs")
+tree <- ape::drop.tip(tree, tip = "SRR19052307_contigs")
+tree <- ape::drop.tip(tree, tip = "SRR19052309_contigs")
+tree <- ape::drop.tip(tree, tip = "SRR19052305_contigs")
+tree <- ape::drop.tip(tree, tip = "SRR19052306_contigs")
+
+# set root-edge
+tree$root.edge <- 1
+# check topology
+ggtree(tree)
+```
+```{r adjust_tip_labels}
+# adjust tip labels
+# remove contigs suffix 
+tips <- gsub("_contigs$", "", tree$tip.label)
+# remove sample number suffix 
+tips <- gsub("_S[[:digit:]]*$", "", tips)
+
+# Reference genomes: tip names
+tips <- gsub("Stylophora_", "S. ", tips)
+tips <- gsub("_ANT17", " ANT17", tips)
+tips <- gsub("pocillopora_", "P. ", tips)
+tips <- gsub("_G", " G", tips)
+tips <- gsub("_SAMN", " SAMN", tips)
+
+# Oury samples:
+oury_tip_order <- tips[tips %in% oury_samples$NCBI_SSR]
+
+tips[tips %in% oury_samples$NCBI_SSR] <- oury_samples[match(oury_tip_order, oury_samples$NCBI_SSR),]$tip_label
+
+# need to change reference genome labels to include GenBank accessions
+# Stephens et al. 2022 genomes do not have GenBank/RefSeq accessions, using BioSample numbers
+# SAMN21845732 - P. meandrina
+# SAMN22898959 - P. acuta
+```
+```{r check_tree_tips}
+# check tips
+tips
+# assign new tip labels to tree
+tree$tip.label <- tips
+
+# basic viz
+gg_tree(tree)
+```
+```{r tip_metadata}
+# create dataframe holding metadata 
+tips_metadata <- data.frame(tips)
+tips_metadata$class <- ifelse(grepl("Glo", tips), "Outgroup", ifelse(grepl("P\\.|S\\.", tips), "Genome", ifelse(grepl("GSH", tips), "Oury", "Connelly")))
+# red for USNM, dark blue for genomes, dark green for Oury, black for Connelly
+```
+```{r node_labels}
+# node labels with bootstrap support
+node.labels <- tree$node.label
+# preserve original labels
+node.labels.original <- node.labels
+node.labels <- node.labels.original
+
+# remove root label
+node.labels[node.labels == "Root"] <- ""
+# remove 100% supported node labels
+# node.labels[node.labels == "100/100"] <- ""
+# define high-support bootstrap values - >90%?
+node.labels[grepl("^100", node.labels)] <- ""
+node.labels[grepl("^9", node.labels)] <- ""
+# mark low-support bootstrap values with asterisks - <80%?
+# node.labels[grepl("^[8]", node.labels)] <- ""
+# node.labels[grepl("^[5-7]", node.labels)] <- "<80"
+# node.labels[grepl("^[0-4]", node.labels)] <- "<50"
+
+# check to see if formatting is correct
+node.labels
+#
+tree$node.label <- node.labels
+```
+```{r full_ggtree_viz}
+pdf("./outputs/figures/iqtree_75pct_tree.pdf", width = 6.5, height = 8.5)
+#
+tree_title <- expression(paste("IQ-TREE Maximum Likelihood Tree with reference ", italic("Pocillopora"), " GSH samples"))
+loci_info <- c("75% sample occupancy, 1,280 UCE loci, 616,802 bp, 168,683 informative sites")
+#
+
+tree %>% ggtree(., right = TRUE) %<+% tips_metadata + 
+  # figure out way to highlight clades
+  # geom_highlight(node = 69, fill = "orange", type = "gradient", gradient.direction = 'rt', alpha = 1, to.bottom = T) +
+  # geom_highlight(node = 115, fill = "turquoise", type = "gradient", gradient.direction = 'rt', alpha = 1, to.bottom = T) +
+  # geom_highlight(node = 105, fill = "magenta", type = "gradient", gradient.direction = 'rt', alpha = 1, to.bottom = T) +
+  # geom_highlight(node = 62, fill = "purple", type = "gradient", gradient.direction = 'rt', alpha = .6) +
+  # geom_highlight(node = 70, fill = "purple", type = "gradient", gradient.direction = 'rt', alpha = .6) +
+
+  # node labels (numeric)
+  # geom_text(aes(label=node), hjust=-.3, size = 1) +
+  
+  # node labels
+  geom_nodelab(size = 2, hjust = 0, nudge_y = 0, geom = "shadowtext", color = "grey90", bg.color = "white") +
+  
+  # tip labels
+  geom_tiplab(hjust = 0, aes(color = `class`, size = `class`)) +
+  
+  # label clades
+  # geom_cladelab(node = 41, label = "P. effusa", fontsize = 3, fontface = 3, offset = 0.01, offset.text = 0.0004) +
+  # geom_cladelab(node = 47, label = "P. grandis", fontsize = 3, fontface = 3, offset = 0.011, offset.text = 0.0004) +
+  # geom_cladelab(node = 60, label = "P. meandrina", fontsize = 3, fontface = 3, offset = 0.014, offset.text = 0.0004) +
+  # geom_cladelab(node = 62, label = "P. acuta / damicornis", fontsize = 3, fontface = 3, offset = 0.009, offset.text = 0.0004) +
+  # geom_cladelab(node = 70, label = "P. verrucosa", fontsize = 3, fontface = 3, offset = 0.011, offset.text = 0.0004) +
+
+  # setup tree visualization
+  geom_rootedge(rootedge = 0.001) +
+  geom_treescale(width = 0.01, x = 0, y = -1, linesize = 0.75) +
+  ggplot2::xlim(-0.001, 0.06) +
+  scale_color_manual(values = c("red", "navyblue", "black")) +
+  scale_size_manual(values = c(1.75, 1.75, 1.5, 1.5)) +
+  theme(plot.margin = margin(5,2,2,5, unit = "mm"),
+        legend.position = "none",
+        plot.title = element_blank(),
+        plot.subtitle = element_text(size = 10)) +
+  ggtitle(tree_title, subtitle = loci_info)
+#
+dev.off()
+```
+
+#### 50% matrix
+ 139 taxa, 1,522 UCE loci, 714,076 bp, 193,717 informative sites
+```{r import_tree}
+tree <- read.newick("./outputs/iqtree/iqtree_snapp_subset_K6_5X_50.treefile")
+
+# midpoint root
+tree <- midpoint.root(tree)
+
+# drop outgroup tips (easier to view node labels)
+tree <- ape::drop.tip(tree, tip = "Stylophora_pistillata_ANT17_contigs")
+tree <- ape::drop.tip(tree, tip = "SRR19052307_contigs")
+tree <- ape::drop.tip(tree, tip = "SRR19052309_contigs")
+tree <- ape::drop.tip(tree, tip = "SRR19052305_contigs")
+tree <- ape::drop.tip(tree, tip = "SRR19052306_contigs")
+
+# set root-edge
+tree$root.edge <- 1
+# check topology
+ggtree(tree)
+```
+```{r adjust_tip_labels}
+# adjust tip labels
+# remove contigs suffix 
+tips <- gsub("_contigs$", "", tree$tip.label)
+# remove sample number suffix 
+tips <- gsub("_S[[:digit:]]*$", "", tips)
+
+# Reference genomes: tip names
+tips <- gsub("Stylophora_", "S. ", tips)
+tips <- gsub("_ANT17", " ANT17", tips)
+tips <- gsub("pocillopora_", "P. ", tips)
+tips <- gsub("_G", " G", tips)
+tips <- gsub("_SAMN", " SAMN", tips)
+
+# Oury samples:
+oury_tip_order <- tips[tips %in% oury_samples$NCBI_SSR]
+
+tips[tips %in% oury_samples$NCBI_SSR] <- oury_samples[match(oury_tip_order, oury_samples$NCBI_SSR),]$tip_label
+
+# need to change reference genome labels to include GenBank accessions
+# Stephens et al. 2022 genomes do not have GenBank/RefSeq accessions, using BioSample numbers
+# SAMN21845732 - P. meandrina
+# SAMN22898959 - P. acuta
+```
+```{r check_tree_tips}
+# check tips
+tips
+# assign new tip labels to tree
+tree$tip.label <- tips
+
+# basic viz
+gg_tree(tree)
+```
+```{r tip_metadata}
+# create dataframe holding metadata 
+tips_metadata <- data.frame(tips)
+tips_metadata$class <- ifelse(grepl("Glo", tips), "Outgroup", ifelse(grepl("P\\.|S\\.", tips), "Genome", ifelse(grepl("GSH", tips), "Oury", "Connelly")))
+# red for USNM, dark blue for genomes, dark green for Oury, black for Connelly
+```
+```{r node_labels}
+# node labels with bootstrap support
+node.labels <- tree$node.label
+# preserve original labels
+node.labels.original <- node.labels
+node.labels <- node.labels.original
+
+# remove root label
+node.labels[node.labels == "Root"] <- ""
+# remove 100% supported node labels
+# node.labels[node.labels == "100/100"] <- ""
+# define high-support bootstrap values - >90%?
+node.labels[grepl("^100", node.labels)] <- ""
+node.labels[grepl("^9", node.labels)] <- ""
+# mark low-support bootstrap values with asterisks - <80%?
+# node.labels[grepl("^[8]", node.labels)] <- ""
+# node.labels[grepl("^[5-7]", node.labels)] <- "<80"
+# node.labels[grepl("^[0-4]", node.labels)] <- "<50"
+
+# check to see if formatting is correct
+node.labels
+#
+tree$node.label <- node.labels
+```
+```{r full_ggtree_viz}
+pdf("./outputs/figures/iqtree_50pct_tree.pdf", width = 6.5, height = 8.5)
+#
+tree_title <- expression(paste("IQ-TREE Maximum Likelihood Tree with reference ", italic("Pocillopora"), " GSH samples"))
+loci_info <- c("50% sample occupancy, 1,522 UCE loci, 714,076 bp, 193,717 informative sites")
+#
+
+tree %>% ggtree(., right = TRUE) %<+% tips_metadata + 
+  # figure out way to highlight clades
+  # geom_highlight(node = 69, fill = "orange", type = "gradient", gradient.direction = 'rt', alpha = 1, to.bottom = T) +
+  # geom_highlight(node = 115, fill = "turquoise", type = "gradient", gradient.direction = 'rt', alpha = 1, to.bottom = T) +
+  # geom_highlight(node = 105, fill = "magenta", type = "gradient", gradient.direction = 'rt', alpha = 1, to.bottom = T) +
+  # geom_highlight(node = 62, fill = "purple", type = "gradient", gradient.direction = 'rt', alpha = .6) +
+  # geom_highlight(node = 70, fill = "purple", type = "gradient", gradient.direction = 'rt', alpha = .6) +
+
+  # node labels (numeric)
+  # geom_text(aes(label=node), hjust=-.3, size = 1) +
+  
+  # node labels
+  geom_nodelab(size = 2, hjust = 0, nudge_y = 0, geom = "shadowtext", color = "grey90", bg.color = "white") +
+  
+  # tip labels
+  geom_tiplab(hjust = 0, aes(color = `class`, size = `class`)) +
+  
+  # label clades
+  # geom_cladelab(node = 41, label = "P. effusa", fontsize = 3, fontface = 3, offset = 0.01, offset.text = 0.0004) +
+  # geom_cladelab(node = 47, label = "P. grandis", fontsize = 3, fontface = 3, offset = 0.011, offset.text = 0.0004) +
+  # geom_cladelab(node = 60, label = "P. meandrina", fontsize = 3, fontface = 3, offset = 0.014, offset.text = 0.0004) +
+  # geom_cladelab(node = 62, label = "P. acuta / damicornis", fontsize = 3, fontface = 3, offset = 0.009, offset.text = 0.0004) +
+  # geom_cladelab(node = 70, label = "P. verrucosa", fontsize = 3, fontface = 3, offset = 0.011, offset.text = 0.0004) +
+
+  # setup tree visualization
+  geom_rootedge(rootedge = 0.001) +
+  geom_treescale(width = 0.01, x = 0, y = -1, linesize = 0.75) +
+  ggplot2::xlim(-0.001, 0.06) +
+  scale_color_manual(values = c("red", "navyblue", "black")) +
+  scale_size_manual(values = c(1.75, 1.75, 1.5, 1.5)) +
+  theme(plot.margin = margin(5,2,2,5, unit = "mm"),
+        legend.position = "none",
+        plot.title = element_blank(),
+        plot.subtitle = element_text(size = 10)) +
+  ggtitle(tree_title, subtitle = loci_info)
+#
+dev.off()
+```
+
+### IQ-TREE
+```{r}
+tree <- read.nexus("./outputs/iqtree/iqtree_phyluce_all_noclones.treefile")
+
+
+tree <- treeio::read.iqtree("./outputs/iqtree/iqtree_phyluce_all_noclones.treefile")
+
+tree <- read.newick("./outputs/iqtree/iqtree_phyluce_spptest_clean.treefile")
+# midpoint root
+tree <- midpoint.root(tree)
+# set root-edge
+tree$root.edge <- 1
+gg_tree(tree)
+```
+```{r modify_tip_labels}
+# remove contigs suffix 
+tips <- gsub("_S.*_contigs$", "", tree$tip.label)
+tree$tip.label <- tips
+# remove biorepository codes 
+tips_short <- gsub("_AP.*", "", tips)
+tree$tip.label <- tips_short
+```
+
+```{r basic_ggtree_viz}
+pdf("./outputs/figures/iqtree_03.pdf", width = 8.5, height = 11)
+tree_title <- expression(paste("IQ-TREE Maximum Likelihood Tree of ", italic("Pocillopora"), " samples"))
+loci_info <- c("1,986 UCE loci, 714,025 bp, 67,422 informative sites")
+#
+tree %>% ggtree(., right = TRUE) %<+% samples + 
+  geom_tippoint(aes(fill = `Species`), shape = 21, alpha = 0.8, stroke = 0.5, color = "black", hjust = 0.3, show.legend = TRUE) +
+  geom_tiplab(size = 1.5, hjust = -0.08) +
+  ggplot2::xlim(-0.05, 0.25) +
+  geom_treescale(width = 0.04, x = -0.025, y = 1) +
+  scale_fill_manual(values = spp_colors, name = "Species") +
+   theme(legend.position = c(0.12, 0.88),
+        legend.margin = margin(0,0,0,0, unit = "mm"),
+        plot.margin = margin(5,5,5,5, unit = "mm")) +
+  ggtitle(tree_title, subtitle = loci_info)
+dev.off()
+```
+```{r annotated_ggtree_viz}
+# clades - node 103: P. effusa, node 108: P. grandis, node 180: P. meandrina, node 183: P. verrucosa-like
+pdf("./outputs/figures/iqtree_02.pdf", width = 8.5, height = 11.5)
+#
+tree %>% ggtree(., right = TRUE) %<+% samples + 
+  geom_tippoint(aes(fill = `mtorf_type`), shape = 21, alpha = 0.8, stroke = 0.5, color = "black", hjust = 0.3, show.legend = TRUE) +
+  geom_tiplab(size = 3, hjust = -0.05) +
+  # add bootstrap support values
+  geom_nodelab(size = 2, hjust = 1.25, vjust = -0.25) +
+  # add clade annotations
+  geom_cladelab(node = 103, label = "P. effusa (Clipperton)", angle = 0, 
+                  fontsize = 3, offset = 0.15) +
+  geom_cladelab(node = 108, label = "P. grandis-like", angle = 0, 
+                  fontsize = 3, offset = 0.15) +
+  geom_cladelab(node = 180, label = "P. meandrina-like", angle = 0, 
+                  fontsize = 3, offset = 0.15) +
+  geom_cladelab(node = 183, label = "P. verrucosa-like", angle = 0, 
+                  fontsize = 3, offset = 0.15) +
+  ggplot2::xlim(-0.05, 0.5) +
+  geom_treescale(width = 0.05, x = 0) +
+  scale_fill_manual(values = mtorf_colors, name = "mtORF Type") +
+   theme(legend.position = "right",
+        legend.margin = margin(0,0,0,0, unit = "mm"),
+        plot.margin = margin(5,5,5,5, unit = "mm")) +
+  ggtitle(tree_title)
+dev.off()
+```
+```{r}
+pdf("./outputs/figures/iqtree_nodes.pdf", width = 11.5, height = 8)
+tree %>% ggtree() + geom_text(aes(label=node), size = 2, hjust=.45)
+dev.off()
+```
+
+#### Spp. Subset Samples Tree
+```{r}
+tree <- read.newick("./outputs/iqtree/iqtree_phyluce_sppsubset.treefile")
+# midpoint root
+tree <- midpoint.root(tree)
+# set root-edge
+tree$root.edge <- 1
+gg_tree(tree)
+```
+```{r}
+ggtree(tree, ladderize = T)
+```
+
+#### Spp. Subset Samples Plus Ref. Genomes Tree
+```{r}
+
+```
+
+#### All No-Clones Samples Tree
+```{r}
+tree <- read.nexus("./outputs/iqtree/iqtree_phyluce_all_noclones.treefile")
+# midpoint root
+tree <- midpoint.root(tree)
+# set root-edge
+tree$root.edge <- 1
+gg_tree(tree)
+```
+```{r modify_tip_labels}
+# remove contigs suffix 
+tips <- gsub("_S.*_contigs$", "", tree$tip.label)
+tree$tip.label <- tips
+```
+```{r}
+tree_title <- expression(paste("IQ-TREE Maximum Likelihood Tree of ", italic("Pocillopora"), " samples"))
+#
+loci_info <- c("619 UCE loci, 241,332 sites, 21,325 informative sites")
+#
+tree %>% ggtree(., right = TRUE) %<+% samples_k6 + 
+  geom_tippoint(aes(fill = `NGSAdmix K6 Species`), shape = 21, alpha = 0.8, stroke = 0.5, color = "black", hjust = 0.3, show.legend = TRUE) +
+  geom_tiplab(size = 1.5, hjust = -0.08) +
+  ggplot2::xlim(-0.05, 0.25) +
+  geom_treescale(width = 0.04, x = -0.025, y = 1) +
+  scale_fill_manual(values = ngsadmix_pop_colors_k6, name = "Species") +
+   theme(legend.position = c(0.12, 0.88),
+        legend.margin = margin(0,0,0,0, unit = "mm"),
+        plot.margin = margin(5,5,5,5, unit = "mm")) +
+  ggtitle(tree_title, subtitle = loci_info)
+```
+
+
+#### All No-Clones Samples Plus Ref. Genomes Tree
+```{r}
+
+```
+
+
+### RAxML
+```{r}
+tree <- read.newick("./outputs/raxml/RAxML_bestTree.best")
+tree <- midpoint.root(tree)
+gg_tree(tree)
+```
+

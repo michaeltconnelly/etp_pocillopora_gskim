@@ -1,0 +1,49 @@
+---
+title: "SNAPP cloudograms"
+author: "Mike Connelly"
+date: "2024-02-09"
+output: html_document
+---
+## Setup and packages
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = TRUE)
+options(stringsAsFactors = FALSE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+```{r packages}
+library("tidyverse")
+library("treeio")
+library("ggtree")
+library("phytools")
+# 
+source("./R/pocillopora_etp_gksim_functions.R")
+```
+```{r}
+snapp_trees <- treeio::read.nexus("./outputs/snapp/full_analysis_sppsubset_snapp/snap.trees")
+```
+
+## SNAPP cloudograms
+```{r}
+pdf("./outputs/figures/spp_subset_snapp_cloudogram.pdf", height = 5.5, width = 8.5)
+#
+tree_title <- expression(paste("SNAPP DensiTree of select ", italic("Pocillopora"), " samples"))
+loci_info <- c("1,440 biallelic SNPs")
+#
+ggdensitree(snapp_trees[4000:5000], alpha=.1, colour='steelblue') + 
+    geom_tiplab(size=3) + hexpand(.35) + 
+  ggtitle(tree_title, subtitle = loci_info)
+dev.off()
+```
+
+## SNAPP BFD* species tree cloudograms
+```{r}
+snapp_bfd_runD_trees <- treeio::read.nexus("./outputs/snapp/BFD/runD/runD.snap.trees")
+```
+### Figure 1B
+```{r}
+pdf("./outputs/figures/Fig1B_snapp_bfd_runD_cloudogram.pdf", height = 3, width = 2.05)
+ggdensitree(snapp_bfd_runD_trees, alpha=.1, colour='steelblue') + 
+    geom_tiplab(size=2) + hexpand(.35)
+dev.off()
+```
+

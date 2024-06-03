@@ -1,0 +1,167 @@
+---
+title: "Fst heatmaps"
+author: "Mike Connelly"
+date: "2024-02-09"
+output: html_document
+---
+
+## Setup and packages
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = TRUE)
+options(stringsAsFactors = FALSE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+```{r packages}
+library("tidyverse")
+#
+library("pheatmap")
+#
+library("qqman")
+# library("fastman")
+#
+library("patchwork")
+#
+source("./R/pocillopora_etp_gksim_functions.R")
+```
+
+## Import sample metadata
+```{r import_sample_metadata}
+source("./R/sample_import.R")
+samples <- all_samples
+```
+```{r select_samples}
+samples <- filter(all_samples, ANALYSIS ==T)
+# samples <- filter(all_samples, `PANAMA_MANUSCRIPT` == T)
+```
+
+## Pairwise genome-wide Fst heatmaps
+### *Pocillopora* spp.
+```{r}
+# spp_combos <- data.frame(t(combn(unique(sort(samples$Species)), m = 2)))
+#
+spp_combos <- data.frame(t(combn(ngsadmix_spp, m = 2))) %>% 
+  filter(!str_detect(`X2`, "Unassigned"))
+```
+```{r}
+spp_fst <- read_csv("./outputs/pocillopora_spp_fst.csv",
+                    col_types = cols("spp1" = col_factor(ordered = T),
+                                     "spp2" = col_factor(ordered = T)))
+# spp_fst$spp2
+```
+### Figure 2A
+```{r}
+fst_heatmap <- ggplot(data = spp_fst, aes(spp1, spp2, fill = Fst)) +
+  geom_tile(color = "black") +
+  scale_fill_gradient(low = "white", high = "red", limits = c(0,0.6), name = expression(F[ST])) +
+  geom_text(aes(label = round(Fst, 3)), size = 2.5) +
+  theme(axis.title = element_blank(),
+        axis.text.x = element_text(angle = 30, vjust = 1, size = 8, hjust = 0, face = "italic"), 
+        axis.text.y = element_text(size = 8, face = "italic"),
+        axis.ticks = element_blank(),
+        panel.grid = element_blank(),
+        panel.border = element_blank()) + 
+  coord_fixed() +
+  scale_x_discrete(position = "top")
+print(fst_heatmap)
+```
+```{r}
+pdf("./outputs/figures/Fig2A_spp_fst_heatmap.pdf", width = 4.5, height = 3.25)
+# title <- expression(italic("Pocillopora")*' species FST heatmap')
+fst_heatmap 
+dev.off()
+```
+
+### *P. grandis* populations
+```{r}
+pop_combos <- data.frame(t(combn(unique(sort(samples$Region)), m = 2)))
+```
+```{r}
+pop_fst <- read_csv("./outputs/pgrandis_population_fst.csv")
+```
+
+
+```{r}
+fst_heatmap <- ggplot(data = pop_fst, aes(pop1, pop2, fill = Fst)) +
+  geom_tile(color = "white") +
+  scale_fill_gradient(low = "white", high = "red", limits = c(0,0.08), name="FST") +
+  geom_text(aes(label = round(Fst, 3)), size = 2) +
+  theme(axis.title = element_blank(),
+        axis.text.x = element_text(angle = 90, vjust = -1, size = 10, hjust = 0), 
+        axis.text.y = element_text(size = 10)) + 
+  coord_fixed() + scale_x_discrete(position = "top")
+print(fst_heatmap)
+```
+```{r}
+pdf("./outputs/figures/pgrandis_fst_heatmap.pdf", height = 5, width = 5.75)
+title <- expression(italic("P. grandis")*' population FST heatmap')
+fst_heatmap + ggtitle(title)
+dev.off()
+```
+
+```{r}
+pop_fst_mat <- pop_fst %>% pivot_wider(names_from = "pop2", values_from = "Fst") %>% column_to_rownames("pop1") %>% as.matrix()
+```
+```{r}
+# alternative approach with pheatmap
+pheatmap(pop_fst_mat, cluster_cols = FALSE, cluster_rows = FALSE)
+```
+
+
+## 10kb window Fst estimates
+```{r}
+angsd_fst_colnames <- c("SNP", "CHR", "BP", "Nsites", "Fst")
+angsd_fst_cols <- cols("SNP" = col_character(),
+                       "CHR" = col_number(),
+                       "BP" = col_double(),
+                       "Nsites" = col_double(),
+                       "Fst" = col_double())
+```
+### Pocillopora spp. 
+for each pairwise comparison, read in 10kb window Fst and plot histogram and Fst manhattan plot
+```{r}
+spp_combos
+```
+
+```{r}
+fst_files <- list.files("./outputs/angsd/10kb_fst/spp", full.names = T)
+for (file in fst_files) { 
+  fst_df <- read_delim(file, delim = "\t", skip = 1, col_names = angsd_fst_colnames, col_types = angsd_fst_cols)
+  #
+  fst_hist <- fst_df %>% ggplot(aes(Fst)) + 
+    geom_histogram(binwidth = 0.02, color = "black", fill = "lightgrey") +
+    xlim(c(0,1))
+  #
+  fst_plot <- fst_df %>% ggplot(aes(CHR, Fst)) + 
+    geom_point() + 
+    ylim(c(0,1)) 
+  #
+  print((fst_plot / fst_hist)) #+ plot_annotation(title = file))
+}            
+```
+
+### P.grandis populations
+```{r}
+fst_files <- list.files("./outputs/angsd/10kb_fst/pgrandis_pops", full.names = T)
+for (file in fst_files) { 
+  fst_df <- read_delim(file, delim = "\t", skip = 1, col_names = angsd_fst_colnames, col_types = angsd_fst_cols)
+  #
+  fst_hist <- fst_df %>% ggplot(aes(Fst)) + 
+    geom_histogram(binwidth = 0.02, color = "black", fill = "lightgrey") +
+    xlim(c(0,1))
+  #
+  fst_plot <- fst_df %>% ggplot(aes(CHR, Fst)) + 
+    geom_point() + 
+    ylim(c(0,1)) 
+  #
+  print((fst_plot / fst_hist) + plot_annotation(title = file))
+}            
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+

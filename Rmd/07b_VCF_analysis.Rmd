@@ -21,7 +21,7 @@ library("extrafontdb")
 ```
 ```{r import_vcf}
 # 
-vcf <- vcfR::read.vcfR(file = "./outputs/all_analysis_strict_filtered_spptest_unlinked.vcf.gz")
+# vcf <- vcfR::read.vcfR(file = "./outputs/all_analysis_strict_filtered_spptest_unlinked.vcf.gz")
 #
 vcf <- vcfR::read.vcfR(file = "./outputs/full_analysis_noclones_strict_filtered.vcf.gz")
 #
@@ -63,7 +63,7 @@ s.label(pca$li, xax=1, yax=2, boxes = F, clabel = 0.6)
 # grp_meta <- find.clusters(genind_meta, max.n.clust = 100, n.pca = 300)
 # All PCs retained, 37 clusters identified
 # Final samples both genotype-specific VCF
-grp <- find.clusters(genind, max.n.clust = 10, n.pca = 30)
+grp <- find.clusters(genind, max.n.clust = 12, n.pca = 30)
 # All 36 PCs retained, # clusters identified
 
 # How many clusters are useful to describe the data? 
@@ -92,6 +92,8 @@ dapc <- dapc(genind, grp$grp)
 # choose the number of PC's to get just above ~75% variance, and then pick number of DF's to the first or second drop-off
 ```
 ```{r}
+pdf("./outputs/figures/dapc_scatter_k6_15pcs_2dfs.pdf")
 scatter(dapc)
+dev.off()
 ```
 

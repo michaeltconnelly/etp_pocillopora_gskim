@@ -12,6 +12,7 @@ knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ```
 ```{r packages}
 library("tidyverse")
+library("patchwork")
 #
 source("./R/pocillopora_etp_gksim_functions.R")
 ```
@@ -41,7 +42,7 @@ multiqc_fastqc <- read_tsv("./outputs/QCs/fastqcs/multiqc_data/multiqc_fastqc.tx
 ```
 ```{r inspect_read_depth}
 # quick check of sample depth
-pdf("./outputs/figures/nobones/totalread.pdf", width = 6.5, height = 4.76)
+# pdf("./outputs/figures/nobones/totalread.pdf", width = 6.5, height = 4.76)
 multiqc_fastqc %>%
   mutate(Sample = fct_reorder(Sample, desc(`Total Sequences`))) %>%
   ggplot(aes(Sample, `Total Sequences`)) +
@@ -49,9 +50,11 @@ multiqc_fastqc %>%
   geom_hline(yintercept = 1000000, color = "red") +
   theme(axis.text.x = element_blank()) +
   ggtitle("Total number of Raw Reads per sample")
-dev.off()
+# dev.off()
 ```
-```{r}
+
+```{r read_stats}
+# Produce total read summary statistics for manuscript
 sum(multiqc_fastqc$`Total Sequences`)
 # 2,920,422,943
 mean(multiqc_fastqc$`Total Sequences`)
@@ -59,7 +62,6 @@ mean(multiqc_fastqc$`Total Sequences`)
 sd(multiqc_fastqc$`Total Sequences`)
 # 4,570,452
 ```
-
 
 ### Trimmed reads
 ```{r}
@@ -80,7 +82,7 @@ multiqc_trimqc %>%
   Note: Compare alignment rates to *P. damicornis* (RSMAS, Cunning et al. 2018), *P. verrucosa* (KAUST, Buitrago-Lopez et al. 2020), and *P. verrucosa* (CSIRO) reference genomes
 
 #### P. damicornis (RSMAS)
-```{r}
+```{r pdam_mapped}
 # samtools alignment flagstat files
 multiqc_flagstat_pdam_rsmas <-  read_tsv("./outputs/QCs/flagstats/flagstats/pdam_rsmas/multiqc_data/multiqc_samtools_flagstat.txt")  %>%
   mutate("Sample ID" = gsub("_S.*_flagstat", "", Sample)) 
@@ -89,9 +91,8 @@ mapped_pdam_rsmas <- multiqc_flagstat_pdam_rsmas %>%
   select(`Sample ID`, mapped_passed) %>% 
   rename("pdam_rsmas" = mapped_passed)
 ```
-
 #### P. verrucosa (KAUST)
-```{r}
+```{r pver_mapped}
 # samtools alignment flagstat files
 multiqc_flagstat_pver_kaust <-  read_tsv("./outputs/QCs/flagstats/flagstats/pver_kaust/multiqc_data/multiqc_samtools_flagstat.txt")  %>%
   mutate("Sample ID" = gsub("_S.*_flagstat", "", Sample)) 
@@ -100,9 +101,8 @@ mapped_pver_kaust <- multiqc_flagstat_pver_kaust %>%
   select(`Sample ID`, mapped_passed) %>% 
   rename("pver_kaust" = mapped_passed)
 ```
-
 #### P. verrucosa (CSIRO)
-```{r}
+```{r pver_mapped}
 # samtools alignment flagstat files
 multiqc_flagstat_pver_csiro <-  read_tsv("./outputs/QCs/flagstats/flagstats/pver_csiro/multiqc_data/multiqc_samtools_flagstat.txt")  %>%
   mutate("Sample ID" = gsub("_S.*_flagstat", "", Sample))
@@ -118,11 +118,11 @@ multiqc_flagstat_comparison <- left_join(mapped_pdam_rsmas, mapped_pver_kaust, b
 ```
 
 ```{r}
-multiqc_flagstat_comparison_tidy <- multiqc_flagstat_comparison %>% pivot_longer(cols = c("pdam_rsmas", "pver_kaust", "pver_csiro"), names_to = "reference", values_to = "mapped_reads")
+multiqc_flagstat_comparison_tidy <- multiqc_flagstat_comparison %>% pivot_longer(cols = c("pdam_rsmas", "pver_kaust", "pver_csiro"), names_to = "reference", values_to = "mapped_reads") %>% left_join(samples, by = "Sample ID")
 ```
 
 ```{r}
-multiqc_flagstat_comparison_tidy %>% ggplot(aes(`reference`, `mapped_reads`)) + geom_violin()
+multiqc_flagstat_comparison_tidy %>% ggplot(aes(`reference`, `mapped_reads`)) + geom_violin(aes(color = `Species`))
 ```
 ```{r}
 multiqc_flagstat_comparison_tidy %>% ggplot(aes(`reference`, `mapped_reads`)) + geom_point() + geom_line(aes(group = `Sample ID`))
@@ -131,9 +131,17 @@ Note: No significant difference in mapping rates between assemblies, marginal in
 
 ### Mapped reads to best reference
 ```{r}
+multiqc_flagstat <- multiqc_flagstat_pdam_rsmas
+
+# mapped_pdam_rsmas <- multiqc_flagstat_pdam_rsmas %>% 
+#   select(`Sample ID`, mapped_passed) %>% 
+#   rename("pdam_rsmas" = mapped_passed)
+```
+
+```{r}
 # samtools alignment flagstat files
-multiqc_flagstat <-  read_tsv("./outputs/QCs/flagstats/multiqc_data/multiqc_samtools_flagstat.txt")  %>%
-  mutate("Sample ID" = gsub("_S.*_flagstat", "", Sample))
+# multiqc_flagstat <-  read_tsv("./outputs/QCs/flagstats/multiqc_data/multiqc_samtools_flagstat.txt")  %>%
+#   mutate("Sample ID" = gsub("_S.*_flagstat", "", Sample))
 ```
 ```{r inspect_alignment_stats}
 multiqc_flagstat %>%
@@ -164,44 +172,90 @@ multiqc_data <- left_join(multiqc_fastqc_reads, multiqc_trimqc_reads, by = "Samp
 multiqc_data[duplicated(multiqc_data$`Sample ID`),]
 ```
 
-### Pick clonegroup samples with highest total read depth
+### Figure S2A
 ```{r}
-samples_fastqc <- left_join(samples, multiqc_fastqc_reads, by = "Sample ID")
-# view clonegroup samples ordered by raw reads descending
-samples_fastqc %>% filter(!is.na(`Genotype ID`)) %>% arrange(`Genotype ID`, desc(`Raw Reads`)) %>% select(`Sample ID`, `Genotype ID`, `Region:Site`, `Raw Reads`)
-# select sample with most reads per clonegroup
-clonegroup_samples_keep <- samples_fastqc %>% filter(!is.na(`Genotype ID`)) %>% group_by(`Genotype ID`) %>%  slice_max(`Raw Reads`)
-```
-```{r}
-# write out singleton samples
-singleton_samples <- samples %>% filter(SINGLE_GENOTYPE)
-write_lines(singleton_samples$`Sample ID`, "./data/singleton_samples.txt")
-# write out clonegroup keeper samples
-write_lines(clonegroup_samples_keep$`Sample ID`, "./data/clonegroup_keep_samples_5X.txt")
-```
-
-### Pick clonegroup samples with highest proportion of sites w/ 5x coverage
-```{r}
-qc_5X <- read_tsv("./outputs/quality_5X.txt", col_names = c("ID", "5X Coverage")) %>% 
-  mutate("Sample ID" = str_remove(ID, "_S.*")) %>% select(`Sample ID`, `5X Coverage`)
+multiqc_data[is.na(multiqc_data$`Trimmed Reads`), ]
 #
-samples_5X <- left_join(samples, qc_5X, by = "Sample ID")
-# view clonegroup samples ordered by 5X coverage
-samples_5X %>% filter(!is.na(`Genotype ID`)) %>% arrange(`Genotype ID`, desc(`5X Coverage`)) %>% select(`Sample ID`, `Genotype ID`, `Region:Site`, `5X Coverage`)
-# select sample with most reads per clonegroup
-clonegroup_samples_keep <- samples_5X %>% filter(!is.na(`Genotype ID`)) %>% group_by(`Genotype ID`) %>%  slice_max(`5X Coverage`)
+samples_fastqc <- multiqc_fastqc_reads %>% left_join(samples, by = "Sample ID")
 ```
-
-### Pick representative samples (NGSadmix K=5 q > 0.85) with most mapped reads or highest 5X coverage
+```{r region_abbreviations}
+regions_abbv <- list(
+"Clipperton" = "CLIP",
+"Galapagos Northern" = "GPN",
+"Galapagos Central" = "GPC",
+"Coco" = "COCO",
+"Bahia Culebra" = "BCU",
+"Golfo Dulce" = "GDU",
+"Chiriqui" = "CHIQ",
+"Panama" = "PAN",
+"Gorgona" = "GOR"
+)
+abbv_labeller <- function(variable, value){
+  return(regions_abbv[value])
+}
+```
 ```{r}
-samples_rep_depth <- left_join(qpop_rep_samples, mapped_pdam_rsmas, by = "Sample ID") %>% 
-  group_by(pop) %>% slice_max(pdam_rsmas, n = 10) %>% arrange(pop, desc(pdam_rsmas)) %>% ungroup() %>% select(`Sample ID`)
-
-samples_rep_5X <- left_join(qpop_rep_samples, qc_5X, by = "Sample ID") %>% 
-  group_by(pop) %>% slice_max(`5X Coverage`, n = 4) %>% arrange(pop, desc(`5X Coverage`)) %>% ungroup() #%>%  select(`Sample ID`)
-
-table(samples_rep_depth$`Sample ID` %in% samples_rep_5X$`Sample ID`)
+pdf("./outputs/figures/FigS2A_read_depth_sequencing_rounds.pdf", width = 6.5, height = 3.5)
+figS2A <- all_qc %>%
+  dplyr::mutate(Region = factor(Region, levels = region_order_longitude, ordered = T)) %>% 
+  ggplot(aes(`Raw Reads`)) +
+  geom_histogram(binwidth = 1000000, color = "black", fill = "lightgrey") + 
+  facet_grid(. ~ `Region`, labeller = abbv_labeller) + 
+  # geom_vline(xintercept = 2000000, color = "red") + 
+  scale_y_continuous(limits = c(0,10), breaks = c(0,5,10)) +
+  coord_flip() +
+  theme(axis.title.x = element_blank(),
+        axis.text = element_text(size = 8))
+dev.off()
 ```
+
+### Figure S2B
+```{r}
+multiqc_data_tidy <- multiqc_data %>%
+  pivot_longer(., `Raw Reads`:`Mapped Reads`, names_to = "pipeline_step", values_to = "read_count") %>%
+  left_join(samples, by = "Sample ID") %>%
+  dplyr::group_by(`Sample ID`) %>%
+  dplyr::mutate(proportion = read_count / read_count[pipeline_step == "Raw Reads"],
+                pipeline_step = factor(pipeline_step, levels = c("Raw Reads", "Trimmed Reads", "Mapped Reads"), ordered = T),
+                Region = factor(Region, levels = region_order_longitude, ordered = T))
+  
+multiqc_data_tidy %>% ggplot(aes(Species, read_count)) + geom_violin(aes(fill = pipeline_step))
+
+multiqc_data_tidy %>% ggplot(aes(pipeline_step, read_count)) + geom_violin()
+```
+```{r}
+multiqc_data_tidy %>% ggplot(aes(pipeline_step, proportion)) +
+  geom_violin(aes(fill = Species)) + 
+  geom_boxplot(size = 0.5, aes(color = `Set`))
+```
+
+```{r}
+pdf("./outputs/figures/FigS2B_read_proportions_steps_species.pdf", width = 6.5, height = 3.5)
+figS2B <- multiqc_data_tidy %>% ggplot(aes(`pipeline_step`, `proportion`)) +
+  geom_line(aes(group = `Sample ID`), size = 0.25, color = "grey30", alpha = 0.25) +
+  geom_violin(aes(fill = pipeline_step), alpha = 0.75) + 
+  geom_point(size = 0.25, color = "grey20") +
+  facet_grid(~ `Region`, labeller = abbv_labeller) +
+  scale_fill_viridis_d(name = "Pipeline Step:") + 
+  scale_y_continuous(limits = c(0, 1)) +
+  ylab("Proportion Raw Reads") +
+  theme(axis.text.x = element_blank(),
+        axis.title.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.text.y = element_text(size = 8),
+        panel.grid = element_blank(),
+        legend.position = "bottom")
+print(figS2B)
+dev.off()
+```
+### Figure S2
+```{r}
+pdf("./outputs/figures/FigS2_readdepth_proportions_QC.pdf", width = 6.5, height = 5.5)
+(figS2A / figS2B) + plot_annotation(tag_levels = 'A')
+dev.off()
+```
+
+
 
 
 ```{r}
@@ -292,6 +346,125 @@ pipeQC_proportions
 dev.off()
 ```
 
+## Downstream metrics data
+### SPAdes assembly metrics
+```{r}
+spades_contigs <- read_tsv("./outputs/QCs/spades_contigs_counts.txt", col_names = c("Sample ID", "SPAdes contigs"))
+```
+
+```{r}
+spades_contigs %>% left_join(samples) %>% ggplot(aes(`SPAdes contigs`)) + geom_histogram()
+```
+
+
+### PHYLUCE UCE loci
+```{r}
+uce_matches <- read_tsv("./outputs/QCs/uce_counts.txt", col_names = c("Sample ID", "UCE Matches"))
+```
+```{r}
+uce_matches %>% left_join(samples) %>% ggplot(aes(`UCE Matches`)) + geom_histogram()
+```
+```{r}
+all_qc <- left_join(multiqc_data, spades_contigs, by = "Sample ID") %>%
+  left_join(uce_matches, by = "Sample ID") %>% 
+  left_join(samples, by = "Sample ID") %>% 
+  dplyr::mutate(Region = factor(Region, levels = region_order_longitude, ordered = T))
+```
+
+```{r}
+all_qc_tidy <- left_join(multiqc_data, spades_contigs, by = "Sample ID") %>%
+  left_join(uce_matches, by = "Sample ID") %>% 
+  pivot_longer(., `Raw Reads`:`UCE Matches`,
+               names_to = "pipeline_step",
+               values_to = "count") %>%
+  left_join(samples, by = "Sample ID")
+```
+
+### Figure S3A
+```{r}
+pdf("./outputs/figures/FigS2C_spades_contigs_read_depth.pdf", width = 6.5, height = 3.5)
+figS3A <- all_qc %>% 
+  ggplot(aes(`Raw Reads`, `SPAdes contigs`)) +
+  geom_point(aes(fill = `Region`), size = 2, shape = 21, alpha = 0.75) + 
+  geom_smooth(color = "grey30", size = 0.5, fill = "grey70", span = 0.75) +
+  scale_fill_manual(values = region_colors) +
+  theme(axis.text = element_text(size = 8))
+print(figS3A)
+dev.off()
+```
+### Figure S3B
+```{r}
+figS3B <- all_qc %>% 
+  ggplot(aes(`Raw Reads`, `UCE Matches`)) +
+  geom_point(aes(fill = `Region`), size = 2, shape = 21, alpha = 0.75) + 
+  geom_smooth(color = "grey30", size = 0.5, fill = "grey70", span = 0.75) +
+  scale_fill_manual(values = region_colors) +
+  theme(axis.text = element_text(size = 8))
+```
+```{r}
+all_qc %>% 
+  ggplot(aes(`SPAdes contigs`, `UCE Matches`)) +
+  geom_point(aes(color = `Set`))
+```
+### Figure S3
+```{r}
+pdf("./outputs/figures/FigS3_spades_uces_QC.pdf", width = 6.5, height = 5.5)
+(figS3A / figS3B) + plot_layout(guides = "collect") + plot_annotation(tag_levels = 'A') 
+dev.off()
+```
+
+
+```{r}
+# combine Fig S2 and S3 for master QC figure
+(figS2A / figS2B) | (figS3A / figS3B)
+```
+
+
+## Choose sample subsets based on pipeline metrics
+### Pick clonegroup samples with highest total read depth
+```{r top_depth_samples}
+samples_fastqc <- left_join(samples, multiqc_fastqc_reads, by = "Sample ID")
+# view clonegroup samples ordered by raw reads descending
+samples_fastqc %>% filter(!is.na(`Genotype ID`)) %>% arrange(`Genotype ID`, desc(`Raw Reads`)) %>% select(`Sample ID`, `Genotype ID`, `Region:Site`, `Raw Reads`)
+# select sample with most reads per clonegroup
+clonegroup_samples_keep <- samples_fastqc %>% filter(!is.na(`Genotype ID`)) %>% group_by(`Genotype ID`) %>%  slice_max(`Raw Reads`)
+```
+```{r}
+# write out singleton samples
+singleton_samples <- samples %>% filter(SINGLE_GENOTYPE)
+write_lines(singleton_samples$`Sample ID`, "./data/singleton_samples.txt")
+# write out clonegroup keeper samples
+write_lines(clonegroup_samples_keep$`Sample ID`, "./data/clonegroup_keep_samples_5X.txt")
+```
+
+### Pick clonegroup samples with highest proportion of sites w/ 5x coverage
+```{r}
+qc_5X <- read_tsv("./outputs/quality_5X.txt", col_names = c("ID", "5X Coverage")) %>% 
+  mutate("Sample ID" = str_remove(ID, "_S.*")) %>% select(`Sample ID`, `5X Coverage`)
+#
+samples_5X <- left_join(samples, qc_5X, by = "Sample ID")
+# view clonegroup samples ordered by 5X coverage
+samples_5X %>% filter(!is.na(`Genotype ID`)) %>% arrange(`Genotype ID`, desc(`5X Coverage`)) %>% select(`Sample ID`, `Genotype ID`, `Region:Site`, `5X Coverage`)
+# select sample with most reads per clonegroup
+clonegroup_samples_keep <- samples_5X %>% filter(!is.na(`Genotype ID`)) %>% group_by(`Genotype ID`) %>%  slice_max(`5X Coverage`)
+```
+
+### Pick representative samples (NGSadmix K=5 q > 0.85) with most mapped reads or highest 5X coverage
+```{r}
+samples_rep_depth <- left_join(qpop_rep_samples, mapped_pdam_rsmas, by = "Sample ID") %>% 
+  group_by(pop) %>% slice_max(pdam_rsmas, n = 10) %>% arrange(pop, desc(pdam_rsmas)) %>% ungroup() %>% select(`Sample ID`)
+
+samples_rep_5X <- left_join(samples_k6_assignments, qc_5X, by = "Sample ID") %>% 
+  group_by(`NGSAdmix K6 Species`) %>%
+  slice_max(`5X Coverage`, n = 5) %>%
+  arrange(`NGSAdmix K6 Species`, desc(`5X Coverage`)) %>%
+  filter(`NGSAdmix K6 Species` != "Unassigned") %>%  
+  ungroup() %>%  select(`Sample ID`)
+
+# are these the same samples? mostly yes
+table(samples_rep_depth$`Sample ID` %in% samples_rep_5X$`Sample ID`)
+```
+
 ## Find samples with most reads in a given species/clone group
 ```{r}
 multiqc_sample_data <- multiqc_data %>%
@@ -306,7 +479,6 @@ topsamples <-  multiqc_sample_data %>% group_by(Species) %>% top_n(., 5, `Raw Re
 
 
 ```
-
 
 ## Import/inspect non-coral pipeline QC metrics
   Note: Run MultiQC on R1 reads only to create reports for all analysis samples (124 + 165), with low-depth (<1M reads, 18 + 5) samples already excluded.
@@ -328,9 +500,5 @@ multiqc_unmapqc %>%
   theme(axis.text.x = element_text(size = 5, angle = 90))
 ```
 
-
-SPAdes assembly metrics
-
-PHYLUCE alignment matrix stats
 
 SNP matrix stats

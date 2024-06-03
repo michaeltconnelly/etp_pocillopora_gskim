@@ -1,0 +1,183 @@
+---
+title: "PocHistone analysis"
+author: "Mike Connelly"
+date: "4/9/2024"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+```{r packages, message=FALSE}
+library("tidyverse")
+library("ape")
+library("pegas")
+#
+source("./R/pocillopora_etp_gksim_functions.R")
+```
+
+## Import sample metadata
+```{r import_sample_metadata}
+source("./R/sample_import.R")
+samples <- all_samples
+# NOTE: Perform mtORF barcode extraction and alignment for all samples before clone correction
+```
+
+## Import PocHistone reference sequence alignment 
+```{r import_alignment}
+data <- read.dna("./data/seqs/PocHistone_Refs_Aligned.fasta", format = "fasta")
+checkAlignment(data)
+# 10 sequences, 659 sites
+# Oury seqs have 57 bp gap on left, 14 bp gap on right 
+
+# trim sequence borders - 57 from left, 14 from right
+data_trimmed <- data[, 58:645]
+checkAlignment(data_trimmed)
+# 10 sequences, 588 sites, no gaps
+```
+```{r haplotypes}
+dataHaplo <- haplotype(data)
+dataHaplo
+```
+```{r extract haplotypes and build network}
+dataHaplo <- sort(dataHaplo, what = "labels")
+# attributes(dataHaplo)
+dataNet <- haploNet(dataHaplo)
+# median-joining network
+dataMJNet <- mjn(dataHaplo)
+```
+```{r}
+plot(dataNet, labels = T)
+plot(dataMJNet, labels = T)
+```
+## Explore variation in a single sample with multiple PocHistone sPCR products
+```{r}
+
+```
+
+
+## Import PocHistone sequence alignment 
+```{r import_alignment}
+data <- read.dna("~/Desktop/PocHistone_Aligned.fasta", format = "fasta")
+checkAlignment(data)
+# 214 sequences, 669 sites, many gaps!
+#  => length of gaps on the left border of the alignment: 26 34 21 30 3 0 
+#  => length of gaps on the right border of the alignment: 9
+
+# trim sequence borders - 34 from left, 9 from right
+data_trimmed <- data[, 35:660]
+checkAlignment(data_trimmed)
+
+data <- data_trimmed
+
+# attributes(data)
+# dimnames(data)[[1]]
+```
+```{r haplotypes}
+dataHaplo <- haplotype(data)
+dataHaplo
+```
+```{r extract haplotypes and build network}
+dataHaplo <- sort(dataHaplo, what = "labels")
+# attributes(dataHaplo)
+dataNet <- haploNet(dataHaplo)
+# dataNet <- mst(dataHaplo)
+# dataNet <- mjn(dataHaplo)
+```
+```{r extract sequence labels}
+seq_labels <- dimnames(data)[[1]]
+# seq_labels
+seq_ids <- gsub("_S[[:digit:]]+.[[:digit:]]$", "", seq_labels)
+# seq_ids
+```
+```{r countHap}
+countHap <- function(hap = h, dna = x){
+  with(
+    stack(setNames(attr(hap, "index"), rownames(hap))),
+    table(haplotype = ind, seq = attr(dna, "dimnames")[[1]][values])
+  )
+}
+```
+```{r genotype haplotype matches}
+df <- as.data.frame(countHap(dataHaplo, data))
+good <- df %>% filter(Freq == 1)
+```
+```{r}
+good$`Sample ID` <- gsub("_S.*", "", good$seq)
+#
+sample_haplotypes <- good %>% dplyr::select(`Sample ID`, `haplotype`)
+```
+
+### Explore single sequences
+```{r}
+data <- read.dna("outputs/sharkmer/PocHistone_Single_aligned.fasta", format = "fasta")
+checkAlignment(data)
+# 214 sequences, 669 sites, many gaps!
+#  => length of gaps on the left border of the alignment: 26 34 21 30 3 0 
+#  => length of gaps on the right border of the alignment: 9
+
+# trim sequence borders - 60 from left, 14 from right
+data_trimmed <- data[, 61:653]
+checkAlignment(data_trimmed)
+
+data <- data_trimmed
+
+# attributes(data)
+# dimnames(data)[[1]]
+```
+
+
+```{r haplotypes}
+dataHaplo <- haplotype(data)
+dataHaplo
+```
+```{r extract haplotypes and build network}
+dataHaplo <- sort(dataHaplo, what = "labels")
+# attributes(dataHaplo)
+dataNet <- haploNet(dataHaplo)
+# median-joining network - not possible with duplicated sequences
+# dataMJNet <- mjn(dataHaplo)
+```
+```{r}
+plot(dataNet, labels = T)
+# plot(dataMJNet, labels = T)
+```
+
+```{r}
+plot(dataNet)
+```
+
+### Explore BLAST hits to SPAdes assemblies results
+```{r}
+data <- read.dna("outputs/pochist/PocHist3AllRefs_aligned.fasta", format = "fasta")
+checkAlignment(data)
+```
+
+
+### Produce table of PocHistone haplotypes found in different species
+```{r}
+roman_factor <- factor(c(1:30), levels = as.roman(c(1:30)), ordered = T)
+
+samples_noclones_pochist_haplotypes <- samples_noclones_ngsadmix %>% rename("mtorf_haplotype" = haplotype) %>% 
+  full_join(., sample_haplotypes, by = "Sample ID") %>% 
+  rename("pochist_haplotype" = haplotype) %>%
+  filter(!is.na(pochist_haplotype) & !is.na(`NGSAdmix K6 Species`)) 
+  
+
+samples_species_pochistone_haplotypes <- samples_noclones_pochist_haplotypes %>%
+  group_by(`NGSAdmix K6 Species`, pochist_haplotype) %>% 
+  count() %>% 
+  arrange(`NGSAdmix K6 Species`, pochist_haplotype) %>% 
+  pivot_wider(names_from = pochist_haplotype, values_from = n) %>% 
+  select(`NGSAdmix K6 Species`, roman_factor[1:17]) #17 in assigned no-clones, 27 in total
+#
+# No exact matches to reference Histone3 sequences (somewhat expected, samples are from different locations)
+
+# Most barcodes display mutual exclusivity, except for offshore/continental P. grandis (4 shared haplotypes, 8 unique to continental, 4 unique to offshore, only 1 haplotype for P. effusa (1 sample) and P. verrucosa 3a)
+
+# --> is there any way for me to phase haplotypes?
+samples_species_pochistone_haplotypes %>% filter(`NGSAdmix K6 Species` == "P. effusa") #%>%
+  select(any_of(contains("[[:digit:]]")))
+```
+

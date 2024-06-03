@@ -128,7 +128,6 @@ plot(hc_select,cex=0.6)
 abline(h=0.15,col="red",lty=3)
 ```
 
-
 ## Plot IBS clustering dendrogram with ggtree for all samples
 ```{r}
 tree_title <- expression(paste("Identity-by-state clustering of all ", italic("Pocillopora"), " samples (n=", 337, ")"))
@@ -167,7 +166,6 @@ hc %>% ggtree() %<+% samples +
 ```
 
 ### No Bones / SICB presentation IBS figures
-
 ```{r}
 pdf("./outputs/figures/sicb/ibs_dendrogram_all_analysis_black.pdf", width = 8.5, height = 4.85)
 hc_black <- hc %>% ggtree() %<+% samples + 
@@ -205,7 +203,6 @@ png("./outputs/figures/sicb/ibs_dendrogram_all_analysis_mtorf.png", width = 8.5,
 hc_mtorf
 dev.off()
 ```
-
 ```{r}
 pdf("./outputs/figures/sicb/ibs_dendrogram_all_analysis_mtorf_replicates.pdf", width = 8.5, height = 4.85)
 hc_mtorf_rep <- hc %>% ggtree() %<+% samples + 
@@ -245,9 +242,9 @@ dev.off()
 ```
 
 
-### Figure 2B
+### Figure S5
 ```{r}
-pdf("./outputs/figures/Fig2B_ibs_dendrogram_all_analysis_mtorf_replicates.pdf", width = 8.5, height = 4.85)
+pdf("./outputs/figures/FigS5_ibs_dendrogram_all_analysis_mtorf_replicates.pdf", width = 8.5, height = 4.85)
 hc_mtorf_rep <- hc %>% ggtree() %<+% samples + 
   layout_dendrogram() + 
   geom_tippoint(aes(fill = `mtorf_type`, color = `TECHNICAL_REPLICATE`), shape = 24, alpha = 0.8, stroke = 0.5, hjust = 0.3, show.legend = F) +
@@ -261,6 +258,48 @@ hc_mtorf_rep <- hc %>% ggtree() %<+% samples +
 hc_mtorf_rep
 dev.off()
 ```
+
+
+### color clonegroups
+```{r}
+pdf("./outputs/figures/FigS5_ibs_dendrogram_all_analysis_clonegroups.pdf", width = 8.5, height = 4.85)
+hc_clonegroups <- hc %>% ggtree() %<+% samples + 
+  layout_dendrogram() + 
+  geom_tippoint(aes(fill = `Genotype ID`, color = `TECHNICAL_REPLICATE`), shape = 24, alpha = 0.8, stroke = 0.75, hjust = 0.3, size = 2.5, show.legend = F) + #CLONAL_GENOTYPE
+  # geom_tiplab(size = 2, hjust = 1.05) +
+  # scale_fill_brewer(palette = 1) +
+  scale_color_manual(values = c("black", "red")) +
+  # geom_vline(xintercept = -0.17) +
+  # geom_vline(xintercept = -0.12) +
+  geom_segment(aes(x=-0.12, xend=-0.12, y=-2, yend=3), size = 0.75, linetype = 1, color = "turquoise2") +
+  geom_segment(aes(x=-0.12, xend=-0.12, y=3, yend=10), size = 0.75, linetype = 1, color = "turquoise4") +
+  geom_segment(aes(x=-0.12, xend=-0.12, y=10, yend=69), size = 0.75, linetype = 1, color = "turquoise2") +
+  geom_segment(aes(x=-0.08, xend=-0.08, y=69, yend=75), size = 0.75, linetype = 1, color = "purple3") +  
+  # geom_segment(aes(x=-0.11, xend=-0.11, y=77, yend=87), size = 0.75, linetype = 1, color = "gold2") +  
+  geom_segment(aes(x=-0.17, xend=-0.17, y=75, yend=340), size = 0.75, linetype = 1, color = "darkorange") +
+
+  scale_y_continuous(expand = expansion(mult = c(0.025, 0))) +
+  theme_dendrogram(#legend.position = c(0.9, 0.82),
+        # legend.margin = margin(0,0,0,0, unit = "mm"),
+        plot.margin = margin(2,2,2,2, unit = "mm"),
+        fgcolor = "black") +
+  theme(axis.text.y = element_text(colour = "black"), 
+        axis.ticks.y = element_line(colour = "black"), 
+        axis.line.y = element_line(colour = "black")) +
+  xlab("Genetic distance (1-IBS)")
+hc_clonegroups
+dev.off()
+```
+```{r}
+# modify tip labels
+samples[samples$TECHNICAL_REPLICATE == T, ]
+
+test <- hc$labels %in% samples[samples$TECHNICAL_REPLICATE == T, ]$`Sample ID`
+
+technical_labels <- ifelse(test == T, "*", "")
+hc$labels <- technical_labels
+```
+
 
 ## Other IBS subsets w/ ggtree
 ```{r}

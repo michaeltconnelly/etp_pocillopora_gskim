@@ -1,0 +1,71 @@
+---
+title: "mitogenome_analysis"
+author: "Mike Connelly"
+date: "2023-05-24"
+output: html_document
+---
+## Setup and packages
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = TRUE)
+options(stringsAsFactors = FALSE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+```{r packages}
+library("tidyverse")
+library("ggtree")
+#
+library("WGCNA") # for coloring clonal groups
+library("sparcl") # for ColorDendrogram
+# 
+```
+
+## Import sample metadata
+```{r import_sample_metadata}
+source("./R/sample_import.R")
+samples <- all_samples
+# NOTE: Perform mtORF barcode extraction and alignment for all samples before clone correction
+```
+
+```{r}
+
+```
+
+## Complete vs. incomplete assemblies, number of contigs
+```{r}
+
+```
+
+## Complete assembly size
+```{r}
+mitofinder_assembly_sizes <- read_tsv("./outputs/QCs/mitofinder_complete_assemblies_length.txt", col_names = c("Sample ID", "Assembly Size (bp)"))
+#
+median(mitofinder_assembly_sizes$`Assembly Size (bp)`)
+range(mitofinder_assembly_sizes$`Assembly Size (bp)`)
+```
+```{r}
+mitofinder_assembly_sizes %>%
+  ggplot(aes(`Assembly Size (bp)`)) +
+  geom_vline(xintercept = 17565, linetype = 3, size = 0.5, color = "grey40", alpha = 0.75) +
+  geom_histogram(binwidth = 1, color = "grey20")
+```
+```{r}
+# join with sequence metadata
+mitofinder_assembly_sizes %>% 
+  
+```
+
+
+## Circularization - 0%!
+```{r}
+
+```
+
+
+## Gene content and order
+```{r assembly_gene_content}
+# Protein-coding genes
+
+# tRNAs
+
+```
+

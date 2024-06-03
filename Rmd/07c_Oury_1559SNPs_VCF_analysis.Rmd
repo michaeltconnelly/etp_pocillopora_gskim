@@ -1,0 +1,100 @@
+---
+title: "Oury 1559 SNPs VCF Analysis"
+author: "Mike Connelly"
+date: "2023-10-27"
+output: html_document
+---
+
+## Setup and packages
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = TRUE)
+options(stringsAsFactors = FALSE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+```{r packages}
+library("tidyverse")
+library("vcfR")
+library("SNPfiltR")
+library("adegenet")
+library("ggtree")
+# 
+source("./R/pocillopora_etp_gksim_functions.R")
+```
+
+## Import sample metadata
+```{r import_sample_metadata}
+source("./R/sample_import.R")
+samples <- all_samples
+```
+```{r select_samples}
+samples <- filter(all_samples, ANALYSIS ==T)
+# samples <- filter(all_samples, `PANAMA_MANUSCRIPT` == T)
+```
+
+# VCF summary statistics, depth, filtering
+## Import VCF files - ETP samples, Oury reference samples
+```{r}
+# import VCF for 1559 reference SNPs in ETP samples
+vcf <- read.vcfR("./outputs/oury_pipeline/phyluce_noclones_Calls_1559SNP_DP3_SP6.vcf")
+vcf <- read.vcfR("./data/Pocillopora_361ADN_1559SNP.vcf")# 1543/1559 SNPs
+vcf <- read.vcfR("./outputs/oury_pipeline/all_noclones_DP3_SP6_merged361ref.vcf")
+```
+```{r}
+vcf %>% SNPfiltR::hard_filter(.)
+max_depth(vcf)
+```
+```{r}
+dp <- extract.gt(vcf, element = "DP", as.numeric=TRUE)
+heatmap.bp(dp, rlabels = FALSE)
+```
+## Convert to Genind object
+```{r genind convert}
+genind <- vcfR2genind(vcf)
+# class(genind_meta)
+genind
+```
+```{r genind summary}
+# genind_summary_meta <- summary(genind_meta)
+n_snps <- length(genind$all.names)
+as.character(n_snps)
+```
+
+## PCA
+```{r pca}
+# 
+x <- tab(genind, freq = TRUE, NA.method = "mean")
+# 
+pca <- dudi.pca(x, center = TRUE, scale = FALSE, scannf = FALSE, nf = 60)
+# ?dudi.pca()
+```
+```{r pca plot check}
+s.label(pca$li, xax=1, yax=2)
+```
+
+## DAPC
+```{r}
+grp <- find.clusters(genind, max.n.clust = 40, n.pca = 400) #n.clust = 18
+```
+```{r}
+# Inspect output of find.clusters
+grp$Kstat
+grp$stat
+grp$grp
+grp$size
+#
+n_pcs <- length(grp$grp)
+n_groups <- length(grp$size)
+```
+```{r}
+# Run the analysis on the dataset using the previously inferred groups
+dapc <- dapc(genind, grp$grp)
+# choose the number of PC's to get just above ~75% variance, and then pick number of DF's to the first or second drop-off
+```
+```{r}
+scatter(dapc)
+```
+
+## SNMF
+
+
+## Visualize ML tree
