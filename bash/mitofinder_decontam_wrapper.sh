@@ -51,7 +51,8 @@ echo "mitofinder \
 -r ${mcs}/sequences/pocillopora.gb \
 -1 ${prodir}/data/decontaminated/${sample}_decontam_R1_PE.fastq.gz  \
 -2 ${prodir}/data/decontaminated/${sample}_decontam_R2_PE.fastq.gz  \
---new-genes" >> "${prodir}"/bash/jobs/${sample}_mitofinder_decontam.job
+--allow-intron --intron-size 12000 \
+--circular-size 30 --circular-offset 500" >> "${prodir}"/bash/jobs/${sample}_mitofinder_decontam.job
 
 #
 echo 'echo '${sample}' successfully processed' >> "${prodir}"/bash/jobs/${sample}_mitofinder_decontam.job
