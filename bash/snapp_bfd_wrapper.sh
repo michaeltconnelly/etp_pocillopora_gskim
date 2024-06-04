@@ -5,7 +5,7 @@
 
 #specify variable containing sequence file prefixes and directory paths
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
-bfddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/snapp/BFD"
+bfddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/snapp/BFD_K6"
 # specify which run xml file to use (runA, runB, etc.)
 run=$1
 
