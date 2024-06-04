@@ -36,7 +36,7 @@ module load bioinformatics/beast/2.7.6-beagle
 echo 'echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
 #
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
-bfddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/snapp/BFD"
+bfddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/snapp/BFD_K6"
 run="$1"
 #' >> $JOBFILE
 
