@@ -28,7 +28,7 @@ echo "#!/bin/sh
 #$ -M connellym@si.edu
 #
 # ----------------Modules------------------------- #
-module load bioinformatics/beast/2.7.6-beagle
+module load bioinformatics/beast/2.7.6
 # ----------------Your Commands------------------- #
 #" > $JOBFILE
 
