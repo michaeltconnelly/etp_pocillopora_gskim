@@ -6,8 +6,8 @@
 #$ -l mres=192G,h_data=12G,h_vmem=12G,himem
 #$ -cwd
 #$ -j y
-#$ -N pcangsd
-#$ -o pcangsd.log
+#$ -N pcangsd_selection
+#$ -o pcangsd_selection.log
 #$ -m bea
 #$ -M connellym@si.edu
 #
