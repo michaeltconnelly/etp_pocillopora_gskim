@@ -12,6 +12,7 @@
 #$ -M connellym@si.edu
 #
 # ----------------Modules------------------------- #
+module load bioinformatics/angsd
 module load bioinformatics/pcangsd
 #
 # ----------------Your Commands------------------- #
@@ -85,7 +86,7 @@ pcangsd \
 -o ${prodir}/outputs/angsd/${set}/${set}_noLD \
 --selection \
 --admix \
--threads $NSLOTS
+--threads $NSLOTS
 # --pcadapt
 
 # Outputs the following files:
