@@ -72,8 +72,8 @@ FILTERS="-uniqueOnly 1 -remove_bads 1 -minMapQ 30 -minQ 30 -dosnpstat 1 -doHWE 1
 TODO="-doMajorMinor 1 -doMaf 1 -doCounts 1 -makeMatrix 1 -doIBS 1 -doCov 1 -doGeno 8 -doPost 1 -doGlf 2"
 
 # assign variable to sites and chrs files (sorted and indexed)
-SITES=${setdir}/${set}_noLD_sorted_v3.sites.txt
-CHRS=${setdir}/${set}_noLD.SczhEnG_v3.txt 
+SITES=${prodir}/outputs/angsd/final_noclones/final_noclones_noLD_sorted_v3.sites.txt
+CHRS=${prodir}/outputs/angsd/final_noclones/final_noclones_noLD.SczhEnG_v3.txt 
 
 angsd -sites $SITES -rf $CHRS -b $BAMS -GL 1 $FILTERS $TODO -P $NSLOTS -out ${setdir}/${set}_noLD_filtered
 
