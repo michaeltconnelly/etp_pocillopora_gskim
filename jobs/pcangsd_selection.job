@@ -82,7 +82,7 @@ zcat ${setdir}/${set}_noLD_filtered.mafs.gz | wc -l
 
 # ----- Selection scans with PCangsd
 pcangsd \
--beagle ${prodir}/outputs/angsd/${set}/${set}_noLD_filtered.beagle.gz \
+--beagle ${prodir}/outputs/angsd/${set}/${set}_noLD_filtered.beagle.gz \
 -o ${prodir}/outputs/angsd/${set}/${set}_noLD \
 --selection \
 --admix \
