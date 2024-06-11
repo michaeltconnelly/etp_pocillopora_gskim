@@ -18,10 +18,15 @@ set -- $POPS
 for pop1; do
 shift
 for pop2; do
+
 # create job file
 echo "Creating job file for PCangsd selection analysis between ${pop1} and ${pop2}"
 JOBFILE="${prodir}/bash/jobs/pcangsd_pairwise_selection_${pop1}.${pop2}.job"
 touch $JOBFILE
+
+# create file with list of samples
+SAMPLE_FILE="${prodir}/data/pairwise_comparisons/${set}_samples.txt"
+cat ${prodir}/data/pops_ngsadmix/${pop1} ${prodir}/data/pops_ngsadmix/${pop2} > $SAMPLE_FILE
 
 # input QSUB commands
 echo "#!/bin/sh
@@ -47,13 +52,14 @@ module load bioinformatics/pcangsd
 echo 'echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
 # assign job-specific variables
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
-angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/angsd"' >> $JOBFILE
+angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/angsd"
+SAMPLE_FILE="${prodir}/data/pairwise_comparisons/${set}_samples.txt"' >> $JOBFILE
 
 # assign variable for pairwise comparison
 printf 'set="%s_%s"\n' "$pop1" "$pop2" >> $JOBFILE
 
 # input commands to create output directory and bam file list for each comparison
-echo 'samples=$(cat ${prodir}/data/${set}_samples.txt)
+echo 'samples=$(cat $SAMPLE_FILE)
 
 # creating an output directory for set output files
 if [ ! -d "${angsddir}/selection/${set}" ]; then mkdir ${angsddir}/selection/${set}; fi
@@ -62,7 +68,7 @@ if [ ! -d "${angsddir}/selection/${set}" ]; then mkdir ${angsddir}/selection/${s
 setdir="${angsddir}/selection/${set}"
 
 # making a list of bam file paths
-ls ${prodir}/outputs/alignments/*md.rg.bam | grep -f ${prodir}/data/${set}_samples.txt > ${setdir}/${set}_bamfile.txt
+ls ${prodir}/outputs/alignments/*md.rg.bam | grep -f $SAMPLE_FILE > ${setdir}/${set}_bamfile.txt
 
 # verify samples are correct
 echo "These are the samples to be processed: ${samples}, there are $(cat ${setdir}/${set}_bamfile.txt | wc -l) in total"' >> $JOBFILE
@@ -90,7 +96,7 @@ echo 'angsd -sites $SITES -rf $CHRS -b $BAMS -GL 1 $FILTERS $TODO -P $NSLOTS -ou
 # input PCangsd commands
 echo '# perform PCA-based selection analysis' >> $JOBFILE
 echo 'pcangsd \
--beagle ${angsddir}/${set}/${set}_noLD_filtered.beagle.gz \
+--beagle ${angsddir}/${set}/${set}_noLD_filtered.beagle.gz \
 -o ${prodir}/outputs/angsd/selection/${set}_noLD \
 --pcadapt \
 --sites_save \
