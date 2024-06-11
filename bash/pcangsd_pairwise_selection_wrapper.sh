@@ -108,6 +108,6 @@ echo '#
 echo = `date` job $JOB_NAME done' >> $JOBFILE
 
 # submit job
-# qsub $JOBFILE
+qsub $JOBFILE
 done
 done
