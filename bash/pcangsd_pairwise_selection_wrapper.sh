@@ -25,7 +25,7 @@ JOBFILE="${prodir}/bash/jobs/pcangsd_pairwise_selection_${pop1}.${pop2}.job"
 touch $JOBFILE
 
 # create file with list of samples
-SAMPLE_FILE="${prodir}/data/pairwise_comparisons/${set}_samples.txt"
+SAMPLE_FILE="${prodir}/data/pairwise_comparisons/${pop1}_${pop2}_samples.txt"
 cat ${prodir}/data/pops_ngsadmix/${pop1} ${prodir}/data/pops_ngsadmix/${pop2} > $SAMPLE_FILE
 
 # input QSUB commands
