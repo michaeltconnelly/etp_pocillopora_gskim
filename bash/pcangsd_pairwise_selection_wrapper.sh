@@ -65,17 +65,17 @@ setdir="${angsddir}/selection/${set}"
 ls ${prodir}/outputs/alignments/*md.rg.bam | grep -f ${prodir}/data/${set}_samples.txt > ${setdir}/${set}_bamfile.txt
 
 # verify samples are correct
-echo " These are the samples to be processed: ${samples}, there are $(cat ${setdir}/${set}_bamfile.txt | wc -l) in total"' >> $JOBFILE
+echo "These are the samples to be processed: ${samples}, there are $(cat ${setdir}/${set}_bamfile.txt | wc -l) in total"' >> $JOBFILE
 
 # input ANGSD commands
 echo '# prepare ANGSD variables' >> $JOBFILE
 
 # assign variable to sites and chrs files (sorted and indexed)
-echo 'SITES=${angsddir}/final_noclones/final_noclones_noLD_sorted_v3.sites.txt
-CHRS=${angsddir}/final_noclones/final_noclones_noLD.SczhEnG_v3.txt"' >> $JOBFILE
+echo 'SITES="${angsddir}/final_noclones/final_noclones_noLD_sorted_v3.sites.txt"
+CHRS="${angsddir}/final_noclones/final_noclones_noLD.SczhEnG_v3.txt"' >> $JOBFILE
 
 # assign variable to bamfile
-echo 'BAMS=${setdir}/${set}_bamfile.txt' >> $JOBFILE
+echo 'BAMS="${setdir}/${set}_bamfile.txt"' >> $JOBFILE
 
 # assign variable to site filters 
 echo 'FILTERS="-snp_pval 1e-5 -minMaf 0.05"' >> $JOBFILE
