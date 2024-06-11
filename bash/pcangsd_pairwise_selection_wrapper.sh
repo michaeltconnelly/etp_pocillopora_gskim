@@ -52,11 +52,12 @@ module load bioinformatics/pcangsd
 echo 'echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
 # assign job-specific variables
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
-angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/angsd"
-SAMPLE_FILE="${prodir}/data/pairwise_comparisons/${set}_samples.txt"' >> $JOBFILE
+angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/angsd"' >> $JOBFILE
 
-# assign variable for pairwise comparison
+# assign variables for pairwise comparison
 printf 'set="%s_%s"\n' "$pop1" "$pop2" >> $JOBFILE
+
+echo 'SAMPLE_FILE="${prodir}/data/pairwise_comparisons/${set}_samples.txt"' >> $JOBFILE
 
 # input commands to create output directory and bam file list for each comparison
 echo 'samples=$(cat $SAMPLE_FILE)
