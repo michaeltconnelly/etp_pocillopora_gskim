@@ -11,7 +11,7 @@ angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/
 POPFILE="$1"
 
 # generate list of populations
-POPS=$(cat ${prodir}/data/pops_ngsadmix/$POPFILE)
+POPS=$(cat ${prodir}/data/$POPFILE)
 
 # script to create and submit separate jobs for all pairwise comparisons
 set -- $POPS
@@ -45,10 +45,9 @@ module load bioinformatics/pcangsd
 
 # input job-specific variables
 echo 'echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
-#
+# assign job-specific variables
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
-angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/angsd"
-#' >> $JOBFILE
+angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/angsd"' >> $JOBFILE
 
 # assign variable for pairwise comparison
 printf 'set="%s_%s"\n' "$pop1" "$pop2" >> $JOBFILE
@@ -57,10 +56,10 @@ printf 'set="%s_%s"\n' "$pop1" "$pop2" >> $JOBFILE
 echo 'samples=$(cat ${prodir}/data/${set}_samples.txt)
 
 # creating an output directory for set output files
-if [ ! -d "${angsddir}/${set}" ]; then mkdir ${angsddir}/${set}; fi
+if [ ! -d "${angsddir}/selection/${set}" ]; then mkdir ${angsddir}/selection/${set}; fi
 
 # assign variable for output directory
-setdir="${angsddir}/${set}"
+setdir="${angsddir}/selection/${set}"
 
 # making a list of bam file paths
 ls ${prodir}/outputs/alignments/*md.rg.bam | grep -f ${prodir}/data/${set}_samples.txt > ${setdir}/${set}_bamfile.txt
