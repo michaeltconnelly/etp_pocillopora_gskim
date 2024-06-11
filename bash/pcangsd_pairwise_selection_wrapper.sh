@@ -97,8 +97,8 @@ echo 'angsd -sites $SITES -rf $CHRS -b $BAMS -GL 1 $FILTERS $TODO -P $NSLOTS -ou
 # input PCangsd commands
 echo '# perform PCA-based selection analysis' >> $JOBFILE
 echo 'pcangsd \
---beagle ${angsddir}/${set}/${set}_noLD_filtered.beagle.gz \
--o ${prodir}/outputs/angsd/selection/${set}_noLD \
+--beagle ${setdir}/${set}_noLD_filtered.beagle.gz \
+-o ${setdir}/${set}_noLD \
 --pcadapt \
 --sites_save \
 --threads $NSLOTS' >> $JOBFILE
