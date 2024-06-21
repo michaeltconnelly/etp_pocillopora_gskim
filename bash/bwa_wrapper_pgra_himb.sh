@@ -54,4 +54,5 @@ echo 'echo = `date` job $JOB_NAME done' >> ${prodir}/bash/jobs/${sample}_pgra-hi
 # submit job
 qsub ${prodir}/bash/jobs/${sample}_pgra-himb_bwa_align.job
 #
+sleep 1
 done
