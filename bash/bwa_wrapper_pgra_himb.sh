@@ -45,7 +45,7 @@ echo 'echo + NSLOTS = $NSLOTS' >> ${prodir}/bash/jobs/${sample}_pgra-himb_bwa_al
 echo "bwa mem ${mcs}/sequences/p_grandis_GCA_964027065.2/GCA_964027065.2_jaPocGran1.hap1.2_genomic.fna \
 ${prodir}/data/trimmed/${sample}_R1_PE_trimmed.fastq.gz \
 ${prodir}/data/trimmed/${sample}_R2_PE_trimmed.fastq.gz \
-> ${prodir}/outputs/alignments/pver_csiro/${sample}.sam" >> "${prodir}"/bash/jobs/${sample}_pgra-himb_bwa_align.job
+> ${prodir}/outputs/alignments/pgra_himb/${sample}.sam" >> "${prodir}"/bash/jobs/${sample}_pgra-himb_bwa_align.job
 
 #
 echo 'echo '${sample}' successfully aligned' >> "${prodir}"/bash/jobs/${sample}_pgra-himb_bwa_align.job
