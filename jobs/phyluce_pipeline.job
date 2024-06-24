@@ -117,7 +117,7 @@ phyluce_align_get_align_summary_data \
 
 ## STEP 4 -----------------------------------------------------------------------------------------
 # align the data - turn off trimming and output FASTA
-phyluce_align_remove_locus_name_from_nexus_lines  \
+phyluce_align_remove_locus_name_from_files  \
     --alignments ${prodir}/outputs/uce-taxon-sets/${set}/${set}-mafft-nexus-internal-trimmed-gblocks \
     --output ${prodir}/outputs/uce-taxon-sets/${set}/${set}-mafft-nexus-internal-trimmed-gblocks-clean \
     --cores $NSLOTS \
@@ -137,10 +137,10 @@ phyluce_align_get_only_loci_with_min_taxa \
     --log-path ${prodir}/outputs/uce-taxon-sets/${set}/log
 
 # build the concatenated data matrix
-phyluce_align_format_nexus_files_for_raxml \
+phyluce_align_concatenate_alignments \
     --alignments ${prodir}/outputs/uce-taxon-sets/${set}/${set}-mafft-nexus-internal-trimmed-gblocks-clean-50p \
     --output ${prodir}/outputs/uce-taxon-sets/${set}/${set}-mafft-nexus-internal-trimmed-gblocks-clean-50p-raxml \
-    --charsets \
+    --phylip \
     --log-path ${prodir}/outputs/uce-taxon-sets/${set}/log
 
 # create formatted partitions file
@@ -156,10 +156,10 @@ phyluce_align_get_only_loci_with_min_taxa \
     --log-path ${prodir}/outputs/uce-taxon-sets/${set}/log
 
 # build the concatenated data matrix
-phyluce_align_format_nexus_files_for_raxml \
+phyluce_align_concatenate_alignments \
     --alignments ${prodir}/outputs/uce-taxon-sets/${set}/${set}-mafft-nexus-internal-trimmed-gblocks-clean-75p \
     --output ${prodir}/outputs/uce-taxon-sets/${set}/${set}-mafft-nexus-internal-trimmed-gblocks-clean-75p-raxml \
-    --charsets \
+    --phylip \
     --log-path ${prodir}/outputs/uce-taxon-sets/${set}/log
 
 # create formatted partitions file
