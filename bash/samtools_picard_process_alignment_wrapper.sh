@@ -84,4 +84,5 @@ echo 'echo = `date` job $JOB_NAME done' >> ${prodir}/bash/jobs/${sample}_samtool
 # submit job
 qsub ${prodir}/bash/jobs/${sample}_samtools_picard.job
 #
+sleep 0.2
 done
