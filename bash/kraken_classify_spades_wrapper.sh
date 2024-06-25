@@ -6,8 +6,8 @@ prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 
 # setup loop to create kraken jobs
 set=$1
-DBNAME="${prodir}/data/krakendb/k2_standard_16gb_20240605"
-#DBNAME="${prodir}/data/krakendb/k2_pluspf_20240605"
+#DBNAME="${prodir}/data/krakendb/k2_standard_16gb_20240605"
+DBNAME="${prodir}/data/krakendb/k2_pluspf_20240605"
 
 cat ${prodir}/data/${set}_samples.txt | while read SAMPLE 
 do 
@@ -53,5 +53,5 @@ ${prodir}/outputs/spades/contigs/${set}/${SAMPLE}_contigs.fasta" >> $JOBFILE
 echo 'echo = `date` job $JOB_NAME done' >> $JOBFILE
 # submit job
 qsub $JOBFILE
-
+sleep 0.5
 done 
