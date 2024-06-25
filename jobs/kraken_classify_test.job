@@ -1,0 +1,31 @@
+#!/bin/sh 
+# ----------------Parameters---------------------- #
+#$ -S /bin/sh
+#$ -pe mthread 24
+#$ -q lThM.q
+#$ -l mres=288G,h_data=12G,h_vmem=12G,himem
+#$ -cwd
+#$ -j y
+#$ -N kraken_classify_test
+#$ -o kraken_classify_test.log
+#$ -m bea
+#$ -M connellym@si.edu
+#
+# ----------------Modules------------------------- #
+module load bioinformatics/kraken
+#
+# ----------------Your Commands------------------- #
+#
+echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
+echo + NSLOTS = $NSLOTS
+#
+prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
+DBNAME="${prodir}/data/krakendb/k2_standard_16gb_20240605"
+
+kraken2 --threads $NSLOTS --db $DBNAME \
+--classified-out ${prodir}/outputs/kraken/PAN_05_S174_classified \
+--unclassified-out ${prodir}/outputs/kraken/PAN_05_S174_unclassified \
+--report ${prodir}/outputs/kraken/PAN_05_S174_report \
+${prodir}/outputs/spades/final_contigs/PAN_05_S174_contigs.fasta
+#
+echo = `date` job $JOB_NAME done
