@@ -26,6 +26,6 @@ kraken2 --threads $NSLOTS --db $DBNAME \
 --classified-out ${prodir}/outputs/kraken/PAN_05_S174_classified \
 --unclassified-out ${prodir}/outputs/kraken/PAN_05_S174_unclassified \
 --report ${prodir}/outputs/kraken/PAN_05_S174_report \
-${prodir}/outputs/spades/contigs/final_contigs/PAN_05_S174_contigs.fasta
+${prodir}/outputs/spades/contigs/final_noclones/PAN_05_S174_contigs.fasta
 #
 echo = `date` job $JOB_NAME done
