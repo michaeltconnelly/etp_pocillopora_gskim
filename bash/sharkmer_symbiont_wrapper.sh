@@ -21,7 +21,7 @@ echo "#!/bin/sh
 #$ -cwd
 #$ -j y
 #$ -N sharkmer_${SAMPLE}
-#$ -o ${prodir}/outputs/sharkmer_cnidaria/${SAMPLE}/sharkmer_${SAMPLE}.log
+#$ -o ${prodir}/outputs/sharkmer_symbiont/${SAMPLE}/sharkmer_${SAMPLE}.log
 #" > $JOBFILE
 # add modules 
 echo '# ----------------Modules------------------------- #
@@ -33,12 +33,14 @@ echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME' >
 echo "gunzip ${prodir}/data/trimmed/${SAMPLE}_R1_PE_trimmed.fastq.gz
 gunzip ${prodir}/data/trimmed/${SAMPLE}_R2_PE_trimmed.fastq.gz" >> $JOBFILE
 
-echo "mkdir ${prodir}/outputs/sharkmer_cnidaria/${SAMPLE}" >> $JOBFILE
+echo "mkdir ${prodir}/outputs/sharkmer_symbiont/${SAMPLE}" >> $JOBFILE
 
 echo "sharkmer \
  --max-reads 6000000 \
- -s ${SAMPLE} -o ${prodir}/outputs/sharkmer_cnidaria/${SAMPLE}/ \
+ -s ${SAMPLE} -o ${prodir}/outputs/sharkmer_symbiont/${SAMPLE}/ \
  --pcr cnidaria \
+ --pcr "GCAGCTCATGGTTATTTTGGTAGAC,AATTCCCATTCTCTACCCATCC,1000,psbA,coverage=10,mismatches=1,trim=24" \
+ --pcr "GACGGCTGTAACTATAACGG,CCATCGTATTGAACCCAGC,1000,cp23S,coverage=10,mismatches=1,trim=24" \
  ${prodir}/data/trimmed/${SAMPLE}_R1_PE_trimmed.fastq ${prodir}/data/trimmed/${SAMPLE}_R2_PE_trimmed.fastq" >> $JOBFILE
 
 echo "gzip ${prodir}/data/trimmed/${SAMPLE}_R1_PE_trimmed.fastq
