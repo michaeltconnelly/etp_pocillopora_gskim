@@ -6,8 +6,8 @@
 #$ -l mres=288G,h_data=12G,h_vmem=12G,himem
 #$ -cwd
 #$ -j y
-#$ -N kraken_classify_test
-#$ -o kraken_classify_test.log
+#$ -N kraken_classify_reads_test
+#$ -o kraken_classify_reads_test.log
 #$ -m bea
 #$ -M connellym@si.edu
 #
@@ -23,11 +23,13 @@ prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 DBNAME="${prodir}/data/krakendb/k2_standard_16gb_20240605"
 
 kraken2 --threads $NSLOTS --db $DBNAME \
---output ${prodir}/outputs/kraken/PAN_05_S174 \
---classified-out ${prodir}/outputs/kraken/PAN_05_S174_classified.fa \
---unclassified-out ${prodir}/outputs/kraken/PAN_05_S174_unclassified.fa \
---report ${prodir}/outputs/kraken/PAN_05_S174_report \
+--output ${prodir}/outputs/kraken/PAN_05_S174_reads \
+--classified-out ${prodir}/outputs/kraken/PAN_05_S174_classified_#.fq \
+--unclassified-out ${prodir}/outputs/kraken/PAN_05_S174_unclassified_#.fq \
+--report ${prodir}/outputs/kraken/PAN_05_S174_reads_report \
+--paired \
+--gzip-compressed \
 --use-names \
-${prodir}/outputs/spades/contigs/final_noclones/PAN_05_S174_contigs.fasta
+${prodir}/data/trimmed/PAN_05_S174_R1_PE_trimmed.fastq.gz ${prodir}/data/trimmed/PAN_05_S174_R1_PE_trimmed.fastq.gz 
 #
 echo = `date` job $JOB_NAME done
