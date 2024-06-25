@@ -47,13 +47,13 @@ echo 'echo + NSLOTS = $NSLOTS' >> ${prodir}/bash/jobs/${sample}_mitofinder_decon
 # pocillopora.gb consists of Pocillopora-only reference mitogenomes
 echo "mitofinder \
 -j ${sample} \
---metaspades \
+--megahit \
 -o 4 \
 -r ${mcs}/sequences/pocillopora.gb \
 -1 ${prodir}/data/decontaminated/${sample}_decontam_R1_PE.fastq.gz  \
 -2 ${prodir}/data/decontaminated/${sample}_decontam_R2_PE.fastq.gz  \
 --allow-intron --intron-size 12000 \
---circular-size 30 --circular-offset 500" >> "${prodir}"/bash/jobs/${sample}_mitofinder_decontam.job
+--circular-size 8 --circular-offset 100" >> "${prodir}"/bash/jobs/${sample}_mitofinder_decontam.job
 # metaspades
 # tRNA annotation
 
