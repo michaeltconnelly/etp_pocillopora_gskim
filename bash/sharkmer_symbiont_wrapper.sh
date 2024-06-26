@@ -25,7 +25,7 @@ echo "#!/bin/sh
 #" > $JOBFILE
 # add modules 
 echo '# ----------------Modules------------------------- #
-  module load bio/sharkmer/0.2.0_93ee045
+  module load bioinformatics/sharkmer
 # ----------------Your Commands------------------- #
 #
 echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME' >> $JOBFILE
@@ -49,7 +49,7 @@ gzip ${prodir}/data/trimmed/${SAMPLE}_R2_PE_trimmed.fastq" >> $JOBFILE
 echo 'echo = `date` job $JOB_NAME done' >> $JOBFILE
 # submit job
 qsub $JOBFILE
-
+sleep 0.5
 done 
 #
 #TO RUN JOB - 
