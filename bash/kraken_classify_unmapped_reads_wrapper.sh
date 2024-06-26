@@ -29,7 +29,7 @@ echo "#!/bin/sh
 #$ -cwd
 #$ -j y
 #$ -N kraken_classify_${SAMPLE}_reads
-#$ -o ${prodir}/outputs/kraken/${SAMPLE}/kraken_${SAMPLE}_unmapped_reads.log
+#$ -o ${prodir}/outputs/kraken_unmapped_reads/${SAMPLE}/kraken_${SAMPLE}_unmapped_reads.log
 #$ -m bea
 #$ -M connellym@si.edu
 #" > $JOBFILE
@@ -49,6 +49,7 @@ echo "kraken2 --threads 12 --db $DBNAME \
 --paired \
 --gzip-compressed \
 --use-names \
+--confidence 0.1 \
 ${prodir}/data/unmapped/${SAMPLE}_Unmapped_R1_PE.fastq.gz \
 ${prodir}/data/unmapped/${SAMPLE}_Unmapped_R2_PE.fastq.gz" >> $JOBFILE
 
