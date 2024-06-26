@@ -38,7 +38,6 @@ echo "mkdir ${prodir}/outputs/sharkmer_symbiont/${SAMPLE}" >> $JOBFILE
 echo "sharkmer \
  --max-reads 6000000 \
  -s ${SAMPLE} -o ${prodir}/outputs/sharkmer_symbiont/${SAMPLE}/ \
- --pcr cnidaria \
  --pcr "GCAGCTCATGGTTATTTTGGTAGAC,AATTCCCATTCTCTACCCATCC,1000,psbA,coverage=10,mismatches=1,trim=24" \
  --pcr "GACGGCTGTAACTATAACGG,CCATCGTATTGAACCCAGC,1000,cp23S,coverage=10,mismatches=1,trim=24" \
  ${prodir}/data/trimmed/${SAMPLE}_R1_PE_trimmed.fastq ${prodir}/data/trimmed/${SAMPLE}_R2_PE_trimmed.fastq" >> $JOBFILE
