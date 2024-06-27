@@ -26,19 +26,14 @@ prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 set=$1
 
 pcangsd.py \
--beagle ${prodir}/outputs/angsd/${set}/${set}_ibs05.beagle.gz \
--o ${prodir}/outputs/angsd/${set}/${set} \
--selection \
+-beagle ${prodir}/outputs/angsd/${set}/${set}_pgra_ibs05.beagle.gz \
+-o ${prodir}/outputs/angsd/${set}/${set}_pgra_ibs05 \
 -admix \
 -threads $NSLOTS
 
 # Outputs the following files:
 # log-file (pcangsd.log)
 # covariance matrix (pcangsd.cov)
-# selection statistics (pcangsd.selection)
 # admixture proportions (pcangsd.admix.3.Q)
-# ancestral allele frequencies (pcangsd.admix.3.F)
-
-# In the newer version of PCAngsd, you can still perform selection scans for more PCs by using "--selection_e INT"
 
 echo = `date` job $JOB_NAME done
