@@ -78,8 +78,12 @@ echo "These are the samples to be processed: ${samples}, there are $(cat ${setdi
 echo '# prepare ANGSD variables' >> $JOBFILE
 
 # assign variable to sites and chrs files (sorted and indexed)
-echo 'SITES="${angsddir}/final_noclones/final_noclones_noLD_sorted_v3.sites.txt"
-CHRS="${angsddir}/final_noclones/final_noclones_noLD.SczhEnG_v3.txt"' >> $JOBFILE
+# include all sites, do not filter for LD
+echo 'SITES="${angsddir}/AllSites.txt"
+CHRS="${angsddir}/SczhEnG.txt"' >> $JOBFILE
+
+#echo 'SITES="${angsddir}/final_noclones/final_noclones_noLD_sorted_v3.sites.txt"
+#CHRS="${angsddir}/final_noclones/final_noclones_noLD.SczhEnG_v3.txt"' >> $JOBFILE
 
 # assign variable to bamfile
 echo 'BAMS="${setdir}/${set}_bamfile.txt"' >> $JOBFILE
