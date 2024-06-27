@@ -3,11 +3,11 @@
 #$ -S /bin/sh
 #$ -pe mthread 24
 #$ -q lThC.q
-#$ -l mres=72G,h_data=3G,h_vmem=3G
+#$ -l mres=192G,h_data=8G,h_vmem=8G
 #$ -cwd
 #$ -j y
-#$ -N iqtree_phyluce
-#$ -o iqtree_phyluce.log
+#$ -N iqtree_phyluce_partitions
+#$ -o iqtree_phyluce_partitions.log
 #$ -m bea
 #$ -M connellym@si.edu
 #
