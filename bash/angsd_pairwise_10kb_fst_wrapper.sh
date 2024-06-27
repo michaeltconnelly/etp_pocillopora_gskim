@@ -10,7 +10,7 @@ angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/
 POPFILE="$1"
 
 # generate list of populations
-POPS=$(cat ${prodir}/data/pops_ngsadmix/$POPFILE)
+POPS=$(cat ${prodir}/data/$POPFILE)
 # calculate genome-wide per-site pairwise Fst
 # script to create and submit separate jobs for all pairwise comparisons
 
