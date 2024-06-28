@@ -32,8 +32,8 @@ cat ${prodir}/data/pops_pgrandis_continent/${pop1} ${prodir}/data/pops_pgrandis_
 echo "#!/bin/sh
 # ----------------Parameters---------------------- #
 #$ -S /bin/sh
-#$ -q lThC.q
-#$ -l mres=4G,h_data=4G,h_vmem=4G
+#$ -q mThM.q
+#$ -l mres=12G,h_data=12G,h_vmem=12G
 #$ -cwd
 #$ -j y
 #$ -N pcangsd_selection_${pop1}.${pop2}
@@ -106,6 +106,9 @@ echo 'pcangsd \
 --pcadapt \
 --sites_save \
 --threads $NSLOTS' >> $JOBFILE
+
+# obtain site coordinates from finished maf.gz file
+echo 'zcat ${setdir}/${set}_noLD.mafs.gz | cut -f 1,2 | tail -n +2 | sed 's/SczhEnG_//g' | sort -t$'\t' -k 1,1n -k 2,2n | sed 's/^/SczhEnG_/g' > ${setdir}/${set}_noLD.sites.txt'  >> $JOBFILE
 
 # input job finished statment
 echo '#
