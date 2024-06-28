@@ -32,7 +32,7 @@ cat ${prodir}/data/pops_pgrandis_continent/${pop1} ${prodir}/data/pops_pgrandis_
 echo "#!/bin/sh
 # ----------------Parameters---------------------- #
 #$ -S /bin/sh
-#$ -q mThM.q
+#$ -q lThM.q
 #$ -l mres=12G,h_data=12G,h_vmem=12G
 #$ -cwd
 #$ -j y
