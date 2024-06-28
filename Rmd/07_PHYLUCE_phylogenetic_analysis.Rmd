@@ -40,7 +40,7 @@ oury_samples <- read_csv("./data/top5_oury_samples.csv") %>%
 ## IQ-TREE w/ PHYLUCE alignments
 ### PociGSkim NGSAdmix K=6 top 5 reps (29) + Oury GSH top 5 reps (103) + reference genome samples (6) + outgroups (1) (n = 139 samples)
 #### 75% matrix
- 139 taxa, 1,280 UCE loci, 616,802 bp, 168,683 informative sites
+ 141 taxa, 1,273 UCE loci, 613,550 bp, 167,666  informative sites
 ```{r import_tree}
 tree <- read.newick("./outputs/iqtree/iqtree_snapp_subset_K6_5X_75.treefile")
 
@@ -126,7 +126,7 @@ tree$node.label <- node.labels
 pdf("./outputs/figures/iqtree_75pct_tree.pdf", width = 6.5, height = 8.5)
 #
 tree_title <- expression(paste("IQ-TREE Maximum Likelihood Tree with reference ", italic("Pocillopora"), " GSH samples"))
-loci_info <- c("75% sample occupancy, 1,280 UCE loci, 616,802 bp, 168,683 informative sites")
+loci_info <- c("75% sample occupancy, 1,273 UCE loci, 613,550 bp, 167,666 informative sites")
 #
 
 tree %>% ggtree(., right = TRUE) %<+% tips_metadata + 
@@ -169,7 +169,7 @@ dev.off()
 ```
 
 #### 50% matrix
- 139 taxa, 1,522 UCE loci, 714,076 bp, 193,717 informative sites
+ 141 taxa, 1,519 UCE loci, 713,305 bp, 193,855 informative sites
 ```{r import_tree}
 tree <- read.newick("./outputs/iqtree/iqtree_snapp_subset_K6_5X_50.treefile")
 
@@ -255,7 +255,7 @@ tree$node.label <- node.labels
 pdf("./outputs/figures/iqtree_50pct_tree.pdf", width = 6.5, height = 8.5)
 #
 tree_title <- expression(paste("IQ-TREE Maximum Likelihood Tree with reference ", italic("Pocillopora"), " GSH samples"))
-loci_info <- c("50% sample occupancy, 1,522 UCE loci, 714,076 bp, 193,717 informative sites")
+loci_info <- c("50% sample occupancy, 1,519 UCE loci, 713,305 bp, 193,855 informative sites")
 #
 
 tree %>% ggtree(., right = TRUE) %<+% tips_metadata + 

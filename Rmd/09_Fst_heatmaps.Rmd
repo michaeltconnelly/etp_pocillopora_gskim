@@ -71,28 +71,37 @@ fst_heatmap
 dev.off()
 ```
 
-### *P. grandis* populations
+### *P. grandis* continental lineage populations
 ```{r}
-pop_combos <- data.frame(t(combn(unique(sort(samples$Region)), m = 2)))
+# samples$Region <- factor(samples$Region, levels = rev(region_order_longitude), ordered = T)
+pop_combos <- data.frame(t(combn(unique(sort(samples$Region)), m = 2))) %>% 
+  filter(!str_detect(`X2`, "Clipperton"))
+pop_combos
 ```
 ```{r}
-pop_fst <- read_csv("./outputs/pgrandis_population_fst.csv")
+pop_fst <- read_csv("./outputs/pgrandis_continental_population_fst.csv",
+                    col_types = cols("pop1" = col_factor(ordered = T),
+                                     "pop2" = col_factor(ordered = T)))
 ```
 
 
 ```{r}
 fst_heatmap <- ggplot(data = pop_fst, aes(pop1, pop2, fill = Fst)) +
   geom_tile(color = "white") +
-  scale_fill_gradient(low = "white", high = "red", limits = c(0,0.08), name="FST") +
-  geom_text(aes(label = round(Fst, 3)), size = 2) +
+  scale_fill_gradient(low = "white", high = "red", limits = c(0,0.05), name = expression(F[ST])) +
+  geom_text(aes(label = round(Fst, 3)), size = 2.5) +
   theme(axis.title = element_blank(),
-        axis.text.x = element_text(angle = 90, vjust = -1, size = 10, hjust = 0), 
-        axis.text.y = element_text(size = 10)) + 
-  coord_fixed() + scale_x_discrete(position = "top")
+        axis.text.x = element_text(angle = 30, vjust = 1, size = 8, hjust = 0), 
+        axis.text.y = element_text(size = 8),
+        axis.ticks = element_blank(),
+        panel.grid = element_blank(),
+        panel.border = element_blank()) + 
+  coord_fixed() +
+  scale_x_discrete(position = "top")
 print(fst_heatmap)
 ```
 ```{r}
-pdf("./outputs/figures/pgrandis_fst_heatmap.pdf", height = 5, width = 5.75)
+pdf("./outputs/figures/pgrandis_continental_fst_heatmap.pdf", height = 5, width = 5.75)
 title <- expression(italic("P. grandis")*' population FST heatmap')
 fst_heatmap + ggtitle(title)
 dev.off()
@@ -141,7 +150,7 @@ for (file in fst_files) {
 
 ### P.grandis populations
 ```{r}
-fst_files <- list.files("./outputs/angsd/10kb_fst/pgrandis_pops", full.names = T)
+fst_files <- list.files("./outputs/angsd/10kb_fst/pgrandis_continental_pops", full.names = T)
 for (file in fst_files) { 
   fst_df <- read_delim(file, delim = "\t", skip = 1, col_names = angsd_fst_colnames, col_types = angsd_fst_cols)
   #
@@ -156,9 +165,24 @@ for (file in fst_files) {
   print((fst_plot / fst_hist) + plot_annotation(title = file))
 }            
 ```
-
+### 
 ```{r}
-
+pdf("./outputs/figures/10kbfst_pairwise.pdf")
+fst_files <- list.files("./outputs/angsd/10kb_fst/spp_k6", full.names = T)
+for (file in fst_files) { 
+  fst_df <- read_delim(file, delim = "\t", skip = 1, col_names = angsd_fst_colnames, col_types = angsd_fst_cols)
+  #
+  fst_hist <- fst_df %>% ggplot(aes(Fst)) + 
+    geom_histogram(binwidth = 0.02, color = "black", fill = "lightgrey") +
+    xlim(c(0,1))
+  #
+  fst_plot <- fst_df %>% ggplot(aes(CHR, Fst)) + 
+    geom_point() + 
+    ylim(c(0,1)) 
+  #
+  print((fst_plot / fst_hist) + plot_annotation(title = file))
+}
+dev.off()
 ```
 
 ```{r}

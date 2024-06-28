@@ -22,13 +22,6 @@ source("./R/pocillopora_etp_gksim_functions.R")
 source("./R/sample_import.R")
 samples <- all_samples
 ```
-```{r select_samples}
-# analyze all samples through QC steps, then subset for final analysis and figures
-samples <- filter(all_samples, PANAMA_MANUSCRIPT==T)
-samples <- filter(all_samples, `Sequence Round` == 1)
-samples <- filter(all_samples, `Sequence Round` == 2)
-samples <- filter(all_samples, `Sequence Round` == 1 | `Sequence Round` == 2)
-```
 
 ## Import/inspect genome skimming pipeline QC metrics
   Note: Run MultiQC on R1 reads only to create reports for all 337 analysis samples (124 + 165 + 48), with low-depth (<1M reads, 18 + 5) samples already excluded.
@@ -91,6 +84,17 @@ mapped_pdam_rsmas <- multiqc_flagstat_pdam_rsmas %>%
   select(`Sample ID`, mapped_passed) %>% 
   rename("pdam_rsmas" = mapped_passed)
 ```
+#### P. grandis (HIMB)
+```{r pgra_mapped}
+# samtools alignment flagstat files
+multiqc_flagstat_pgra_himb <-  read_tsv("./outputs/QCs/flagstats/flagstats/pgra_himb/multiqc_data/multiqc_samtools_flagstat.txt")  %>%
+  mutate("Sample ID" = gsub("_S.*_flagstat", "", Sample)) 
+
+mapped_pgra_himb <- multiqc_flagstat_pgra_himb %>% 
+  select(`Sample ID`, mapped_passed) %>% 
+  rename("pgra_himb" = mapped_passed)
+```
+
 #### P. verrucosa (KAUST)
 ```{r pver_mapped}
 # samtools alignment flagstat files
@@ -112,26 +116,39 @@ mapped_pver_csiro <- multiqc_flagstat_pver_csiro %>%
   rename("pver_csiro" = mapped_passed)
 ```
 
+#### P. verrucosa (CSKL)
+```{r pver_mapped}
+# samtools alignment flagstat files
+multiqc_flagstat_pver_cskl <-  read_tsv("./outputs/QCs/flagstats/flagstats/pver_cskl/multiqc_data/multiqc_samtools_flagstat.txt")  %>%
+  mutate("Sample ID" = gsub("_S.*_flagstat", "", Sample))
+
+mapped_pver_cskl <- multiqc_flagstat_pver_cskl %>% 
+  select(`Sample ID`, mapped_passed) %>% 
+  rename("pver_cskl" = mapped_passed)
+```
+
 #### Join and compare
 ```{r}
-multiqc_flagstat_comparison <- left_join(mapped_pdam_rsmas, mapped_pver_kaust, by = "Sample ID") %>% left_join(.,  mapped_pver_csiro, by = "Sample ID")
+multiqc_flagstat_comparison <- left_join(mapped_pdam_rsmas, mapped_pver_kaust, by = "Sample ID") %>% left_join(.,  mapped_pver_csiro, by = "Sample ID") %>% left_join(.,  mapped_pgra_himb, by = "Sample ID") %>% left_join(.,  mapped_pver_cskl, by = "Sample ID")
 ```
 
 ```{r}
-multiqc_flagstat_comparison_tidy <- multiqc_flagstat_comparison %>% pivot_longer(cols = c("pdam_rsmas", "pver_kaust", "pver_csiro"), names_to = "reference", values_to = "mapped_reads") %>% left_join(samples, by = "Sample ID")
+multiqc_flagstat_comparison_tidy <- multiqc_flagstat_comparison %>% pivot_longer(cols = c("pdam_rsmas", "pver_kaust", "pver_csiro", "pgra_himb", "pver_cskl"), names_to = "reference", values_to = "mapped_reads") %>% left_join(samples, by = "Sample ID")
 ```
 
 ```{r}
 multiqc_flagstat_comparison_tidy %>% ggplot(aes(`reference`, `mapped_reads`)) + geom_violin(aes(color = `Species`))
 ```
 ```{r}
-multiqc_flagstat_comparison_tidy %>% ggplot(aes(`reference`, `mapped_reads`)) + geom_point() + geom_line(aes(group = `Sample ID`))
+multiqc_flagstat_comparison_tidy %>% ggplot(aes(`reference`, `mapped_reads`)) + geom_point() + geom_line(aes(group = `Sample ID`), alpha = 0.15) + theme(panel.grid = element_blank())
 ```
 Note: No significant difference in mapping rates between assemblies, marginal increase in number of mapped reads in KAUST and CSIRO assemblies relative to RSMAS, but IMO not enough to justify switching assemblies.
 
 ### Mapped reads to best reference
 ```{r}
 multiqc_flagstat <- multiqc_flagstat_pdam_rsmas
+
+# multiqc_flagstat <- multiqc_flagstat_pgra_himb
 
 # mapped_pdam_rsmas <- multiqc_flagstat_pdam_rsmas %>% 
 #   select(`Sample ID`, mapped_passed) %>% 
@@ -501,4 +518,8 @@ multiqc_unmapqc %>%
 ```
 
 
-SNP matrix stats
+### Kraken2 taxonomy assignment
+#### Unmapped reads
+
+#### SPAdes contigs
+

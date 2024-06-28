@@ -68,6 +68,8 @@ all(samples$`Sample ID` == bam_ids) # TRUE
 ```{r import_ibs_matrix}
 # reading IBS matrix based on SNPs with allele frequency >= 0.05:
 ma <- as.matrix(read.table("./outputs/angsd/full_analysis_ibs05.ibsMat"))
+# 
+ma <- as.matrix(read.table("./outputs/angsd/full_analysis_pgra_ibs05.ibsMat"))
 ```
 ```{r ibs_matrix_names}
 # remove biorepository codes from sample labels

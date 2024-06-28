@@ -28,6 +28,8 @@ vcf <- vcfR::read.vcfR(file = "./outputs/full_analysis_noclones_strict_filtered.
 vcf <- vcfR::read.vcfR(file = "./outputs/full_analysis_sppsubset_strict_filtered.vcf.gz")
 # 
 vcf <- vcfR::read.vcfR(file = "./outputs/full_analysis_sppsubset_snapp_filtered.vcf.gz")
+#
+vcf <- vcfR::read.vcfR(file = "./outputs/snapp_subset_K6_5X_filtered_snapp_15X.vcf.gz")
 ```
 ## Convert to GENIND object
 ```{r genind convert}

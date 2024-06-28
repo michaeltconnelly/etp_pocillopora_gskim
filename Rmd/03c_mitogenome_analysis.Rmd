@@ -59,6 +59,9 @@ mitofinder_assembly_sizes %>%
 ```{r}
 
 ```
+```{r simple_circularize_summary}
+
+```
 
 
 ## Gene content and order

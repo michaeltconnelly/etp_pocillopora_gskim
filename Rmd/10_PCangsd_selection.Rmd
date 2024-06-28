@@ -1,0 +1,425 @@
+---
+title: "PCangsd selection analysis"
+author: "Mike Connelly"
+date: "2024-06-07"
+output: html_document
+---
+## Setup and packages
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = TRUE)
+options(stringsAsFactors = FALSE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+```{r packages}
+library("tidyverse")
+#
+library("qvalue")
+library("GenomicRanges")
+#
+library("topGO")
+#
+source("./R/pocillopora_etp_gksim_functions.R")
+```
+
+## Import sample metadata
+```{r import_sample_metadata}
+source("./R/sample_import.R")
+samples <- all_samples
+# NOTE: Remove clones from the dataset using IBS analysis before running PCAngsd
+```
+
+## Import coral gene coordinates and annotation
+```{r}
+gene_coordinates <- read_delim(file = "./data/pdam_genome_gene_coordinates.txt", col_names = c("chr","start","end","ID"))
+
+# extend the start and end coordinates by 1kb
+# gene_coordinates_extend_1kb 
+```
+```{r coral_gene_annotation}
+gene_annotation_coral <- read_delim(file = "./data/pdam_genome_annotations.tsv", col_names = T) #%>% arrange(ID)
+# rownames(gene_annotation_coral) <- gene_annotation_coral$ID
+# Check gene coordinate and feature annotation order coherence
+all(gene_coordinates$ID == gene_annotation_coral$ID)
+# Obtain KOG annotations
+gene2kog_coral <- gene_annotation_coral %>%
+  dplyr::select(ID, KOG_Class) %>% 
+  filter(KOG_Class != "")
+```
+```{r}
+gene_coordinates_annotation <- left_join(gene_coordinates, gene_annotation_coral, by = "ID") %>%
+  relocate(ID, .before = chr)
+```
+
+## PCangsd-based selection analyses
+```{r}
+# modified from: https://www.popgen.dk/software/index.php/PCAngsdTutorial#Infer_selection_along_the_genome
+library("RcppCNPy") # Numpy library for R
+
+## function for QQplot
+qqchi <- function(x,...){
+lambda <- round(median(x)/qchisq(0.5, 1), 2)
+  qqplot(qchisq((1:length(x)-0.5)/(length(x)), 1), x, ylab = "Observed", xlab = "Expected",...); abline(0, 1, col = 2, lwd = 2)
+legend("topleft", paste("lambda=", lambda))
+}
+
+### read in selection statistics (chi2 distributed)
+s <- npyLoad("./outputs/angsd/final_noclones.selection.npy")
+# Each column reflect the selection statistics along a tested PC and they are χ²-distributed with 1 degree of freedom.
+# no-clones, LD-pruned loci
+s <- npyLoad("./outputs/angsd/final_noclones_noLD.selection.npy")
+```
+```{r qq}
+## make QQ plot to QC the test statistics - takes a long time
+pdf("./outputs/figures/pcangsd_selection_qq.pdf")
+qqchi(s)
+dev.off()
+```
+```{r}
+# convert test statistic to p-value
+pval <- 1 - pchisq(s, 1)
+
+colnames(pval) <- c("PC1", "PC2", "PC3", "PC4")
+
+## read positions (hg38)
+p <- read.table("./outputs/angsd/final_noclones_ibs05.sites.txt", colC = c("factor", "integer"), sep = "\t")
+##
+p <- read.table("./outputs/angsd/final_noclones_noLD_sorted_v3.sites.txt", colC = c("factor", "integer"), sep = "\t")
+
+names(p) <- c("chr", "pos")
+```
+```{r manhattan}
+## make manhattan plot - also takes a long time
+plot(-log10(pval), col = p$chr, xlab = "Chromosomes", main = "Manhattan plot")
+```
+```{r}
+## zoom into region
+w <- range(which(pval < 1e-7)) + c(-100, 100)
+keep <- w[1]:w[2]
+ 
+plot(p$pos[keep], -log10(pval[keep]), col = p$chr[keep], xlab="HG38 Position chr2")
+
+## see the position of the most significant SNP
+ p$chr[which.max(s[,1])]
+ p$pos[which.max(s[,1])]
+ 
+ ?which.max()
+```
+
+```{r manhattan_plots}
+sites_pvals <- cbind(p, pval) 
+chrs <- unique(sites_pvals$chr)
+chrs[1:100]
+#
+sites_pvals %>% 
+  dplyr::filter(`chr` %in% chrs[1:1000]) %>%
+  ggplot(aes(chr, -log10(PC1))) + geom_point() + geom_hline(yintercept = -log10(0.05), color = "red") +
+  theme(axis.text.x = element_text(angle = 90))
+
+sites_pvals %>% 
+  dplyr::filter(`chr` == "SczhEnG_1") %>%
+  ggplot(aes(-log10(PC1))) + geom_histogram(binwidth = 0.05) + geom_vline(xintercept = -log10(0.05), color = "red")
+```
+```{r}
+# filter for significant sites along the main PC axes
+# PC1
+sites_pvals %>% filter(PC1 < 0.05)
+#
+sites_pvals %>% slice_max(order_by = desc(PC1), n = 100)
+```
+How do I annotate and determine the relevance of these variants? --> read in gff gene annotation information
+
+Need to complete pairwise comparisons between all species lineages
+  then P. grandis populations
+  
+Bonferroni False-discovery rate correction test
+
+```{r}
+# not working yet
+C <- as.matrix(read.table("pcangsd.cov")) # Reads estimated covariance matrix
+D <- as.matrix(read.table("pcangsd.selection")) # Reads PC based selection statistics
+
+# Plot PCA plot
+e <- eigen(C)
+plot(e$vectors[,1:2], xlab="PC1", ylab="PC2", main="PCAngsd")
+
+# Obtain p-values from PC-based selection scan
+p <- pchisq(D, 1, lower.tail=FALSE)
+```
+
+### Pairwise comparisons between species lineages
+```{r pairwise_comparisons_vector}
+# setup character vector of all pairwise comparisons between species lineages
+ngsadmix_spp_lowercase <- c("peffusa", "pgrandiscontinent", "pgrandisoffshore", "pmeandrina", "pverrucosa3a", "pverrucosa3b")
+#
+spp_combos <- data.frame(t(combn(ngsadmix_spp_lowercase, m = 2))) %>% transmute(comp = paste(`X1`, `X2`, sep = "_"))
+#
+spp_combos$comp
+```
+```{r pcadapt_site_qvals}
+# function to perform chi-square test and convert p-values to q-values
+# modified from https://github.com/baumlab/Starko_et_al_Porites_KI/blob/main/Analyses/pcangsd.R
+# NOTE: need to ensure number of sites and z-scores are the same, use --sites-save flag in PCangsd
+pcadapt_site_qvals <- function(comparison, alpha = 0.05) {
+  # point to files containing pcadapt z-scores and site coordinates
+  filename_zscore <- paste0("./outputs/angsd/selection/", comparison, "_noLD.pcadapt.zscores")
+  filename_sites <- paste0("./outputs/angsd/selection/", comparison, "_noLD.sites.txt")
+  
+  # import pcadapt z-scores
+  zs <- read_tsv(filename_zscore, col_names = c("zscore"))
+  
+  # import sites   
+  ps <- read_tsv(filename_sites,
+                 col_names = c("chr", "pos"),
+                 col_types = cols("chr" = col_factor(), "pos" = col_integer()))
+  
+  # Perform chi-square test on z-scores to obtain p-values
+  d2 <- (zs$zscore - median(zs$zscore))^2
+  pval <- pchisq(d2, df=1, lower.tail=F)
+  
+  # calculate q-values
+  qval <- qvalue(pval)$qvalue
+  
+  # join sites to q-values and filter for significance
+  sites_qvals <- cbind(ps, qval) %>% filter(qval < alpha)
+  
+  # perform multiple-testing correction
+  # fdr <- matrix(ncol = 1, nrow = nrow(sites_qvals))
+  # for(i in 1:nrow(sites_qvals)){
+  #  fdr[i,] <- p.adjust(qval[i], method = "BH", n = 15)
+  # }
+  # 
+  # sites_qvals$qval_fdr <- fdr
+  # 
+  
+  # output data frame with sites (chr, pos) and q-values
+  return(sites_qvals)
+}
+```
+```{r get_outlier_site_genes}
+# function to obtain genes containing outlier SNP loci
+# modified from https://github.com/baumlab/Starko_et_al_Porites_KI/blob/main/Analyses/pcangsd.R
+get_outlier_site_genes <- function(site_qvals){  
+  # prepare ranges to query from gene coordinates
+  query <- GRanges(seqnames = gene_coordinates_annotation$chr,
+                   ranges = IRanges(gene_coordinates_annotation$start, gene_coordinates_annotation$end))
+  # prepare subject ranges from outlier SNP sites
+  subject <- GRanges(seqnames = site_qvals$chr,
+                 ranges = IRanges(as.numeric(site_qvals$pos), width = 1))
+  # determine how many SNP sites are in genes
+  toprint <- table(!is.na(findOverlaps(query, subject)))
+  print(toprint)
+  # find overlapping SNP sites in genes
+  olaps <- (findOverlaps(query, subject))
+  # bind results of SNP sites and gene annotations
+  annotated_sites <- cbind(gene_coordinates_annotation[queryHits(olaps),], site_qvals[subjectHits(olaps), c("pos", "qval")])
+  return(annotated_sites)
+}
+```
+```{r}
+spp_combos$comp[15]
+```
+```{r}
+sqv <- pcadapt_site_qvals(spp_combos$comp[10], alpha = 0.05)
+```
+```{r}
+outlier_site_genes <- get_outlier_site_genes(sqv) 
+```
+```{r}
+sqv_list <- list()
+for (i in seq(1:length(spp_combos$comp))) {
+  comp <- spp_combos$comp[i]
+  print(comp)
+  sqv_list[[i]] <- pcadapt_site_qvals(comp)
+}
+```
+```{r}
+sqv_list[[1]]
+```
+```{r outlier_site_genes_list}
+outlier_site_genes_list <- list()
+distinct_outlier_genes_list <- list()
+for (i in seq(1:length(spp_combos$comp))) {
+  comp <- spp_combos$comp[i]
+  print(comp)
+  #
+  outlier_site_genes_list[[i]] <- get_outlier_site_genes(sqv_list[[i]]) 
+  # names(outlier_site_genes_list[[i]]) <- comp
+  #
+  distinct_outlier_genes_list[[i]] <- outlier_site_genes_list[[i]] %>%
+  group_by(ID) %>%
+  mutate(n = n()) %>%
+  # arrange(desc(n)) %>%
+  distinct(ID, .keep_all = T) %>% 
+  arrange(qval, desc(n))
+  #
+  print(nrow(distinct_outlier_genes_list[[i]]))
+}
+```
+```{r}
+distinct_outlier_genes_list[[6]] %>% View()
+```
+```{r}
+intersect(distinct_outlier_genes_list[[1]]$ID, distinct_outlier_genes_list[[2]]$ID) %>% length()
+
+intersect(distinct_outlier_genes_list[[7]]$ID, distinct_outlier_genes_list[[10]]$ID) %>% length()
+```
+```{r q-value_distributions}
+# inspect distribution of q-values
+for (i in (seq(1:length(spp_combos$comp)))) {
+plot <- sqv_list[[i]] %>% ggplot(aes(`qval`)) + geom_histogram(binwidth = 0.001)
+print(plot)
+}
+
+for (i in (seq(1:length(spp_combos$comp)))) {
+plot <- sqv_list[[i]] %>% ggplot(aes(chr, -log10(`qval`))) +
+  geom_point() + geom_hline(yintercept = -log10(0.05), color = "red") +
+  theme(axis.text.x = element_text(angle = 90))
+print(plot)
+}
+# work towards pretty Manhattan plot
+```
+```{r distinct_outlier_genes}
+distinct_genes <- outlier_site_genes %>%
+  group_by(ID) %>%
+  mutate(n = n()) %>%
+  # arrange(desc(n)) %>%
+  distinct(ID, .keep_all = T) %>% 
+  arrange(qval, desc(n))
+
+# 16,519 genes with outlier SNPs between lineages... needs enrichment tests (rank-based?)
+```
+
+### Pairwise comparisons between *P. grandis* continental lineage populations
+```{r pairwise_comparisons_vector}
+# setup character vector of all pairwise comparisons between P. grandis populations
+region_lowercase <- c("bahiaculebra", "chiriqui", "coco", "galapagoscentral", "galapagosnorth", "golfodulce", "gorgona", "panama")
+#
+pop_combos <- data.frame(t(combn(paste("pgrandis", region_lowercase, sep = "_"), m = 2))) %>% transmute(comp = paste(`X1`, `X2`, sep = "_"))
+#
+pop_combos$comp
+```
+
+```{r check_pcas}
+# create function to check pca coordinates for each comparison - ensure samples fall across PC1
+# check pca coordinates 
+C <- as.matrix(read.table("./outputs/angsd/selection/pgrandis_bahiaculebra_pgrandis_golfodulce_noLD.cov"))
+e <- eigen(C)
+plot(e$vectors[,c(1,2)],xlab="PC1",ylab="PC2", main="individual allele frequency")
+```
+
+```{r}
+pop_combos$comp[5]
+```
+```{r}
+sqv <- pcadapt_site_qvals(pop_combos$comp[5], alpha = 0.05)
+sqv
+```
+```{r}
+outlier_site_genes <- get_outlier_site_genes(sqv)
+```
+```{r}
+outlier_site_genes %>% group_by(ID) %>%
+  mutate(n = n()) %>%
+  # arrange(desc(n)) %>%
+  distinct(ID, .keep_all = T) %>% 
+  arrange(qval, desc(n)) %>% View()
+```
+
+
+## topGO enrichments of loci under selection
+```{r}
+library("topGO")
+library("GO.db")
+library("Rgraphviz")
+```
+
+### Input required GO annotation data and construct Gene-to-GO object for custom annotation mapping
+```{r, warning=FALSE}
+geneID_GO <- readMappings(file = "./data/pdam_annotations/pdam_genome_genesGO.txt")
+str(head(geneID_GO))
+```
+### Construct GO-to-Gene object for GO term searches of interesting genes
+```{r}
+GO_geneID <- inverseList(geneID_GO)
+str(head(GO_geneID))
+```
+### Generate gene universe and GO universe from Gene-to-GO and GO-to-Gene objects
+```{r}
+geneNames <- names(geneID_GO)
+str(head(geneNames))
+geneNames
+```
+```{r}
+GONames <- names(GO_geneID)
+str(head(GONames))
+```
+```{r topGO_test}
+topGOanalyzeDE <- function(genes_file) {
+### Custom function for full topGO analysis and results table generation
+#
+genes <- genes_file$ID
+genes <- as.data.frame(genes)
+geneList <- factor(as.integer(geneNames %in% genes$genes))
+
+names(geneList) <- geneNames
+#node size is used to prune the GO hierarchy from the terms which have less than that many annotated genes 
+
+Pdam_GOdata <- new("topGOdata",
+              ontology = "BP",
+              allGenes = geneList,
+              nodeSize = 1,
+              annotationFun = annFUN.gene2GO,
+              gene2GO = geneID_GO)
+
+#
+resultFisher01 <- runTest(Pdam_GOdata, algorithm = "weight01", statistic = "fisher")
+resultFisher <- runTest(Pdam_GOdata, algorithm = "classic", statistic = "fisher")
+resultKS <- runTest(Pdam_GOdata, algorithm = "classic", statistic = "ks")
+resultKSelim <- runTest(Pdam_GOdata, algorithm = "elim", statistic = "ks")
+#
+allRes <- GenTable(Pdam_GOdata, 
+                   elimKS = resultKSelim,
+                   classicKS = resultKS,
+                   classicFisher = resultFisher,
+                   weight01Fisher = resultFisher01,
+                   orderBy = "weight01Fisher", 
+                   ranksOf = "weight01Fisher", 
+                   topNodes = 200)
+
+sigRes <- allRes %>% filter(if_any(`elimKS`:`weight01Fisher`, ~ . < 0.05))
+
+return(sigRes)
+# resultfile <- paste(filename, "_topGO.csv", sep = "")
+# write.csv(allRes, file = resultfile)
+}
+```
+
+```{r}
+topGOtest <- topGOanalyzeDE(distinct_outlier_genes_list[[6]]) 
+```
+## Perform toGO tests 
+### Between species lineages
+```{r}
+topGO_list <- list()
+for (i in seq(1:length(spp_combos$comp))) {
+  comp <- spp_combos$comp[i]
+  print(comp)
+  #
+  topGO_list[[i]] <- topGOanalyzeDE(distinct_outlier_genes_list[[i]])
+  #
+  print(nrow(topGO_list[[i]]))
+  print(head(topGO_list[[i]]))
+}
+```
+```{r}
+topGO_list[[8]] %>% View()
+```
+
+```{r}
+intersect(intersect(intersect(topGO_list[[1]]$Term, topGO_list[[2]]$Term), intersect(topGO_list[[3]]$Term, topGO_list[[4]]$Term)), topGO_list[[5]]$Term)
+```
+```{r}
+topGO_list[[15]] %>% View()
+```
+
+### Between populations

@@ -35,11 +35,24 @@ ggdensitree(snapp_trees[4000:5000], alpha=.1, colour='steelblue') +
 dev.off()
 ```
 
+### K=6 representative samples
+```{r}
+snapp_trees <- treeio::read.nexus("./outputs/snapp/snapp_subset_K6_5X/snap.trees")
+```
+```{r}
+# pdf("./outputs/figures/Fig1B_snapp_bfd_runD_cloudogram.pdf", height = 3, width = 2.05)
+ggdensitree(snapp_trees[4000:5000], alpha=.1, colour='steelblue') + 
+    geom_tiplab(size=2) + hexpand(.35)
+# dev.off()
+```
+
+
 ## SNAPP BFD* species tree cloudograms
 ```{r}
 snapp_bfd_runD_trees <- treeio::read.nexus("./outputs/snapp/BFD/runD/runD.snap.trees")
 ```
-### Figure 1B
+
+### Figure 2B
 ```{r}
 pdf("./outputs/figures/Fig1B_snapp_bfd_runD_cloudogram.pdf", height = 3, width = 2.05)
 ggdensitree(snapp_bfd_runD_trees, alpha=.1, colour='steelblue') + 
