@@ -40,7 +40,7 @@ echo "#!/bin/sh
 #$ -M connellym@si.edu
 #
 # ----------------Modules------------------------- #
- module load gcc/7.3/gsl
+ module load bioinformatics/ngstools
 # ----------------Your Commands------------------- #" > $NGSLD_JOB
 
 echo 'echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
@@ -48,7 +48,7 @@ echo 'echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTN
 mcs="/scratch/nmnh_corals/connellym"
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/angsd"
-NGSLD="/home/connellym/programs/ngsLD/ngsLD"
+NGSLD="/share/apps/bioinformatics/ngstools/d7a78e4/bin/ngsLD"
 group=$1' >> $NGSLD_JOB
 
 echo '# parse down genotype likelihoods file
