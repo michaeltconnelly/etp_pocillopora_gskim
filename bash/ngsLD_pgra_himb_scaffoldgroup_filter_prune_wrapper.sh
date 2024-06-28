@@ -96,8 +96,8 @@ PRUNE="/home/connellym/programs/prune_graph/target/release/prune_graph"
 group=$1' >> $PRUNE_JOB
 
 echo '# run prune_graph command
-$PRUNE --in ${angsddir}/final_noclones/LD_pruning_pgra_himb/filter_out/${group}_LD.out --header \
---weight-field "r2" --weight-filter "dist <= 10000 && r2 >= 0.5" \
+$PRUNE --in ${angsddir}/final_noclones/LD_pruning_pgra_himb/filter_out/${group}_LD.out \
+--weight-field "column_7" --weight-filter "column_3 <= 10000 && column_7 >= 0.5" \
 --out ${angsddir}/final_noclones/LD_pruning_pgra_himb/prune_out/${group}_LD_prune.out -n $NSLOTS -v -v' >> $PRUNE_JOB
 
 echo 'echo = `date` job $JOB_NAME done' >> $PRUNE_JOB
