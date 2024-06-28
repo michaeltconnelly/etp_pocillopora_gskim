@@ -32,8 +32,8 @@ cat ${prodir}/data/pops_pgrandis_continent/${pop1} ${prodir}/data/pops_pgrandis_
 echo "#!/bin/sh
 # ----------------Parameters---------------------- #
 #$ -S /bin/sh
-#$ -q lThM.q
-#$ -l mres=12G,h_data=12G,h_vmem=12G
+#$ -q mThC.q
+#$ -l mres=8G,h_data=8G,h_vmem=8G
 #$ -cwd
 #$ -j y
 #$ -N pcangsd_selection_${pop1}.${pop2}
