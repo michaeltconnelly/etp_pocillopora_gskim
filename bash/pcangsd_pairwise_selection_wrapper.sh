@@ -108,7 +108,7 @@ echo 'pcangsd \
 --threads $NSLOTS' >> $JOBFILE
 
 # obtain site coordinates from finished maf.gz file
-echo 'zcat ${setdir}/${set}_noLD.mafs.gz | cut -f 1,2 | tail -n +2 | sed 's/SczhEnG_//g' | sort -t$'\t' -k 1,1n -k 2,2n | sed 's/^/SczhEnG_/g' > ${setdir}/${set}_noLD.sites.txt'  >> $JOBFILE
+echo 'zcat ${setdir}/${set}_noLD_filtered.mafs.gz | cut -f 1,2 | tail -n +2 | sed 's/SczhEnG_//g' | sort -t$'\t' -k 1,1n -k 2,2n | sed 's/^/SczhEnG_/g' > ${setdir}/${set}_noLD.sites.txt'  >> $JOBFILE
 
 # input job finished statment
 echo '#
