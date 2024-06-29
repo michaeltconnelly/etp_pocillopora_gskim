@@ -57,6 +57,6 @@ $PRUNE --in ${angsddir}/final_noclones/LD_pruning_pgra_himb/filter_out/${group}_
 
 echo 'echo = `date` job $JOB_NAME done' >> $PRUNE_JOB
 
-qsub $NGSLD_JOB $group #(calls prune job when finished) --> need to resubmit on log-in node now
+qsub $PRUNE_JOB $group #(calls prune job when finished) --> need to resubmit on log-in node now
 #
 done
