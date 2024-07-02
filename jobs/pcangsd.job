@@ -26,8 +26,8 @@ prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 set=$1
 
 pcangsd \
---beagle ${prodir}/outputs/angsd/${set}/${set}_pgra_ibs05.beagle.gz \
--o ${prodir}/outputs/angsd/${set}/${set}_pgra_ibs05 \
+--beagle ${prodir}/outputs/angsd/${set}/${set}_noLD_pgra_himb_filtered.beagle.gz \
+-o ${prodir}/outputs/angsd/${set}/${set}_noLD_pgra_himb_filtered \
 --admix \
 --threads $NSLOTS
 
