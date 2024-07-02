@@ -28,6 +28,6 @@ prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 liftoff \
 -g ${mcs}/sequences/p_damicornis_GCF_003704095.1/pdam_annotation.gff3 \
 -o ${mcs}/sequences/p_grandis_GCA_964027065.2/pgra_annotation.gff3 \
--p 4 -m $(which minimap2) \
+-p $NSLOTS -m $(which minimap2) \
 ${mcs}/sequences/p_grandis_GCA_964027065.2/GCA_964027065.2_jaPocGran1.hap1.2_genomic.fna \
 ${mcs}/sequences/p_damicornis_GCF_003704095.1/pdam_genome.fasta
