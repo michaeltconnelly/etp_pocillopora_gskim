@@ -39,7 +39,7 @@ echo "# ----------------Parameters---------------------- #
 #$ -m bea
 #$ -M connellym@si.edu
 # ----------------Modules------------------------- #
-module load bioinformatics/ngsadmix
+module load bio/ngsadmix/32
 # ----------------Your Commands------------------- #" >> $JOBFILE
 #
 echo 'echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
