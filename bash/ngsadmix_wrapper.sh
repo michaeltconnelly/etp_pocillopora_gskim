@@ -46,9 +46,9 @@ echo 'echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTN
 echo + NSLOTS = $NSLOTS' >> $JOBFILE
 #
 # input command for NGSadmix 
-echo "NGSadmix -likes ${prodir}/outputs/angsd/${set}/${set}_noLD_filtered.beagle.gz \
+echo "NGSadmix -likes ${prodir}/outputs/angsd/${set}/${set}_noLD_pgra_himb_filtered.beagle.gz \
 -K $j -P 16 \
--o ${prodir}/outputs/ngsadmix/${set}/K${j}/${set}_noLD_K${j}_${i} \
+-o ${prodir}/outputs/ngsadmix/${set}/K${j}/${set}_noLD_pgra_himb_K${j}_${i} \
 -minMaf 0.05" >> $JOBFILE
 #
 echo 'echo = `date` job $JOB_NAME done' >> $JOBFILE
