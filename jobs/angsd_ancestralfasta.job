@@ -12,7 +12,7 @@
 #$ -M connellym@si.edu
 #
 # ----------------Modules------------------------- #
- module load bioinformatics/angsd/0.937 
+ module load bioinformatics/angsd
 # ----------------Your Commands------------------- #
 #
 echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
@@ -38,7 +38,7 @@ echo " These are the samples to be processed: ${samples}, there are $(cat ${prod
 # assign variable to bamfile
 BAMS=${prodir}/outputs/alignments/${set}_bamfile.txt
 # 
-REF=${mcs}/sequences/pdam/pdam_genome.fasta
+REF=${mcs}/sequences/p_damicornis_GCF_003704095.1/pdam_genome.fasta
 OUT=${prodir}/data/seqs/${set}_ancestral
 
 # modified from http://www.popgen.dk/angsd/index.php/Fasta, section "Ancestral fasta using multiple outgroups"
