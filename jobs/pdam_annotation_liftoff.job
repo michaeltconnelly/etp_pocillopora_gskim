@@ -1,0 +1,33 @@
+#!/bin/sh
+# ----------------Parameters---------------------- #
+#$ -S /bin/sh
+#$ -pe mthread 16
+#$ -q mThM.q
+#$ -l mres=192G,h_data=12G,h_vmem=12G,himem
+#$ -cwd
+#$ -j y
+#$ -N pdam_pgra_liftoff
+#$ -o pdam_pgra_liftoff.log
+#$ -m bea
+#$ -M connellym@si.edu
+#
+# ----------------Modules------------------------- #
+start-conda
+conda deactivate
+conda activate liftoff
+module load minimap2
+# ----------------Your Commands------------------- #
+#
+echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
+echo + NSLOTS = $NSLOTS
+
+#specify variable containing sequence file prefixes and directory paths
+mcs="/scratch/nmnh_corals/connellym"
+prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
+
+liftoff \
+-g ${mcs}/sequences/p_damicornis_GCF_003704095.1/pdam_annotation.gff3 \
+-o ${mcs}/sequences/p_grandis_GCA_964027065.2/pgra_annotation.gff3 \
+-p 4 -m $(which minimap2) \
+${mcs}/sequences/p_grandis_GCA_964027065.2/GCA_964027065.2_jaPocGran1.hap1.2_genomic.fna \
+${mcs}/sequences/p_damicornis_GCF_003704095.1/pdam_genome.fasta
