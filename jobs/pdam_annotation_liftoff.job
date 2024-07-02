@@ -12,10 +12,10 @@
 #$ -M connellym@si.edu
 #
 # ----------------Modules------------------------- #
+module load tools/conda
+module load bioinformatics/minimap2
 start-conda
-conda deactivate
 conda activate liftoff
-module load minimap2
 # ----------------Your Commands------------------- #
 #
 echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
