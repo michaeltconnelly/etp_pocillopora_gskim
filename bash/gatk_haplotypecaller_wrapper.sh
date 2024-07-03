@@ -46,7 +46,7 @@ echo "echo $sample" >> ${prodir}/bash/jobs/${sample}_gatk_HC.job
 echo "java -Xmx2g -jar /share/apps/bioinformatics/gatk/3.8.1.0/GenomeAnalysisTK.jar \
 -T HaplotypeCaller \
 -I ${prodir}/outputs/alignments/pgra_himb/${sample}.sorted.md.rg.bam \
--o ${prodir}/outputs/alignments/${sample}.g.vcf.gz \
+-o ${prodir}/outputs/alignments/gvcfs/${sample}.g.vcf.gz \
 -R ${mcs}/sequences/p_grandis_GCA_964027065.2/GCA_964027065.2_jaPocGran1.hap1.2_genomic.fna \
 -ERC GVCF \
 -nct 16" >> ${prodir}/bash/jobs/${sample}_gatk_HC.job
