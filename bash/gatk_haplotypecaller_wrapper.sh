@@ -43,8 +43,8 @@ echo "#" >> ${prodir}/bash/jobs/${sample}_gatk_HC.job
 echo 'echo "This is the sample being processed:"' >> ${prodir}/bash/jobs/${sample}_gatk_HC.job
 echo "echo $sample" >> ${prodir}/bash/jobs/${sample}_gatk_HC.job
 #   input command for GATK
-echo "java -Xmx2g -jar /share/apps/bioinformatics/gatk/3.8.1.0/GenomeAnalysisTK.jar \
--T HaplotypeCaller \
+echo "java -Xmx2g -jar /share/apps/bioinformatics/gatk/4.5.0.0/gatk-package-4.5.0.0-local.jar HaplotypeCaller \
+HaplotypeCaller \
 -I ${prodir}/outputs/alignments/pgra_himb/${sample}.sorted.md.rg.bam \
 -o ${prodir}/outputs/alignments/gvcfs/${sample}.g.vcf.gz \
 -R ${mcs}/sequences/p_grandis_GCA_964027065.2/GCA_964027065.2_jaPocGran1.hap1.2_genomic.fna \
