@@ -46,10 +46,10 @@ echo "echo $sample" >> ${prodir}/bash/jobs/${sample}_gatk_HC.job
 echo "java -Xmx2g -jar /share/apps/bioinformatics/gatk/4.5.0.0/gatk-package-4.5.0.0-local.jar HaplotypeCaller \
 HaplotypeCaller \
 -I ${prodir}/outputs/alignments/pgra_himb/${sample}.sorted.md.rg.bam \
--o ${prodir}/outputs/alignments/gvcfs/${sample}.g.vcf.gz \
+-O ${prodir}/outputs/alignments/gvcfs/${sample}.g.vcf.gz \
 -R ${mcs}/sequences/p_grandis_GCA_964027065.2/GCA_964027065.2_jaPocGran1.hap1.2_genomic.fna \
 -ERC GVCF \
--nct 16" >> ${prodir}/bash/jobs/${sample}_gatk_HC.job
+--native-pair-hmm-threads 16" >> ${prodir}/bash/jobs/${sample}_gatk_HC.job
 #
 echo "#" >> ${prodir}/bash/jobs/${sample}_gatk_HC.job
 #
