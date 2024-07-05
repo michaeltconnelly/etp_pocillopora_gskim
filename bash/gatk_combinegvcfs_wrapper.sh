@@ -37,7 +37,7 @@ echo 'echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTN
 echo 'echo + NSLOTS = $NSLOTS' >> ${prodir}/bash/jobs/gatk_combinegvcfs.job
 
 # Input command for GATK CombineGVCFs
-echo "java -jar /share/apps/bioinformatics/gatk/3.8.1.0/GenomeAnalysisTK.jar \
+echo "java -jar -jar /share/apps/bioinformatics/gatk/4.5.0.0/gatk-package-4.5.0.0-local.jar \
 -T CombineGVCFs \
 -R ${mcs}/sequences/p_grandis_GCA_964027065.2/GCA_964027065.2_jaPocGran1.hap1.2_genomic.fna \\" >> ${prodir}/bash/jobs/gatk_combinegvcfs.job
 # for loop to input which gvcfs to combine

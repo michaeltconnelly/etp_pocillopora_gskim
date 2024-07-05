@@ -22,7 +22,7 @@ echo + NSLOTS = $NSLOTS
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 set=$1
 #
-java -jar /share/apps/bioinformatics/gatk/3.8.1.0/GenomeAnalysisTK.jar \
+java -jar /share/apps/bioinformatics/gatk/4.5.0.0/gatk-package-4.5.0.0-local.jar \
 -T GenotypeGVCFs \
 -R ${mcs}/sequences/p_grandis_GCA_964027065.2/GCA_964027065.2_jaPocGran1.hap1.2_genomic.fna
 -V ${prodir}/outputs/${set}_g.vcf.gz \
