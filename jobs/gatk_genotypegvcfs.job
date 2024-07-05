@@ -25,6 +25,6 @@ set=$1
 java -jar /share/apps/bioinformatics/gatk/4.5.0.0/gatk-package-4.5.0.0-local.jar GenotypeGVCFs \
 -R ${mcs}/sequences/p_grandis_GCA_964027065.2/GCA_964027065.2_jaPocGran1.hap1.2_genomic.fna
 -V ${prodir}/outputs/${set}_g.vcf.gz \
--o ${prodir}/outputs/${set}.vcf.gz
+-O ${prodir}/outputs/${set}.vcf.gz
 #
 echo = `date` job $JOB_NAME done

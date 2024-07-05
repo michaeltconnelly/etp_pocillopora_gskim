@@ -46,7 +46,7 @@ do \
 echo "--variant ${prodir}/outputs/alignments/gvcfs/${sample}.g.vcf.gz \\" >> ${prodir}/bash/jobs/gatk_combinegvcfs.job
 done
 # 
-echo "--out ${prodir}/outputs/${set}_g.vcf.gz" >> ${prodir}/bash/jobs/gatk_combinegvcfs.job
+echo "--output ${prodir}/outputs/${set}_g.vcf.gz" >> ${prodir}/bash/jobs/gatk_combinegvcfs.job
 #
 echo "#" >> ${prodir}/bash/jobs/gatk_combinegvcfs.job
 #
