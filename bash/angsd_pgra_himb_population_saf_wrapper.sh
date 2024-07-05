@@ -14,7 +14,7 @@ POPS=$(cat ${prodir}/data/$POPFILE)
 
 for set in $POPS; do 
 # make bam file lists
-ls ${prodir}/outputs/alignments/pgra_himb/*md.rg.bam | grep -f ${prodir}/data/pops_pgrandis_continent/${set} > ${angsddir}/bamfiles/${set}_bamfile.txt
+ls ${prodir}/outputs/alignments/pgra_himb/*md.rg.bam | grep -f ${prodir}/data/pops_ngsadmix/${set} > ${angsddir}/bamfiles/${set}_bamfile.txt
 # verify sample numbers are correct
 echo "For ${set}, There are $(cat ${angsddir}/bamfiles/${set}_bamfile.txt | wc -l) samples in total"
 # create job file
