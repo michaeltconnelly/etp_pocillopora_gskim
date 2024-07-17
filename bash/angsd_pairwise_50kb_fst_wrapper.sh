@@ -30,7 +30,7 @@ echo "#!/bin/sh
 #$ -l mres=4G,h_data=4G,h_vmem=4G
 #$ -cwd
 #$ -j y
-#$ -N angsd_pairwise_10kb_fst_${pop1}.${pop2}
+#$ -N angsd_pairwise_50kb_fst_${pop1}.${pop2}
 #$ -o ${prodir}/bash/jobs/angsd_pairwise_10kb_fst_${pop1}.${pop2}.log
 #$ -m bea
 #$ -M connellym@si.edu
