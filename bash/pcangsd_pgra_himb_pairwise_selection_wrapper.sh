@@ -79,8 +79,8 @@ echo '# prepare ANGSD variables' >> $JOBFILE
 
 # assign variable to sites and chrs files (sorted and indexed)
 # include all sites, do not filter for LD
-echo 'SITES="${angsddir}/AllSites.txt"
-CHRS="${angsddir}/SczhEnG.txt"' >> $JOBFILE
+echo 'SITES="${angsddir}/AllSites_Pgra_HIMB.txt"
+CHRS="${angsddir}/chrs_Pgra_HIMB.txt"' >> $JOBFILE
 
 #echo 'SITES="${angsddir}/final_noclones/final_noclones_noLD_sorted_v3.sites.txt"
 #CHRS="${angsddir}/final_noclones/final_noclones_noLD.SczhEnG_v3.txt"' >> $JOBFILE
@@ -104,11 +104,12 @@ echo 'pcangsd \
 --beagle ${setdir}/${set}_noLD_filtered.beagle.gz \
 -o ${setdir}/${set}_noLD \
 --pcadapt \
+--minMaf 0 \
 --sites_save \
 --threads $NSLOTS' >> $JOBFILE
 
 # obtain site coordinates from finished maf.gz file
-echo 'zcat ${setdir}/${set}_noLD_filtered.mafs.gz | cut -f 1,2 | tail -n +2 | sed 's/SczhEnG_//g' | sort -t$'\t' -k 1,1n -k 2,2n | sed 's/^/SczhEnG_/g' > ${setdir}/${set}_noLD.sites.txt'  >> $JOBFILE
+echo 'zcat ${setdir}/${set}_noLD_filtered.mafs.gz | cut -f 1,2 | tail -n +2 | sed 's/OZ//g' | sort -t$'\t' -k 1,1n -k 2,2n | sed 's/^/OZ/g' > ${setdir}/${set}_noLD.sites.txt'  >> $JOBFILE
 
 # input job finished statment
 echo '#
