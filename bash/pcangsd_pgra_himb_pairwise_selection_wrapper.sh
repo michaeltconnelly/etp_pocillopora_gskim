@@ -104,7 +104,7 @@ echo 'pcangsd \
 --beagle ${setdir}/${set}_noLD_filtered.beagle.gz \
 -o ${setdir}/${set}_noLD \
 --pcadapt \
---minMaf 0 \
+--maf 0 \
 --sites_save \
 --threads $NSLOTS' >> $JOBFILE
 
