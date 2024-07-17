@@ -69,7 +69,7 @@ if [ ! -d "${angsddir}/selection/${set}" ]; then mkdir ${angsddir}/selection/${s
 setdir="${angsddir}/selection/${set}"
 
 # making a list of bam file paths
-ls ${prodir}/outputs/alignments/*md.rg.bam | grep -f $SAMPLE_FILE > ${setdir}/${set}_bamfile.txt
+ls ${prodir}/outputs/alignments/pgra_himb/*md.rg.bam | grep -f $SAMPLE_FILE > ${setdir}/${set}_bamfile.txt
 
 # verify samples are correct
 echo "These are the samples to be processed: ${samples}, there are $(cat ${setdir}/${set}_bamfile.txt | wc -l) in total"' >> $JOBFILE
