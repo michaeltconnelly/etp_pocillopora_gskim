@@ -245,7 +245,7 @@ elevMapTest
 dev.off()
 ```
 
-### NGSAdmix clusters (K = 6) Scatterpie
+### NGSAdmix clusters (K = 5) Scatterpie
 ### Figure 1C
 ```{r}
 # first, join NGSAdmix no-clones sample species assignments to no-clones sample metadata
@@ -255,11 +255,11 @@ samples_noclones_ngsadmix_meta <- left_join(samples_noclones, samples_noclones_n
 # see example at: https://cran.r-project.org/web/packages/scatterpie/vignettes/scatterpie.html
 #
 regions_ngsadmix_pops <- samples_noclones_ngsadmix %>%
-  group_by(`Region`, `NGSAdmix K6 Species`) %>% 
-  dplyr::count() %>% 
+  group_by(`Region`, `NGSAdmix K5 Species`) %>% 
+  dplyr::count() %>%
   mutate("Region" = factor(`Region`, levels = region_order_longitude, ordered = T),
-         "NGSAdmix K6 Species" = factor(`NGSAdmix K6 Species`, levels = ngsadmix_spp, ordered = T)) %>% 
-  pivot_wider(names_from = `NGSAdmix K6 Species`, values_from = n, values_fill = 0) %>%
+         "NGSAdmix K5 Species" = factor(`NGSAdmix K5 Species`, levels = ngsadmix_spp, ordered = T)) %>% 
+  pivot_wider(names_from = `NGSAdmix K5 Species`, values_from = n, values_fill = 0) %>%
   mutate("sum" = (rowSums(across(contains("P")))) + Unassigned) %>%
   mutate("radius" = `sum`/50) %>%
   left_join(region_coords, by = "Region")
@@ -279,9 +279,9 @@ elevMapTest <-
   new_scale_fill() +
   geom_scatterpie(aes(x = Longitude, y = Latitude, group = `Region`, r = 1),
                     data = regions_ngsadmix_pops, cols = ngsadmix_spp, size = 5, alpha = .8) + 
-  scale_fill_manual(values = ngsadmix_pop_colors_k6, name = "NGSadmix population") +
+  scale_fill_manual(values = ngsadmix_pop_colors, name = "NGSadmix population") +
   #
-  geom_label_repel(aes(x = Longitude, y = Latitude, label = sum), size = 2, box.padding = 0.5, min.segment.length = 2, seed = 3, data = regions_ngsadmix_pops) +
+  geom_label_repel(aes(x = Longitude, y = Latitude, label = sum), size = 2, box.padding = 0.65, min.segment.length = 2, seed = 3, data = regions_ngsadmix_pops) +
   labs(x="Longitude", y="Latitude", elevation = "Elevation") +
   scale_y_continuous(breaks = (seq(0,15,5))) +
   theme(panel.grid.major = element_blank(),
@@ -300,7 +300,7 @@ elevMapTest <-
 elevMapTest
 ```
 ```{r fig1C_scatterpie_map}
-pdf("./outputs/figures/Fig1C_ngsadmix_k6_map.pdf", width = 6.65)
+pdf("./outputs/figures/Fig1C_ngsadmix_k6_map.pdf", width = 6.65, height = 4)
 elevMapTest
 dev.off()
 ```

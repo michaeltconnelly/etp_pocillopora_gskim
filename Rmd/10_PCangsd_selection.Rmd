@@ -104,7 +104,6 @@ plot(p$pos[keep], -log10(pval[keep]), col = p$chr[keep], xlab="HG38 Position chr
  
  ?which.max()
 ```
-
 ```{r manhattan_plots}
 sites_pvals <- cbind(p, pval) 
 chrs <- unique(sites_pvals$chr)
@@ -149,7 +148,7 @@ p <- pchisq(D, 1, lower.tail=FALSE)
 ### Pairwise comparisons between species lineages
 ```{r pairwise_comparisons_vector}
 # setup character vector of all pairwise comparisons between species lineages
-ngsadmix_spp_lowercase <- c("peffusa", "pgrandiscontinent", "pgrandisoffshore", "pmeandrina", "pverrucosa3a", "pverrucosa3b")
+ngsadmix_spp_lowercase <- c("peffusa", "pgrandiscontinent", "pgrandisoffshore", "pmeandrina", "pverrucosa3a")
 #
 spp_combos <- data.frame(t(combn(ngsadmix_spp_lowercase, m = 2))) %>% transmute(comp = paste(`X1`, `X2`, sep = "_"))
 #

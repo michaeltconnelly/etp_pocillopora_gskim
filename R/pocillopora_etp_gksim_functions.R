@@ -41,7 +41,6 @@ ngsadmix_spp <- c("P. effusa",
                   "P. grandis - Offshore",
                   "P. grandis - Continent",
                   "P. verrucosa 3a",
-                  "P. verrucosa 3b",
                   "Unassigned")
 #
 ngsadmix_pop_colors <- c("P. effusa"="purple3",
@@ -49,7 +48,7 @@ ngsadmix_pop_colors <- c("P. effusa"="purple3",
                          "P. grandis - Offshore"="darkorange",
                          "P. grandis - Continent"="darkorange4",
                          "P. verrucosa 3a"="turquoise2",
-                         "Unassigned"="grey75")
+                         "Unassigned"="grey90")
 
 ngsadmix_pop_colors_k6 <- c("P. effusa"="purple3",
                          "P. meandrina"="gold2",

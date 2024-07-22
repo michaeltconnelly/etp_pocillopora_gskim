@@ -183,6 +183,8 @@ dev.off()
 ## No-clones PCA (unlinked SNPs after LD pruning)
 ```{r pca}
 C <- as.matrix(read.table("./outputs/angsd/final_noclones_noLD.cov"))
+# *P. grandis* aligments
+C <- as.matrix(read.table("./outputs/angsd/final_noclones_noLD_pgra_himb_filtered.cov"))
 e <- eigen(C)
 ```
 ```{r pca_test_plot}
@@ -194,9 +196,9 @@ plot(e$vectors[,c(3,4)],xlab="PC3",ylab="PC4", main="individual allele frequency
 ```
 ```{r bamfile_sample_order_check}
 # reading list of bam files = order of samples in IBS matrix
-bams <- read.table("./outputs/angsd/final_noclones_bamfile.txt",header=F)[,1]
+bams <- read.table("./outputs/angsd/final_noclones_pgra_bamfile.txt",header=F)[,1]
 #
-bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/", "", bams, perl=T)
+bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/pgra_himb/", "", bams, perl=T)
 bam_ids <- sub(".sorted.md.rg.bam", "", bam_ids, perl=T)
 bam_ids <- sub("_S[[:digit:]]+$", "", bam_ids)
 #
@@ -210,7 +212,7 @@ all(samples_noclones_ngsadmix$`Sample ID` == bam_ids) # TRUE
 ```
 ```{r combine_pca_metadata}
 # combine pc coordinates with sample metadata
-pcs <- as.data.frame(e$vectors) %>% cbind(samples_noclones_ngsadmix)
+pcs <- as.data.frame(e$vectors) %>% cbind(samples_noclones_ngsadmix) %>% left_join(samples)
 # store variable with % variance explained by each PC
 pcvar <- round(e$values, 2)
 #
@@ -223,7 +225,7 @@ pcvardf %>% ggplot(aes(PC, pcvar)) + geom_col() + xlim(c(0,10))
 ```{r pca visualization}
 # pdf(file="./outputs/figures/sicb/pcangsd_species.pdf", width = 5.5, height = 3.75)
 pca <- pcs %>% ggplot(aes(x = V1, y = V2)) +
-  geom_point(aes(fill = `NGSAdmix K6 Species`), shape = 21, size = 3, alpha = 0.75, show.legend = T) +
+  geom_point(aes(fill = `NGSAdmix K5 Species`), shape = 21, size = 3, alpha = 0.75, show.legend = T) +
   scale_fill_manual(values = ngsadmix_pop_colors_k6) +
   # facet_grid(Region ~ .) +
   # facet_wrap(mtorf_type ~ .) +
@@ -240,7 +242,7 @@ print(pca)
 ```
 ```{r}
 pca <- pcs %>% ggplot(aes(x = V2, y = V3)) +
-  geom_point(aes(fill = `NGSAdmix K6 Species`), shape = 21, size = 3, alpha = 0.75, show.legend = F) +
+  geom_point(aes(fill = `NGSAdmix K5 Species`), shape = 21, size = 3, alpha = 0.75, show.legend = F) +
   scale_fill_manual(values = ngsadmix_pop_colors_k6) +
   # facet_grid(Region ~ .) +
   # facet_wrap(mtorf_type ~ .) +
@@ -256,7 +258,7 @@ print(pca)
 ```
 ```{r}
 pca <- pcs %>% ggplot(aes(x = V2, y = V4)) +
-  geom_point(aes(fill = `NGSAdmix K6 Species`), shape = 21, size = 3, alpha = 0.75, show.legend = F) +
+  geom_point(aes(fill = `NGSAdmix K5 Species`), shape = 21, size = 3, alpha = 0.75, show.legend = F) +
   scale_fill_manual(values = ngsadmix_pop_colors_k6) +
   # facet_grid(Region ~ .) +
   # facet_wrap(mtorf_type ~ .) +
@@ -274,14 +276,14 @@ print(pca)
 ```{r fig1A_pca}
 pdf(file="./outputs/figures/Fig1A_pcangsd_ngsadmix_species.pdf", width = 6.65, height = 3.25)
 #
-title <- expression(paste("East Pacific ", italic("Pocillopora"), " PCA (1,061,287 unlinked SNPs)"))
+title <- expression(paste("East Pacific ", italic("Pocillopora"), " PCA (1,310,435 unlinked SNPs)"))
 #
 pca <- pcs %>%
   mutate("Region" = factor(`Region`, levels = region_order_longitude, ordered = T),
-         "NGSAdmix K6 Species" = factor(`NGSAdmix K6 Species`, levels = ngsadmix_spp, ordered = T)) %>% 
+         "NGSAdmix K6 Species" = factor(`NGSAdmix K5 Species`, levels = ngsadmix_spp, ordered = T)) %>% 
   ggplot(aes(x = V1, y = V2)) +
-  geom_point(aes(fill = `NGSAdmix K6 Species`), shape = 21, size = 4, alpha = 0.65, show.legend = T) +
-  scale_fill_manual(values = ngsadmix_pop_colors_k6, name = "NGSAdmix Species (K=6)") + 
+  geom_point(aes(fill = `NGSAdmix K5 Species`), shape = 21, size = 4, alpha = 0.65, show.legend = T) +
+  scale_fill_manual(values = ngsadmix_pop_colors, name = "NGSAdmix Species (K=5)") + 
   guides(fill = guide_legend(override.aes = list(size = 3, alpha = 1))) +
   coord_fixed(pcvar[2]/pcvar[1]) +
   xlab(paste0( "PC1 (", pcvar[1], "%)")) + 
@@ -293,7 +295,7 @@ pca <- pcs %>%
         axis.text = element_text(size = 10),
         legend.title = element_text(size = 10, margin = margin(b = 0.5, unit = "mm")),
         legend.text = element_text(size = 8),
-        legend.position = c(0.151, 0.33),
+        legend.position = c(0.151, 0.695),
         legend.key.spacing.y = unit(-1.6, "mm"))
          
 print(pca)

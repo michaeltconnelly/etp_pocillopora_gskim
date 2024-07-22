@@ -51,7 +51,7 @@ spp_fst <- read_csv("./outputs/pocillopora_spp_fst.csv",
 ### Figure 2A
 ```{r}
 fst_heatmap <- ggplot(data = spp_fst, aes(spp1, spp2, fill = Fst)) +
-  geom_tile(color = "black") +
+  geom_tile(color = "white") +
   scale_fill_gradient(low = "white", high = "red", limits = c(0,0.6), name = expression(F[ST])) +
   geom_text(aes(label = round(Fst, 3)), size = 2.5) +
   theme(axis.title = element_blank(),
@@ -120,7 +120,7 @@ pheatmap(pop_fst_mat, cluster_cols = FALSE, cluster_rows = FALSE)
 ```{r}
 angsd_fst_colnames <- c("SNP", "CHR", "BP", "Nsites", "Fst")
 angsd_fst_cols <- cols("SNP" = col_character(),
-                       "CHR" = col_number(),
+                       "CHR" = col_character(),
                        "BP" = col_double(),
                        "Nsites" = col_double(),
                        "Fst" = col_double())

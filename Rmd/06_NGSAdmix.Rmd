@@ -224,6 +224,9 @@ dev.off()
 ```{r choose_best_K}
 # Choose best K
 logs <- read_delim("./outputs/ngsadmix/final_noclones/final_noclones_noLD_ngsadmix_likeKlogs.txt", trim_ws = TRUE, col_names = c("K", "value"), col_types = cols("K" = col_character(), "value" = col_double()))
+# *P. grandis*
+logs <- read_delim("./outputs/ngsadmix/final_noclones/final_noclones_pgra_ngsadmix_likeKlogs.txt", trim_ws = TRUE, col_names = c("K", "value"), col_types = cols("K" = col_character(), "value" = col_double()))
+
 
 logKdf <- logs %>% group_by(K) %>% 
   summarise(mK = (mean(abs(value), na.rm = T))/sd(abs(value), na.rm = T)) %>%  
@@ -252,8 +255,9 @@ dev.off()
 ```{r bam_list}
 # Obtain sample info
 # read in the population information file located in the bam.filelist
-bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/final_noclones_bamfile.txt",header=F)[,1]
-bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/", "", bams, perl=T)
+bams <- read.table("./outputs/angsd/final_noclones_pgra_bamfile.txt",header=F)[,1]
+#
+bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/pgra_himb/", "", bams, perl=T)
 bam_ids <- sub(".sorted.md.rg.bam", "", bam_ids, perl=T)
 bam_ids <- sub("_S[[:digit:]]+$", "", bam_ids)
 #
@@ -277,7 +281,7 @@ for (i in 1:maxK){
   kcols <- append(kcols, paste0("pop",j))
   }
   # print(kcols)
-  qopt_list[[i]] <- read_table(paste0("./outputs/ngsadmix/final_noclones/final_noclones_noLD_K",i,"_1.qopt"), col_names = kcols)
+  qopt_list[[i]] <- read_table(paste0("./outputs/ngsadmix/final_noclones/final_noclones_noLD_pgra_himb_K",i,"_1.qopt"), col_names = kcols)
 }
 # qopt_list
 ```
@@ -316,18 +320,18 @@ plot_list[[i]] <- q_pop_tidy_plot
 ```{r print_plots_K1-9}
 pdf("./outputs/figures/ngsadmix_final_noclones_noLD_K1-9.pdf", width = 8.5, height = 8.5)
 # print(plot_list[[1]])
-title <- expression(paste("NGSadmix results for K=2-10 on East Pacific ", italic("Pocillopora"), " (1,061,287 SNPs)"))
+title <- expression(paste("NGSadmix results for K=2-10 on East Pacific ", italic("Pocillopora"), " (1,310,435 SNPs)"))
 plot_list[[2]] / plot_list[[3]] / plot_list[[4]] / plot_list[[5]] / plot_list [[6]] / plot_list[[7]] / plot_list[[8]] / plot_list[[9]]
 dev.off()
 ```
 
 ### Plot best K ancestry proportions
 ```{r print_plot_bestK}
-plot_list[[bestK]]
+plot_list[[5]]
 ```
 ```{r save_plot_bestK}
 pdf("./outputs/figures/ngsadmix_final_noclones_noLD_K5.pdf", width = 8.5, height = 4.5)
-title <- expression(paste("NGSadmix results for best K on East Pacific ", italic("Pocillopora"), " (1,061,290 SNPs)"))
+title <- expression(paste("NGSadmix results for best K on East Pacific ", italic("Pocillopora"), " (1,310,435 SNPs)"))
 
 plot_list[[bestK]] + ggtitle(title)
 dev.off()
@@ -342,11 +346,11 @@ representative <- function(x) {x >= 0.85}
 
 # create new metadata columns to identify representative vs. admixed samples and assign population labels
 samples_noclones_ngsadmix <- qpop_best %>% mutate(`NGSADMIX_REP_K5` = if_any(contains("pop"), representative),
-                     `NGSAdmix K5 Species` = ifelse(representative(pop1), "P. effusa", 
-                                           ifelse(representative(pop2), "P. grandis - Continent",
+                     `NGSAdmix K5 Species` = ifelse(representative(pop1), "P. meandrina", 
+                                           ifelse(representative(pop2), "P. effusa",
                                                   ifelse(representative(pop3), "P. grandis - Offshore",
-                                                         ifelse(representative(pop4), "P. meandrina",
-                                                                ifelse(representative(pop5), "P. verrucosa 3a", "Unassigned")))))) %>%
+                                                         ifelse(representative(pop4), "P. verrucosa 3a",
+                                                                ifelse(representative(pop5), "P. grandis - Continent", "Unassigned")))))) %>%
   select(`Sample ID`, `NGSADMIX_REP_K5`, `NGSAdmix K5 Species`)
 # next, join this to no-clones sample data for use in maps, PCA plots, etc.
 write_csv(samples_noclones_ngsadmix, "./data/samples_noclones_ngsadmix_assignments_k5.csv")
@@ -366,12 +370,12 @@ q_pop_besttidy %>%
   group_by(pop) %>%
   count()
 
-# 211 non-admixed individuals
-# pop1 = P. effusa (4)
-# pop2 = Continental P. grandis (132) (P. capitata?)
-# pop3 = Offshore P. grandis  (32)
-# pop4 = P. meandrina (10)
-# pop5 = P. verrucosa 3a (33) (P. lacera?)
+# 210 non-admixed individuals
+# pop1 = P. meandrina (10)
+# pop2 = P. effusa (4)
+# pop3 = Offshore P. grandis  (33)
+# pop4 = P. verrucosa 3a (33) (P. lacera?)
+# pop5 = Continental P. grandis (130) (P. capitata?) 
 ```
 ```{r bestK_admixed_samples}
 # Using best K admixture results, identify admixed/unassigned samples from clusters (all q < 0.85)
@@ -463,23 +467,23 @@ write_csv(samples_noclones_ngsadmix, "./data/samples_noclones_ngsadmix_assignmen
 # Ensure colors are consistent between plots to highlight the slight differences (requires manual edits to color vectors)
 # define color sets
 # popcolors_k5 <- popcolors_maxK[1:5]
-popcolors_k5 <- unname(ngsadmix_pop_colors_k6[c(1,4,3,2,5)])
+popcolors_k5 <- unname(ngsadmix_pop_colors)[c(2,1,3,5,4)]
 # popcolors_k6 <- popcolors_maxK[c(2,4,3,1,6,5)]
 popcolors_k6 <- unname(ngsadmix_pop_colors_k6[c(4,2,3,1,6,5)])
 
 plot_k5 <- plot_list[[5]] + scale_fill_manual(values = popcolors_k5) + theme(strip.text = element_text(size = 4), axis.text = element_text(size = 6))
-# plot_k5
+plot_k5
 plot_k6 <- plot_list[[6]] + scale_fill_manual(values = popcolors_k6) + theme(strip.text = element_text(size = 4), axis.text = element_text(size = 6))
 # plot_k6
 
-pdf("./outputs/figures/ngsadmix_final_noclones_noLD_K5-6.pdf", width = 8.5, height = 3.5)
+# pdf("./outputs/figures/ngsadmix_final_noclones_noLD_K5-6.pdf", width = 8.5, height = 3.5)
 # print(plot_list[[1]])
 
-title <- expression(paste("NGSadmix results for K=5-6 on East Pacific ", italic("Pocillopora"), " (1,061,287 SNPs)"))
+title <- expression(paste("NGSadmix results for K=5-6 on East Pacific ", italic("Pocillopora"), " (1,310,435 SNPs)"))
 
 plot_k5 / plot_k6
 
-dev.off()
+# dev.off()
 ```
 
 ```{r region_abbreviations}
@@ -500,46 +504,46 @@ abbv_labeller <- function(variable, value){
 ```
 ```{r easy_ancestry_assignments}
 # tweak ancestry assignments to eliminate "Unassigned" samples - helps ease gradients in barplots and doesn't separate samples with admixture
-qpop_best <- qpop_list[[6]]
+qpop_best <- qpop_list[[bestK]]
 # Using best K admixture results, identify representative samples from clusters (q > 0.85)
 representative <- function(x) {x >= 0.5}
 
 # create new metadata columns to identify representative vs. admixed samples and assign population labels
-samples_k6_noadmix_assignments <- qpop_best %>% mutate(`NGSADMIX_REP_K6` = if_any(contains("pop"), representative),
-                     `NGSAdmix K6 Species` = ifelse(representative(pop1), "P. grandis - Continent", 
-                                           ifelse(representative(pop2), "P. meandrina",
+samples_k5_noadmix_assignments <- qpop_best %>% mutate(`NGSADMIX_REP_K5` = if_any(contains("pop"), representative),
+                     `NGSAdmix K5 Species` = ifelse(representative(pop1), "P. meandrina", 
+                                           ifelse(representative(pop2), "P. effusa",
                                                   ifelse(representative(pop3), "P. grandis - Offshore",
-                                                         ifelse(representative(pop4), "P. effusa",
-                                                                ifelse(representative(pop5), "P. verrucosa 3b",
-                                                                       ifelse(representative(pop6), "P. verrucosa 3a", "Unassigned"))))))) %>%
-  dplyr::select(`Sample ID`, `NGSADMIX_REP_K6`, `NGSAdmix K6 Species`)
+                                                         ifelse(representative(pop4), "P. verrucosa 3a",
+                                                                ifelse(representative(pop5), "P. grandis - Continent",
+                                                                       "Unassigned")))))) %>%
+  dplyr::select(`Sample ID`, `NGSADMIX_REP_K5`, `NGSAdmix K5 Species`)
 
-ngsadmix_spp <- c("P. effusa" = "A",
+ngsadmix_spp_code <- c("P. effusa" = "A",
                   "P. meandrina" = "B",
                   "P. grandis - Offshore" = "C",
                   "P. grandis - Continent" = "D",
-                  "P. verrucosa 3a" = "E",
-                  "P. verrucosa 3b" = "F")
+                  "P. verrucosa 3a" = "E")
 ```
 
 
 ```{r barplot_k5}
-popcolors_k5 <- unname(ngsadmix_pop_colors_k6[c(1,4,3,2,5)])
+popcolors_k5 <- unname(ngsadmix_pop_colors_k6[c(2,1,3,5,4)])
 names(popcolors_k5) <- c("pop1", "pop2", "pop3", "pop4", "pop5")
 
 q_k5 <- qopt_list[[5]]
 q_pop_k5 <- cbind(pop, q_k5) %>%
-  left_join(samples_k5_assignments, by = "Sample ID") %>%
-  left_join(samples_k6_noadmix_assignments, by = "Sample ID") %>% #samples_k6_assignments
+  # left_join(samples_k5_assignments, by = "Sample ID") %>%
+  left_join(samples_k5_noadmix_assignments, by = "Sample ID") %>% #samples_k6_assignments
   # ensure correct sample order for plotting and region order for facets
   mutate("Sample ID" = factor(`Sample ID`, levels = .$`Sample ID`, ordered = T))
 
-q_pop_k5$`NGSAdmix K6 Spp Label` <- ngsadmix_spp[q_pop_k5$`NGSAdmix K6 Species`]
+q_pop_k5$`NGSAdmix K5 Spp Label` <- ngsadmix_spp_code[q_pop_k5$`NGSAdmix K5 Species`]
          
  q_pop_k5 <- q_pop_k5 %>% mutate(
-         "Sample ID" = fct_reorder2(`Sample ID`, desc(`pop3`), desc(`pop4`)),
-         "Sample ID" = fct_reorder2(`Sample ID`, `pop5`, desc(`pop2`)),
-         "Sample ID" = fct_reorder(`Sample ID`, `NGSAdmix K6 Spp Label`),
+            "Sample ID" = fct_reorder2(`Sample ID`, `pop1`, `pop3`), 
+            "Sample ID" = fct_reorder(`Sample ID`, `pop5`),
+            "Sample ID" = fct_reorder2(`Sample ID`, `pop3`, desc(`pop4`)),
+            "Sample ID" = fct_reorder(`Sample ID`, `NGSAdmix K5 Spp Label`),
          # 
          "Region" = factor(`Region`, levels = region_order_longitude, ordered = T)) %>% 
   arrange(`Sample ID`)
@@ -550,7 +554,7 @@ sample_order <- q_pop_k5$`Sample ID`
 q_pop_tidy_k5 <- q_pop_k5 %>%
   pivot_longer(cols = contains("pop"), names_to = "pop") %>%
   # ensure correct order of populations for stacking barplots
-  mutate("pop" = factor(`pop`, levels = c("pop1", "pop4", "pop3", "pop2", "pop5"), ordered = T))
+  mutate("pop" = factor(`pop`, levels = c("pop2", "pop1", "pop3", "pop5", "pop4"), ordered = T))
 
 
 q_pop_tidy_plot_k5 <- q_pop_tidy_k5 %>%
@@ -572,7 +576,7 @@ q_pop_tidy_plot_k5 <- q_pop_tidy_k5 %>%
         axis.ticks.length.y = unit(2, "pt"),
         panel.grid = element_blank(),
         panel.spacing.x = unit(0.5, "mm"),
-        plot.margin = margin(0.5, 0, 0, 0, "mm"))
+        plot.margin = margin(2, 2, 2, 2, "mm"))
 
 q_pop_tidy_plot_k5
 ```
@@ -620,8 +624,8 @@ q_pop_tidy_plot_k6
 ```
 
 ```{r fig1B_ngsadmix_barplot_k5-6}
-pdf("./outputs/figures/Fig1B_ngsadmix_K5-6_barplot.pdf", width = 6.65, height = 2)
-q_pop_tidy_plot_k5 / q_pop_tidy_plot_k6
+pdf("./outputs/figures/Fig1B_ngsadmix_K5_barplot.pdf", width = 6.65, height = 1.5)
+q_pop_tidy_plot_k5 
 dev.off()
 ```
 
