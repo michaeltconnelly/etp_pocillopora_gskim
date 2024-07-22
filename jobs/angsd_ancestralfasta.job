@@ -6,8 +6,8 @@
 #$ -l mres=192G,h_data=12G,h_vmem=12G,himem
 #$ -cwd
 #$ -j y
-#$ -N angsd_ancestralfasta
-#$ -o angsd_ancestralfasta.log
+#$ -N angsd_pgra_himb_ancestralfasta
+#$ -o angsd_pgra_himb_ancestralfasta.log
 #$ -m bea
 #$ -M connellym@si.edu
 #
@@ -29,17 +29,20 @@ set=$1
 #samples=$(echo "$files" | cut -d . -f 1 | sort -u)
 samples=$(cat ${prodir}/data/${set}_samples.txt)
 
+# assign variable for output directory
+setdir="${prodir}/outputs/angsd/${set}"
+
 # making a list of bam file paths
-ls ${prodir}/outputs/alignments/*md.rg.bam | grep -f ${prodir}/data/${set}_samples.txt > ${prodir}/outputs/alignments/${set}_bamfile.txt
+ls ${prodir}/outputs/alignments/pgra_himb/*md.rg.bam | grep -f ${prodir}/data/${set}_samples.txt > ${setdir}/${set}_pgra_bamfile.txt
 
 # verify samples are correct
-echo " These are the samples to be processed: ${samples}, there are $(cat ${prodir}/outputs/alignments/${set}_bamfile.txt | wc -l) in total"
+echo " These are the samples to be processed: ${samples}, there are $(cat ${setdir}/${set}_pgra_bamfile.txt | wc -l) in total"
 
 # assign variable to bamfile
-BAMS=${prodir}/outputs/alignments/${set}_bamfile.txt
+BAMS=${setdir}/${set}_pgra_bamfile.txt
 # 
-REF=${mcs}/sequences/p_damicornis_GCF_003704095.1/pdam_genome.fasta
-OUT=${prodir}/data/seqs/${set}_ancestral
+REF=${mcs}/sequences/p_grandis_GCA_964027065.2/GCA_964027065.2_jaPocGran1.hap1.2_genomic.fna
+OUT=${prodir}/data/seqs/${set}_pgra_himb_ancestral
 
 # modified from http://www.popgen.dk/angsd/index.php/Fasta, section "Ancestral fasta using multiple outgroups"
 

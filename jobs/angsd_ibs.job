@@ -35,13 +35,13 @@ if [ ! -d "${prodir}/outputs/angsd/${set}" ]; then mkdir ${prodir}/outputs/angsd
 setdir="${prodir}/outputs/angsd/${set}"
 
 # making a list of bam file paths
-ls ${prodir}/outputs/alignments/*md.rg.bam | grep -f ${prodir}/data/${set}_samples.txt > ${setdir}/${set}_bamfile.txt
+ls ${prodir}/outputs/alignments/pgra_himb/*md.rg.bam | grep -f ${prodir}/data/${set}_samples.txt > ${setdir}/${set}_pgra_bamfile.txt
 
 # verify samples are correct
-echo " These are the samples to be processed: ${samples}, there are $(cat ${setdir}/${set}_bamfile.txt | wc -l) in total"
+echo " These are the samples to be processed: ${samples}, there are $(cat ${setdir}/${set}_pgra_bamfile.txt | wc -l) in total"
 
 # assign variable to bamfile
-BAMS=${setdir}/${set}_bamfile.txt
+BAMS=${setdir}/${set}_pgra_bamfile.txt
 
 # from https://github.com/z0on/ClonesAndClades_Ofav_Keys/blob/master/read_processing_walkthrough.txt
 # Manzello et al. 2018
@@ -69,10 +69,10 @@ FILTERS="-uniqueOnly 1 -remove_bads 1 -minMapQ 30 -minQ 30 -dosnpstat 1 -doHWE 1
 # -doGlf 2 : output beagle format (for admixture)
 TODO="-doMajorMinor 1 -doMaf 1 -doCounts 1 -makeMatrix 1 -doIBS 1 -doCov 1 -doGeno 8 -doPost 1 -doGlf 2"
 
-angsd -b $BAMS -GL 1 $FILTERS $TODO -P $NSLOTS -out ${setdir}/${set}_ibs05
+angsd -b $BAMS -GL 1 $FILTERS $TODO -P $NSLOTS -out ${setdir}/${set}_pgra_ibs05
 
 # how many SNPs?
-zcat ${setdir}/${set}_ibs05.mafs.gz | wc -l
+zcat ${setdir}/${set}_pgra_ibs05.mafs.gz | wc -l
 
 # scp ibsMat and bam file list to laptop
 
