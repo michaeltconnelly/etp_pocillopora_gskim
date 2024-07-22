@@ -45,6 +45,7 @@ data/trimmed/
 data/unmapped/
 data/spatial_data/
 data/outgroups/
+data/pdam_annotations/
 #
 bash/jobs/
 #
@@ -52,7 +53,7 @@ outputs/QCs/
 outputs/alignments/
 outputs/symbiont_alignments/
 outputs/angsd/
-outputs/ngsadmix
+outputs/ngsadmix/
 outputs/spades/
 outputs/taxon-sets/
 outputs/uce-search-results/
@@ -64,6 +65,8 @@ outputs/snapp/
 outputs/symbiont_counts/
 outputs/oury_pipeline/
 outputs/figures/
+outputs/kraken/
+outputs/sharkmer/
 outputs/*vcf.gz
 #
 
