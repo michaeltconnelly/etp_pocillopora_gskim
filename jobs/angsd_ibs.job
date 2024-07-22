@@ -23,7 +23,7 @@ mcs="/scratch/nmnh_corals/connellym"
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 
 # making a list of sample names
-set=$1
+set=$1 # example: "full_analysis" or "final_noclones"
 #files=$(ls /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/data/raw/)
 #samples=$(echo "$files" | cut -d . -f 1 | sort -u)
 samples=$(cat ${prodir}/data/${set}_samples.txt)
@@ -72,7 +72,13 @@ TODO="-doMajorMinor 1 -doMaf 1 -doCounts 1 -makeMatrix 1 -doIBS 1 -doCov 1 -doGe
 angsd -b $BAMS -GL 1 $FILTERS $TODO -P $NSLOTS -out ${setdir}/${set}_pgra_ibs05
 
 # how many SNPs?
-zcat ${setdir}/${set}_pgra_ibs05.mafs.gz | wc -l
+zcat ${setdir}/${set}_pgra_ibs05.mafs.gz | tail -n +2 | wc -l
+
+# extract and index sites
+zcat ${setdir}/${set}_pgra_ibs05.mafs.gz | cut -f 1,2 | tail -n +2 > ${setdir}/${set}_Sites_Pgra_HIMB.txt
+# obtain list of scaffolds containing sites
+cat ${setdir}/${set}_Sites_Pgra_HIMB.txt | cut -f 1 | uniq > ${setdir}/${set}_chrs_Pgra_HIMB.txt
+angsd sites index ${setdir}/${set}_Sites_Pgra_HIMB.txt
 
 # scp ibsMat and bam file list to laptop
 
