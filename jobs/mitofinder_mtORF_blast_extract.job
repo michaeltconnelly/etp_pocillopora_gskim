@@ -39,6 +39,7 @@ done
 
 # make BLAST database to search for mtORF sequences
 makeblastdb -dbtype 'nucl' -in ${prodir}/outputs/mitofinder/mtorf_extract/all_mt_contigs.fasta -title mtcontigs -parse_seqids
+# NOTE: this step keeps failing because of failed memory allocations
 
 # complete BLAST search, format results to include matching subject sequences (sseq)
 blastn \

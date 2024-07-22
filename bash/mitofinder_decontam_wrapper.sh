@@ -57,11 +57,14 @@ echo "mitofinder \
 # metaspades
 # tRNA annotation
 
+# manually circularize assembly using simple_circularise.py
+
 #
 echo 'echo '${sample}' successfully processed' >> "${prodir}"/bash/jobs/${sample}_mitofinder_decontam.job
 #
 echo 'echo = `date` job $JOB_NAME done' >> ${prodir}/bash/jobs/${sample}_mitofinder_decontam.job
 # submit job
 qsub -wd ${prodir}/outputs/mitofinder_decontam ${prodir}/bash/jobs/${sample}_mitofinder_decontam.job
+sleep 0.5
 #
 done
