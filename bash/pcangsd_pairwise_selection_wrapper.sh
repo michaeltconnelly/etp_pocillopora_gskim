@@ -26,7 +26,7 @@ touch $JOBFILE
 
 # create file with list of samples
 SAMPLE_FILE="${prodir}/data/pairwise_comparisons/${pop1}_${pop2}_samples.txt"
-cat ${prodir}/data/pops_ngsadmix/${pop1} ${prodir}/data/pops_ngsadmix/${pop2} > $SAMPLE_FILE
+cat ${prodir}/data/pops_pgrandis_continent/${pop1} ${prodir}/data/pops_pgrandis_continent/${pop2} > $SAMPLE_FILE
 
 # input QSUB commands
 echo "#!/bin/sh
@@ -69,7 +69,7 @@ if [ ! -d "${angsddir}/selection/${set}" ]; then mkdir ${angsddir}/selection/${s
 setdir="${angsddir}/selection/${set}"
 
 # making a list of bam file paths
-ls ${prodir}/outputs/alignments/*md.rg.bam | grep -f $SAMPLE_FILE > ${setdir}/${set}_bamfile.txt
+ls ${prodir}/outputs/alignments/pgra_himb/*md.rg.bam | grep -f $SAMPLE_FILE > ${setdir}/${set}_bamfile.txt
 
 # verify samples are correct
 echo "These are the samples to be processed: ${samples}, there are $(cat ${setdir}/${set}_bamfile.txt | wc -l) in total"' >> $JOBFILE
@@ -78,9 +78,9 @@ echo "These are the samples to be processed: ${samples}, there are $(cat ${setdi
 echo '# prepare ANGSD variables' >> $JOBFILE
 
 # assign variable to sites and chrs files (sorted and indexed)
-# include all sites, do not filter for LD
-echo 'SITES="${angsddir}/AllSites.txt"
-CHRS="${angsddir}/SczhEnG.txt"' >> $JOBFILE
+# include all SNP sites (snp_pval < 1e-5, MAF > 0.05), do not filter for LD
+echo 'SITES="${angsddir}/final_noclones_pgra_ibs05.sites.txt"
+CHRS="${angsddir}/final_noclones_pgra_ibs05.chrs.txt"' >> $JOBFILE
 
 #echo 'SITES="${angsddir}/final_noclones/final_noclones_noLD_sorted_v3.sites.txt"
 #CHRS="${angsddir}/final_noclones/final_noclones_noLD.SczhEnG_v3.txt"' >> $JOBFILE
@@ -88,7 +88,7 @@ CHRS="${angsddir}/SczhEnG.txt"' >> $JOBFILE
 # assign variable to bamfile
 echo 'BAMS="${setdir}/${set}_bamfile.txt"' >> $JOBFILE
 
-# assign variable to site filters 
+# assign variable to site filters - sites already filtered
 echo 'FILTERS="-minMaf 0"' >> $JOBFILE
 
 # assign variable to tasks
@@ -104,11 +104,12 @@ echo 'pcangsd \
 --beagle ${setdir}/${set}_noLD_filtered.beagle.gz \
 -o ${setdir}/${set}_noLD \
 --pcadapt \
+--maf 0 \
 --sites_save \
 --threads $NSLOTS' >> $JOBFILE
 
 # obtain site coordinates from finished maf.gz file
-echo 'zcat ${setdir}/${set}_noLD_filtered.mafs.gz | cut -f 1,2 | tail -n +2 | sed 's/SczhEnG_//g' | sort -t$'\t' -k 1,1n -k 2,2n | sed 's/^/SczhEnG_/g' > ${setdir}/${set}_noLD.sites.txt'  >> $JOBFILE
+echo 'zcat ${setdir}/${set}_noLD_filtered.mafs.gz | cut -f 1,2 | tail -n +2 | sort -t$'\t' -k 1,1n -k 2,2n  > ${setdir}/${set}_noLD.sites.txt'  >> $JOBFILE
 
 # input job finished statment
 echo '#
