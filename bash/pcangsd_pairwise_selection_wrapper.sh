@@ -88,8 +88,8 @@ CHRS="${angsddir}/final_noclones_pgra_ibs05.chrs.txt"' >> $JOBFILE
 # assign variable to bamfile
 echo 'BAMS="${setdir}/${set}_bamfile.txt"' >> $JOBFILE
 
-# assign variable to site filters - sites already filtered
-echo 'FILTERS="-minMaf 0"' >> $JOBFILE
+# assign variable to site filters 
+echo 'FILTERS="-minMaf 0.05"' >> $JOBFILE
 
 # assign variable to tasks
 echo 'TODO="-doMajorMinor 1 -doMaf 1 -doCounts 1 -doGeno 8 -doPost 1 -doGlf 2"' >> $JOBFILE
@@ -109,6 +109,8 @@ echo 'pcangsd \
 
 # obtain site coordinates from finished maf.gz file
 echo 'zcat ${setdir}/${set}_noLD_filtered.mafs.gz | cut -f 1,2 | tail -n +2  > ${setdir}/${set}_noLD.sites.txt'  >> $JOBFILE
+
+paste ${setdir}/${set}_noLD.sites ${setdir}/${set}_noLD.sites.txt | awk -F "\t" 'BEGIN { OFS="\t" } $1 == 1 {print $2,$3}' > ${setdir}/${set}_noLD_pcangsd.sites.txt
 
 # input job finished statment
 echo '#
