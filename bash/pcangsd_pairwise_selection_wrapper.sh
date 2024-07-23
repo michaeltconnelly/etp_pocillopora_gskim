@@ -26,7 +26,7 @@ touch $JOBFILE
 
 # create file with list of samples
 SAMPLE_FILE="${prodir}/data/pairwise_comparisons/${pop1}_${pop2}_samples.txt"
-cat ${prodir}/data/pops_ngsadmix/${pop1} ${prodir}/data/pops_ngsadmix/${pop2} > $SAMPLE_FILE
+cat ${prodir}/data/pops_pgrandis_continent/${pop1} ${prodir}/data/pops_pgrandis_continent/${pop2} > $SAMPLE_FILE
 
 # input QSUB commands
 echo "#!/bin/sh
@@ -110,7 +110,7 @@ echo 'pcangsd \
 # obtain site coordinates from finished maf.gz file
 echo 'zcat ${setdir}/${set}_noLD_filtered.mafs.gz | cut -f 1,2 | tail -n +2  > ${setdir}/${set}_noLD.sites.txt'  >> $JOBFILE
 
-paste ${setdir}/${set}_noLD.sites ${setdir}/${set}_noLD.sites.txt | awk -F "\t" 'BEGIN { OFS="\t" } $1 == 1 {print $2,$3}' > ${setdir}/${set}_noLD_pcangsd.sites.txt
+echo 'paste ${setdir}/${set}_noLD.sites ${setdir}/${set}_noLD.sites.txt | awk -F "\t" "BEGIN { OFS="\t" } $1 == 1 {print $2,$3}" > ${setdir}/${set}_noLD_pcangsd.sites.txt' >> $JOBFILE
 
 # input job finished statment
 echo '#
