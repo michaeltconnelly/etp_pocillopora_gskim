@@ -82,8 +82,8 @@ zcat ${setdir}/${set}_noLD_filtered.mafs.gz | wc -l
 
 # ----- Selection scans with PCangsd
 pcangsd \
---beagle ${prodir}/outputs/angsd/${set}/${set}_noLD_filtered.beagle.gz \
--o ${prodir}/outputs/angsd/${set}/${set}_noLD \
+--beagle ${prodir}/outputs/angsd/${set}/${set}_pgra_ibs05.beagle.gz \
+-o ${prodir}/outputs/angsd/${set}/${set}_ibs05 \
 --pcadapt \
 --sites_save \
 --threads $NSLOTS

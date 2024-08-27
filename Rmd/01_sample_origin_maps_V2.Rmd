@@ -26,6 +26,8 @@ library("maps") # for getting pacific-centered map
 library("scatterpie") # for plotting proportions of different lineages on map
 library("ggnewscale") # for adding new fill scale to keep elevation
 library("ggrepel") # for adding labels to plot
+#
+source("./R/pocillopora_etp_gksim_functions.R")
 ```
 
 ## Prepare map data
@@ -205,43 +207,48 @@ regions_species <- samples %>%
 ### Plot maps with metadata
 #### Manually-Assigned Species Scatterpie
 ```{r assigned species: powerpoint}
-pdf(file="./outputs/figures/sicb/Pocillopora_origins_map_scatterpie.pdf", width = 8, height = 4.25)
-par(mar = c(0.5, 0.5, 0.5, 0.5))
-elevMapTest <-
-  ggplot() +
-  geom_sf(data = ocean, color = "black", size = 0.1, fill = "aliceblue") +
-  geom_sf(data = rivers, color = "#d7f2fa", size = 0.5)+
-  geom_sf(data = states, color = "darkgrey", size = 0.1, fill = "antiquewhite", alpha = 0.5) +
-  geom_sf(data = map, color = "black", size = 0.1, fill = "antiquewhite", alpha = 0.5) +
-    coord_sf(
-    xlim = c(-112, -76),
-    ylim = c(-2, 16)) +
-  #
-  new_scale_fill() +
-  geom_scatterpie(aes(x = Longitude, y = Latitude, group = `Region`, r = 1),
-                    data = regions_species, cols = c("P. effusa", "P. grandis", "P. meandrina", "P. verrucosa 3a", "P. verrucosa 3b"), size = 5, alpha = .8) + 
-  scale_fill_manual(values = c("purple", "darkorange1", "gold", "turquoise2", "turquoise4"), name = "Species") +
-  #
-  geom_label_repel(aes(x = Longitude, y = Latitude, label = sum), size = 2, box.padding = 0.5, min.segment.length = 2, seed = 3, data = regions_species) +
-  labs(x="Longitude", y="Latitude", elevation = "Elevation") +
-  theme(panel.grid.major = element_blank(),
-        panel.background = element_rect(fill = "#f0f8ff"),
-        panel.border = element_rect(fill = NA),
-        plot.title = element_blank(),
-        plot.subtitle = element_blank(),
-        axis.title = element_blank(), 
-        axis.text = element_text(size = 8),
-        legend.title = element_text(size = 10),
-        legend.text = element_text(size = 8, face = "italic"),
-        legend.position = c(0.14, 0.28)) +
-  ggtitle(expression(italic("Pocillopora")*' species distribution and genotype counts'), subtitle = "All unique genotypes (N = 229)")
+pdf(file="~/Desktop/Pocillopora_origins_map_scatterpie.pdf", width = 8, height = 4.25)
+# par(mar = c(0.5, 0.5, 0.5, 0.5))
+# elevMapTest <-
+#   ggplot() +
+#   geom_sf(data = ocean, color = "black", size = 0.1, fill = "aliceblue") +
+#   geom_sf(data = rivers, color = "#d7f2fa", size = 0.5)+
+#   geom_sf(data = states, color = "darkgrey", size = 0.1, fill = "antiquewhite", alpha = 0.5) +
+#   geom_sf(data = map, color = "black", size = 0.1, fill = "antiquewhite", alpha = 0.5) +
+#     coord_sf(
+#     xlim = c(-112, -76),
+#     ylim = c(-2, 16)) +
+#   #
+#   new_scale_fill() +
+#   geom_scatterpie(aes(x = Longitude, y = Latitude, group = `Region`, r = 1),
+#                     data = regions_species, cols = c("P. effusa", "P. grandis", "P. meandrina", "P. verrucosa 3a", "P. verrucosa 3b"), size = 5, alpha = .8) + 
+#   scale_fill_manual(values = c("purple", "darkorange1", "gold", "turquoise2", "turquoise4"), name = "Species") +
+#   #
+#   geom_label_repel(aes(x = Longitude, y = Latitude, label = sum), size = 2, box.padding = 0.5, min.segment.length = 2, seed = 3, data = regions_species) +
+#   labs(x="Longitude", y="Latitude", elevation = "Elevation") +
+#   theme(panel.grid.major = element_blank(),
+#         panel.background = element_rect(fill = "#f0f8ff"),
+#         panel.border = element_rect(fill = NA),
+#         plot.title = element_blank(),
+#         plot.subtitle = element_blank(),
+#         axis.title = element_blank(), 
+#         axis.text = element_text(size = 8),
+#         legend.title = element_text(size = 10),
+#         legend.text = element_text(size = 8, face = "italic"),
+#         legend.position = c(0.14, 0.28)) +
+#   ggtitle(expression(italic("Pocillopora")*' species distribution and genotype counts'), subtitle = "All unique genotypes (N = 229)")
 # subtitle = "All East Pacific samples (N = 337)")
-elevMapTest
+print(elevMapTest)
 dev.off()
 ```
 ```{r}
-png(file="./outputs/figures/sicb/Pocillopora_origins_map_scatterpie.png", width = 8, height = 3.75, units = "in", res = 300, type = "cairo-png")
-elevMapTest
+png(file="./outputs/figures/Evolution2024_Pocillopora_origins_map_scatterpie.png", width = 8, height = 3.75, units = "in", res = 300, type = "cairo-png")
+print(elevMapTest)
+dev.off()
+```
+```{r}
+pdf(file="./outputs/figures/Evolution2024_Pocillopora_origins_map_scatterpie.pdf", width = 8, height = 3.75)
+print(elevMapTest)
 dev.off()
 ```
 
@@ -279,7 +286,7 @@ elevMapTest <-
   new_scale_fill() +
   geom_scatterpie(aes(x = Longitude, y = Latitude, group = `Region`, r = 1),
                     data = regions_ngsadmix_pops, cols = ngsadmix_spp, size = 5, alpha = .8) + 
-  scale_fill_manual(values = ngsadmix_pop_colors, name = "NGSadmix population") +
+  scale_fill_manual(values = ngsadmix_pop_colors, name = "NGSAdmix Species (K=5)") +
   #
   geom_label_repel(aes(x = Longitude, y = Latitude, label = sum), size = 2, box.padding = 0.65, min.segment.length = 2, seed = 3, data = regions_ngsadmix_pops) +
   labs(x="Longitude", y="Latitude", elevation = "Elevation") +
@@ -293,8 +300,8 @@ elevMapTest <-
         axis.text = element_text(size = 10),
         legend.title = element_text(size = 10),
         legend.text = element_text(size = 8),
-        # legend.position = c(0.14, 0.28),
-        legend.position = "none") +
+        legend.background = element_rect(color = "lightgrey"),
+        legend.position = c(0.14, 0.36)) +
   ggtitle(expression(italic("Pocillopora")*' species distribution and genotype counts'), subtitle = "All non-admixed genotypes (N = 211)")
 # subtitle = "All East Pacific samples (N = 337)")
 elevMapTest

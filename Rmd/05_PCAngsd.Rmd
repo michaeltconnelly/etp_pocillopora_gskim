@@ -156,7 +156,7 @@ pca <- pcs %>% ggplot(aes(x = V1, y = V2)) +
 dev.off()
 ```
 ```{r}
-png(file="./outputs/figures/sicb/pcangsd_species_noLD.png", width = 5.5, height = 3.75, units = "in",  res = 300, type = "cairo-png")
+png(file="./outputs/figures/pcangsd_species_noLD.png", width = 5.5, height = 3.75, units = "in",  res = 300, type = "cairo-png")
 pca
 dev.off()
 ```
@@ -303,9 +303,11 @@ dev.off()
 ```
 
 ## Perform separate PCAs for different species
-### Plot PCAs for *P. grandis* - no clones
+### Plot PCAs for *P. grandis* - no clones, offshore vs. continental selection
 ```{r pca_c1}
-C1 <- as.matrix(read.table("./outputs/angsd/pgrandis_noclones.cov"))
+# C1 <- as.matrix(read.table("./outputs/angsd/pgrandis_noclones.cov"))
+C1 <- as.matrix(read.table("./outputs/angsd/pgrandiscontinent_pgrandisoffshore_ibs05.cov"))
+C1 <- as.matrix(read.table("./outputs/angsd/pgrandiscontinent_pgrandisoffshore_noLD.cov"))
 e1 <- eigen(C1)
 ```
 ```{r pca_test_plot}
@@ -316,9 +318,10 @@ plot(e1$vectors[,2:3],xlab="PC2",ylab="PC3", main="individual allele frequency")
 ```
 ```{r bamfile_sample_order_check}
 # reading list of bam files = order of samples in IBS matrix
-bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/pgrandis_noclones_bamfile.txt",header=F)[,1]
+bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/pgrandiscontinent_pgrandisoffshore_pgra_bamfile.txt",header=F)[,1]
 #
 bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/", "", bams, perl=T)
+bam_ids <- sub("pgra_himb/", "", bam_ids, perl=T)
 bam_ids <- sub(".sorted.md.rg.bam", "", bam_ids, perl=T)
 bam_ids <- sub("_S[[:digit:]]+$", "", bam_ids)
 #
@@ -326,7 +329,7 @@ bam_ids <- sub("_S[[:digit:]]+$", "", bam_ids)
 ```
 ```{r select_samples}
 # aligning sample metadata with bams list, then check again
-samples_pgrandis <- samples[match(bam_ids, samples$`Sample ID`),] 
+samples_pgrandis <- samples_noclones_ngsadmix[match(bam_ids, samples_noclones_ngsadmix$`Sample ID`),] 
 # do all the sample ids match the bam file ids in the correct order?
 all(samples_pgrandis$`Sample ID` == bam_ids) # TRUE
 ```
@@ -365,18 +368,19 @@ pcs_c1 %>% ggplot(aes(x = V1, y = V2)) +
 
 ### Figure ###
 ```{r pgrandis_region_pca}
-pdf("./outputs/figures/pgrandis_region_pca.pdf", height = 4.5, width = 6)
-title <- expression(paste("PCA of ETP ", italic("P. grandis"), " samples (n = 176)"))
+png("./outputs/figures/Evolution2024_pgrandis_region_pca.png", height = 3, width = 4.5, type = "cairo-png", unit = "in", res = 300)
+title <- expression(paste("PCA of ETP ", italic("P. grandis"), " samples (n = 163)"))
 #
-pcs_c1 %>% ggplot(aes(x = V1, y = V2)) +
-  geom_point(aes(fill = `Region`), shape = 21, size = 2, alpha = 0.75) +
-  scale_fill_manual(values = region_colors) +
+pcs_c1 %>%
+  filter(`NGSAdmix K5 Species` %notin% c("Unassigned", NA)) %>% 
+  ggplot(aes(x = V1, y = V2)) +
+  geom_point(aes(fill = `NGSAdmix K5 Species`), shape = 21, size = 2, alpha = 0.75) +
+  scale_fill_manual(values = c("darkorange4", "darkorange", "grey90")) +
   # facet_grid(Region ~ .) +
   coord_fixed(pcvar_c1[2]/pcvar_c1[1]) + 
-  theme(legend.position = "right") +
+  theme(legend.position = "none") +
   xlab(paste0( "PC1 (", pcvar_c1[1], "%)")) + 
-  ylab(paste0( "PC2 (", pcvar_c1[2], "%)")) +
-  ggtitle(title)
+  ylab(paste0( "PC2 (", pcvar_c1[2], "%)"))
 # 
 dev.off()
 ```
@@ -431,12 +435,12 @@ pcs_c1 %>% ggplot(aes(x = V1, y = V2)) +
 pcs_c1_spp <- pcs_c1 %>% mutate(SubSpecies = ifelse(V2 < -0.05, "C", (ifelse(V1 < -0.05, "B", ifelse(V1 > 0, "A", "D"))))) 
 ```
 ```{r}
-pdf(file="./outputs/figures/sicb/pcangsd_pgrandis_region.pdf", width = 7.5, height = 5)
+pdf(file="./outputs/figures/Evolution2024_pcangsd_pgrandis_region.pdf", width = 7.5, height = 5)
 title <- expression(paste("East Pacific ", italic("P. grandis"), " population-level PCA (3,273,302 SNPs)"))
 # no bone Pcas 
 pcs_c1 %>% ggplot(aes(x = V1, y = V2)) +
-  geom_point(aes(fill = `Region`), shape = 21, size = 2, alpha = 0.75, show.legend = T) +
-  scale_fill_manual(values = region_colors) +
+  geom_point(aes(fill = `NGSAdmix K5 Species`), shape = 21, size = 2, alpha = 0.75, show.legend = T) +
+  scale_fill_manual(values = c("darkorange4", "darkorange", "grey90")) +
   # facet_wrap(~ Region) +
   coord_fixed(pcvar_c1[2]/pcvar_c1[1]) + 
   xlab(paste0( "PC1 (", pcvar_c1[1], "%)")) + 

@@ -18,6 +18,7 @@ library("pheatmap")
 #
 library("qqman")
 # library("fastman")
+library("OutFLANK")
 #
 library("patchwork")
 #
@@ -140,9 +141,13 @@ for (file in fst_files) {
     geom_histogram(binwidth = 0.02, color = "black", fill = "lightgrey") +
     xlim(c(0,1))
   #
-  fst_plot <- fst_df %>% ggplot(aes(CHR, Fst)) + 
-    geom_point() + 
-    ylim(c(0,1)) 
+  fst_plot <- fst_df %>%
+    filter(!grepl("CA", CHR)) %>% 
+    ggplot(aes(BP, Fst)) + 
+    geom_point() +
+    facet_grid(~CHR, scales = "free") +
+    ylim(c(0,1)) +
+    theme(axis.text.x = element_blank())
   #
   print((fst_plot / fst_hist)) #+ plot_annotation(title = file))
 }            
@@ -158,16 +163,21 @@ for (file in fst_files) {
     geom_histogram(binwidth = 0.02, color = "black", fill = "lightgrey") +
     xlim(c(0,1))
   #
-  fst_plot <- fst_df %>% ggplot(aes(CHR, Fst)) + 
-    geom_point() + 
-    ylim(c(0,1)) 
+  fst_plot <- fst_df %>%
+    filter(!grepl("CA", CHR)) %>% 
+    ggplot(aes(BP, Fst)) + 
+    geom_point(aes(color = CHR)) +
+    # facet_grid(~CHR, scales = "free") +
+    ylim(c(0,1)) +
+    theme(axis.text.x = element_blank())
+    
   #
   print((fst_plot / fst_hist) + plot_annotation(title = file))
 }            
 ```
 ### 
 ```{r}
-pdf("./outputs/figures/10kbfst_pairwise.pdf")
+# pdf("./outputs/figures/10kbfst_pairwise.pdf")
 fst_files <- list.files("./outputs/angsd/10kb_fst/spp_k6", full.names = T)
 for (file in fst_files) { 
   fst_df <- read_delim(file, delim = "\t", skip = 1, col_names = angsd_fst_colnames, col_types = angsd_fst_cols)
@@ -176,15 +186,37 @@ for (file in fst_files) {
     geom_histogram(binwidth = 0.02, color = "black", fill = "lightgrey") +
     xlim(c(0,1))
   #
-  fst_plot <- fst_df %>% ggplot(aes(CHR, Fst)) + 
-    geom_point() + 
-    ylim(c(0,1)) 
+  fst_plot <- fst_df %>% 
+    filter(!grepl("CA", CHR)) %>% 
+    ggplot(aes(BP, Fst)) + 
+    geom_point() +
+    facet_grid(~CHR, scales = "free") +
+    ylim(c(0,1)) +
+    theme(axis.text.x = element_blank())
   #
-  print((fst_plot / fst_hist) + plot_annotation(title = file))
+  print((fst_hist / fst_plot) + plot_annotation(title = file))
 }
-dev.off()
+# dev.off()
 ```
 
+## Experiment with "pretty" Manhattan plots
+```{r}
+fst_df %>% ggplot(aes(CHR, Fst)) + 
+    geom_point() + 
+    ylim(c(0,1)) 
+
+summary(fst_df$Fst)
+```
+```{r}
+fst_df %>% 
+  filter(!grepl("CA", CHR)) %>% 
+  ggplot(aes(BP, Fst)) + 
+    geom_point() +
+  facet_grid(~CHR, scales = "free") +
+    ylim(c(0,1)) +
+  theme(axis.text.x = element_blank())
+``` 
+## Tests for outlier SNPs using OutFLANK
 ```{r}
 
 ```

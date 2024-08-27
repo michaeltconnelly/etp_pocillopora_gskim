@@ -30,7 +30,7 @@ samples <- all_samples
 
 ## Import coral gene coordinates and annotation
 ```{r}
-gene_coordinates <- read_delim(file = "./data/pdam_genome_gene_coordinates.txt", col_names = c("chr","start","end","ID"))
+gene_coordinates <- read_delim(file = "./data/pgrandis_genome_gene_coordinates.txt", col_names = c("chr","start","end","ID"))
 
 # extend the start and end coordinates by 1kb
 # gene_coordinates_extend_1kb 
@@ -160,8 +160,12 @@ spp_combos$comp
 # NOTE: need to ensure number of sites and z-scores are the same, use --sites-save flag in PCangsd
 pcadapt_site_qvals <- function(comparison, alpha = 0.05) {
   # point to files containing pcadapt z-scores and site coordinates
-  filename_zscore <- paste0("./outputs/angsd/selection/", comparison, "_noLD.pcadapt.zscores")
-  filename_sites <- paste0("./outputs/angsd/selection/", comparison, "_noLD.sites.txt")
+  # linked sites
+  filename_zscore <- paste0("./outputs/angsd/selection/", comparison, "_ibs05.pcadapt.zscores")
+  filename_sites <- paste0("./outputs/angsd/selection/", comparison, "_ibs05.sites.txt")
+  # unlinked sites
+  # filename_zscore <- paste0("./outputs/angsd/selection/", comparison, "_noLD.pcadapt.zscores")
+  # filename_sites <- paste0("./outputs/angsd/selection/", comparison, "_noLD.sites.txt")
   
   # import pcadapt z-scores
   zs <- read_tsv(filename_zscore, col_names = c("zscore"))
@@ -215,14 +219,22 @@ get_outlier_site_genes <- function(site_qvals){
 }
 ```
 ```{r}
-spp_combos$comp[15]
+spp_combos$comp[5]
 ```
 ```{r}
-sqv <- pcadapt_site_qvals(spp_combos$comp[10], alpha = 0.05)
+sqv <- pcadapt_site_qvals(spp_combos$comp[5], alpha = 0.05)
+#
+sqv <- pcadapt_site_qvals(spp_combos$comp[5], alpha = 0.05)
 ```
 ```{r}
 outlier_site_genes <- get_outlier_site_genes(sqv) 
 ```
+```{r}
+outlier_site_genes %>% group_by(chr) %>%
+  slice_max(n = 5, order_by = dplyr::desc(qval)) %>%
+  arrange(chr, dplyr::desc(qval))
+```
+
 ```{r}
 sqv_list <- list()
 for (i in seq(1:length(spp_combos$comp))) {
@@ -277,6 +289,55 @@ print(plot)
 }
 # work towards pretty Manhattan plot
 ```
+```{r chr_abbreviations}
+chrs_abbv <- list(
+"OZ034731.1" = "CHR1",
+"OZ034732.1" = "CHR2",
+"OZ034733.1" = "CHR3",
+"OZ034734.1" = "CHR4",
+"OZ034735.1" = "CHR5",
+"OZ034736.1" = "CHR6",
+"OZ034737.1" = "CHR7",
+"OZ034738.1" = "CHR8",
+"OZ034739.1" = "CHR9",
+"OZ034740.1" = "CHR10",
+"OZ034741.1" = "CHR11",
+"OZ034742.1" = "CHR12",
+"OZ034743.1" = "CHR13",
+"OZ034744.1" = "CHR14"
+)
+chrs_labeller <- function(variable, value){
+  return(chrs_abbv[value])
+}
+```
+```{r}
+qvplot <- sqv %>%
+  filter(!grepl("^CA", chr)) %>% 
+  ggplot(aes(pos, -log10(`qval`))) +
+  geom_point(aes(color = chr), show.legend = F) + 
+  facet_grid(~ chr, scales = "free", space = "free", labeller = chrs_labeller) +
+  # geom_hline(yintercept = -log10(5e-8), color = "red") +
+  theme_bw() +
+  theme(strip.background = element_rect(fill = "white"),
+        strip.text = element_text(size = 12),
+        panel.grid = element_blank(),
+        panel.spacing = unit(1, "mm"),
+        axis.text.x = element_blank(),
+        axis.title.x = element_blank())
+print(qvplot)
+```
+```{r}
+pdf("./outputs/figures/Evolution2024_pgrandis_pcadapt.pdf", height = 6.5, width = 13)
+print(qvplot)
+dev.off()
+```
+```{r}
+png("./outputs/figures/Evolution2024_pgrandis_pcadapt.png", height = 4.5, width = 12.5, units = "in", res = 300, type = "cairo-png")
+print(qvplot)
+dev.off()
+```
+
+
 ```{r distinct_outlier_genes}
 distinct_genes <- outlier_site_genes %>%
   group_by(ID) %>%
@@ -394,9 +455,9 @@ return(sigRes)
 ```
 
 ```{r}
-topGOtest <- topGOanalyzeDE(distinct_outlier_genes_list[[6]]) 
+topGOtest <- topGOanalyzeDE(distinct_genes) 
 ```
-## Perform toGO tests 
+## Perform topGO tests 
 ### Between species lineages
 ```{r}
 topGO_list <- list()
