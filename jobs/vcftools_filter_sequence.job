@@ -1,0 +1,54 @@
+#!/bin/sh
+# ----------------Parameters---------------------- #
+#$ -S /bin/sh
+#$ -pe mthread 16
+#$ -q mThM.q
+#$ -l mres=192G,h_data=12G,h_vmem=12G,himem
+#$ -cwd
+#$ -j y
+#$ -N vcftools_filter_sequence
+#$ -o vcftools_filter_sequence.log
+#$ -m bea
+#$ -M connellym@si.edu
+#
+# ----------------Modules------------------------- #
+module load bioinformatics/vcftools
+module load bioinformatics/bcftools
+#
+# ----------------Your Commands------------------- #
+
+echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
+echo + NSLOTS = $NSLOTS
+
+#specify variable containing sequence file prefixes and directory paths
+mcs="/scratch/nmnh_corals/connellym"
+prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
+
+# filter to include only no-clones samples
+vcftools --gzvcf ${prodir}/outputs/full_analysis.vcf.gz --keep ${prodir}/data/final_noclones_samples.txt \
+--recode --stdout | gzip -c > ${prodir}/outputs/full_analysis_noclones.vcf.gz
+
+# filter to include only snapp spp subset samples
+vcftools --gzvcf ${prodir}/outputs/full_analysis.vcf.gz --keep ${prodir}/data/snapp_subset_5X_samples.txt \
+--recode --stdout | gzip -c > ${prodir}/outputs/snapp_sppsubset.vcf.gz
+
+# filter to include only snapp K6 5X spp subset samples
+vcftools --gzvcf ${prodir}/outputs/gatk_vcf_filtering/full_analysis.vcf.gz --keep ${prodir}/data/snapp_subset_K6_5X_samples.txt \
+--recode --stdout | gzip -c > ${prodir}/outputs/snapp_subset_K6_5X.vcf.gz
+
+### ------------------------------------------------
+
+# filter SNPs in no-clones samples
+vcftools --gzvcf ${prodir}/outputs/full_analysis_noclones.vcf.gz \
+--minDP 10 --maxDP 300 --minQ 30 --maf 0.05 --max-missing 0.85 --remove-indels \
+--recode --stdout | gzip -c > ${prodir}/outputs/full_analysis_noclones_filtered.vcf.gz
+
+# filter SNPs in snapp spp subset samples
+vcftools --gzvcf ${prodir}/outputs/snapp_sppsubset.vcf.gz \
+--minDP 10 --maxDP 300 --minQ 30 --maf 0.05 --max-missing 0.85 --remove-indels \
+--recode --stdout | gzip -c > ${prodir}/outputs/snapp_sppsubset_filtered.vcf.gz
+
+# filter SNPs for unlinked, 0% missing data for SNAPP tree, BFD* analyses
+vcftools --gzvcf ${prodir}/outputs/snapp_sppsubset_filtered.vcf.gz \
+--minDP 15 --thin 5000 --max-missing 1 \
+--recode --stdout | gzip -c > ${prodir}/outputs/snapp_sppsubset_filtered_snapp.vcf.gz
