@@ -50,7 +50,7 @@ echo "mitofinder \
 -r ${mcs}/sequences/pocillopora.gb \
 -1 ${prodir}/data/trimmed/${sample}_R1_PE_trimmed.fastq.gz \
 -2 ${prodir}/data/trimmed/${sample}_R2_PE_trimmed.fastq.gz \
---allow-intron --intron-size 12000 --adjust-direction" >> "${prodir}"/bash/jobs/${sample}_mitofinder.job
+--max-contig 1 --adjust-direction" >> "${prodir}"/bash/jobs/${sample}_mitofinder.job
 #
 echo 'echo '${sample}' successfully processed' >> "${prodir}"/bash/jobs/${sample}_mitofinder.job
 #
