@@ -57,7 +57,7 @@ echo 'sed -i "s/>/>$sample/" ${prodir}/outputs/mitofinder/${sample}/${sample}_Mi
 #   input mitofinder assembly re-annotation command
 # pocillopora.gb consists of Pocillopora-only reference mitogenomes
 echo "mitofinder \
--j ${sample} \
+-j ${sample}_circular \
 -o 4 \
 -r ${mcs}/sequences/pocillopora.gb \
 -a ${prodir}/outputs/mitofinder/${sample}/${sample}_MitoFinder_megahit_mitfi_Final_Results/${sample}_mtDNA_contig_circular.fasta \

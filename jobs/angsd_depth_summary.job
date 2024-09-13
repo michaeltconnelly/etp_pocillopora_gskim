@@ -35,13 +35,13 @@ if [ ! -d "${prodir}/outputs/angsd/${set}" ]; then mkdir ${prodir}/outputs/angsd
 setdir="${prodir}/outputs/angsd/${set}"
 
 # making a list of bam file paths
-ls ${prodir}/outputs/alignments/*md.rg.bam | grep -f ${prodir}/data/${set}_samples.txt > ${setdir}/${set}_bamfile.txt
+ls ${prodir}/outputs/alignments/pgra_himb/*md.rg.bam | grep -f ${prodir}/data/${set}_samples.txt > ${setdir}/${set}_pgra_bamfile.txt
 
 # verify samples are correct
-echo " These are the samples to be processed: ${samples}, there are $(cat ${setdir}/${set}_bamfile.txt | wc -l) in total"
+echo " These are the samples to be processed: ${samples}, there are $(cat ${setdir}/${set}_pgra_bamfile.txt | wc -l) in total"
 
 # assign variable to bamfile
-BAMS=${setdir}/${set}_bamfile.txt
+BAMS=${setdir}/${set}_pgra_bamfile.txt
 
 # from https://github.com/z0on/ClonesAndClades_Ofav_Keys/blob/master/read_processing_walkthrough.txt
 # Manzello et al. 2018
@@ -53,7 +53,8 @@ BAMS=${setdir}/${set}_bamfile.txt
 nsamps=$(cat $BAMS | wc -l) 
 minindv=$(echo "$nsamps*0.5" | bc | awk '{print int($1+0.5)}')
 # also adding  filters against very badly non-HWE sites (such as, all calls are heterozygotes => lumped paralog situation) and sites with really bad strand bias:
-FILTERS="-uniqueOnly 1 -remove_bads 1 -minMapQ 30 -maxDepth 3370 -minInd $minindv"
+FILTERS="-uniqueOnly 1 -remove_bads 1 -minMapQ 30 -minInd $minindv"
+# -maxDepth 3370
 
 #TODO: 
 # -GL 1 : use samtools likelihood model
@@ -63,6 +64,6 @@ FILTERS="-uniqueOnly 1 -remove_bads 1 -minMapQ 30 -maxDepth 3370 -minInd $minind
 # -dumpCounts 2 :
 TODO="-doQsDist 1 -doDepth 1 -doCounts 1 -dumpCounts 2"
 
-angsd -b $BAMS -GL 1 $FILTERS $TODO -P $NSLOTS -out ${setdir}/${set}_dd
+angsd -b $BAMS -GL 1 $FILTERS $TODO -P $NSLOTS -out ${setdir}/${set}_pgra_dd
 
 echo = `date` job $JOB_NAME done
