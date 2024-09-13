@@ -49,7 +49,10 @@ echo "python $sc ${prodir}/outputs/mitofinder/${sample}/${sample}_MitoFinder_meg
 ${prodir}/outputs/mitofinder/${sample}/${sample}_MitoFinder_megahit_mitfi_Final_Results/${sample}_mtDNA_contig_circular.fasta"  >> ${prodir}/bash/jobs/${sample}_mitofinder_assembly.job
 
 # sed rename
-sed -i "s/>/>$sample/" ${prodir}/outputs/mitofinder/${sample}/${sample}_MitoFinder_megahit_mitfi_Final_Results/${sample}_mtDNA_contig_circular.fasta
+echo "prodir=$prodir
+sample=$sample" >> ${prodir}/bash/jobs/${sample}_mitofinder_assembly.job
+
+echo 'sed -i "s/>/>$sample/" ${prodir}/outputs/mitofinder/${sample}/${sample}_MitoFinder_megahit_mitfi_Final_Results/${sample}_mtDNA_contig_circular.fasta' >> ${prodir}/bash/jobs/${sample}_mitofinder_assembly.job
 
 #   input mitofinder assembly re-annotation command
 # pocillopora.gb consists of Pocillopora-only reference mitogenomes
