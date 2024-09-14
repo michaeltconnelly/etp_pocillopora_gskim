@@ -38,7 +38,7 @@ setdir="${prodir}/outputs/angsd/${set}"
 cd ${setdir}
 
 # run Rscript to summarize depth distributions
-Rscript ${prodir}/R/plotQC_modified.R prefix=${set}_dd bams=${set}_bamfile.txt
+Rscript ${prodir}/R/plotQC_modified.R prefix=${set}_pgra_dd bams=${set}_pgra_bamfile.txt
 
 echo = `date` job $JOB_NAME done
 
