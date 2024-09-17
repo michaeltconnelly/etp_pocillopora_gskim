@@ -23,32 +23,74 @@ echo + NSLOTS = $NSLOTS
 #specify variable containing sequence file prefixes and directory paths
 mcs="/scratch/nmnh_corals/connellym"
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
+gatkdir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/gatk_vcf_filtering/"
 
-# filter to include only no-clones samples
-vcftools --gzvcf ${prodir}/outputs/full_analysis.vcf.gz --keep ${prodir}/data/final_noclones_samples.txt \
---recode --stdout | gzip -c > ${prodir}/outputs/full_analysis_noclones.vcf.gz
+# filter to include only no-clones samples (n = 229)
+vcftools --gzvcf ${gatkdir}/full_analysis.vcf.gz --keep ${prodir}/data/final_noclones_samples.txt \
+--recode --stdout | gzip -c > ${gatkdir}/full_analysis_noclones.vcf.gz
 
-# filter to include only snapp spp subset samples
-vcftools --gzvcf ${prodir}/outputs/full_analysis.vcf.gz --keep ${prodir}/data/snapp_subset_5X_samples.txt \
---recode --stdout | gzip -c > ${prodir}/outputs/snapp_sppsubset.vcf.gz
+# filter to include only "representative" samples for snapp species subset - top 5 from each K = 5 (n = 24)
+vcftools --gzvcf ${gatkdir}/full_analysis.vcf.gz --keep ${prodir}/data/representative_5X_snapp_samples.txt \
+--recode --stdout | gzip -c > ${gatkdir}/rep_5X_snapp_subset.vcf.gz
 
-# filter to include only snapp K6 5X spp subset samples
-vcftools --gzvcf ${prodir}/outputs/gatk_vcf_filtering/full_analysis.vcf.gz --keep ${prodir}/data/snapp_subset_K6_5X_samples.txt \
---recode --stdout | gzip -c > ${prodir}/outputs/snapp_subset_K6_5X.vcf.gz
+# filter to include only snapp K6 5X species subset samples (n = 29)
+vcftools --gzvcf ${gatkdir}/full_analysis.vcf.gz --keep ${prodir}/data/representative_5X_plus3b_snapp_samples.txt \
+--recode --stdout | gzip -c > ${gatkdir}/rep_5X_plus3b_snapp_subset.vcf.gz
 
 ### ------------------------------------------------
 
 # filter SNPs in no-clones samples
-vcftools --gzvcf ${prodir}/outputs/full_analysis_noclones.vcf.gz \
+vcftools --gzvcf ${gatkdir}/full_analysis_noclones.vcf.gz \
 --minDP 10 --maxDP 300 --minQ 30 --maf 0.05 --max-missing 0.85 --remove-indels \
---recode --stdout | gzip -c > ${prodir}/outputs/full_analysis_noclones_filtered.vcf.gz
+--recode --stdout | gzip -c > ${gatkdir}/full_analysis_noclones_filtered.vcf.gz
 
-# filter SNPs in snapp spp subset samples
-vcftools --gzvcf ${prodir}/outputs/snapp_sppsubset.vcf.gz \
+# assess missing data thresholds in no-clones samples
+vcftools --gzvcf ${gatkdir}/full_analysis_noclones.vcf.gz --missing-indv --stdout > ${gatkdir}/full_analysis_noclones.imiss
+
+## population structure strict
+### keep samples with <5% missing data 
+awk '$5 < 0.95 {print $1}' ${gatkdir}/full_analysis_noclones.imiss > ${prodir}/data/full_analysis_noclones_imiss05_samples.txt
+#
+vcftools --gzvcf ${gatkdir}/full_analysis_noclones.vcf.gz --keep ${prodir}/data/full_analysis_noclones_imiss05_samples.txt \
+--recode --stdout | gzip -c > ${gatkdir}/full_analysis_noclones_imiss05.vcf.gz
+
+### filter SNPs in samples with <5% missing data
+vcftools --gzvcf ${gatkdir}/full_analysis_noclones_imiss05.vcf.gz \
+--minDP 10 --maxDP 300 --minQ 30 --maf 0.05 --max-missing 0.95 --thin 5000 --hwe 0.000001 --remove-indels \
+--recode --stdout | gzip -c > ${gatkdir}/full_analysis_noclones_filtered_strict.vcf.gz
+
+## population structure relaxed
+### keep samples with <50% missing data 
+awk '$5 < 0.5 {print $1}' ${gatkdir}/full_analysis_noclones.imiss > ${prodir}/data/full_analysis_noclones_imiss50_samples.txt
+#
+vcftools --gzvcf ${gatkdir}/full_analysis_noclones.vcf.gz --keep ${prodir}/data/full_analysis_noclones_imiss50_samples.txt \
+--recode --stdout | gzip -c > ${gatkdir}/full_analysis_noclones_imiss50.vcf.gz
+
+### filter SNPs in samples with <50% missing data
+vcftools --gzvcf ${gatkdir}/full_analysis_noclones_imiss50.vcf.gz \
+--minDP 10 --maxDP 300 --minQ 30 --maf 0.05 --max-missing 0.5 --hwe 0.01 --remove-indels \
+--recode --stdout | gzip -c > ${gatkdir}/full_analysis_noclones_filtered_relaxed.vcf.gz
+
+### ------------------------------------------------
+
+# filter SNPs in snapp spp subset samples 
+vcftools --gzvcf ${gatkdir}/rep_5X_snapp_subset.vcf.gz \
 --minDP 10 --maxDP 300 --minQ 30 --maf 0.05 --max-missing 0.85 --remove-indels \
---recode --stdout | gzip -c > ${prodir}/outputs/snapp_sppsubset_filtered.vcf.gz
+--recode --stdout | gzip -c > ${gatkdir}/rep_5X_snapp_subset_filtered.vcf.gz
 
 # filter SNPs for unlinked, 0% missing data for SNAPP tree, BFD* analyses
-vcftools --gzvcf ${prodir}/outputs/snapp_sppsubset_filtered.vcf.gz \
---minDP 15 --thin 5000 --max-missing 1 \
---recode --stdout | gzip -c > ${prodir}/outputs/snapp_sppsubset_filtered_snapp.vcf.gz
+vcftools ${gatkdir}/rep_5X_snapp_subset.vcf.gz \
+--minDP 10 --maf 0.05 --thin 5000 --max-missing 1 --remove-indels \
+--recode --stdout | gzip -c > ${gatkdir}/rep_5X_snapp_subset_nomissing_thinned.vcf.gz
+
+### ------------------------------------------------
+
+# filter SNPs in snapp spp subset samples plus 3b
+vcftools --gzvcf ${gatkdir}/rep_5X_plus3b_snapp_subset.vcf.gz \
+--minDP 10 --maxDP 300 --minQ 30 --maf 0.05 --max-missing 0.85 --remove-indels \
+--recode --stdout | gzip -c > ${gatkdir}/rep_5X_plus3b_snapp_subset_filtered.vcf.gz
+
+# filter SNPs for unlinked, 0% missing data for SNAPP tree, BFD* analyses
+vcftools ${gatkdir}/rep_5X_plus3b_snapp_subset.vcf.gz \
+--minDP 10 --maf 0.05 --thin 5000 --max-missing 1 --remove-indels \
+--recode --stdout | gzip -c > ${gatkdir}/rep_5X_plus3b_snapp_subset_nomissing_thinned.vcf.gz
