@@ -44,32 +44,27 @@ vcftools --gzvcf ${gatkdir}/full_analysis_noclones.vcf.gz \
 --minDP 10 --maxDP 300 --minQ 30 --maf 0.05 --max-missing 0.85 --remove-indels \
 --recode --stdout | gzip -c > ${gatkdir}/full_analysis_noclones_filtered.vcf.gz
 
-# assess missing data thresholds in no-clones samples
-vcftools --gzvcf ${gatkdir}/full_analysis_noclones.vcf.gz --missing-indv --stdout > ${gatkdir}/full_analysis_noclones.imiss
-
 ## population structure strict
-### keep samples with <5% missing data 
-awk '$5 < 0.95 {print $1}' ${gatkdir}/full_analysis_noclones.imiss > ${prodir}/data/full_analysis_noclones_imiss05_samples.txt
-#
-vcftools --gzvcf ${gatkdir}/full_analysis_noclones.vcf.gz --keep ${prodir}/data/full_analysis_noclones_imiss05_samples.txt \
---recode --stdout | gzip -c > ${gatkdir}/full_analysis_noclones_imiss05.vcf.gz
-
-### filter SNPs in samples with <5% missing data
-vcftools --gzvcf ${gatkdir}/full_analysis_noclones_imiss05.vcf.gz \
+vcftools --gzvcf ${gatkdir}/full_analysis_noclones.vcf.gz \
 --minDP 10 --maxDP 300 --minQ 30 --maf 0.05 --max-missing 0.95 --thin 5000 --hwe 0.000001 --remove-indels \
 --recode --stdout | gzip -c > ${gatkdir}/full_analysis_noclones_filtered_strict.vcf.gz
+### assess missing data, 
+vcftools --gzvcf ${gatkdir}/full_analysis_noclones_filtered_strict.vcf.gz --missing-indv --stdout > ${gatkdir}/full_analysis_noclones_filtered_strict.imiss
+awk '$5 < 0.05 {print $1}' ${gatkdir}/full_analysis_noclones_filtered_strict.imiss > ${prodir}/data/full_analysis_noclones_filtered_strict_imiss05_samples.txt
+### keep samples with <5% missing data 
+vcftools --gzvcf ${gatkdir}/full_analysis_noclones_filtered_strict.vcf.gz --keep ${prodir}/data/full_analysis_noclones_filtered_strict_imiss05_samples.txt \
+--recode --stdout | gzip -c > ${gatkdir}/full_analysis_noclones_filtered_strict_imiss05.vcf.gz
 
 ## population structure relaxed
-### keep samples with <50% missing data 
-awk '$5 < 0.5 {print $1}' ${gatkdir}/full_analysis_noclones.imiss > ${prodir}/data/full_analysis_noclones_imiss50_samples.txt
-#
-vcftools --gzvcf ${gatkdir}/full_analysis_noclones.vcf.gz --keep ${prodir}/data/full_analysis_noclones_imiss50_samples.txt \
---recode --stdout | gzip -c > ${gatkdir}/full_analysis_noclones_imiss50.vcf.gz
-
-### filter SNPs in samples with <50% missing data
-vcftools --gzvcf ${gatkdir}/full_analysis_noclones_imiss50.vcf.gz \
+vcftools --gzvcf ${gatkdir}/full_analysis_noclones.vcf.gz \
 --minDP 10 --maxDP 300 --minQ 30 --maf 0.05 --max-missing 0.5 --hwe 0.01 --remove-indels \
 --recode --stdout | gzip -c > ${gatkdir}/full_analysis_noclones_filtered_relaxed.vcf.gz
+### assess missing data
+vcftools --gzvcf ${gatkdir}/full_analysis_noclones_filtered_relaxed.vcf.gz --missing-indv --stdout > ${gatkdir}/full_analysis_noclones_filtered_relaxed.imiss
+awk '$5 < 0.5 {print $1}' ${gatkdir}/full_analysis_noclones_filtered_relaxed.imiss > ${prodir}/data/full_analysis_noclones_filtered_relaxed_imiss50_samples.txt
+### keep samples with <50% missing data 
+vcftools --gzvcf ${gatkdir}/full_analysis_noclones_filtered_relaxed.vcf.gz --keep ${prodir}/data/full_analysis_noclones_filtered_relaxed_imiss50_samples.txt \
+--recode --stdout | gzip -c > ${gatkdir}/full_analysis_noclones_filtered_relaxed_imiss50.vcf.gz
 
 ### ------------------------------------------------
 
