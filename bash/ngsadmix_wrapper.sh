@@ -48,7 +48,7 @@ echo + NSLOTS = $NSLOTS' >> $JOBFILE
 # input command for NGSadmix 
 echo "NGSadmix -likes ${prodir}/outputs/angsd/${set}/${set}_pgra_ibs05.beagle.gz \
 -K $j -P 16 \
--o ${prodir}/outputs/ngsadmix/${set}/K${j}/${set}_noLD_pgra_himb_K${j}_${i} \
+-o ${prodir}/outputs/ngsadmix/${set}/K${j}/${set}_pgra_himb_K${j}_${i} \
 -minMaf 0.05" >> $JOBFILE
 #
 echo 'echo = `date` job $JOB_NAME done' >> $JOBFILE
