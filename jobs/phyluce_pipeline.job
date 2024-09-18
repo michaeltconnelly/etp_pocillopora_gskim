@@ -38,7 +38,9 @@ cp ${prodir}/data/outgroups/scleractinia-genome-fasta/p*.fasta ${prodir}/outputs
 cp ${prodir}/data/outgroups/105_oury_contigs/*.fasta ${prodir}/outputs/spades/contigs/${set}
 
 # copy sample contigs to working directory and rename files
-for sample in ${samples} ; do cp ${prodir}/outputs/spades/${sample}/contigs.fasta ${prodir}/outputs/spades/contigs/${set}/${sample}_contigs.fasta ; done
+#for sample in ${samples} ; do cp ${prodir}/outputs/spades/${sample}/contigs.fasta ${prodir}/outputs/spades/contigs/${set}/${sample}_contigs.fasta ; done
+for sample in ${samples} ; do cp ${prodir}/outputs/spades/full_analysis/${sample}_contigs.fasta ${prodir}/outputs/spades/contigs/${set}/${sample}_contigs.fasta ; done
+
 
 # start phyluce contig match to probes
 phyluce_assembly_match_contigs_to_probes \

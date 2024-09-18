@@ -74,7 +74,7 @@ vcftools --gzvcf ${gatkdir}/rep_5X_snapp_subset.vcf.gz \
 --recode --stdout | gzip -c > ${gatkdir}/rep_5X_snapp_subset_filtered.vcf.gz
 
 # filter SNPs for unlinked, 0% missing data for SNAPP tree, BFD* analyses
-vcftools ${gatkdir}/rep_5X_snapp_subset.vcf.gz \
+vcftools --gzvcf ${gatkdir}/rep_5X_snapp_subset.vcf.gz \
 --minDP 10 --maf 0.05 --thin 5000 --max-missing 1 --remove-indels \
 --recode --stdout | gzip -c > ${gatkdir}/rep_5X_snapp_subset_nomissing_thinned.vcf.gz
 
