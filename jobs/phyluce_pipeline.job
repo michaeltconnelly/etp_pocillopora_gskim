@@ -39,7 +39,7 @@ cp ${prodir}/data/outgroups/105_oury_contigs/*.fasta ${prodir}/outputs/spades/co
 
 # copy sample contigs to working directory and rename files
 #for sample in ${samples} ; do cp ${prodir}/outputs/spades/${sample}/contigs.fasta ${prodir}/outputs/spades/contigs/${set}/${sample}_contigs.fasta ; done
-for sample in ${samples} ; do cp ${prodir}/outputs/spades/full_analysis/${sample}_contigs.fasta ${prodir}/outputs/spades/contigs/${set}/${sample}_contigs.fasta ; done
+for sample in ${samples} ; do cp ${prodir}/outputs/spades/contigs/full_analysis/${sample}_contigs.fasta ${prodir}/outputs/spades/contigs/${set}/${sample}_contigs.fasta ; done
 
 
 # start phyluce contig match to probes
