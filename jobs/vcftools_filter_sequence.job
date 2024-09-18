@@ -23,7 +23,7 @@ echo + NSLOTS = $NSLOTS
 #specify variable containing sequence file prefixes and directory paths
 mcs="/scratch/nmnh_corals/connellym"
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
-gatkdir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/gatk_vcf_filtering/"
+gatkdir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/gatk_vcf_filtering"
 
 # filter to include only no-clones samples (n = 229)
 vcftools --gzvcf ${gatkdir}/full_analysis.vcf.gz --keep ${prodir}/data/final_noclones_samples.txt \
@@ -86,6 +86,6 @@ vcftools --gzvcf ${gatkdir}/rep_5X_plus3b_snapp_subset.vcf.gz \
 --recode --stdout | gzip -c > ${gatkdir}/rep_5X_plus3b_snapp_subset_filtered.vcf.gz
 
 # filter SNPs for unlinked, 0% missing data for SNAPP tree, BFD* analyses
-vcftools ${gatkdir}/rep_5X_plus3b_snapp_subset.vcf.gz \
+vcftools --gzvcf ${gatkdir}/rep_5X_plus3b_snapp_subset.vcf.gz \
 --minDP 10 --maf 0.05 --thin 5000 --max-missing 1 --remove-indels \
 --recode --stdout | gzip -c > ${gatkdir}/rep_5X_plus3b_snapp_subset_nomissing_thinned.vcf.gz
