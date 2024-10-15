@@ -14,9 +14,9 @@ POPS=$(cat ${prodir}/data/$POPFILE)
 
 for set in $POPS; do 
 # make bam file lists
-ls ${prodir}/outputs/alignments/pgra_himb/*md.rg.bam | grep -f ${prodir}/data/pops_ngsadmix/${set} > ${angsddir}/bamfiles/${set}_bamfile.txt
+ls ${prodir}/outputs/alignments/pgra_himb/*md.rg.bam | grep -f ${prodir}/data/pops/${set} > ${angsddir}/bamfiles/${set}_all_bamfile.txt
 # verify sample numbers are correct
-echo "For ${set}, There are $(cat ${angsddir}/bamfiles/${set}_bamfile.txt | wc -l) samples in total"
+echo "For ${set}, There are $(cat ${angsddir}/bamfiles/${set}_all_bamfile.txt | wc -l) samples in total"
 # create job file
 echo "Creating job file for SAF estimation of ${set}"
 JOBFILE="${prodir}/bash/jobs/angsd_saf_${set}.job"
@@ -51,7 +51,7 @@ set="$1"
 echo "${set} SAF estimation" >> $JOBFILE
 echo '# ----- SAF with ANGSD
 # specify variable with bam file list for each population / species
-BAMS="${angsddir}/bamfiles/${set}_bamfile.txt"
+BAMS="${angsddir}/bamfiles/${set}_all_bamfile.txt"
 # filters are not needed since we are restricting the SAF estimation to previously filtered sites (AllSites)
 # -doSaf 1: perform multisample GL estimation
 TODO=" -doSaf 1"
