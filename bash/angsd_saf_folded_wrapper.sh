@@ -31,7 +31,7 @@ echo "#!/bin/sh
 #$ -cwd
 #$ -j y
 #$ -N angsd_saf_${set}
-#$ -o ${prodir}/bash/jobs/angsd_saf_${set}.log
+#$ -o ${prodir}/bash/jobs/angsd_saf_1d-folded_${set}.log
 #$ -m bea
 #$ -M connellym@si.edu
 #
@@ -48,7 +48,7 @@ angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/
 set="$1"
 #' >> $JOBFILE
 # input ANGSD commands
-echo "${set} SAF estimation" >> $JOBFILE
+echo "#${set} SAF estimation" >> $JOBFILE
 echo '# ----- SAF with ANGSD
 # specify variable with bam file list for each population / species
 BAMS="${angsddir}/bamfiles/${set}_all_bamfile.txt"
@@ -59,7 +59,7 @@ TODO=" -doSaf 1"
 # NOTE: create folded SAF for 1-population analysis of neutrality test statistics
 ANC="/scratch/nmnh_corals/connellym/sequences/p_grandis_GCA_964027065.2/GCA_964027065.2_jaPocGran1.hap1.2_genomic.fna"' >> $JOBFILE
 echo '# estimate the site allele frequency likelihood
-angsd -sites ${angsddir}/AllSites_Pgra_HIMB.txt -rf ${angsddir}/chrs_Pgra_HIMB.txt -b $BAMS -anc $ANC -GL 1 -P $NSLOTS $TODO -fold 1 -out ${angsddir}/${set}.folded 
+angsd -sites ${angsddir}/AllSites_Pgra_HIMB.txt -rf ${angsddir}/chrs_Pgra_HIMB.txt -b $BAMS -anc $ANC -GL 1 -P $NSLOTS $TODO -out ${angsddir}/1dsfs/${set}.folded 
 echo "DONE!"' >> $JOBFILE
 # input job finished statment
 echo '#
