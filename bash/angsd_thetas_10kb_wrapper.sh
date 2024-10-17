@@ -1,6 +1,6 @@
 #!/bin/bash
-#./bash/angsd_thetas_wrapper.sh
-#purpose: calculate per-site thetas from folded 1D-SFS using ANGSD for a given list of populations
+#./bash/angsd_thetas_10kb_wrapper.sh
+#purpose: calculate window-based thetas from folded 1D-SFS using ANGSD for a given list of populations
 #input: ANGSD SAF files and list of populations pointing to files with lists of sample names
 
 #specify variable containing sequence file prefixes and directory paths
@@ -29,8 +29,8 @@ echo "#!/bin/sh
 #$ -l mres=96G,h_data=12G,h_vmem=12G,himem
 #$ -cwd
 #$ -j y
-#$ -N angsd_thetas_${pop1}
-#$ -o ${prodir}/bash/jobs/angsd_thetas_${pop1}.log
+#$ -N angsd_thetas_10kb_${pop1}
+#$ -o ${prodir}/bash/jobs/angsd_thetas_10kb_${pop1}.log
 #$ -m bea
 #$ -M connellym@si.edu
 #
@@ -47,14 +47,10 @@ angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/
 #' >> $JOBFILE
 # input ANGSD commands
 # NOTE: calculate per-site thetas using folded 1D-SFS because ancestral state is not known
-printf '/share/apps/bioinformatics/angsd/0.941/angsd/misc/realSFS saf2theta ${angsddir}/1dsfs/%s.folded.saf.idx -sfs ${angsddir}/1dsfs/%s.folded.ml -outname ${angsddir}/thetas/%s -fold 1 \n' "$pop1" "$pop1" "$pop1" >> $JOBFILE
-# estimate theta for every Chromosome/scaffold
-printf '/share/apps/bioinformatics/angsd/0.941/angsd/misc/thetaStat do_stat ${angsddir}/thetas/%s.thetas.idx -outnames ${angsddir}/thetas/%s.thetas.idx \n' "$pop1" "$pop1" >> $JOBFILE
+# estimate theta in 10kb windows
+printf '/share/apps/bioinformatics/angsd/0.941/angsd/misc/thetaStat do_stat ${angsddir}/thetas/%s.thetas.idx -win 10000 -step 1000 -outnames ${angsddir}/thetas/windows_10kb/%s.thetas.10kb.gz \n' "$pop1" "$pop1" >> $JOBFILE
 # input job finished statment
 echo '#
 echo = `date` job $JOB_NAME done' >> $JOBFILE
 qsub $JOBFILE
 done
-
-#Do a sliding window analysis based on the output from the make_bed command.
-#./misc/thetaStat do_stat out.thetas.idx -win 50000 -step 10000  -outnames theta.thetasWindow.gz
