@@ -2,8 +2,9 @@
 #                                       #
 #   Calculates Dxy from mafs files      #
 #                                       #
-#   Author: Joshua Penalba              #
-#   Date: 22 Oct 2016                   #
+#   Author: Joshua Penalba 
+#   Modified: Mike Connelly
+#   Date: 24 Oct 2024                   #
 #                                       #
 #########################################
 
@@ -59,9 +60,16 @@ allfreqB <- read.table(opt$popB,sep='\t',row.names=NULL, header=T)
 ### Manipulating the table and print dxy table
 allfreq <- merge(allfreqA, allfreqB, by=c("chromo","position"))
 allfreq <- allfreq[order(allfreq$chromo, allfreq$position),]
+
 # -> Actual dxy calculation
 allfreq <- transform(allfreq, dxy=(knownEM.x*(1-knownEM.y))+(knownEM.y*(1-knownEM.x)))
-write.table(allfreq[,c("chromo","position","dxy")], file="Dxy_persite.txt",quote=FALSE, row.names=FALSE, sep='\t')
+
+# write file
+popAname <- gsub(".maf", "", opt$popA)
+popBname <- gsub(".maf", "", opt$popB)
+filename <- paste0(popAname, "_", popBname, "_Dxy_persite.txt")
+
+write.table(allfreq[,c("chromo","position","dxy")], file=filename, quote=FALSE, row.names=FALSE, sep='\t')
 print('Created Dxy_persite.txt')
 
 ### Print global dxy
