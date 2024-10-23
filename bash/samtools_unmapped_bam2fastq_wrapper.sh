@@ -50,7 +50,7 @@ echo "samtools bam2fq \
  -1 ${prodir}/data/unmapped/${sample}_Unmapped_R1_PE.fastq \
  -2 ${prodir}/data/unmapped/${sample}_Unmapped_R2_PE.fastq \
  -@ 8 \
- ${prodir}/outputs/alignments/${sample}.bam" >> "${prodir}"/bash/jobs/${sample}_unmapped_bam2fastq.job
+ ${prodir}/outputs/alignments/pgra_himb/${sample}.bam" >> "${prodir}"/bash/jobs/${sample}_unmapped_bam2fastq.job
 
  echo "gzip ${prodir}/data/unmapped/${sample}_Unmapped_*.fastq" >> "${prodir}"/bash/jobs/${sample}_unmapped_bam2fastq.job
 
