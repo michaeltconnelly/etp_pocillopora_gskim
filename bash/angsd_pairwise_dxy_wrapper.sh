@@ -32,7 +32,7 @@ echo "#!/bin/sh
 #$ -l mres=96G,h_data=12G,h_vmem=12G,himem
 #$ -cwd
 #$ -j y
-#$ -N angsd_2DSFS_${pop1}.${pop2}
+#$ -N angsd_dxy_${pop1}.${pop2}
 #$ -o ${prodir}/bash/jobs/angsd_dxy_${pop1}.${pop2}.log
 #$ -m bea
 #$ -M connellym@si.edu
