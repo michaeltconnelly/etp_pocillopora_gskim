@@ -52,7 +52,7 @@ echo "samtools view -b ${prodir}/outputs/alignments/${genome}/${sample}.sam \
 #
 echo "samtools sort \
 ${prodir}/outputs/alignments/${genome}/${sample}.bam -@ 8 \
-> ${prodir}/outputs/alignments/${genome}/${sample}.sorted.bam" >> $prodir/bash/jobs/${sample}_samtools_picard.job
+-o ${prodir}/outputs/alignments/${genome}/${sample}.sorted.bam" >> $prodir/bash/jobs/${sample}_samtools_picard.job
 echo "#" >> $prodir/bash/jobs/${sample}_samtools_picard.job
 #
 echo "samtools index -b \
