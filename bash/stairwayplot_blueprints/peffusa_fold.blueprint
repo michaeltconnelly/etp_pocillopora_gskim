@@ -5,13 +5,13 @@ popid: peffusa_fold # id of the population (no white space)
 nseq: 8 # number of sequences (2 * number of individuals)
 L: 157722186 # total number of observed nucleic sites, including polymorphic and monomorphic (AllSites_Pgra_HIMB.txt)
 whether_folded: true # whethr the SFS is folded (true or false)
-SFS: 153329083.830827 1357849.222155 868032.231365 755961.912532 481370.803124 0.000000 0.000000 0.000000 0.000000 # snp frequency spectrum: number of singleton, number of doubleton, etc. (separated by white space)
+SFS:1357849.222155 868032.231365 755961.912532 481370.803124 # snp frequency spectrum: number of singleton, number of doubleton, etc. (separated by white space)
 #smallest_size_of_SFS_bin_used_for_estimation: 1 # default is 1; to ignore singletons, uncomment this line and change this number to 2
 #largest_size_of_SFS_bin_used_for_estimation: 15 # default is nseq/2 for folded SFS
 pct_training: 0.67 # percentage of sites for training
 nrand: 2	3	4	6 # number of random break points for each try (separated by white space)
-project_dir: peffusa_fold_1yr # project directory
-stairway_plot_dir: stairway_plot_es # directory to the stairway plot files
+project_dir: /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/stairwayplot/peffusa_fold_1yr # project directory
+stairway_plot_dir: /scratch/nmnh_corals/connellym/programs/stairway_plot_v2.1.1/stairway_plot_es # directory to the stairway plot files
 ninput: 200 # number of input files to be created for each estimation
 #random_seed: 6
 #
@@ -20,7 +20,7 @@ mu: 1.2e-8 # assumed mutation rate per site per generation
 year_per_generation: 1 # assumed generation time (in years)
 #
 # plot setting
-plot_title: two-epoch_fold # title of the plot
+plot_title: peffusa_fold # title of the plot
 xrange: 0.1,10000 # Time (1k year) range; format: xmin,xmax; "0,0" for default
 yrange: 0,0 # Ne (1k individual) range; format: xmin,xmax; "0,0" for default
 xspacing: 2 # X axis spacing
