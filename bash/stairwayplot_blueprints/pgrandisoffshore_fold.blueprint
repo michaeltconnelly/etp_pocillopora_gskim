@@ -9,7 +9,7 @@ SFS: 7147054.359460 1555335.918404 753757.362326 511579.247962 396393.335664 321
 #smallest_size_of_SFS_bin_used_for_estimation: 1 # default is 1; to ignore singletons, uncomment this line and change this number to 2
 #largest_size_of_SFS_bin_used_for_estimation: 15 # default is nseq/2 for folded SFS
 pct_training: 0.67 # percentage of sites for training
-nrand: 2	4	6	8 # number of random break points for each try (separated by white space)
+nrand: 16	32	48	64 # number of random break points for each try (separated by white space)
 project_dir: /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/stairwayplot/pgrandisoffshore_fold_1yr # project directory
 stairway_plot_dir: /scratch/nmnh_corals/connellym/programs/stairway_plot_v2.1.1/stairway_plot_es # directory to the stairway plot files
 ninput: 200 # number of input files to be created for each estimation

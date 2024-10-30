@@ -1,0 +1,29 @@
+# blueprint file for Pocillopora genomic species clusters: Cluster 3B (P. grandis - Continental)
+#
+# input setting
+popid: pgrandiscontinent_fold # id of the population (no white space)
+nseq: 260 # number of sequences (2 * number of individuals)
+L: 157722186 # total number of observed nucleic sites, including polymorphic and monomorphic (AllSites_Pgra_HIMB.txt)
+whether_folded: true # whethr the SFS is folded (true or false)
+SFS: 9954797.173343 2241355.988001 957533.785366 552208.326919 401858.056944 318220.892102 261618.794732 226822.224449 198077.279448 169224.439372 158374.744771 148883.932725 136820.212006 125430.258978 115536.184855 107932.389444 102101.446921 96096.003168 90668.999137 85373.328559 80614.795452 76170.093273 73919.623890 72050.134184 69560.407679 66389.571737 63389.169555 60879.822109 58609.202099 56101.344528 53649.578659 51683.787477 50032.684829 48884.014581 48009.112017 47207.491629 46390.420890 45542.050560 44784.487747 43863.379813 42708.253254 41356.853111 39889.110568 38589.759774 37700.047655 37273.231785 37175.831663 37177.115931 37013.638486 36554.134063 35819.754112 34665.363127 33593.595863 32945.063931 32005.829288 31459.539786 31225.929337 30958.737980 30767.096146 30555.843349 30275.043623 29879.813028 29354.798001 28734.319190 28066.023805 27410.009105 26852.469955 26479.498714 26327.244433 26354.326927 26449.488237 26467.610923 26288.152906 25871.617416 25369.766413 24684.818131 24138.235904 23771.208176 23667.422825 23752.918787 23856.320304 23832.827277 23703.572880 23490.929324 23252.750920 23065.479939 22965.974246 22937.007752 22928.962716 22923.437015 22887.914815 22788.205522 22638.908030 22457.373845 22251.329844 22052.092128 21898.690568 21802.047412 21740.267829 21680.601868 21608.228204 21547.863096 21634.295336 21578.867259 21708.506502 21741.882121 21937.019660 22197.789960 22252.681360 22417.506523 22346.903509 22224.966424 22056.854970 21918.740995 21803.956272 21754.519285 21813.713446 22007.062305 22303.801946 22602.773917 22767.795289 22724.348306 22531.999820 22259.484798 22000.369966 21937.778610 22111.251960 22486.012060 23061.423527 23695.845052 24075.774642 24165.596491 12032.271512 # snp frequency spectrum: number of singleton, number of doubleton, etc. (separated by white space)
+#smallest_size_of_SFS_bin_used_for_estimation: 1 # default is 1; to ignore singletons, uncomment this line and change this number to 2
+#largest_size_of_SFS_bin_used_for_estimation: 15 # default is nseq/2 for folded SFS
+pct_training: 0.67 # percentage of sites for training
+nrand: 64	128	194	256 # number of random break points for each try (separated by white space)
+project_dir: /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/stairwayplot/pgrandiscontinent_fold_1yr # project directory
+stairway_plot_dir: /scratch/nmnh_corals/connellym/programs/stairway_plot_v2.1.1/stairway_plot_es # directory to the stairway plot files
+ninput: 200 # number of input files to be created for each estimation
+#random_seed: 6
+#
+# output setting
+mu: 1.2e-8 # assumed mutation rate per site per generation
+year_per_generation: 1 # assumed generation time (in years)
+#
+# plot setting
+plot_title: pgrandiscontinent_fold # title of the plot
+xrange: 0.1,10000 # Time (1k year) range; format: xmin,xmax; "0,0" for default
+yrange: 0,0 # Ne (1k individual) range; format: xmin,xmax; "0,0" for default
+xspacing: 2 # X axis spacing
+yspacing: 2 # Y axis spacing
+fontsize: 12 # Font size
+#
