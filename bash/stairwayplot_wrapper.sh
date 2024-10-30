@@ -10,7 +10,7 @@ pop1="$1"
 java -cp $stairwayplot Stairbuilder ${prodir}/bash/stairwayplot_blueprints/${pop1}_fold.blueprint
 
 echo "Creating job file for stairway plot using 1D SFS of ${pop1}"
-JOBFILE="${prodir}/bash/stairwayplot_blueprints/stairwayplot_folded_${pop1}.job"
+JOBFILE="${prodir}/bash/stairwayplot_blueprints/jobs/stairwayplot_folded_${pop1}.job"
 touch $JOBFILE
 
 # input QSUB commands
@@ -45,4 +45,4 @@ echo '#
 echo = `date` job $JOB_NAME done' >> $JOBFILE
 
 # submit job file
-# qsub $JOBFILE
+qsub $JOBFILE
