@@ -1,0 +1,29 @@
+# blueprint file for Pocillopora genomic species clusters: Cluster 4 (P. verrucosa 3a)
+#
+# input setting
+popid: pverrucosa3a_fold # id of the population (no white space)
+nseq: 66 # number of sequences (2 * number of individuals)
+L: 157722186 # total number of observed nucleic sites, including polymorphic and monomorphic (AllSites_Pgra_HIMB.txt)
+whether_folded: true # whethr the SFS is folded (true or false)
+SFS: 5211647.528486 1333325.999126 695714.022472 484125.299943 382703.951555 478801.896970 313557.675123 202126.969053 160912.070239 150282.593751 133134.531749 119128.389896 111403.460745 107658.757686 102423.145421 96648.291777 92334.407773 90944.956629 88409.652332 84461.901340 83364.039746 82205.231832 79937.360764 78617.424401 76562.062857 76502.435031 75132.826727 76316.922361 73214.633932 72205.055815 74152.209578 74800.158788 75525.276679 79290.408555 79818.617707 81381.916109 77274.244222 83422.904982 43766.700888 # snp frequency spectrum: number of singleton, number of doubleton, etc. (separated by white space)
+#smallest_size_of_SFS_bin_used_for_estimation: 1 # default is 1; to ignore singletons, uncomment this line and change this number to 2
+#largest_size_of_SFS_bin_used_for_estimation: 15 # default is nseq/2 for folded SFS
+pct_training: 0.67 # percentage of sites for training
+nrand: 16	32	48	64 # number of random break points for each try (separated by white space)
+project_dir: /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/stairwayplot/pverrucosa3a_fold_1yr # project directory
+stairway_plot_dir: /scratch/nmnh_corals/connellym/programs/stairway_plot_v2.1.1/stairway_plot_es # directory to the stairway plot files
+ninput: 200 # number of input files to be created for each estimation
+#random_seed: 6
+#
+# output setting
+mu: 1.2e-8 # assumed mutation rate per site per generation
+year_per_generation: 1 # assumed generation time (in years)
+#
+# plot setting
+plot_title: pverrucosa3a_fold # title of the plot
+xrange: 0.1,10000 # Time (1k year) range; format: xmin,xmax; "0,0" for default
+yrange: 0,0 # Ne (1k individual) range; format: xmin,xmax; "0,0" for default
+xspacing: 2 # X axis spacing
+yspacing: 2 # Y axis spacing
+fontsize: 12 # Font size
+#
