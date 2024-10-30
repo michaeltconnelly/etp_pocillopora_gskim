@@ -2,7 +2,7 @@
 #
 # input setting
 popid: pverrucosa3a_fold # id of the population (no white space)
-nseq: 66 # number of sequences (2 * number of individuals)
+nseq: 78 # number of sequences (2 * number of individuals)
 L: 157722186 # total number of observed nucleic sites, including polymorphic and monomorphic (AllSites_Pgra_HIMB.txt)
 whether_folded: true # whethr the SFS is folded (true or false)
 SFS: 5211647.528486 1333325.999126 695714.022472 484125.299943 382703.951555 478801.896970 313557.675123 202126.969053 160912.070239 150282.593751 133134.531749 119128.389896 111403.460745 107658.757686 102423.145421 96648.291777 92334.407773 90944.956629 88409.652332 84461.901340 83364.039746 82205.231832 79937.360764 78617.424401 76562.062857 76502.435031 75132.826727 76316.922361 73214.633932 72205.055815 74152.209578 74800.158788 75525.276679 79290.408555 79818.617707 81381.916109 77274.244222 83422.904982 43766.700888 # snp frequency spectrum: number of singleton, number of doubleton, etc. (separated by white space)
