@@ -22,7 +22,7 @@ echo "#!/bin/sh
 #$ -cwd
 #$ -j y
 #$ -N stairwayplot_folded_${pop1}
-#$ -o ${prodir}/bash/jobs/stairwayplot_folded_${pop1}.log
+#$ -o ${prodir}/bash/stairwayplot_blueprints/jobs/stairwayplot_folded_${pop1}.log
 #$ -m bea
 #$ -M connellym@si.edu
 #
