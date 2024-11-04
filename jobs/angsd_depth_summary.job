@@ -54,7 +54,6 @@ nsamps=$(cat $BAMS | wc -l)
 minindv=$(echo "$nsamps*0.5" | bc | awk '{print int($1+0.5)}')
 # also adding  filters against very badly non-HWE sites (such as, all calls are heterozygotes => lumped paralog situation) and sites with really bad strand bias:
 FILTERS="-uniqueOnly 1 -remove_bads 1 -minMapQ 30 -minInd $minindv"
-# -maxDepth 3370
 
 #TODO: 
 # -GL 1 : use samtools likelihood model
@@ -64,6 +63,6 @@ FILTERS="-uniqueOnly 1 -remove_bads 1 -minMapQ 30 -minInd $minindv"
 # -dumpCounts 2 :
 TODO="-doQsDist 1 -doDepth 1 -doCounts 1 -dumpCounts 2"
 
-angsd -b $BAMS -GL 1 $FILTERS $TODO -P $NSLOTS -out ${setdir}/${set}_pgra_dd
+angsd -b $BAMS -GL 1 $FILTERS $TODO -maxDepth 3000 -P $NSLOTS -out ${setdir}/${set}_pgra_dd_3000
 
 echo = `date` job $JOB_NAME done
