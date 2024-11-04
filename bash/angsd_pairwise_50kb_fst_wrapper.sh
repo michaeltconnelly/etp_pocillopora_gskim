@@ -1,5 +1,5 @@
 #!/bin/bash
-#./bash/angsd_pairwise_10kb_fst_wrapper.sh
+#./bash/angsd_pairwise_50kb_fst_wrapper.sh
 #purpose: calculate pairwise fst values using ANGSD for a given list of populations
 #input: ANGSD SAF and pairwise SFS files and list of populations pointing to files with lists of sample names
 
@@ -20,7 +20,7 @@ shift
 for pop2; do
 # create job file
 echo "Creating job file for window-based pairwise Fst comparison of ${pop1} and ${pop2}"
-JOBFILE="${prodir}/bash/jobs/angsd_pairwise_10kb_fst_${pop1}.${pop2}.job"
+JOBFILE="${prodir}/bash/jobs/angsd_pairwise_50kb_fst_${pop1}.${pop2}.job"
 touch $JOBFILE
 # input QSUB commands
 echo "#!/bin/sh
@@ -31,7 +31,7 @@ echo "#!/bin/sh
 #$ -cwd
 #$ -j y
 #$ -N angsd_pairwise_50kb_fst_${pop1}.${pop2}
-#$ -o ${prodir}/bash/jobs/angsd_pairwise_10kb_fst_${pop1}.${pop2}.log
+#$ -o ${prodir}/bash/jobs/angsd_pairwise_50kb_fst_${pop1}.${pop2}.log
 #$ -m bea
 #$ -M connellym@si.edu
 #
@@ -47,8 +47,8 @@ prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/angsd"
 #' >> $JOBFILE
 # input ANGSD commands
-echo '# get the Fst for 10kb windows' >> $JOBFILE
-printf '/share/apps/bioinformatics/angsd/0.941/angsd/misc/realSFS fst stats2 ${angsddir}/%s_%s.fst.idx -win 49999 -step 50000 -type 2 > ${angsddir}/%s_%s_50kb_fst_results.txt \n' "$pop1" "$pop2" "$pop1" "$pop2" >> $JOBFILE
+echo '# get the Fst for 50kb windows' >> $JOBFILE
+printf '/share/apps/bioinformatics/angsd/0.941/angsd/misc/realSFS fst stats2 ${angsddir}/%s_%s.fst.idx -win 50000 -step 50000 -type 2 > ${angsddir}/%s_%s_50kb_fst_results.txt \n' "$pop1" "$pop2" "$pop1" "$pop2" >> $JOBFILE
 # input job finished statment
 echo '#
 echo = `date` job $JOB_NAME done' >> $JOBFILE

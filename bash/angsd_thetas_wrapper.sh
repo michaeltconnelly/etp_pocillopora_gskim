@@ -47,9 +47,9 @@ angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/
 #' >> $JOBFILE
 # input ANGSD commands
 # NOTE: calculate per-site thetas using folded 1D-SFS because ancestral state is not known
-printf '/share/apps/bioinformatics/angsd/0.941/angsd/misc/realSFS saf2theta ${angsddir}/1dsfs/%s.folded.saf.idx -sfs ${angsddir}/1dsfs/%s.folded.ml -outname ${angsddir}/thetas/%s -fold 1 \n' "$pop1" "$pop1" "$pop1" >> $JOBFILE
+printf '/share/apps/bioinformatics/angsd/0.941/angsd/misc/realSFS saf2theta ${angsddir}/safs/%s.folded.saf.idx -sfs ${angsddir}/1dsfs/%s.folded.ml -outname ${angsddir}/thetas/%s -fold 1 \n' "$pop1" "$pop1" "$pop1" >> $JOBFILE
 # estimate theta for every Chromosome/scaffold
-printf '/share/apps/bioinformatics/angsd/0.941/angsd/misc/thetaStat do_stat ${angsddir}/thetas/%s.thetas.idx -outnames ${angsddir}/thetas/%s.thetas.idx \n' "$pop1" "$pop1" >> $JOBFILE
+printf '/share/apps/bioinformatics/angsd/0.941/angsd/misc/thetaStat do_stat ${angsddir}/thetas/%s.thetas.idx -outnames ${angsddir}/thetas/%s.thetas \n' "$pop1" "$pop1" >> $JOBFILE
 # input job finished statment
 echo '#
 echo = `date` job $JOB_NAME done' >> $JOBFILE

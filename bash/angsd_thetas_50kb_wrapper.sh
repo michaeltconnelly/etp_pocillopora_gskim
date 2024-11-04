@@ -48,7 +48,7 @@ angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/
 # input ANGSD commands
 # NOTE: calculate per-site thetas using folded 1D-SFS because ancestral state is not known
 # estimate theta in 50kb windows
-printf '/share/apps/bioinformatics/angsd/0.941/angsd/misc/thetaStat do_stat ${angsddir}/thetas/%s.thetas.idx -win 50000 -step 10000 -outnames ${angsddir}/thetas/windows_50kb/%s.thetas.50kb \n' "$pop1" "$pop1" >> $JOBFILE
+printf '/share/apps/bioinformatics/angsd/0.941/angsd/misc/thetaStat do_stat ${angsddir}/thetas/%s.thetas.idx -win 50000 -step 50000 -type 2 -outnames ${angsddir}/thetas/windows_50kb/%s.thetas.50kb.non-overlap \n' "$pop1" "$pop1" >> $JOBFILE
 # input job finished statment
 echo '#
 echo = `date` job $JOB_NAME done' >> $JOBFILE
