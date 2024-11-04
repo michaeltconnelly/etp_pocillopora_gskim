@@ -2,14 +2,14 @@
 #
 # input setting
 popid: pgrandisoffshore_fold # id of the population (no white space)
-nseq: 66 # number of sequences (2 * number of individuals)
+nseq: 10 # number of sequences (2 * number of individuals)
 L: 157722186 # total number of observed nucleic sites, including polymorphic and monomorphic (AllSites_Pgra_HIMB.txt)
 whether_folded: true # whethr the SFS is folded (true or false)
-SFS: 7147054.359460 1555335.918404 753757.362326 511579.247962 396393.335664 321918.592908 276260.504436 236712.951681 209308.939273 188007.642406 168725.715533 152632.666341 141785.784658 134353.373087 127808.411873 120750.541423 113583.545131 107160.063655 101999.514307 98521.830102 96592.143795 95229.514309 93518.666732 91683.850046 89745.704118 88168.444096 87098.611085 86309.494830 86220.485707 86795.095194 89020.380849 92136.720280 46878.021878 # snp frequency spectrum: number of singleton, number of doubleton, etc. (separated by white space)
+SFS: 2437300.103865 1002775.828147 713041.923494 616102.766920 319528.724689 # snp frequency spectrum: number of singleton, number of doubleton, etc. (separated by white space)
 #smallest_size_of_SFS_bin_used_for_estimation: 1 # default is 1; to ignore singletons, uncomment this line and change this number to 2
 #largest_size_of_SFS_bin_used_for_estimation: 15 # default is nseq/2 for folded SFS
 pct_training: 0.67 # percentage of sites for training
-nrand: 16	32	48	64 # number of random break points for each try (separated by white space)
+nrand: 2	4	6	8 # number of random break points for each try (separated by white space)
 project_dir: /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/stairwayplot/pgrandisoffshore_fold_1yr # project directory
 stairway_plot_dir: /scratch/nmnh_corals/connellym/programs/stairway_plot_v2.1.1/stairway_plot_es # directory to the stairway plot files
 ninput: 200 # number of input files to be created for each estimation

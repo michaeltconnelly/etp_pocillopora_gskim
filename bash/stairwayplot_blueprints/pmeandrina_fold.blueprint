@@ -2,10 +2,10 @@
 #
 # input setting
 popid: pmeandrina_fold # id of the population (no white space)
-nseq: 20 # number of sequences (2 * number of individuals)
+nseq: 10 # number of sequences (2 * number of individuals)
 L: 157722186 # total number of observed nucleic sites, including polymorphic and monomorphic (AllSites_Pgra_HIMB.txt)
 whether_folded: true # whethr the SFS is folded (true or false)
-SFS: 5006466.311677 1070560.796982 584677.827749 429346.312572 342705.882647 291806.356198 255984.784233 249259.612268 268833.608738 144435.989738 # snp frequency spectrum: number of singleton, number of doubleton, etc. (separated by white space)
+SFS: 3157438.644817 936743.520414 611170.481743 498933.285555 311273.339935 # snp frequency spectrum: number of singleton, number of doubleton, etc. (separated by white space)
 #smallest_size_of_SFS_bin_used_for_estimation: 1 # default is 1; to ignore singletons, uncomment this line and change this number to 2
 #largest_size_of_SFS_bin_used_for_estimation: 15 # default is nseq/2 for folded SFS
 pct_training: 0.67 # percentage of sites for training

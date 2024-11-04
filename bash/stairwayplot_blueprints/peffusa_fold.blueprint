@@ -5,7 +5,7 @@ popid: peffusa_fold # id of the population (no white space)
 nseq: 8 # number of sequences (2 * number of individuals)
 L: 157722186 # total number of observed nucleic sites, including polymorphic and monomorphic (AllSites_Pgra_HIMB.txt)
 whether_folded: true # whethr the SFS is folded (true or false)
-SFS:1357849.222155 868032.231365 755961.912532 481370.803124 # snp frequency spectrum: number of singleton, number of doubleton, etc. (separated by white space)
+SFS:1357850.387034 868030.966417 755962.693659 481370.791482 # snp frequency spectrum: number of singleton, number of doubleton, etc. (separated by white space)
 #smallest_size_of_SFS_bin_used_for_estimation: 1 # default is 1; to ignore singletons, uncomment this line and change this number to 2
 #largest_size_of_SFS_bin_used_for_estimation: 15 # default is nseq/2 for folded SFS
 pct_training: 0.67 # percentage of sites for training
