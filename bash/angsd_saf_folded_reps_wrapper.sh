@@ -30,7 +30,7 @@ echo "#!/bin/sh
 #$ -l mres=96G,h_data=12G,h_vmem=12G,himem
 #$ -cwd
 #$ -j y
-#$ -N angsd_saf_${set}
+#$ -N angsd_saf_reps_${set}
 #$ -o ${prodir}/bash/jobs/angsd_saf_1d-folded_reps_${set}.log
 #$ -m bea
 #$ -M connellym@si.edu
