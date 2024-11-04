@@ -38,7 +38,7 @@ angsd -b $BAMLIST -GL 1 $FILTERS $TODO -P $NSLOTS -out ${angsddir}/AllSites_Pgra
 # extract and index sites
 zcat ${angsddir}/AllSites_Pgra_HIMB.mafs.gz | cut -f 1,2 | tail -n +2 > ${angsddir}/AllSites_Pgra_HIMB.txt
 # obtain list of scaffolds containing sites
-cat ${angsddir}/AllSites_Pgra_HIMB.txt | cut -f 1 | sort | uniq > ${angsddir}/chrs_Pgra_HIMB.txt
+cat ${angsddir}/AllSites_Pgra_HIMB.txt | cut -f 1 | uniq > ${angsddir}/chrs_Pgra_HIMB.txt
 angsd sites index ${angsddir}/AllSites_Pgra_HIMB.txt
 
 echo = `date` job $JOB_NAME done
