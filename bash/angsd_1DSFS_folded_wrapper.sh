@@ -47,7 +47,7 @@ angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/
 #' >> $JOBFILE
 # input ANGSD commands
 # NOTE: generate folded 1D-SFS with -fold 1 because ancestral state is not known
-printf '/share/apps/bioinformatics/angsd/0.941/angsd/misc/realSFS ${angsddir}/1dsfs/%s.folded.saf.idx -fold 1 -P $NSLOTS > ${angsddir}/1dsfs/%s.folded.ml \n' "$pop1" "$pop1" >> $JOBFILE
+printf '/share/apps/bioinformatics/angsd/0.941/angsd/misc/realSFS ${angsddir}/safs/%s.folded.saf.idx -fold 1 -P $NSLOTS > ${angsddir}/1dsfs/%s.folded.ml \n' "$pop1" "$pop1" >> $JOBFILE
 # input job finished statment
 echo '#
 echo = `date` job $JOB_NAME done' >> $JOBFILE

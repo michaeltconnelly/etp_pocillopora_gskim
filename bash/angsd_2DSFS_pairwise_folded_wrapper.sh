@@ -1,5 +1,5 @@
 #!/bin/bash
-#./bash/angsd_pairwise_2DSFS_wrapper.sh
+#./bash/angsd_2DSFS_pairwise_folded_wrapper.sh
 #purpose: calculate pairwise 2D SFS using ANGSD for a given list of populations
 #input: ANGSD SAF files and list of populations pointing to files with lists of sample names
 
@@ -50,7 +50,7 @@ angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/
 #' >> $JOBFILE
 # input ANGSD commands
 # NOTE: generate folded 2D-SFS with -fold 1 because ancestral state is not known
-printf '/share/apps/bioinformatics/angsd/0.941/angsd/misc/realSFS ${angsddir}/%s.saf.idx ${angsddir}/%s.saf.idx -fold 1 -P $NSLOTS > ${angsddir}/%s.%s.ml \n' "$pop1" "$pop2" "$pop1" "$pop2" >> $JOBFILE
+printf '/share/apps/bioinformatics/angsd/0.941/angsd/misc/realSFS ${angsddir}/safs/%s.saf.idx ${angsddir}/safs/%s.saf.idx -fold 1 -P $NSLOTS > ${angsddir}/2dsfs/%s.%s.ml \n' "$pop1" "$pop2" "$pop1" "$pop2" >> $JOBFILE
 # input job finished statment
 echo '#
 echo = `date` job $JOB_NAME done' >> $JOBFILE
