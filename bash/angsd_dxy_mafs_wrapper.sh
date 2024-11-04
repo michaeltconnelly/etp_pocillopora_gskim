@@ -72,7 +72,7 @@ TODO="-doMajorMinor 4 -doMaf 1 -doCounts 1"
 REF="/scratch/nmnh_corals/connellym/sequences/p_grandis_GCA_964027065.2/GCA_964027065.2_jaPocGran1.hap1.2_genomic.fna"' >> $JOBFILE
 
 echo '# estimate the major allele frequency likelihood
-angsd -sites ${angsddir}/final_noclones_pgra_ibs05.sites.txt -rf ${angsddir}/chrs_Pgra_HIMB.txt -b $BAMS -ref $REF -GL 1 -P $NSLOTS $TODO -out ${angsddir}/${set}
+angsd -sites ${angsddir}/AllSites_Pgra_HIMB.txt -rf ${angsddir}/chrs_Pgra_HIMB.txt -b $BAMS -ref $REF -GL 1 -P $NSLOTS $TODO -out ${angsddir}/${set}
 
 echo "DONE!"' >> $JOBFILE
 # input job finished statment
