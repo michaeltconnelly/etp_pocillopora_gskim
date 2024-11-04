@@ -1,5 +1,5 @@
 #!/bin/bash
-#./bash/angsd_SFS_folded_wrapper.sh
+#./bash/angsd_1DSFS_folded_wrapper.sh
 #purpose: calculate 1D SFS using ANGSD for a given list of populations
 #input: ANGSD SAF files and list of populations pointing to files with lists of sample names
 
@@ -13,12 +13,12 @@ POPFILE="$1"
 POPS=$(cat ${prodir}/data/$POPFILE)
 echo "Begin 1D SFS calculation for all populations"
 
-# script to create and submit separate jobs to calculate the 2D SFS for all pairwise comparisons
+# script to create and submit separate jobs to calculate the 1D SFS for all species clusters/populations
 
 for pop1 in $POPS; do
 # create job file
 echo "Creating job file for 1D SFS estimation of ${pop1}"
-JOBFILE="${prodir}/bash/jobs/angsd_SFS_folded_${pop1}.job"
+JOBFILE="${prodir}/bash/jobs/angsd_1DSFS_folded_${pop1}.job"
 touch $JOBFILE
 # input QSUB commands
 echo "#!/bin/sh
@@ -30,7 +30,7 @@ echo "#!/bin/sh
 #$ -cwd
 #$ -j y
 #$ -N angsd_SFS_folded_${pop1}
-#$ -o ${prodir}/bash/jobs/angsd_SFS_folded_${pop1}.log
+#$ -o ${prodir}/bash/jobs/angsd_1DSFS_folded_${pop1}.log
 #$ -m bea
 #$ -M connellym@si.edu
 #
