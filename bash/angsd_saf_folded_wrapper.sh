@@ -59,10 +59,7 @@ TODO=" -doSaf 1"
 # NOTE: create folded SAF for 1-population analysis of neutrality test statistics
 ANC="/scratch/nmnh_corals/connellym/sequences/p_grandis_GCA_964027065.2/GCA_964027065.2_jaPocGran1.hap1.2_genomic.fna"' >> $JOBFILE
 echo '# estimate the site allele frequency likelihood
-angsd -sites ${angsddir}/AllSites_Pgra_HIMB.txt -rf ${angsddir}/chrs_Pgra_HIMB.txt \
--b $BAMS -anc $ANC \
--GL 1 -P $NSLOTS $TODO \
--out ${angsddir}/1dsfs/${set}.folded 
+angsd -sites ${angsddir}/AllSites_Pgra_HIMB.txt -rf ${angsddir}/chrs_Pgra_HIMB.txt -b $BAMS -anc $ANC -GL 1 -P $NSLOTS $TODO -out ${angsddir}/1dsfs/${set}.folded 
 echo "DONE!"' >> $JOBFILE
 # input job finished statment
 echo '#
