@@ -1,5 +1,5 @@
 #!/bin/bash
-#./bash/angsd_2DSFS_pairwise_folded_wrapper.sh
+#./bash/angsd_2DSFS_pairwise_folded_reps_wrapper.sh
 #purpose: calculate pairwise 2D SFS using ANGSD for a given list of populations
 #input: ANGSD SAF files and list of populations pointing to files with lists of sample names
 
@@ -21,7 +21,7 @@ shift
 for pop2; do
 # create job file
 echo "Creating job file for pairwise 2D SFS estimation of ${pop1} and ${pop2}"
-JOBFILE="${prodir}/bash/jobs/angsd_2DSFS_${pop1}.${pop2}.job"
+JOBFILE="${prodir}/bash/jobs/angsd_2DSFS_reps_${pop1}.${pop2}.job"
 touch $JOBFILE
 # input QSUB commands
 echo "#!/bin/sh
@@ -33,7 +33,7 @@ echo "#!/bin/sh
 #$ -cwd
 #$ -j y
 #$ -N angsd_2DSFS_${pop1}.${pop2}
-#$ -o ${prodir}/bash/jobs/angsd_2DSFS_${pop1}.${pop2}.log
+#$ -o ${prodir}/bash/jobs/angsd_2DSFS_reps_${pop1}.${pop2}.log
 #$ -m bea
 #$ -M connellym@si.edu
 #
@@ -50,7 +50,7 @@ angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/
 #' >> $JOBFILE
 # input ANGSD commands
 # NOTE: generate folded 2D-SFS with -fold 1 because ancestral state is not known
-printf '/share/apps/bioinformatics/angsd/0.941/angsd/misc/realSFS ${angsddir}/safs/%s.folded.saf.idx ${angsddir}/safs/%s.folded.saf.idx -fold 1 -P $NSLOTS > ${angsddir}/2dsfs/%s.%s.folded.ml \n' "$pop1" "$pop2" "$pop1" "$pop2" >> $JOBFILE
+printf '/share/apps/bioinformatics/angsd/0.941/angsd/misc/realSFS ${angsddir}/safs/%s.reps.folded.saf.idx ${angsddir}/safs/%s.reps.folded.saf.idx -fold 1 -P $NSLOTS > ${angsddir}/2dsfs/%s.%s.reps.folded.ml \n' "$pop1" "$pop2" "$pop1" "$pop2" >> $JOBFILE
 # input job finished statment
 echo '#
 echo = `date` job $JOB_NAME done' >> $JOBFILE
