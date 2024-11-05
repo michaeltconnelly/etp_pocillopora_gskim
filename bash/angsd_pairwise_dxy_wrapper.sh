@@ -50,7 +50,7 @@ prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/angsd"
 #' >> $JOBFILE
 # run analysis from ANGSD output directory
-echo 'cd $angsddir' >> $JOBFILE
+echo 'cd ${angsddir}/mafs' >> $JOBFILE
 # input ANGSD and auxiliary script commands
 # script adapted from instructions 
 # https://github.com/mfumagalli/ngsPopGen/blob/master/scripts/calcDxy.R
