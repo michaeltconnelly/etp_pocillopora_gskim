@@ -48,7 +48,7 @@ angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/
 #' >> $JOBFILE
 # input ANGSD commands
 echo '# get the Fst for 50kb windows' >> $JOBFILE
-printf '/share/apps/bioinformatics/angsd/0.941/angsd/misc/realSFS fst stats2 ${angsddir}/%s_%s.fst.idx -win 50000 -step 50000 -type 2 > ${angsddir}/%s_%s_50kb_fst_results.txt \n' "$pop1" "$pop2" "$pop1" "$pop2" >> $JOBFILE
+printf '/share/apps/bioinformatics/angsd/0.941/angsd/misc/realSFS fst stats2 ${angsddir}/fst/%s_%s.fst.idx -win 50000 -step 50000 -type 2 > ${angsddir}/fst/%s_%s_50kb_fst_results.txt \n' "$pop1" "$pop2" "$pop1" "$pop2" >> $JOBFILE
 # input job finished statment
 echo '#
 echo = `date` job $JOB_NAME done' >> $JOBFILE
