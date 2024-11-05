@@ -50,7 +50,7 @@ prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/angsd"
 #' >> $JOBFILE
 # run analysis from ANGSD output directory
-echo 'cd ${angsddir}/mafs' >> $JOBFILE
+echo 'cd $angsddir' >> $JOBFILE
 # input ANGSD and auxiliary script commands
 # script adapted from instructions 
 # https://github.com/mfumagalli/ngsPopGen/blob/master/scripts/calcDxy.R
@@ -61,7 +61,7 @@ echo 'cd ${angsddir}/mafs' >> $JOBFILE
 # 2) Re-run ANGSD per population, using the -sites flag with a file corresponding to the recovered SNPs. This guarantees that sites with an allele fixed in one population are still included. 
 # Completed in angsd_dxy_mafs_wrapper.sh
 # 3) Gunzip the resulting mafs files and run calcDxy.R script
-printf 'Rscript ${prodir}/R/calcDxy.R -p %s.mafs -q %s.mafs \n' "$pop1" "$pop2" >> $JOBFILE
+printf 'Rscript ${prodir}/R/calcDxy.R -p mafs/%s.mafs -q mafs/%s.mafs \n' "$pop1" "$pop2" >> $JOBFILE
 # This step makes “Dxy_persite.txt" and outputs a global Dxy
 
 # 4) Run custom perl script to average the persite output over 50kb windows.
