@@ -19,7 +19,7 @@ ls ${prodir}/outputs/alignments/pgra_himb/*md.rg.bam | grep -f ${prodir}/data/po
 echo "For ${set}, There are $(cat ${angsddir}/bamfiles/${set}_all_bamfile.txt | wc -l) samples in total"
 # create job file
 echo "Creating job file for population-specific MAF estimation of ${set}"
-JOBFILE="${prodir}/bash/jobs/angsd_saf_${set}.job"
+JOBFILE="${prodir}/bash/jobs/angsd_dxy_mafs_${set}.job"
 touch $JOBFILE
 # input QSUB commands
 echo "#!/bin/sh
@@ -30,8 +30,8 @@ echo "#!/bin/sh
 #$ -l mres=96G,h_data=12G,h_vmem=12G,himem
 #$ -cwd
 #$ -j y
-#$ -N angsd_dxy_maf_${set}
-#$ -o ${prodir}/bash/jobs/angsd_dxy_maf_${set}.log
+#$ -N angsd_dxy_mafs_${set}
+#$ -o ${prodir}/bash/jobs/angsd_dxy_mafs_${set}.log
 #$ -m bea
 #$ -M connellym@si.edu
 #
@@ -48,10 +48,10 @@ angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/
 set="$1"
 #' >> $JOBFILE
 # input ANGSD commands
-echo "#${set} SAF estimation" >> $JOBFILE
-echo '# ----- SAF with ANGSD
-# specify variable with bam file list for each population / species --> use only representative samples (top 5 for each species) to start
-BAMS="${angsddir}/bamfiles/${set}_bamfile.txt" 
+echo "#${set} MAF estimation" >> $JOBFILE
+echo '# ----- MAF with ANGSD
+# specify variable with bam file list for each population / species --> analyze all together or top 5 (representatives)
+BAMS="${angsddir}/bamfiles/${set}_all_bamfile.txt" 
 
 #FILTERS:
 # restricting the MAF estimation to previously filtered sites (final_noclones_pgra_ibs05.sites.txt), using the -sites flag with a file corresponding to the recovered SNPs. This guarantees that sites with an allele fixed in one population are still included.
@@ -68,11 +68,10 @@ FILTERS="-minMapQ 30 -minQ 30 -sb_pval 1e-5 -hetbias_pval 1e-5 -skipTriallelic 1
 TODO="-doMajorMinor 4 -doMaf 1 -doCounts 1"
 
 # set ancestral/reference genome fasta file - use reference for folded SFS spectra (ancestral state not known)
-# NOTE: create folded SAF for 1-population analysis of neutrality test statistics
 REF="/scratch/nmnh_corals/connellym/sequences/p_grandis_GCA_964027065.2/GCA_964027065.2_jaPocGran1.hap1.2_genomic.fna"' >> $JOBFILE
 
 echo '# estimate the major allele frequency likelihood
-angsd -sites ${angsddir}/AllSites_Pgra_HIMB.txt -rf ${angsddir}/chrs_Pgra_HIMB.txt -b $BAMS -ref $REF -GL 1 -P $NSLOTS $TODO -out ${angsddir}/${set}
+angsd -sites ${angsddir}/AllSites_Pgra_HIMB.txt -rf ${angsddir}/chrs_Pgra_HIMB.txt -b $BAMS -ref $REF -GL 1 -P $NSLOTS $TODO -out ${angsddir}/mafs/${set}
 
 echo "DONE!"' >> $JOBFILE
 # input job finished statment
