@@ -65,9 +65,9 @@ allfreq <- allfreq[order(allfreq$chromo, allfreq$position),]
 allfreq <- transform(allfreq, dxy=(knownEM.x*(1-knownEM.y))+(knownEM.y*(1-knownEM.x)))
 
 # write file
-popAname <- gsub(".maf", "", opt$popA)
-popBname <- gsub(".maf", "", opt$popB)
-filename <- paste0(popAname, "_", popBname, "_Dxy_persite.txt")
+popAname <- gsub(".mafs", "", opt$popA)
+popBname <- gsub(".mafs", "", opt$popB)
+filename <- paste0("dxy/", popAname, "_", popBname, "_Dxy_persite.txt")
 
 write.table(allfreq[,c("chromo","position","dxy")], file=filename, quote=FALSE, row.names=FALSE, sep='\t')
 print('Created Dxy_persite.txt')

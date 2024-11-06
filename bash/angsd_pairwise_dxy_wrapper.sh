@@ -50,7 +50,7 @@ prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 angsddir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/angsd"
 #' >> $JOBFILE
 # run analysis from ANGSD output directory
-echo 'cd $angsddir' >> $JOBFILE
+echo 'cd ${angsddir}/mafs' >> $JOBFILE
 # input ANGSD and auxiliary script commands
 # script adapted from instructions 
 # https://github.com/mfumagalli/ngsPopGen/blob/master/scripts/calcDxy.R
@@ -63,7 +63,7 @@ echo 'cd $angsddir' >> $JOBFILE
 # 3) Gunzip the resulting mafs files and run calcDxy.R script
 printf 'Rscript ${prodir}/R/calcDxy.R -p %s.mafs -q %s.mafs \n' "$pop1" "$pop2" >> $JOBFILE
 # This step makes “Dxy_persite.txt" and outputs a global Dxy
-
+echo 'cd $angsddir' >> $JOBFILE
 # 4) Run custom perl script to average the persite output over 50kb windows.
 CHRS="/scratch/nmnh_corals/connellym/sequences/p_grandis_GCA_964027065.2/pgra_himb_chrs_only_names_lengths.txt"
 echo "perl ${prodir}/bash/angsd_dxy_step3_processoutputoverwindows_chromosomes.pl ${angsddir}/dxy/${pop1}_${pop2}_Dxy_persite.txt $CHRS 50000 ${angsddir}/dxy/${pop1}_${pop2}_combined_angsd_DxySummary.txt" >> $JOBFILE
