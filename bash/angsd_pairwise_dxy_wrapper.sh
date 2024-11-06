@@ -66,7 +66,7 @@ printf 'Rscript ${prodir}/R/calcDxy.R -p %s.mafs -q %s.mafs \n' "$pop1" "$pop2" 
 echo 'cd $angsddir' >> $JOBFILE
 # 4) Run custom perl script to average the persite output over 50kb windows.
 CHRS="/scratch/nmnh_corals/connellym/sequences/p_grandis_GCA_964027065.2/pgra_himb_chrs_only_names_lengths.txt"
-echo "perl ${prodir}/bash/angsd_dxy_step3_processoutputoverwindows_chromosomes.pl ${angsddir}/dxy/${pop1}_${pop2}_Dxy_persite.txt $CHRS 50000 ${angsddir}/dxy/${pop1}_${pop2}_combined_angsd_DxySummary.txt" >> $JOBFILE
+echo "perl ${prodir}/bash/angsd_dxy_step3_processoutputoverwindows_chromosomes.pl ${angsddir}/${pop1}_${pop2}_Dxy_persite.txt $CHRS 50000 ${angsddir}/${pop1}_${pop2}_combined_angsd_DxySummary.txt" >> $JOBFILE
 # The output includes an avg Dxy per window using the total # of sites as the denominator, and an estimate using the # of sites with data as the denominator.
 
 # input job finished statment
