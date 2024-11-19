@@ -57,6 +57,8 @@ wsize <- 50000
 #which is an absolute mess
 #so this code averages your dxy values over the same windows as the fst values 
 #line37 adds the number of dxy values then divides by that value within that window (dxy values/number of sites)
+message <- paste0("Beginning Dxy window calculation of ", fst_file)
+print(message)
 
 for (j in 1:nrow(fst_df)){
   
@@ -96,5 +98,8 @@ plotfilename <- filename <- paste0("./outputs/angsd/", comp, "_fst_dxy_50kb_wind
 pdf(file = plotfilename)
 print(double_window_plot)
 dev.off()
+
+message <- paste0("Finished Dxy window calculation of ", fst_file)
+print(message)
 
 }
