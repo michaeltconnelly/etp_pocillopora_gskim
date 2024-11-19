@@ -1,6 +1,7 @@
 # Window scans: Fst, Dxy
 # Calculate Dxy in windows that correspond to the ANGSD Fst and Theta windows
-library("tidyverse")
+library("readr")
+library("ggplot2")
 
 setwd("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim")
 
