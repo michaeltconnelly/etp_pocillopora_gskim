@@ -4,6 +4,7 @@ library("readr")
 library("magrittr")
 library("stringr")
 library("ggplot2")
+library("patchwork")
 
 setwd("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim")
 
