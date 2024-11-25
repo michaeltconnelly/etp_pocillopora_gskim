@@ -36,6 +36,12 @@ mtorf_colors <- c("darkorange", "purple3", "turquoise2", "turquoise4", "darkslat
 #
 spp_colors <- c("purple3", "darkorange", "gold2", "turquoise2", "turquoise4")
 #
+ngsadmix_clusters <- c("Cluster 1",
+                       "Cluster 2",
+                       "Cluster 3A",
+                       "Cluster 3B", 
+                       "Cluster 4")
+#
 ngsadmix_spp <- c("P. effusa",
                   "P. meandrina",
                   "P. grandis - Offshore",
@@ -43,17 +49,23 @@ ngsadmix_spp <- c("P. effusa",
                   "P. verrucosa 3a",
                   "Unassigned")
 #
+ngsadmix_spp_clusters <- c("Cluster 1" = "P. effusa",
+                       "Cluster 2" = "P. meandrina",
+                       "Cluster 3A" = "P. grandis - Offshore",
+                       "Cluster 3B" = "P. grandis - Continent", 
+                       "Cluster 4" = "P. verrucosa 3a")
+#
 ngsadmix_pop_colors <- c("P. effusa"="purple3",
                          "P. meandrina"="gold2",
                          "P. grandis - Offshore"="darkorange",
-                         "P. grandis - Continent"="darkorange4",
+                         "P. grandis - Continent"="darkorange3",
                          "P. verrucosa 3a"="turquoise2",
                          "Unassigned"="grey90")
 
 ngsadmix_pop_colors_k6 <- c("P. effusa"="purple3",
                          "P. meandrina"="gold2",
                          "P. grandis - Offshore"="darkorange",
-                         "P. grandis - Continent"="darkorange4",
+                         "P. grandis - Continent"="darkorange3",
                          "P. verrucosa 3a"="turquoise2",
                          "P. verrucosa 3b"="turquoise4",
                          "Unassigned"="grey90")

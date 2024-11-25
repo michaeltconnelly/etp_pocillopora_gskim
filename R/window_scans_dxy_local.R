@@ -27,8 +27,8 @@ chrs_abbv <- list(
 )
 
 ### Import Fst and Dxy files -------------
-fst_files <- list.files("./outputs/angsd/fst/50kb", full.names = T)
-dxy_files <- list.files("./outputs/angsd/dxy", full.names = T)
+fst_files <- list.files("./outputs/angsd/50kb_fst/spp", full.names = T)
+dxy_files <- list.files("./outputs/angsd/dxy/persite", full.names = T)
 
 # Fst file is non-overlapping 50000 bp window size, 50000 bp steps 
 angsd_fst_colnames <- c("REGION", "CHR", "wincenter", "Nsites", "Fst")
@@ -74,7 +74,7 @@ for (j in 1:nrow(fst_df)){
 # calculate average Dxy across windows
   tdf <- dxy_df[which(dxy_df$CHR == scaf & dxy_df$position >= start_pos & dxy_df$position <= end_pos), ] # & dxy$Dxy > 0 or 2e-6
   tdf.len <- nrow(tdf)
-  dxy.out[i] <- (sum(tdf$Dxy))/tdf.len
+  dxy.out[j] <- (sum(tdf$Dxy))/tdf.len
   
 }
 

@@ -2,8 +2,8 @@
 #                                       #
 #   Calculates Dxy from mafs files      #
 #                                       #
-#   Author: Joshua Penalba 
-#   Modified: Mike Connelly
+#   Author: Joshua Penalba              #
+#   Modified: Mike Connelly             #
 #   Date: 24 Oct 2024                   #
 #                                       #
 #########################################
@@ -69,7 +69,7 @@ popAname <- gsub(".mafs", "", opt$popA)
 popBname <- gsub(".mafs", "", opt$popB)
 filename <- paste0(popAname, "_", popBname, "_Dxy_persite.txt")
 
-write.table(allfreq[,c("chromo","position","dxy")], file=filename, quote=FALSE, row.names=FALSE, sep='\t')
+write.table(allfreq[,c("CHR","position","Dxy")], file=filename, quote=FALSE, row.names=FALSE, sep='\t')
 print('Created Dxy_persite.txt')
 
 ### Print global dxy
