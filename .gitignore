@@ -68,6 +68,7 @@ outputs/figures/
 outputs/kraken/
 outputs/sharkmer/
 outputs/*vcf.gz
+outputs/stairwayplot
 #
 
 logs/
