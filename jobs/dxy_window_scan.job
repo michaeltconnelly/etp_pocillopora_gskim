@@ -22,6 +22,6 @@ echo + NSLOTS = $NSLOTS
 mcs="/scratch/nmnh_corals/connellym"
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 
-Rscript ${prodir}/R/window_scans_dxy.R
+Rscript ${prodir}/R/window_scans_dxy_hydra.R
 
 echo = `date` job $JOB_NAME done
