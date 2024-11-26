@@ -48,8 +48,8 @@ echo 'echo + NSLOTS = $NSLOTS' >> $JOBFILE
 #   input command for metaspades assembly of non-coral reads
 echo "spades.py --meta \
 -o ${prodir}/outputs/noncoral_spades/${sample} \
---pe1-1 ${prodir}/data/unmapped/${sample}_Unmapped_R1_PE_trimmed.fastq.gz \
---pe1-2 ${prodir}/data/unmapped/${sample}_Unmapped_R2_PE_trimmed.fastq.gz"  >> $JOBFILE
+--pe1-1 ${prodir}/data/unmapped/${sample}_Unmapped_R1_PE.fastq.gz \
+--pe1-2 ${prodir}/data/unmapped/${sample}_Unmapped_R2_PE.fastq.gz"  >> $JOBFILE
 #
 echo 'echo '${sample}' successfully assembled' >> "${prodir}"/bash/jobs/${sample}_spades.job
 #
