@@ -20,6 +20,8 @@ echo $samples
 # edit output job script location within your project root directory
 JOBFILE="${prodir}/bash/jobs/${sample}_graftM_its2.job"
 
+for sample in $samples
+do \
 echo "Preparing script for ${sample}"
 #   input QSUB commands
 echo "# /bin/sh" > $JOBFILE
@@ -35,16 +37,16 @@ echo "#$ -j y
 #$ -M connellym@si.edu" >> $JOBFILE
 
 echo "# ----------------Modules------------------------- #" >> $JOBFILE
+echo "start-conda" >> $JOBFILE
+echo "conda activate graftM" >> $JOBFILE
 #
 echo "# ----------------Your Commands------------------- #" >> $JOBFILE
 #
 echo 'echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME' >> $JOBFILE
 echo 'echo + NSLOTS = $NSLOTS' >> $JOBFILE
 
-for sample in $samples
-do \
 # insert graftM command
-echo "graftM graft --forward data/unmapped/${sample}_Unmapped_R1_PE.fastq.gz \
+echo "~/programs/graftM/bin/graftM graft --forward data/unmapped/${sample}_Unmapped_R1_PE.fastq.gz \
 --reverse data/unmapped/${sample}_Unmapped_R2_PE.fastq.gz \
 --graftm_package ${prodir}/data/seqs/ITS2_graftm_final.gpkg \
 --input_sequence_type nucleotide \
