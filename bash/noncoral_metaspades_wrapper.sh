@@ -30,7 +30,7 @@ echo "# ----------------Parameters---------------------- #" >> $JOBFILE
 echo "#$  -S /bin/sh
 #$ -pe mthread 16
 #$ -q mThM.q
-#$ -l mres=384G,h_data=24G,h_vmem=24G,himem" >> $JOBFILE
+#$ -l mres=192G,h_data=12G,h_vmem=12G,himem" >> $JOBFILE
 echo "#$ -j y
 #$ -N ${sample}_noncoral_metaspades
 #$ -o ${prodir}/bash/jobs/${sample}_noncoral_metaspades.log
