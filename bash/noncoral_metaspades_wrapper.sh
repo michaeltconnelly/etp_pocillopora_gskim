@@ -54,7 +54,7 @@ echo "spades.py --meta \
 echo 'echo '${sample}' successfully assembled' >> "${prodir}"/bash/jobs/${sample}_spades.job
 #
 #   move contigs, cleanup intermediate files
-echo "cp ${prodir}/outputs/noncoral_spades/${sample}/contigs.fasta ${prodir}/outputs/noncoral_spades/contigs/${sample}_contigs.fasta" >> $JOBFILE
+echo "cp ${prodir}/outputs/noncoral_spades/${sample}/contigs.fasta ${prodir}/outputs/noncoral_spades/contigs/${sample}_noncoral_contigs.fasta" >> $JOBFILE
 
 echo 'echo = `date` job $JOB_NAME done' >> $JOBFILE
 # submit job
