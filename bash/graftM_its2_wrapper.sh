@@ -27,7 +27,7 @@ echo "# ----------------Parameters---------------------- #" >> $JOBFILE
 echo "#$  -S /bin/sh
 #$ -pe mthread 4
 #$ -q sThC.q
-#$ -l mres=16G,h_data=4G,h_vmem=4G,himem" >> $JOBFILE
+#$ -l mres=16G,h_data=4G,h_vmem=4G" >> $JOBFILE
 echo "#$ -j y
 #$ -N ${sample}_graftM_its2
 #$ -o ${prodir}/bash/jobs/${sample}_graftM_its2.log
