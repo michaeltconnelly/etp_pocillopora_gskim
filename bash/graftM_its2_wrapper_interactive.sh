@@ -13,8 +13,10 @@ set=$1
 samples=$(cat ${prodir}/data/${set}_samples.txt)
 
 for sample in $samples
-echo $sample
 do \
+
+echo $sample
+
 # graftM command
 ~/programs/graftM/bin/graftM graft --forward data/unmapped/${sample}_Unmapped_R1_PE.fastq.gz \
 --reverse data/unmapped/${sample}_Unmapped_R2_PE.fastq.gz \
