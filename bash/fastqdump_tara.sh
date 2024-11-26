@@ -17,7 +17,7 @@ echo "# ----------------Parameters---------------------- #
 #$ -cwd
 #$ -j y
 #$ -N fastqdump_${study}_${sample}
-#$ -o $prodir/bash/jobs/fastqdump_${study}_${sample}
+#$ -o $prodir/bash/jobs/fastqdump_${study}_${sample}.log
 #$ -m bea
 #$ -M connellym@si.edu" >> $JOBFILE
 #

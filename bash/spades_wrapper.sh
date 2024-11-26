@@ -29,7 +29,7 @@ echo "# ----------------Parameters---------------------- #" >> ${prodir}/bash/jo
 echo "#$  -S /bin/sh
 #$ -pe mthread 16
 #$ -q mThM.q
-#$ -l mres=192G,h_data=12G,h_vmem=12G,himem" >> ${prodir}/bash/jobs/${sample}_spades.job
+#$ -l mres=384G,h_data=24G,h_vmem=24G,himem" >> ${prodir}/bash/jobs/${sample}_spades.job
 echo "#$ -j y
 #$ -N ${sample}_spades
 #$ -o ${prodir}/bash/jobs/${sample}_spades.log
