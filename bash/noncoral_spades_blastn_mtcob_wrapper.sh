@@ -3,8 +3,9 @@
 # symbiont barcodes to try: mtcob, mtcox1, ITS1, ITS2, LSU, cp23S, psbAncr
 # Cladocopium goreaui, C. latusorum, C. pacificum, Durusdinium glynni, D. trenchii
 
+prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 
-for infile in ${prodir}/outputs/noncoral_spades/contigs/*_contigs.fasta
+for infile in $(ls ${prodir}/outputs/noncoral_spades/contigs/*_contigs.fasta)
 do
      # Make BLAST database from non-coral assemblies
      base=$(basename ${infile} _contigs.fasta)
