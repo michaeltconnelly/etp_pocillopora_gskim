@@ -9,7 +9,7 @@ import shutil
 
 # Parse command-line arguments
 parser = argparse.ArgumentParser(description="Summarise BLAST hits for a given locus.")
-parser.add_argument("locus", type=str, help="Locus name (e.g., ITS2, cp23S, psbA).")
+parser.add_argument("locus", type=str, help="Locus name (e.g., mtcob, ITS2, cp23S, psbA).")
 args = parser.parse_args()
 
 # Use the provided locus
