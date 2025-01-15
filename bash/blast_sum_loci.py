@@ -19,7 +19,7 @@ locus = args.locus
 txt_dir = f"/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/noncoral_spades/{locus}_blast_hits"
 
 # Output text path
-out_txt = f"/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/noncoral_spades/{locus}_blast_hits_summary.txt"
+out_txt = f"/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/noncoral_spades/{locus}_blast_hits_summary.csv"
 
 # Change to the specified directory
 os.chdir(txt_dir)
