@@ -52,10 +52,10 @@ echo "samtools view -b ${prodir}/outputs/symbiont_alignments/${sample}_symCD.sam
 
 echo "samtools sort \
 ${prodir}/outputs/symbiont_alignments/${sample}_symCD.bam -@ 8 \
-> ${prodir}/outputs/symbiont_alignments/${sample}_symCD.sorted.bam "
+> ${prodir}/outputs/symbiont_alignments/${sample}_symCD.sorted.bam" >> $JOBFILE
 
 echo "samtools index -b \
-${prodir}/outputs/symbiont_alignments/${sample}_symCD.sorted.bam"
+${prodir}/outputs/symbiont_alignments/${sample}_symCD.sorted.bam" >> $JOBFILE
 
 #   input command to produce separate bam files for Cladocopium and Durusdinium alignments
 # Cladocopium (chr11)
