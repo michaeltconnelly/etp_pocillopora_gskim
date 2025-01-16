@@ -21,13 +21,12 @@ source("./R/pocillopora_etp_gksim_functions.R")
 ```{r import_sample_metadata}
 source("./R/sample_import.R")
 samples <- all_samples
-# NOTE: Remove clones from the dataset using IBS analysis before running PCAngsd
 ```
+
+NOTE: Remove clones from the dataset using IBS analysis before running PCAngsd. Code for selecting no-clones samples based on highest proportion of sites w/ 5x coverage is in 02_pipeline_metrics.Rmd
 
 ## All samples (clones included) PCA
 ```{r pca}
-# pop<-read.table("Demo/Data/Demo1pop.info")
-C <- as.matrix(read.table("./outputs/angsd/all_analysis.cov"))
 # *P. grandis* aligments of full analysis samples
 C <- as.matrix(read.table("./outputs/angsd/full_analysis_pgra_ibs05.cov"))
 e <- eigen(C)
@@ -99,8 +98,6 @@ dev.off()
 
 ## No-clones PCA (w/ linked SNPs)
 ```{r pca}
-# pop<-read.table("Demo/Data/Demo1pop.info")
-C <- as.matrix(read.table("./outputs/angsd/final_noclones.cov"))
 # *P. grandis* aligments of no-clones samples
 C <- as.matrix(read.table("./outputs/angsd/final_noclones_pgra_ibs05.cov"))
 e <- eigen(C)
@@ -131,14 +128,19 @@ all(samples_noclones$`Sample ID` == bam_ids) # TRUE
 ```
 ```{r combine_pca_metadata}
 # combine pc coordinates with sample metadata
-pcs <- as.data.frame(e$vectors) %>% cbind(samples_noclones)
+pcs <- as.data.frame(e$vectors) %>% cbind(samples_noclones_ngsadmix) %>% left_join(samples)
 # store variable with % variance explained by each PC
 pcvar <- round(e$values, 2)
 #
 ```
+```{r screeplot}
+pcvardf <- data.frame("PC"=seq(1:length(pcvar)), pcvar)
+pcvardf %>% ggplot(aes(PC, pcvar)) + geom_col() + xlim(c(0,10))
+# only first 4 PCs have >5% variance explained
+```
 ```{r}
-pdf(file="./outputs/figures/sicb/pcangsd_species.pdf", width = 5.5, height = 3.75)
-title <- expression(paste("East Pacific ", italic("Pocillopora"), " PCA (5,314,313 SNPs)"))
+# pdf(file="./outputs/figures/sicb/pcangsd_species.pdf", width = 5.5, height = 3.75)
+
 pca <- pcs %>% ggplot(aes(x = V1, y = V2)) +
   geom_point(aes(fill = `Species`), shape = 21, size = 3, alpha = 0.75, show.legend = F) +
   scale_fill_manual(values = spp_colors) +
@@ -151,19 +153,15 @@ pca <- pcs %>% ggplot(aes(x = V1, y = V2)) +
         axis.title = element_text(size = 14),
         axis.text = element_text(size = 12),
         legend.title = element_text(size = 14),
-        legend.text = element_text(size = 12)) +
-  ggtitle(title)
-dev.off()
+        legend.text = element_text(size = 12)) 
+
+print(pca)
+# dev.off()
 ```
-```{r}
-png(file="./outputs/figures/pcangsd_species_noLD.png", width = 5.5, height = 3.75, units = "in",  res = 300, type = "cairo-png")
-pca
-dev.off()
-```
+
 ### PCA of all samples by species
 ```{r}
-pdf(file="./outputs/figures/etp_spp_pca_color.pdf", width = 4, height = 2.5)
-title <- expression(paste("PCA of East Pacific ", italic("Pocillopora"), " spp."))
+# pdf(file="./outputs/figures/etp_spp_pca_color.pdf", width = 4, height = 2.5)
 pcs %>% ggplot(aes(x = V1, y = V2)) +
   geom_jitter(aes(fill = `Species`), shape = 21, size = 4, alpha = 0.6, show.legend = T, width = 0.005, height = 0.005) +
   scale_fill_manual(values = spp_colors) +
@@ -177,14 +175,42 @@ pcs %>% ggplot(aes(x = V1, y = V2)) +
         legend.title = element_text(size = 14),
         legend.text = element_text(size = 12, face = "italic")) +
   ggtitle(title)
+# dev.off()
+```
+
+### Figure S6
+```{r figS6_pca_linked}
+pdf(file="./outputs/figures/FigS6_pcangsd_linked_ngsadmix_species.pdf", width = 6.65, height = 2.25)
+#
+title <- expression(paste("East Pacific ", italic("Pocillopora"), " PCA (5,587,480 SNPs)"))
+#
+pca <- pcs %>%
+  mutate("Region" = factor(`Region`, levels = region_order_longitude, ordered = T),
+         "NGSAdmix K6 Species" = factor(`NGSAdmix K5 Species`, levels = ngsadmix_spp, ordered = T)) %>% 
+  ggplot(aes(x = V1, y = V2)) +
+  geom_point(aes(fill = `NGSAdmix K5 Species`), shape = 21, size = 4, alpha = 0.65, show.legend = T) +
+  scale_fill_manual(values = ngsadmix_pop_colors, name = "NGSAdmix Species (K=5)") + 
+  guides(fill = guide_legend(override.aes = list(size = 3, alpha = 1))) +
+  coord_fixed(pcvar[2]/pcvar[1]) +
+  xlab(paste0( "PC1 (", pcvar[1], "%)")) + 
+  ylab(paste0( "PC2 (", pcvar[2], "%)")) +
+  guides(fill=guide_legend(nrow=6,byrow=TRUE)) +
+  theme(plot.title = element_text(size = 16, hjust = -0.2),
+        axis.title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        legend.title = element_text(size = 10),
+        legend.text = element_text(size = 8),
+        legend.position = "none",
+        legend.key.spacing.y = unit(-1, "mm"))
+         
+print(pca)
 dev.off()
 ```
 
 ## No-clones PCA (unlinked SNPs after LD pruning)
 ```{r pca}
-C <- as.matrix(read.table("./outputs/angsd/final_noclones_noLD.cov"))
 # *P. grandis* aligments
-C <- as.matrix(read.table("./outputs/angsd/final_noclones_noLD_pgra_himb_filtered.cov"))
+C <- as.matrix(read.table("./outputs/angsd/final_noclones/final_noclones_noLD_pgra_himb_filtered.cov"))
 e <- eigen(C)
 ```
 ```{r pca_test_plot}
@@ -196,7 +222,7 @@ plot(e$vectors[,c(3,4)],xlab="PC3",ylab="PC4", main="individual allele frequency
 ```
 ```{r bamfile_sample_order_check}
 # reading list of bam files = order of samples in IBS matrix
-bams <- read.table("./outputs/angsd/final_noclones_pgra_bamfile.txt",header=F)[,1]
+bams <- read.table("./outputs/angsd/final_noclones/final_noclones_pgra_bamfile.txt",header=F)[,1]
 #
 bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/pgra_himb/", "", bams, perl=T)
 bam_ids <- sub(".sorted.md.rg.bam", "", bam_ids, perl=T)
@@ -220,9 +246,9 @@ pcvar <- round(e$values, 2)
 ```{r screeplot}
 pcvardf <- data.frame("PC"=seq(1:length(pcvar)), pcvar)
 pcvardf %>% ggplot(aes(PC, pcvar)) + geom_col() + xlim(c(0,10))
-# only first 4 PCs have information
+# only first 4 PCs have >5% variance explained
 ```
-```{r pca visualization}
+```{r pca_visualization}
 # pdf(file="./outputs/figures/sicb/pcangsd_species.pdf", width = 5.5, height = 3.75)
 pca <- pcs %>% ggplot(aes(x = V1, y = V2)) +
   geom_point(aes(fill = `NGSAdmix K5 Species`), shape = 21, size = 3, alpha = 0.75, show.legend = T) +
@@ -240,7 +266,7 @@ pca <- pcs %>% ggplot(aes(x = V1, y = V2)) +
 print(pca)
 # dev.off()
 ```
-```{r}
+```{r pca_2_3}
 pca <- pcs %>% ggplot(aes(x = V2, y = V3)) +
   geom_point(aes(fill = `NGSAdmix K5 Species`), shape = 21, size = 3, alpha = 0.75, show.legend = F) +
   scale_fill_manual(values = ngsadmix_pop_colors_k6) +
@@ -256,7 +282,7 @@ pca <- pcs %>% ggplot(aes(x = V2, y = V3)) +
         legend.text = element_text(size = 12))
 print(pca)
 ```
-```{r}
+```{r pca_2_4}
 pca <- pcs %>% ggplot(aes(x = V2, y = V4)) +
   geom_point(aes(fill = `NGSAdmix K5 Species`), shape = 21, size = 3, alpha = 0.75, show.legend = F) +
   scale_fill_manual(values = ngsadmix_pop_colors_k6) +
@@ -272,6 +298,7 @@ pca <- pcs %>% ggplot(aes(x = V2, y = V4)) +
         legend.text = element_text(size = 12))
 print(pca)
 ```
+
 ### Figure 1A
 ```{r fig1A_pca}
 pdf(file="./outputs/figures/Fig1A_pcangsd_ngsadmix_species.pdf", width = 6.65, height = 3.25)
@@ -295,7 +322,8 @@ pca <- pcs %>%
         axis.text = element_text(size = 10),
         legend.title = element_text(size = 10, margin = margin(b = 0.5, unit = "mm")),
         legend.text = element_text(size = 8),
-        legend.position = c(0.151, 0.695),
+        legend.position = "none",
+        # legend.position = c(0.151, 0.695),
         legend.key.spacing.y = unit(-1.6, "mm"))
          
 print(pca)
@@ -375,7 +403,7 @@ pcs_c1 %>%
   filter(`NGSAdmix K5 Species` %notin% c("Unassigned", NA)) %>% 
   ggplot(aes(x = V1, y = V2)) +
   geom_point(aes(fill = `NGSAdmix K5 Species`), shape = 21, size = 2, alpha = 0.75) +
-  scale_fill_manual(values = c("darkorange4", "darkorange", "grey90")) +
+  scale_fill_manual(values = c("darkorange3", "darkorange", "grey90")) +
   # facet_grid(Region ~ .) +
   coord_fixed(pcvar_c1[2]/pcvar_c1[1]) + 
   theme(legend.position = "none") +

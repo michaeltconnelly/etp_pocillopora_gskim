@@ -18,7 +18,8 @@ do \
 echo $sample
 
 # graftM command
-~/programs/graftM/bin/graftM graft --forward data/unmapped/${sample}_Unmapped_R1_PE.fastq.gz \
+~/programs/graftM/bin/graftM graft \
+--forward data/unmapped/${sample}_Unmapped_R1_PE.fastq.gz \
 --reverse data/unmapped/${sample}_Unmapped_R2_PE.fastq.gz \
 --graftm_package ${prodir}/data/seqs/ITS2_graftm_final.gpkg \
 --input_sequence_type nucleotide \

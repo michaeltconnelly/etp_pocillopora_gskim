@@ -271,6 +271,20 @@ regions_ngsadmix_pops <- samples_noclones_ngsadmix %>%
   mutate("radius" = `sum`/50) %>%
   left_join(region_coords, by = "Region")
 ```
+```{r region_abbreviations}
+regions_abbv <- c(
+"Clipperton" = "CLIP",
+"Galapagos Northern" = "GPN",
+"Galapagos Central" = "GPC",
+"Coco" = "COCO",
+"Bahia Culebra" = "BCU",
+"Golfo Dulce" = "GDU",
+"Chiriqui" = "CHIQ",
+"Panama" = "PAN",
+"Gorgona" = "GOR"
+)
+regions_ngsadmix_pops$Region_Label <- unname(regions_abbv[regions_ngsadmix_pops$Region])
+```
 ```{r}
 par(mar = c(0.5, 0.5, 0.5, 0.5))
 elevMapTest <-
@@ -288,7 +302,7 @@ elevMapTest <-
                     data = regions_ngsadmix_pops, cols = ngsadmix_spp, size = 5, alpha = .8) + 
   scale_fill_manual(values = ngsadmix_pop_colors, name = "NGSAdmix Species (K=5)") +
   #
-  geom_label_repel(aes(x = Longitude, y = Latitude, label = sum), size = 2, box.padding = 0.65, min.segment.length = 2, seed = 3, data = regions_ngsadmix_pops) +
+  geom_label_repel(aes(x = Longitude, y = Latitude, label = Region_Label), size = 2, box.padding = 0.65, min.segment.length = 2, seed = 3, data = regions_ngsadmix_pops) +
   labs(x="Longitude", y="Latitude", elevation = "Elevation") +
   scale_y_continuous(breaks = (seq(0,15,5))) +
   theme(panel.grid.major = element_blank(),
@@ -298,19 +312,27 @@ elevMapTest <-
         plot.subtitle = element_blank(),
         axis.title = element_blank(), 
         axis.text = element_text(size = 10),
+        # legend.position = "none")
         legend.title = element_text(size = 10),
         legend.text = element_text(size = 8),
         legend.background = element_rect(color = "lightgrey"),
-        legend.position = c(0.14, 0.36)) +
-  ggtitle(expression(italic("Pocillopora")*' species distribution and genotype counts'), subtitle = "All non-admixed genotypes (N = 211)")
+        legend.position = c(0.14, 0.36))
+        # ) +
+  # ggtitle(expression(italic("Pocillopora")*' species distribution and genotype counts'), subtitle = "All non-admixed genotypes (N = 211)")
 # subtitle = "All East Pacific samples (N = 337)")
 elevMapTest
 ```
 ```{r fig1C_scatterpie_map}
-pdf("./outputs/figures/Fig1C_ngsadmix_k6_map.pdf", width = 6.65, height = 4)
+pdf("./outputs/figures/Fig1C_ngsadmix_k5_map.pdf", width = 6.65, height = 3.05)
 elevMapTest
 dev.off()
 ```
+```{r presentation_scatterpie_map}
+pdf("~/Desktop/Fig1C_ngsadmix_k5_map.pdf", width = 8.5, height = 4)
+elevMapTest
+dev.off()
+```
+
 
 ### Table S1: Sample metadata
 ```{r table S1: basic sample info table}

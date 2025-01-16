@@ -17,8 +17,8 @@ library("tidyverse")
 library("magrittr")
 library("ggtree")
 #
-library("WGCNA") # for coloring clonal groups
-library("sparcl") # for ColorDendrogram
+#library("WGCNA") # for coloring clonal groups
+#library("sparcl") # for ColorDendrogram
 # 
 source("./R/pocillopora_etp_gksim_functions.R")
 ```
@@ -28,15 +28,14 @@ source("./R/pocillopora_etp_gksim_functions.R")
 source("./R/sample_import.R")
 samples <- all_samples
 ```
-```{r select_samples}
-samples <- filter(all_samples, ANALYSIS ==T)
-```
 
-```{r bamfile_sample_order_check}
+# Full analysis samples (including clones)
+### Import BAM list and IBS matrix
+```{r bamfile}
 # reading list of bam files = order of samples in IBS matrix
-bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/full_analysis_bamfile.txt",header=F)[,1]
+bams <- read.table("./outputs/angsd/full_analysis/full_analysis_pgra_bamfile.txt",header=F)[,1]
 #
-bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/", "", bams, perl=T)
+bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/pgra_himb/", "", bams, perl=T)
 bam_ids <- sub(".sorted.md.rg.bam", "", bam_ids, perl=T)
 bam_ids <- sub("_S[[:digit:]]+$", "", bam_ids)
 #
@@ -63,13 +62,9 @@ samples <- samples[match(bam_ids, samples$`Sample ID`),]
 # do all the sample ids match the bam file ids in the correct order?
 all(samples$`Sample ID` == bam_ids) # TRUE
 ```
-# All analysis samples (including clones)
-### Import IBS matrix
 ```{r import_ibs_matrix}
 # reading IBS matrix based on SNPs with allele frequency >= 0.05:
-ma <- as.matrix(read.table("./outputs/angsd/full_analysis_ibs05.ibsMat"))
-# 
-ma <- as.matrix(read.table("./outputs/angsd/full_analysis_pgra_ibs05.ibsMat"))
+ma <- as.matrix(read.table("./outputs/angsd/full_analysis/full_analysis_pgra_ibs05.ibsMat"))
 ```
 ```{r ibs_matrix_names}
 # remove biorepository codes from sample labels
@@ -130,11 +125,11 @@ plot(hc_select,cex=0.6)
 abline(h=0.15,col="red",lty=3)
 ```
 
-## Plot IBS clustering dendrogram with ggtree for all samples
+### Plot IBS clustering dendrogram with ggtree for all samples
 ```{r}
 tree_title <- expression(paste("Identity-by-state clustering of all ", italic("Pocillopora"), " samples (n=", 337, ")"))
 ```
-```{r ibs_ggtree}
+```{r ibs_ggtree_1}
 # pdf("./outputs/figures/ibs_dendrogram_all_analysis_site.pdf",width = 8.5, height = 16)
 hc %>% ggtree() %<+% samples + 
   # geom_vline(xintercept = -0.15, stroke = 1, color = "red", linetype = 2) +
@@ -149,7 +144,7 @@ hc %>% ggtree() %<+% samples +
   ggtitle(tree_title)
 # dev.off()
 ```
-```{r}
+```{r ibs_ggtree_2}
 # pdf("./outputs/figures/ibs_dendrogram_all_analysis_species.pdf", width = 8.5, height = 5)
 hc %>% ggtree() %<+% samples + 
   layout_dendrogram() + 
@@ -166,8 +161,59 @@ hc %>% ggtree() %<+% samples +
   ggtitle(expression(paste(italic("Pocillopora"), " identity-by-state clustering dendrogram")), subtitle = "All East Pacific samples (n= 337)")
 # dev.off()
 ```
+```{r ibs_ggtree_3}
+# pdf("./outputs/figures/FigS5_ibs_dendrogram_all_analysis_mtorf_replicates.pdf", width = 8.5, height = 4.85)
+hc_mtorf_rep <- hc %>% ggtree() %<+% samples + 
+  layout_dendrogram() + 
+  geom_tippoint(aes(fill = `mtorf_type`, color = `TECHNICAL_REPLICATE`), shape = 24, alpha = 0.8, stroke = 0.5, hjust = 0.3, show.legend = F) +
+  scale_fill_manual(values = mtorf_colors, name = "mtORF haplotype") +
+  scale_color_manual(values = c("black", "red")) +
+  scale_y_continuous(expand = expansion(mult = c(0.02, 0))) +
+  theme_dendrogram(legend.position = c(0.9, 0.82),
+        legend.margin = margin(0,0,0,0, unit = "mm"),
+        plot.margin = margin(2,2,2,2, unit = "mm")) +
+  xlab("Genetic distance (1-IBS)")
+hc_mtorf_rep
+# dev.off()
+```
 
-### No Bones / SICB presentation IBS figures
+### Figure S5A
+```{r}
+pdf("./outputs/figures/FigS5A_ibs_dendrogram_all_analysis_clonegroups.pdf", width = 8.5, height = 4.85)
+hc_clonegroups <- hc %>% ggtree() %<+% samples + 
+  layout_dendrogram() + 
+  geom_tippoint(aes(fill = `Genotype ID`, color = `TECHNICAL_REPLICATE`), shape = 24, alpha = 0.8, stroke = 0.75, hjust = 0.3, size = 2.5, show.legend = F) +
+  #CLONAL_GENOTYPE
+  # geom_tiplab(size = 2, hjust = 1.05) +
+  scale_color_manual(values = c("black", "red")) +
+  geom_segment(aes(x=-0.12, xend=-0.12, y=-2, yend=3), size = 0.75, linetype = 1, color = "turquoise2") +
+  geom_segment(aes(x=-0.12, xend=-0.12, y=3, yend=10), size = 0.75, linetype = 1, color = "turquoise4") +
+  geom_segment(aes(x=-0.12, xend=-0.12, y=10, yend=69), size = 0.75, linetype = 1, color = "turquoise2") +
+  geom_segment(aes(x=-0.05, xend=-0.05, y=69, yend=75), size = 0.75, linetype = 1, color = "purple3") +  
+  # geom_segment(aes(x=-0.11, xend=-0.11, y=77, yend=87), size = 0.75, linetype = 1, color = "gold2") +
+  geom_segment(aes(x=-0.17, xend=-0.17, y=75, yend=340), size = 0.75, linetype = 1, color = "darkorange") +
+  scale_y_continuous(expand = expansion(mult = c(0.025, 0))) +
+  theme_dendrogram(
+        plot.margin = margin(2,2,2,2, unit = "mm"),
+        fgcolor = "black") +
+  theme(axis.text.y = element_text(colour = "black"), 
+        axis.ticks.y = element_line(colour = "black"), 
+        axis.line.y = element_line(colour = "black")) +
+  xlab("Genetic distance (1-IBS)")
+hc_clonegroups
+dev.off()
+```
+```{r}
+# modify tip labels
+samples[samples$TECHNICAL_REPLICATE == T, ]
+
+test <- hc$labels %in% samples[samples$TECHNICAL_REPLICATE == T, ]$`Sample ID`
+
+technical_labels <- ifelse(test == T, "*", "")
+hc$labels <- technical_labels
+```
+
+#### No Bones / SICB presentation IBS figures
 ```{r}
 pdf("./outputs/figures/sicb/ibs_dendrogram_all_analysis_black.pdf", width = 8.5, height = 4.85)
 hc_black <- hc %>% ggtree() %<+% samples + 
@@ -224,7 +270,6 @@ png("./outputs/figures/sicb/ibs_dendrogram_all_analysis_mtorf_reps.png", width =
 hc_mtorf_rep
 dev.off()
 ```
-
 ```{r}
 hc_site <- hc %>% ggtree() %<+% samples + 
   layout_dendrogram() + 
@@ -243,67 +288,7 @@ hc_site
 dev.off()
 ```
 
-
-### Figure S5
-```{r}
-pdf("./outputs/figures/FigS5_ibs_dendrogram_all_analysis_mtorf_replicates.pdf", width = 8.5, height = 4.85)
-hc_mtorf_rep <- hc %>% ggtree() %<+% samples + 
-  layout_dendrogram() + 
-  geom_tippoint(aes(fill = `mtorf_type`, color = `TECHNICAL_REPLICATE`), shape = 24, alpha = 0.8, stroke = 0.5, hjust = 0.3, show.legend = F) +
-  scale_fill_manual(values = mtorf_colors, name = "mtORF haplotype") +
-  scale_color_manual(values = c("black", "red")) +
-  scale_y_continuous(expand = expansion(mult = c(0.02, 0))) +
-  theme_dendrogram(legend.position = c(0.9, 0.82),
-        legend.margin = margin(0,0,0,0, unit = "mm"),
-        plot.margin = margin(2,2,2,2, unit = "mm")) +
-  xlab("Genetic distance (1-IBS)")
-hc_mtorf_rep
-dev.off()
-```
-
-
-### color clonegroups
-```{r}
-pdf("./outputs/figures/FigS5_ibs_dendrogram_all_analysis_clonegroups.pdf", width = 8.5, height = 4.85)
-hc_clonegroups <- hc %>% ggtree() %<+% samples + 
-  layout_dendrogram() + 
-  geom_tippoint(aes(fill = `Genotype ID`, color = `TECHNICAL_REPLICATE`), shape = 24, alpha = 0.8, stroke = 0.75, hjust = 0.3, size = 2.5, show.legend = F) + #CLONAL_GENOTYPE
-  # geom_tiplab(size = 2, hjust = 1.05) +
-  # scale_fill_brewer(palette = 1) +
-  scale_color_manual(values = c("black", "red")) +
-  # geom_vline(xintercept = -0.17) +
-  # geom_vline(xintercept = -0.12) +
-  geom_segment(aes(x=-0.12, xend=-0.12, y=-2, yend=3), size = 0.75, linetype = 1, color = "turquoise2") +
-  geom_segment(aes(x=-0.12, xend=-0.12, y=3, yend=10), size = 0.75, linetype = 1, color = "turquoise4") +
-  geom_segment(aes(x=-0.12, xend=-0.12, y=10, yend=69), size = 0.75, linetype = 1, color = "turquoise2") +
-  geom_segment(aes(x=-0.08, xend=-0.08, y=69, yend=75), size = 0.75, linetype = 1, color = "purple3") +  
-  # geom_segment(aes(x=-0.11, xend=-0.11, y=77, yend=87), size = 0.75, linetype = 1, color = "gold2") +  
-  geom_segment(aes(x=-0.17, xend=-0.17, y=75, yend=340), size = 0.75, linetype = 1, color = "darkorange") +
-
-  scale_y_continuous(expand = expansion(mult = c(0.025, 0))) +
-  theme_dendrogram(#legend.position = c(0.9, 0.82),
-        # legend.margin = margin(0,0,0,0, unit = "mm"),
-        plot.margin = margin(2,2,2,2, unit = "mm"),
-        fgcolor = "black") +
-  theme(axis.text.y = element_text(colour = "black"), 
-        axis.ticks.y = element_line(colour = "black"), 
-        axis.line.y = element_line(colour = "black")) +
-  xlab("Genetic distance (1-IBS)")
-hc_clonegroups
-dev.off()
-```
-```{r}
-# modify tip labels
-samples[samples$TECHNICAL_REPLICATE == T, ]
-
-test <- hc$labels %in% samples[samples$TECHNICAL_REPLICATE == T, ]$`Sample ID`
-
-technical_labels <- ifelse(test == T, "*", "")
-hc$labels <- technical_labels
-```
-
-
-## Other IBS subsets w/ ggtree
+#### Other IBS subsets w/ ggtree
 ```{r}
 pdf("./outputs/figures/galapagos_ibs_clones.pdf", height = 4.5, width = 6)
 hc_usfq %>% ggtree() %<+% samples + 
@@ -340,160 +325,42 @@ hc_select %>% ggtree() %<+% samples +
 dev.off()
 ```
 
-## Threshold clonegroup identification
-```{r technical_replicates}
-# "artificial clones" (technical replicates)
-# samples %>% filter(REPLICATE) %>% View()
-perlas358 <- c("Perlas_358_AP3XG49", "Perlas_358b_AP3XG49", "Perlas_358c_AP3XG49")
-perlas376 <- c("Perlas_376_AP3XG67", "Perlas_376b_AP3XG67", "Perlas_376c_AP3XG67")
-coco618 <- c("Coco_618_AP3XF84", "Coco_618b_AP3XF84", "Coco_618c_AP3XF84")
-coco653 <- c("Coco_653_AP3XF97", "Coco_653b_AP3XF97", "Coco_653c_AP3XF97")
-pan05 <- c("PAN_05",  "PAN_05b", "PAN_05c")
-pan10 <- c("PAN_10", "PAN_10b", "PAN_10c")
-pan78 <- c("PAN_78", "PAN_78b")
-ura51 <- c("URA_51", "URA_51b")
-clip19 <- c("Clip_19", "Clip_19b", "Clip_19c")
-#
-replicates <- c(perlas358, perlas376, coco618, coco653, pan05, pan10, pan78, ura51, clip19)
-```
-```{r clonegroup_identification}
-mafa <- ma
-# color artificial clones red
-art.clones <- rep("black",nrow(mafa))
-#
-art.clones[samples$`Sample ID` %in% replicates]="red"
-# 
-ColorDendrogram(hclust(as.dist(mafa),"ave"), y = art.clones, branchlength=0.05)
-```
-### P. grandis clonegroups
-```{r}
-# subset matrix into species to define clonegroups
-ma_pgra <- ma[samples$Species == "P. grandis", samples$Species == "P. grandis"]
-# color artificial clones red
-art.clones <- rep("black", nrow(ma_pgra))
-art.clones[rownames(ma_pgra) %in% replicates]="red"
-#
-hc_pgra <- hclust(as.dist(ma_pgra),"ave")
-#
-ColorDendrogram(hc_pgra, y = art.clones, branchlength=0.035)
-
-# sorting samples into clone groups; singletons go into the same "color" group (for plotting) but different "cn" groups (for GLM modeling later)
-cc <- cutree(hc_pgra, h = 0.185)
-cc1 <- cc
-
-# count number of samples in each clone group
-tc <- table(cc)
-# identify singletons, set to same color group
-singletons <- as.numeric(names(tc)[tc==1])
-cc1[cc1 %in% singletons] <- singletons[1]
-
-# assign color sequence to clone groups --> do this after assigning clone groups to all species in summed sequence?
-clone_colors <- labels2colors(as.numeric(as.factor(as.numeric(cc1))))
-clone_romans <- as.roman(as.numeric(as.factor(as.numeric(cc))))
-names(clone_colors) <- names(cc1)
-# changing some colors manually for better visibility
-clone_colors[clone_colors=="white"]="khaki3"
-clone_colors[clone_colors=="black"]="goldenrod"
-clone_colors[clone_colors=="turquoise"]="black"
-  
-# record sample ID and clone group assignments
-samples_clonegroups_pgrandis <- tibble(`Sample ID` = names(cc), clone_number = cc, clone_color = clone_colors, clone_code = paste0("Pgra_", clone_color), SINGLETON = ifelse(clone_color == "black", "TRUE", "FALSE"), CLONE = ifelse(clone_color == "black", "FALSE", "TRUE")) %>% arrange(`Sample ID`)
-
-# plot colored dendrogram with inferred clonegroups
-# pdf("./outputs/figures/ibs_pgrandis_clonegroups.pdf", width = 6.5, height = 4)
-ColorDendrogram(hc_pgra, y = clone_colors, labels = F,branchlength=0.035)
-# dev.off()
-```
-```{r}
-# selecting one coral per clone
-sel=data.frame()
-for (i in unique(samples_clonegroups_pgrandis$clone_number)) {
-		sel[i,1:5] = samples_clonegroups_pgrandis[samples_clonegroups_pgrandis$clone_number==i, 1:5] 
-}
-write(sel$`Sample ID`, "~/Desktop/pgrandis_noclones.txt")
-```
-
-### P. verrucosa 3a clonegroups
-```{r}
-ma_pver3a <- ma[samples$Species == "P. verrucosa 3a", samples$Species == "P. verrucosa 3a"]
-# color artificial clones red
-art.clones <- rep("black", nrow(ma_pver3a))
-art.clones[rownames(ma_pver3a) %in% replicates]="red"
-#
-hc_pver3a <- hclust(as.dist(ma_pver3a),"ave")
-#
-ColorDendrogram(hc_pver3a, y = art.clones, branchlength=0.035)
-
-# sorting samples into clone groups; singletons go into the same "color" group (for plotting) but different "cn" groups (for GLM modeling later)
-cc <- cutree(hc_pver3a, h = 0.11)
-cc1 <- cc
-
-# count number of samples in each clone group
-tc <- table(cc)
-# identify singletons, set to same color group
-singletons <- as.numeric(names(tc)[tc==1])
-cc1[cc1 %in% singletons] <- singletons[1]
-
-# assign color sequence to clone groups
-clone_colors <- labels2colors(as.numeric(as.factor(as.numeric(cc1))))
-clone_romans <- as.roman(as.numeric(as.factor(as.numeric(cc))))
-names(clone_colors) <- names(cc1)
-# changing some colors manually for better visibility
-clone_colors[clone_colors=="white"]="khaki3"
-clone_colors[clone_colors=="black"]="goldenrod"
-clone_colors[clone_colors=="turquoise"]="black"
-  
-# record sample ID and clone group assignments
-samples_clonegroups_pverrucosa3a <- tibble(`Sample ID` = names(cc), clone_number = cc, clone_color = clone_colors, clone_code = paste0("Pver3a_", clone_color), SINGLETON = ifelse(clone_color == "black", "TRUE", "FALSE"), CLONE = ifelse(clone_color == "black", "FALSE", "TRUE"))
-
-# plot colored dendrogram with inferred clonegroups
-# pdf("./outputs/figures/ibs_pverrucosa3a_clonegroups.pdf", width = 6.5, height = 4)
-ColorDendrogram(hc_pver3a, y = clone_colors, labels = F, branchlength=0.035)
-# dev.off()
-```
-```{r}
-# selecting one coral per clone
-sel=data.frame()
-for (i in unique(samples_clonegroups_pverrucosa3a$clone_number)) {
-		sel[i,1:5] = samples_clonegroups_pverrucosa3a[samples_clonegroups_pverrucosa3a$clone_number==i, 1:5] 
-}
-write(sel$`Sample ID`, "./data/pverrucosa3a_noclones_samples.txt")
-```
-
 # No-clones samples
-### Import IBS matrix
-```{r}
-ma <- as.matrix(read.table("./outputs/angsd/full_noclones_ibs05.ibsMat"))
-```
-```{r bamfile_sample_order_check}
+
+NOTE: Code for selecting no-clones samples based on highest proportion of sites w/ 5x coverage is in 02_pipeline_metrics.Rmd
+
+### Import BAM list and IBS matrix
+```{r bamfile}
 # reading list of bam files = order of samples in IBS matrix
-bams <- read.table("/Users/mikeconnelly/computing/projects/etp_pocillopora_gskim/outputs/angsd/full_noclones_bamfile.txt",header=F)[,1]
+bams <- read.table("./outputs/angsd/final_noclones/final_noclones_pgra_bamfile.txt",header=F)[,1]
 #
-bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/", "", bams, perl=T)
+bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/alignments/pgra_himb/", "", bams, perl=T)
 bam_ids <- sub(".sorted.md.rg.bam", "", bam_ids, perl=T)
 bam_ids <- sub("_S[[:digit:]]+$", "", bam_ids)
 #
 bam_ids
 ```
-```{r}
+```{r bam_sample_order_check}
 # aligning sample metadata with bams list, then check again
 samples_noclones <- samples[match(bam_ids, samples$`Sample ID`),] 
 # do all the sample ids match the bam file ids in the correct order?
 all(samples_noclones$`Sample ID` == bam_ids) # TRUE
 ```
-```{r}
+```{r import_ibs_matrix}
+ma <- as.matrix(read.table("./outputs/angsd/final_noclones/final_noclones_pgra_ibs05.ibsMat"))
+```
+```{r ibs_matrix_names}
 # IMPORTANT: verify that the order of ids in sample metadata and in the bam file list used for IBS in ANGSD match
 dimnames(ma) <- list(samples_noclones$`Sample ID`, samples_noclones$`Sample ID`)
 ```
 ### Plot IBS hierarchical clustering dendrograms
-```{r}
+```{r ibs_dendrogram_test}
 # plotting hierarchical clustering dendrogram
 hc <- hclust(as.dist(ma), "ave")
 plot(hc, cex = 0.4)
 ```
-```{r}
-pdf("./outputs/figures/sicb/ibs_dendrogram_all_noclones_mtorf.pdf", width = 8.5, height = 4.85)
-hc_noclones <- hc %>% ggtree() %<+% samples + 
+```{r ibs_noclones_ggtree_1}
+hc %>% ggtree() %<+% samples + 
   layout_dendrogram() + 
   geom_tippoint(aes(fill = `mtorf_type`), shape = 21, color = "black", alpha = 0.8, stroke = 0.5, hjust = 0.3, show.legend = T) +
   # geom_tiplab(size = 2, hjust = 1.05) +
@@ -503,6 +370,39 @@ hc_noclones <- hc %>% ggtree() %<+% samples +
         legend.margin = margin(0,0,0,0, unit = "mm"),
         plot.margin = margin(2,2,2,2, unit = "mm")) +
   xlab("Genetic distance (1-IBS)")
+```
+
+### Figure S5B
+```{r}
+pdf("./outputs/figures/FigS5B_ibs_dendrogram_noclones.pdf", width = 8.5, height = 4.85)
+hc_noclones <- hc %>% ggtree() %<+% samples + 
+  layout_dendrogram() + 
+  geom_tippoint(aes(fill = `Genotype ID`, color = `TECHNICAL_REPLICATE`), shape = 24, alpha = 0.8, stroke = 0.75, hjust = 0.3, size = 2.5, show.legend = F) +
+  #CLONAL_GENOTYPE
+  # geom_tiplab(size = 2, hjust = 1.05) +
+  scale_color_manual(values = c("black", "red")) +
+  scale_y_continuous(expand = expansion(mult = c(0.025, 0))) +
+  theme_dendrogram(
+        plot.margin = margin(2,2,2,2, unit = "mm"),
+        fgcolor = "black") +
+  theme(axis.text.y = element_text(colour = "black"), 
+        axis.ticks.y = element_line(colour = "black"), 
+        axis.line.y = element_line(colour = "black")) +
+  xlab("Genetic distance (1-IBS)")
+print(hc_noclones)
+dev.off()
+```
+### Figure S5
+```{r}
+hc_clonegroups_title <- hc_clonegroups + ggtitle("Full analysis dataset: 337 samples, 3,264,865 SNPs")
+
+hc_noclones_title <- hc_noclones + ggtitle("No-clones linked dataset: 229 samples, 5,587,480 SNPs")
+
+pdf("./outputs/figures/FigS5_ibs_dendrograms.pdf", width = 6.5, height = 7)
+
+figS5 <- hc_clonegroups_title / hc_noclones_title + plot_annotation(tag_levels = 'A') & 
+  theme(plot.tag = element_text(size = 14, face = "bold"))
+print(figS5)
 dev.off()
 ```
 
@@ -512,20 +412,4 @@ hc_noclones
 dev.off()
 ```
 
-```{r}
-# histogram of pairwise distances 
-
-# need to select only columns of samples 
-ma_type1a <- madf %>% filter(mtorf_type == "Type 1a") %>% select(.$`Sample ID`) %>% as.matrix() %>% hist()
-
-hist(madf[madf$mtorf_type == "Type 1a", madf$mtorf_type == "Type 1a"])
-```
-## No-clones summary
-```{r}
-samples_spp_regions_summary <- samples_noclones %>% group_by(Species, Region) %>% count() %>% pivot_wider(names_from = Species, values_from = n)
-```
-```{r}
-pgrandis_noclones <- samples_noclones %>% filter(Species == "P. verrucosa 3b") %>% group_by(Region) 
-write_lines(pgrandis_noclones$`Sample ID`, "~/Desktop/pverrucosa3a")
-```
 

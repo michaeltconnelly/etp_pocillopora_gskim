@@ -50,6 +50,8 @@ x <- tab(genind, freq = TRUE, NA.method = "mean")
 # 
 pca <- dudi.pca(x, center = TRUE)#, scale = FALSE, scannf = FALSE, nf = 60)
 # ?dudi.pca()
+
+?dudi.pca
 ```
 ```{r pca plot check}
 s.label(pca$li, xax=1, yax=2, boxes = F, clabel = 0.6)

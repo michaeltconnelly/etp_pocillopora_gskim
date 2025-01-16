@@ -28,7 +28,7 @@ samples <- filter(all_samples, ANALYSIS ==T)
 
 ## Plot the proportion of reads mapping to A, B, C, and D in Pocillopora corals
 ```{r}
-abcd_pdam <- read.delim("./outputs/symbiont_counts/allcounts_symCD.txt")
+abcd_pdam <- read.delim("./outputs/symbiont_counts/allcounts_pgra_himb_symCD.txt")
 
 df_abcd_pdam <- abcd_pdam %>% 
   dplyr::select(sample, fracA, fracB, fracC, fracD) %>% drop_na() %>% 
@@ -37,9 +37,9 @@ df_abcd_pdam <- abcd_pdam %>%
   gather(clade, frac, fracA:fracD) %>% 
   dplyr::mutate(Genus = factor(ifelse(clade == "fracA", "Symbiodinium", ifelse(clade == "fracB", "Breviolum", ifelse(clade == "fracC", "Cladocopium", "Durusdinium"))))) %>%
   dplyr::mutate(`Sample ID` = str_extract(sample, "^.*_.*_[S]*")) %>% 
-  dplyr::mutate(`Sample ID` = str_replace(`Sample ID`, "_S.*_", "")) #%>% 
+  dplyr::mutate(`Sample ID` = str_replace(`Sample ID`, "_S.*_", "")) %>% 
   # dplyr::filter(`Sample ID` != "Perlas_344_AP3XG35") #%>% 
-  #dplyr::left_join(samples_pc_clusters, by = "Sample ID")
+  dplyr::left_join(samples, by = "Sample ID")
 # 
 df_abcd_pdam$Genus <- factor(df_abcd_pdam$Genus, levels = c("Symbiodinium", "Breviolum", "Cladocopium", "Durusdinium", ordered = T))
 
@@ -60,7 +60,7 @@ pdf("./outputs/figures/pocillopora_symbiont_proportions_species_region_facet.pdf
 print(plot_abcd_pdam)
 dev.off()
 ```
-### Supplementary Figure 6
+### Exploratory figures
 ```{r }
 df_abcd_pdam %<>% left_join(samples, by = "Sample ID") 
 ###
@@ -93,43 +93,6 @@ plot_abcd_pdam <- df_abcd_pdam %>%
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank())
 
-# THIS ONE
-plot_abcd_pdam <- df_abcd_pdam %>% 
-  ggplot() + 
-  geom_bar(aes(y = frac, x = sample, fill = Genus), stat="identity")+
-  facet_wrap(`Species` ~ ., scales = "free") +
-  scale_fill_brewer(palette="Spectral", name = "Genus")+
-  theme_classic()+
-  ylab("Proportion of Symbiont Reads")+
-  xlab(NULL)+
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank(),
-        legend.position = c(0.85, 0.25)) +
-  theme(plot.title = element_text(size = 16, hjust = -0.2),
-        axis.title = element_text(size = 14),
-        axis.text = element_text(size = 12),
-        legend.title = element_text(size = 14),
-        legend.text = element_text(size = 12)) +
-  ggtitle(expression(paste("East Pacific ", italic("Pocillopora"), " species symbiont community variation")))
-
-plot_abcd_pdam <- df_abcd_pdam %>% 
-  ggplot() + 
-  geom_bar(aes(y = frac, x = sample, fill = Genus), stat="identity")+
-  facet_wrap(`Species` + `Region` ~ ., scales = "free") +
-  scale_fill_brewer(palette="Spectral", name = "Genus")+
-  theme_classic()+
-  ylab("Proportion of Symbiont Reads")+
-  xlab(NULL)+
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank(),
-        legend.position = c(0.85, 0.1)) +
-  theme(plot.title = element_text(size = 16, hjust = -0.2),
-        axis.title = element_text(size = 14),
-        axis.text = element_text(size = 12),
-        legend.title = element_text(size = 14),
-        legend.text = element_text(size = 12)) +
-  ggtitle(expression(paste("East Pacific ", italic("Pocillopora"), " species symbiont community variation")))
-
 plot_abcd_pdam <- df_abcd_pdam %>% 
   ggplot() + 
   geom_bar(aes(y = frac, x = sample, fill = Genus), stat="identity")+
@@ -143,12 +106,70 @@ plot_abcd_pdam <- df_abcd_pdam %>%
         legend.position = "right")
 
 ```
+```{r}
+print(plot_abcd_pdam)
+```
+
+
+### Figure S13
+```{r}
+# THIS ONE
+plot_abcd_pdam <- df_abcd_pdam %>% 
+  ggplot() + 
+  geom_bar(aes(y = frac, x = sample, fill = Genus), stat="identity")+
+  facet_wrap(`Species` ~ ., scales = "free") +
+  scale_fill_brewer(palette="Spectral", name = "Genus")+
+  theme_classic()+
+  ylab("Proportion of Symbiont Reads")+
+  xlab(NULL)+
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        legend.position = c(0.85, 0.25)) +
+  theme(axis.title = element_text(size = 10),
+        axis.text = element_text(size = 8),
+        legend.title = element_text(size = 10),
+        legend.text = element_text(size = 10))
+
+print(plot_abcd_pdam)
+```
+```{r}
+pdf("./outputs/figures/FigS13_CD_proportions_species.pdf", width = 6.5, height = 5.5)
+print(plot_abcd_pdam)
+dev.off()
+```
+
+
+### Symbiont proportion by species and region
+```{r}
+plot_abcd_pdam <- df_abcd_pdam %>% 
+  ggplot() + 
+  geom_bar(aes(y = frac, x = sample, fill = Genus), stat="identity")+
+  facet_wrap(`Species` + `Site` ~ ., scales = "free") +
+  scale_fill_brewer(palette="Spectral", name = "Genus")+
+  theme_classic()+
+  ylab("Proportion of Symbiont Reads")+
+  xlab(NULL)+
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        legend.position = c(0.85, 0.1)) +
+  theme(plot.title = element_text(size = 16, hjust = -0.2),
+        axis.title = element_text(size = 14),
+        axis.text = element_text(size = 12),
+        legend.title = element_text(size = 14),
+        legend.text = element_text(size = 12)) +
+  ggtitle(expression(paste("East Pacific ", italic("Pocillopora"), " species symbiont community variation")))
+```
+```{r}
+print(plot_abcd_pdam)
+```
 
 ## Scatterpie plot on map 
 to examine geographic patterns
 ```{r}
 all(df_abcd_pdam$`Sample ID` %in% samples$`Sample ID`)
 ```
+
+
 
 
 
@@ -214,5 +235,23 @@ for (i in 1:num_tips) {
 # give them the appropriate names and plot on tree
 names(pies) = 1:15
 inset(p, pies, width=0.1, height=0.1, hjust=0)
+```
+
+## Categorize samples as C-dominated, D-dominated, or mixed
+```{r}
+pdam_cd_cats <- abcd_pdam %>%
+  dplyr::mutate(`Sample ID` = str_extract(sample, "^.*_.*_[S]*")) %>% 
+  dplyr::mutate(`Sample ID` = str_replace(`Sample ID`, "_S.*_", "")) %>% 
+  # dplyr::filter(`Sample ID` != "Perlas_344_AP3XG35") #%>% 
+  dplyr::left_join(samples, by = "Sample ID") %>% 
+  filter(NOCLONES_SAMPLE) %>% 
+  dplyr::left_join(samples_k5_assignments, by = "Sample ID") %>% 
+  mutate(`Symbiont Community` = ifelse(fracC > 0.9, "C-dominated", ifelse(fracD > 0.9, "D-dominated", "Mixed")))
+
+pdam_cd_cats %>% group_by(`Symbiont Community`) %>% count()
+
+pdam_cd_cats %>% group_by(`NGSAdmix K5 Species`, `Symbiont Community`) %>% count() %>% pivot_wider(names_from = `NGSAdmix K5 Species`, values_from = n) %>% View()
+
+pdam_cd_cats %>% ggplot(aes(fracD, fracC)) + geom_point(aes(color = `Symbiont Community`)) + facet_wrap(~`NGSAdmix K5 Species`)
 ```
 

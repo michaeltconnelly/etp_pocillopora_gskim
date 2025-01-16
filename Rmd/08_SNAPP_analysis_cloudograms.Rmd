@@ -34,6 +34,46 @@ ggdensitree(snapp_trees[4000:5000], alpha=.1, colour='steelblue') +
   ggtitle(tree_title, subtitle = loci_info)
 dev.off()
 ```
+```{r}
+
+```
+```{r}
+rep_samples <- snapp_trees[1000]$STATE_999000$tip.label
+```
+
+
+### K=5 representative samples 
+```{r}
+snapp_trees <- treeio::read.nexus("./outputs/snapp/snapp_spp_tree_533/snap.trees")
+```
+
+
+```{r}
+pdf("./outputs/figures/representative_5X_snapp_cloudogram.pdf", height = 5.5, width = 8.5)
+ggdensitree(snapp_trees[1000:2000],
+            layout = "slanted",
+            # tip.order = rep_samples,
+            # tip.order = "mode",
+            tip.order = "mds",
+            align.tips = TRUE,
+            alpha=.1,
+            colour='steelblue') + 
+    geom_tiplab(size=2) + hexpand(.35)
+dev.off()
+```
+### K=5 representative samples spp. tree
+```{r}
+snapp_trees <- treeio::read.nexus("./outputs/snapp/snapp_spp_tree_533_spp/snap.trees")
+```
+```{r}
+ggdensitree(snapp_trees[1:100],
+            layout = "slanted",
+            tip.order = "mds", align.tips = TRUE,
+            alpha=.1, colour='steelblue') + 
+    geom_tiplab(size=2) + hexpand(.35)
+
+?ggdensitree()
+```
 
 ### K=6 representative samples
 ```{r}
@@ -41,7 +81,10 @@ snapp_trees <- treeio::read.nexus("./outputs/snapp/snapp_subset_K6_5X/snap.trees
 ```
 ```{r}
 # pdf("./outputs/figures/Fig1B_snapp_bfd_runD_cloudogram.pdf", height = 3, width = 2.05)
-ggdensitree(snapp_trees[4000:5000], alpha=.1, colour='steelblue') + 
+ggdensitree(snapp_trees[4000:5000],
+            layout = "slanted",
+            tip.order = "mds", align.tips = TRUE,
+            alpha=.1, colour='steelblue') + 
     geom_tiplab(size=2) + hexpand(.35)
 # dev.off()
 ```

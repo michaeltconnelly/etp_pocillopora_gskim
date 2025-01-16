@@ -146,9 +146,9 @@ Note: No significant difference in mapping rates between assemblies, marginal in
 
 ### Mapped reads to best reference
 ```{r}
-multiqc_flagstat <- multiqc_flagstat_pdam_rsmas
+# multiqc_flagstat <- multiqc_flagstat_pdam_rsmas
 
-# multiqc_flagstat <- multiqc_flagstat_pgra_himb
+multiqc_flagstat <- multiqc_flagstat_pgra_himb
 
 # mapped_pdam_rsmas <- multiqc_flagstat_pdam_rsmas %>% 
 #   select(`Sample ID`, mapped_passed) %>% 
@@ -268,7 +268,8 @@ dev.off()
 ### Figure S2
 ```{r}
 pdf("./outputs/figures/FigS2_readdepth_proportions_QC.pdf", width = 6.5, height = 5.5)
-(figS2A / figS2B) + plot_annotation(tag_levels = 'A')
+(figS2A / figS2B) + plot_annotation(tag_levels = 'A') & 
+  theme(plot.tag = element_text(size = 14, face = "bold"))
 dev.off()
 ```
 
@@ -426,7 +427,8 @@ all_qc %>%
 ### Figure S3
 ```{r}
 pdf("./outputs/figures/FigS3_spades_uces_QC.pdf", width = 6.5, height = 5.5)
-(figS3A / figS3B) + plot_layout(guides = "collect") + plot_annotation(tag_levels = 'A') 
+(figS3A / figS3B) + plot_layout(guides = "collect") + plot_annotation(tag_levels = 'A') & 
+  theme(plot.tag = element_text(size = 14, face = "bold"))
 dev.off()
 ```
 
@@ -456,7 +458,7 @@ write_lines(clonegroup_samples_keep$`Sample ID`, "./data/clonegroup_keep_samples
 
 ### Pick clonegroup samples with highest proportion of sites w/ 5x coverage
 ```{r}
-qc_5X <- read_tsv("./outputs/quality_5X.txt", col_names = c("ID", "5X Coverage")) %>% 
+qc_5X <- read_tsv("./outputs/angsd/quality_5X.txt", col_names = c("ID", "5X Coverage")) %>% 
   mutate("Sample ID" = str_remove(ID, "_S.*")) %>% select(`Sample ID`, `5X Coverage`)
 #
 samples_5X <- left_join(samples, qc_5X, by = "Sample ID")
@@ -464,6 +466,7 @@ samples_5X <- left_join(samples, qc_5X, by = "Sample ID")
 samples_5X %>% filter(!is.na(`Genotype ID`)) %>% arrange(`Genotype ID`, desc(`5X Coverage`)) %>% select(`Sample ID`, `Genotype ID`, `Region:Site`, `5X Coverage`)
 # select sample with most reads per clonegroup
 clonegroup_samples_keep <- samples_5X %>% filter(!is.na(`Genotype ID`)) %>% group_by(`Genotype ID`) %>%  slice_max(`5X Coverage`)
+#
 ```
 
 ### Pick representative samples (NGSadmix K=5 q > 0.85) with most mapped reads or highest 5X coverage
@@ -471,30 +474,16 @@ clonegroup_samples_keep <- samples_5X %>% filter(!is.na(`Genotype ID`)) %>% grou
 samples_rep_depth <- left_join(qpop_rep_samples, mapped_pdam_rsmas, by = "Sample ID") %>% 
   group_by(pop) %>% slice_max(pdam_rsmas, n = 10) %>% arrange(pop, desc(pdam_rsmas)) %>% ungroup() %>% select(`Sample ID`)
 
-samples_rep_5X <- left_join(samples_k6_assignments, qc_5X, by = "Sample ID") %>% 
-  group_by(`NGSAdmix K6 Species`) %>%
+samples_rep_5X <- left_join(samples_k5_assignments, qc_5X, by = "Sample ID") %>% 
+  group_by(`NGSAdmix K5 Species`) %>%
   slice_max(`5X Coverage`, n = 5) %>%
-  arrange(`NGSAdmix K6 Species`, desc(`5X Coverage`)) %>%
-  filter(`NGSAdmix K6 Species` != "Unassigned") %>%  
-  ungroup() %>%  select(`Sample ID`)
+  arrange(`NGSAdmix K5 Species`, desc(`5X Coverage`)) %>%
+  filter(`NGSAdmix K5 Species` != "Unassigned") %>%  
+  ungroup() %>% arrange(`NGSAdmix K5 Species`, desc(`5X Coverage`))
+#%>%  select(`Sample ID`)
 
 # are these the same samples? mostly yes
 table(samples_rep_depth$`Sample ID` %in% samples_rep_5X$`Sample ID`)
-```
-
-## Find samples with most reads in a given species/clone group
-```{r}
-multiqc_sample_data <- multiqc_data %>%
-  inner_join(samples, by = "Sample ID")
-# 
-multiqc_sample_data %>% arrange(Species, desc(`Raw Reads`)) %>% View()
-
-# select top 5 samples with most reads per species
-topsamples <-  multiqc_sample_data %>% group_by(Species) %>% top_n(., 5, `Raw Reads`) %>% arrange(Species, desc(`Raw Reads`))
-
-# select top sample with most reads per clonegroup
-
-
 ```
 
 ## Import/inspect non-coral pipeline QC metrics
@@ -504,7 +493,7 @@ topsamples <-  multiqc_sample_data %>% group_by(Species) %>% top_n(., 5, `Raw Re
 ```{r import_multiqc_data}
 # raw reads
 multiqc_unmapqc <- read_tsv("./outputs/QCs/unmappedqcs/multiqc_data/multiqc_fastqc.txt") %>%
-  mutate("Sample ID" = gsub("_S.*_R[12]_001", "", Sample)) %>%
+  mutate("Sample ID" = gsub("_S.*_R[12]_PE", "", Sample)) %>%
   mutate(`Sample ID` = gsub("^05_", "", `Sample ID`))
 ```
 ```{r inspect_read_depth}
@@ -516,7 +505,43 @@ multiqc_unmapqc %>%
   geom_hline(yintercept = 1000000, color = "red") +
   theme(axis.text.x = element_text(size = 5, angle = 90))
 ```
+```{r unmapped_read_stats}
+# Produce total read summary statistics for manuscript
+sum(multiqc_unmapqc$`Total Sequences`)
+# 314,355,341
+mean(multiqc_unmapqc$`Total Sequences`)
+# 932,805
+sd(multiqc_unmapqc$`Total Sequences`)
+# 1,831,709
+range(multiqc_unmapqc$`Total Sequences`)
+```
 
+```{r}
+# What percentage of reads are unmapped study-wide?
+sum(multiqc_unmapqc$`Total Sequences`) / sum(multiqc_fastqc$`Total Sequences`)
+```
+```{r}
+# What percentage of reads are unmapped per-sample?
+multiqc_unmapqc_reads <- multiqc_unmapqc %>% filter(grepl("R1", Sample)) %>% dplyr::select(`Sample ID`, `Total Sequences`) %>% mutate("Unmapped Reads" = `Total Sequences` * 2, .keep = "unused") 
+#
+multiqc_data <- left_join(multiqc_fastqc_reads, multiqc_trimqc_reads, by = "Sample ID") %>%
+  left_join(., multiqc_flagstat_reads, by = "Sample ID") %>% 
+  left_join(., multiqc_unmapqc_reads, by = "Sample ID") %>% 
+  mutate("Unmapped Proportion" = `Unmapped Reads` / `Trimmed Reads`) %>%
+  left_join(samples, by = "Sample ID")
+#
+multiqc_data %>% group_by(Region) %>% summarize(mean_unmapped_pct = mean(`Unmapped Proportion`))
+
+multiqc_data  %>% 
+  ggplot(aes(`Region`, `Unmapped Proportion`)) + geom_boxplot()
+# 
+# Bahia Culebra has highest proportion of unmapped reads (~50%), other regions are between 3-8%
+```
+```{r}
+mean(multiqc_data$`Unmapped Proportion`)
+sd(multiqc_data$`Unmapped Proportion`)
+range(multiqc_data$`Unmapped Proportion`)
+```
 
 ### Kraken2 taxonomy assignment
 #### Unmapped reads

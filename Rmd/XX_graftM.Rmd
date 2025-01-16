@@ -1,0 +1,73 @@
+---
+title: "graftM"
+author: "Mike Connelly"
+date: "2024-12-02"
+output: html_document
+---
+
+## Setup and packages
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = TRUE)
+options(stringsAsFactors = FALSE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+```{r packages}
+library("tidyverse")
+#
+library("pheatmap")
+#
+source("./R/pocillopora_etp_gksim_functions.R")
+```
+
+## Import sample metadata
+```{r import_sample_metadata}
+source("./R/sample_import.R")
+samples <- all_samples
+```
+
+## Import graftM ITS2 results summary
+```{r}
+graftM_its2 <- read_csv("./outputs/graftM/graftM_its2_summary.csv")
+```
+
+```{r}
+graftM_its2_tidy <- graftM_its2 %>% 
+  mutate("Sample ID" = str_replace_all(`0_sample`, "_S.*$", ""), .keep = "unused") %>% 
+  pivot_longer(cols = C1:Symbiodiniaceae_sp, names_to = "ITS2", values_to = "reads") %>% 
+  left_join(samples_noclones_ngsadmix)
+```
+```{r}
+graftM_its2_tidy %>% ggplot(aes(`Sample ID`, ITS2)) + geom_tile(aes(fill = reads))
+```
+```{r}
+# transform to relative abundance
+graftM_its2_relative <- graftM_its2_tidy %>% 
+  group_by(`Sample ID`) %>% 
+  mutate("sum" = sum(reads),
+         "proportion" = reads/sum(reads))
+```
+```{r}
+graftM_its2_relplot <- graftM_its2_relative %>%
+  filter(!is.na(proportion)) %>% 
+  ggplot(aes(`Sample ID`, ITS2)) + geom_tile(aes(fill = proportion)) +
+  scale_fill_gradient(low = "white", high = "navy") + 
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank())
+
+print(graftM_its2_relplot)
+```
+```{r}
+graftM_its2_relplot + facet_grid(. ~ `NGSAdmix K5 Species`, scales = "free", space = "free")
+```
+
+```{r}
+graftM_its2_relplot + facet_grid(. ~ Region, scales = "free", space = "free")
+```
+```{r}
+pdf("./outputs/figures/graftM_its2_site.pdf", width = 11, height = 8,5)
+graftM_its2_relplot +
+  facet_wrap(. ~ `Region:Site`, scales = "free") + 
+  theme(axis.text.y = element_text(size = 4),
+        strip.text = element_text(size = 6))
+dev.off()
+```
