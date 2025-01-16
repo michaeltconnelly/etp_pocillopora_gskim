@@ -81,6 +81,15 @@ VALIDATION_STRINGENCY=SILENT \
 METRICS_FILE=${prodir}/outputs/symbiont_alignments/${sample}_symCD_marked_dup_metrics.txt" >> $prodir/bash/jobs/${sample}_samtools_picard.job
 echo "#" >> $prodir/bash/jobs/${sample}_samtools_picard.job
 #
+
+#   input commands to produce separate bam files for Cladocopium and Durusdinium alignments
+# Cladocopium (chr11)
+echo "samtools view -b ${prodir}/outputs/symbiont_alignments/${sample}_symCD.sorted.md.rg.bam \
+-o ${prodir}/outputs/symbiont_alignments/${sample}_symC.sorted.md.rg.bam -@ 8 chr11"  >> $JOBFILE
+# Durusdinium (chr12)
+echo "samtools view -b ${prodir}/outputs/symbiont_alignments/${sample}_symCD.sorted.md.rg.bam \
+-o ${prodir}/outputs/symbiont_alignments/${sample}_symD.sorted.md.rg.bam -@ 8 chr12"  >> $JOBFILE
+
 echo 'echo '${sample}' successfully processed' >> "${prodir}"/bash/jobs/${sample}_samtools_picard.job
 #
 echo 'echo = `date` job $JOB_NAME done' >> $JOBFILE
