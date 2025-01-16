@@ -45,22 +45,22 @@ echo "# ----------------Your Commands------------------- #" >> $JOBFILE
 echo 'echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME' >> $JOBFILE
 echo 'echo + NSLOTS = $NSLOTS' >> $JOBFILE
 
-echo 'echo "Starting samtools bam conversion, sort and index steps"' >> $prodir/bash/jobs/${sample}_samtools_picard.job
+echo 'echo "Starting samtools bam conversion, sort and index steps"' >> $JOBFILE
 #   input command for samtools conversion
 echo "samtools view -b ${prodir}/outputs/symbiont_alignments/${sample}_symCD.sam \
 -o ${prodir}/outputs/symbiont_alignments/${sample}_symCD.bam -@ 8"  >> $JOBFILE
 #
 echo "samtools sort \
 ${prodir}/outputs/symbiont_alignments/${sample}_symCD.bam -@ 8 \
-> ${prodir}/outputs/symbiont_alignments/${sample}_symCD.sorted.bam" >> $prodir/bash/jobs/${sample}_samtools_picard.job
-echo "#" >> $prodir/bash/jobs/${sample}_samtools_picard.job
+> ${prodir}/outputs/symbiont_alignments/${sample}_symCD.sorted.bam" >> $JOBFILE
+echo "#" >> $JOBFILE
 #
 echo "samtools index -b \
-${prodir}/outputs/symbiont_alignments/${sample}_symCD.sorted.bam" >> $prodir/bash/jobs/${sample}_samtools_picard.job
-echo "#" >> $prodir/bash/jobs/${sample}_samtools_picard.job
+${prodir}/outputs/symbiont_alignments/${sample}_symCD.sorted.bam" >> $JOBFILE
+echo "#" >> $JOBFILE
 
 #   input command for picard add read groups 
-echo 'echo "Starting PicardTools and GATK processing steps"' >> $prodir/bash/jobs/${sample}_samtools_picard.job
+echo 'echo "Starting PicardTools and GATK processing steps"' >> $JOBFILE
 echo "java -jar /share/apps/bioinformatics/picard-tools/2.20.6/picard.jar \
 AddOrReplaceReadGroups \
 INPUT=${prodir}/outputs/symbiont_alignments/${sample}_symCD.sorted.bam \
@@ -69,8 +69,8 @@ RGID=id \
 RGLB=library \
 RGPL=illumina \
 RGPU=unit1 \
-RGSM=${sample}" >> $prodir/bash/jobs/${sample}_samtools_picard.job
-echo "#" >> $prodir/bash/jobs/${sample}_samtools_picard.job
+RGSM=${sample}" >> $JOBFILE
+echo "#" >> $JOBFILE
 #
 echo "java -jar /share/apps/bioinformatics/picard-tools/2.20.6/picard.jar \
 MarkDuplicates \
@@ -78,8 +78,8 @@ INPUT=${prodir}/outputs/symbiont_alignments/${sample}_symCD.sorted.rg.bam \
 OUTPUT=${prodir}/outputs/symbiont_alignments/${sample}_symCD.sorted.md.rg.bam \
 CREATE_INDEX=true \
 VALIDATION_STRINGENCY=SILENT \
-METRICS_FILE=${prodir}/outputs/symbiont_alignments/${sample}_symCD_marked_dup_metrics.txt" >> $prodir/bash/jobs/${sample}_samtools_picard.job
-echo "#" >> $prodir/bash/jobs/${sample}_samtools_picard.job
+METRICS_FILE=${prodir}/outputs/symbiont_alignments/${sample}_symCD_marked_dup_metrics.txt" >> $JOBFILE
+echo "#" >> $JOBFILE
 #
 
 #   input commands to produce separate bam files for Cladocopium and Durusdinium alignments
