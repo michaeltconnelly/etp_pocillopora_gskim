@@ -36,6 +36,8 @@ cp ${prodir}/data/outgroups/Stylophora_pistillata_ANT17_contigs.fasta ${prodir}/
 cp ${prodir}/data/outgroups/scleractinia-genome-fasta/p*.fasta ${prodir}/outputs/spades/contigs/${set}
 # copy Oury reference sample contigs to working directory and rename files
 cp ${prodir}/data/outgroups/105_oury_contigs/*.fasta ${prodir}/outputs/spades/contigs/${set}
+# add Tara Pacific reference samples
+cp ${prodir}/data/outgroups/tarapacfic/*.fasta ${prodir}/outputs/spades/contigs/${set}
 
 # copy sample contigs to working directory and rename files
 #for sample in ${samples} ; do cp ${prodir}/outputs/spades/${sample}/contigs.fasta ${prodir}/outputs/spades/contigs/${set}/${sample}_contigs.fasta ; done
@@ -65,6 +67,8 @@ echo "adding reference UCE sequences to pipeline"
 for i in ${prodir}/data/outgroups/scleractinia-genome-fasta/p*; do basename $i | cut -d . -f 1 >> $CONFIG; done
 # add Oury reference samples
 for i in ${prodir}/data/outgroups/105_oury_contigs/*.fasta; do basename $i | cut -d . -f 1 >> $CONFIG; done
+# add Tara Pacific reference samples
+for i in ${prodir}/data/outgroups/tarapacific/*.fasta; do basename $i | cut -d . -f 1 >> $CONFIG; done
 #else echo "skipping reference UCE sequences" ;fi
 
 # make output directory for the set files and logs
