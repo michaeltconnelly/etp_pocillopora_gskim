@@ -48,7 +48,7 @@ echo 'echo "Starting samtools bam conversion, sort and index steps"' >> $JOBFILE
 
 #   input command for samtools conversion to bam
 echo "samtools view -b ${prodir}/outputs/symbiont_alignments/${sample}_symCD.sam \
--o ${prodir}/outputs/symbiont_alignments/${sample}_symC.bam -@ 8" >> $JOBFILE
+-o ${prodir}/outputs/symbiont_alignments/${sample}_symCD.bam -@ 8" >> $JOBFILE
 
 echo "samtools sort \
 ${prodir}/outputs/symbiont_alignments/${sample}_symCD.bam -@ 8 \
