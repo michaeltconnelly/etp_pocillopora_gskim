@@ -37,7 +37,7 @@ cp ${prodir}/data/outgroups/scleractinia-genome-fasta/p*.fasta ${prodir}/outputs
 # copy Oury reference sample contigs to working directory and rename files
 cp ${prodir}/data/outgroups/105_oury_contigs/*.fasta ${prodir}/outputs/spades/contigs/${set}
 # add Tara Pacific reference samples
-cp ${prodir}/data/outgroups/tarapacfic/*.fasta ${prodir}/outputs/spades/contigs/${set}
+cp ${prodir}/data/outgroups/tarapacific/*.fasta ${prodir}/outputs/spades/contigs/${set}
 
 # copy sample contigs to working directory and rename files
 #for sample in ${samples} ; do cp ${prodir}/outputs/spades/${sample}/contigs.fasta ${prodir}/outputs/spades/contigs/${set}/${sample}_contigs.fasta ; done
