@@ -69,6 +69,8 @@ outputs/kraken/
 outputs/sharkmer/
 outputs/*vcf.gz
 outputs/stairwayplot
+outputs/noncoral_spades
+outputs/graftM
 #
 
 logs/
