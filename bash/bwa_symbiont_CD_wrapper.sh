@@ -41,8 +41,9 @@ echo "# ----------------Your Commands------------------- #" >> ${prodir}/bash/jo
 echo 'echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME' >> ${prodir}/bash/jobs/${sample}_bwa_align_symbiont_CD.job
 echo 'echo + NSLOTS = $NSLOTS' >> ${prodir}/bash/jobs/${sample}_bwa_align_symbiont_CD.job
 
-  #   input bwa mem alignment command
-echo "bwa mem ${mcs}/sequences/symbio/symCDgenome.fasta \
+#   input bwa mem alignment command
+# NOTE: use symCDgenome.fasta for downstream use with zooxtype.pl
+echo "bwa mem ${mcs}/sequences/symbio/sym_catCD_genome.fasta \
 ${prodir}/data/unmapped/${sample}_Unmapped_R1_PE.fastq.gz \
 ${prodir}/data/unmapped/${sample}_Unmapped_R2_PE.fastq.gz \
 > ${prodir}/outputs/symbiont_alignments/${sample}_symCD.sam" >> "${prodir}"/bash/jobs/${sample}_bwa_align_symbiont_CD.job
