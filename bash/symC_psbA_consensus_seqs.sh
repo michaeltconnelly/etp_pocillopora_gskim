@@ -6,12 +6,6 @@
 mcs="/scratch/nmnh_corals/connellym"
 prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
 
-# making a list of sample names
-set=$1
-#files=$(ls /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/data/raw/)
-#samples=$(echo "$files" | cut -d . -f 1 | sort -u)
-samples=$(cat ${prodir}/data/${set}_samples.txt)
-
 # change to correct working directory to run for loops
 cd ${prodir}/outputs/symC_psbA/
 
@@ -43,7 +37,8 @@ do
 done
 
 # keep consensus sequences in one fasta file 
-for i in *.filtered100-90.sort.mpileup.consensus.fa
+for i in *sorted.mpileup.consensus.fa
 do
-    echo -e ">${i%_*}"; tail -n +2 $i
+    echo -e ">${i%_C_*}"; tail -n +2 $i
 done > All_psbA-Cladocopium100-90_psbA.aln.mpileup.consensus.fa
+

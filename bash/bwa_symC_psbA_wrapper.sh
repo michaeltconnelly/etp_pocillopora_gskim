@@ -68,5 +68,5 @@ qsub $JOBFILE
 #
 done
 
-# proceed with identifying the reference with highest number of reads mapped, generating text mpileup output and building consensus sequences
-# ./bash/symC_psbA_consensus_seqs.sh
+# when finished, proceed with identifying the reference with highest number of reads mapped, generating text mpileup output and building consensus sequences
+# bash ${prodir}/bash/symC_psbA_consensus_seqs.sh
