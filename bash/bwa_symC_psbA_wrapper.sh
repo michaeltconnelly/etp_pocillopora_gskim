@@ -60,7 +60,6 @@ ${prodir}/outputs/symC_psbA/${sample}_C_psbA.sam \
 echo "perl ${prodir}/bash/BAMFiltration.pl -in ${prodir}/outputs/symC_psbA/${sample}_C_psbA.bam \
  -out ${prodir}/outputs/symC_psbA/${sample}_C_psbA.filtered100-90.bam -minPCaligned 100 -minPCidentity 90" >> $JOBFILE
 
-#
 echo 'echo '${sample}' successfully processed' >> $JOBFILE
 #
 echo 'echo = `date` job $JOB_NAME done' >> $JOBFILE
