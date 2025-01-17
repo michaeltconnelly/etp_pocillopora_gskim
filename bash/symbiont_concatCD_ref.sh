@@ -4,6 +4,8 @@
 # first, download original genome fasta and GFF files from source
 # Cladocopium: http://symbs.reefgenomics.org/download/SymbC1.Genome.Scaffolds.fasta.gz, http://symbs.reefgenomics.org/download/SymbC1.Gene_Models.GFF3.gz
 # Durusdinium: https://marinegenomics.oist.jp/symbd/download/102_symbd_genome_scaffold.fa.gz, https://marinegenomics.oist.jp/symbd/download/102_symbd.gff.gz
+# NOTE: updated Cladocopium reference: https://espace.library.uq.edu.au/view/UQ:fba3259
+# NOTE: updated Durusdinium reference: https://espace.library.uq.edu.au/view/UQ:27da3e7 
 # rename to symC_genome and symD_genome
 
 #specify variable containing sequence file prefixes and directory paths
