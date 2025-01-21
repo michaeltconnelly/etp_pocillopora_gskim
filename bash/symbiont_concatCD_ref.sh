@@ -6,7 +6,6 @@
 # Durusdinium: https://marinegenomics.oist.jp/symbd/download/102_symbd_genome_scaffold.fa.gz, https://marinegenomics.oist.jp/symbd/download/102_symbd.gff.gz
 # NOTE: updated Cladocopium reference: https://espace.library.uq.edu.au/view/UQ:fba3259
 # NOTE: updated Durusdinium reference: https://espace.library.uq.edu.au/view/UQ:27da3e7 
-# rename to symC_genome and symD_genome
 
 #specify variable containing sequence file prefixes and directory paths
 mcs="/scratch/nmnh_corals/connellym"
@@ -17,10 +16,10 @@ symdir="${mcs}/sequences/symbio"
 touch ${symdir}/sym_catCD_genome.fasta ${symdir}/sym_catCD_genome.gff
 
 # Append each reference genome into a concatenated reference
-cat ${symdir}/cladocopium/symC1_genome.fasta ${symdir}/durusdinium/symD_genome.fasta >> ${symdir}/sym_catCD_genome.fasta
+cat ${symdir}/cladocopium/SymbC1.Genome.Scaffolds.fasta ${symdir}/durusdinium/102_symbd_genome_scaffold.fa >> ${symdir}/sym_catCD_genome.fasta
 
 # Append each gff files into a concatenated reference
-cat ${symdir}/cladocopium/symC1_genome.gff ${symdir}/durusdinium/symD_genome.gff >> ${symdir}/sym_catCD_genome.gff
+cat ${symdir}/cladocopium/SymbC1.Gene_Models.GFF3 ${symdir}/durusdinium/102_symbd.gff >> ${symdir}/sym_catCD_genome.gff
 
 # NOTES for use with zooxtype.pl
 # -----------------------------------------------------------------------------------------------------
