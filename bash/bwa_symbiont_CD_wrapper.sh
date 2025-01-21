@@ -42,8 +42,9 @@ echo 'echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTN
 echo 'echo + NSLOTS = $NSLOTS' >> ${prodir}/bash/jobs/${sample}_bwa_align_symbiont_CD.job
 
 #   input bwa mem alignment command
-# NOTE: use symCDgenome.fasta for downstream use with zooxtype.pl
-echo "bwa mem ${mcs}/sequences/symbio/sym_catCD_genome.fasta \
+# NOTE: use symCDgenome.fasta for downstream use with zooxtype.pl (all scaffolds collapsed to single header)
+# NOTE: use sym_catCD_genome.fasta for original genomes (all scaffolds retained)
+echo "bwa mem ${mcs}/sequences/symbio/symCDgenome.fasta \
 ${prodir}/data/unmapped/${sample}_Unmapped_R1_PE.fastq.gz \
 ${prodir}/data/unmapped/${sample}_Unmapped_R2_PE.fastq.gz \
 > ${prodir}/outputs/symbiont_alignments/${sample}_symCD.sam" >> "${prodir}"/bash/jobs/${sample}_bwa_align_symbiont_CD.job
