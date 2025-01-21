@@ -57,32 +57,6 @@ ${prodir}/outputs/symbiont_alignments/${sample}_symCD.bam -@ 8 \
 echo "samtools index -b \
 ${prodir}/outputs/symbiont_alignments/${sample}_symCD.sorted.bam" >> $JOBFILE
 
-#   input command to produce separate bam files for Cladocopium and Durusdinium alignments
-# Cladocopium (chr11)
-echo "samtools view -b ${prodir}/outputs/symbiont_alignments/${sample}_symCD.sorted.bam \
--o ${prodir}/outputs/symbiont_alignments/${sample}_symC.bam -@ 8 chr11"  >> $JOBFILE
-# Durusdinium (chr12) 
-echo "samtools view -b ${prodir}/outputs/symbiont_alignments/${sample}_symCD.sorted.bam \
--o ${prodir}/outputs/symbiont_alignments/${sample}_symD.bam -@ 8 chr12"  >> $JOBFILE
-
-#   input command for samtools sort and index 
-# Cladocopium
-echo "samtools sort \
-${prodir}/outputs/symbiont_alignments/${sample}_symC.bam -@ 8 \
-> ${prodir}/outputs/symbiont_alignments/${sample}_symC.sorted.bam" >> $JOBFILE
-#
-echo "samtools index -b \
-${prodir}/outputs/symbiont_alignments/${sample}_symC.sorted.bam" >> $JOBFILE
-echo "#" >> $JOBFILE
-# Durusdinium
-echo "samtools sort \
-${prodir}/outputs/symbiont_alignments/${sample}_symD.bam -@ 8 \
-> ${prodir}/outputs/symbiont_alignments/${sample}_symD.sorted.bam" >> $JOBFILE
-#
-echo "samtools index -b \
-${prodir}/outputs/symbiont_alignments/${sample}_symD.sorted.bam" >> $JOBFILE
-echo "#" >> $JOBFILE
-
 echo 'echo '${sample}' successfully processed' >> $JOBFILE
 #
 echo 'echo = `date` job $JOB_NAME done' >> $JOBFILE
