@@ -38,6 +38,7 @@ echo "#$ -j y
 #
 echo "# ----------------Modules------------------------- #" >> $JOBFILE
 echo "module load bioinformatics/samtools" >> $JOBFILE
+echo "module load tools/conda" >> $JOBFILE
 echo "start-conda" >> $JOBFILE
 echo "conda activate d2ssect" >> $JOBFILE
 #
