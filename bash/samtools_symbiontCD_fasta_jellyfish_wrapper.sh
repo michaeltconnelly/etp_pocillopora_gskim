@@ -54,7 +54,7 @@ echo "samtools fasta ${prodir}/outputs/symbiont_alignments/${sample}_symCD.sorte
 -o ${prodir}/outputs/symbiont_kmers/${sample}_symCD.fasta -@ 8"  >> $JOBFILE
 
 #   input command for jellyfish kmer counting
-echo "jellyfish count -m 21 -s 500000000 ${prodir}/outputs/symbiont_kmers/${sample}_symCD.fasta \
+echo "jellyfish count -m 21 -s 2000000000 ${prodir}/outputs/symbiont_kmers/${sample}_symCD.fasta \
 -o ${prodir}/outputs/symbiont_kmers/${sample}_symCD.jf -t 8" >> $JOBFILE
 
 echo 'echo '${sample}' successfully processed' >> $JOBFILE
