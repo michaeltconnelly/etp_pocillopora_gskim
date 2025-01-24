@@ -1,0 +1,49 @@
+#!/bin/sh
+# ----------------Parameters---------------------- #
+#$ -S /bin/sh
+#$ -pe mthread 16
+#$ -q mThM.q
+#$ -l mres=192G,h_data=12G,h_vmem=12G,himem
+#$ -cwd
+#$ -j y
+#$ -N pcangsd_symCD
+#$ -o pcangsd_symCD.log
+#$ -m bea
+#$ -M connellym@si.edu
+#
+# ----------------Modules------------------------- #
+module load bioinformatics/pcangsd
+#
+# ----------------Your Commands------------------- #
+
+echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
+echo + NSLOTS = $NSLOTS
+
+#specify variable containing sequence file prefixes and directory paths
+mcs="/scratch/nmnh_corals/connellym"
+prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
+
+set="final_noclones"
+
+# C-dominated
+set="C-dominated_symC"
+pcangsd \
+--beagle ${prodir}/outputs/angsd/${set}_0.8/${set}_ibs05.beagle.gz \
+-o ${prodir}/outputs/angsd/${set}_0.8/${set} \
+--admix \
+--threads $NSLOTS
+
+# D-dominated
+set="D-dominated_symD"
+pcangsd \
+--beagle ${prodir}/outputs/angsd/${set}_0.8/${set}_ibs05.beagle.gz \
+-o ${prodir}/outputs/angsd/${set}_0.8/${set} \
+--admix \
+--threads $NSLOTS
+
+# Outputs the following files:
+# log-file (pcangsd.log)
+# covariance matrix (pcangsd.cov)
+# admixture proportions (pcangsd.admix.*.Q)
+
+echo = `date` job $JOB_NAME done
