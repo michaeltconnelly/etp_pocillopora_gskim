@@ -28,16 +28,16 @@ set="final_noclones"
 # C-dominated
 set="C-dominated_symC"
 pcangsd \
---beagle ${prodir}/outputs/angsd/${set}_0.8/${set}_ibs05.beagle.gz \
--o ${prodir}/outputs/angsd/${set}_0.8/${set} \
+--beagle ${prodir}/outputs/angsd/${set}/${set}_ibs05.beagle.gz \
+-o ${prodir}/outputs/angsd/${set}/${set}_0.5 \
 --admix \
 --threads $NSLOTS
 
 # D-dominated
 set="D-dominated_symD"
 pcangsd \
---beagle ${prodir}/outputs/angsd/${set}_0.8/${set}_ibs05.beagle.gz \
--o ${prodir}/outputs/angsd/${set}_0.8/${set} \
+--beagle ${prodir}/outputs/angsd/${set}/${set}_ibs05.beagle.gz \
+-o ${prodir}/outputs/angsd/${set}/${set}_0.5 \
 --admix \
 --threads $NSLOTS
 
