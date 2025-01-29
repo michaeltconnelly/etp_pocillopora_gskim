@@ -1,0 +1,30 @@
+#!/bin/sh
+# ----------------Parameters---------------------- #
+#$ -S /bin/sh
+#$ -pe mthread 16
+#$ -q mThM.q
+#$ -l mres=192G,h_data=12G,h_vmem=12G,himem
+#$ -cwd
+#$ -j y
+#$ -N symbiont_D_d2ssect
+#$ -o symbiont_D_d2ssect.log
+#$ -m bea
+#$ -M connellym@si.edu
+#
+# ----------------Modules------------------------- #
+ module load tools/conda
+# ----------------Your Commands------------------- #
+#
+echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
+echo + NSLOTS = $NSLOTS
+
+# specify variable containing sequence file prefixes and directory paths
+mcs="/scratch/nmnh_corals/connellym"
+prodir="/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim"
+
+start-conda
+conda activate d2ssect
+
+d2ssect -l ${prodir}/outputs/symbiont_kmers/D-dominated/*.jf -f ${prodir}/outputs/symbiont_kmers/D-dominated/*.fasta -o ${prodir}/outputs/symbiont_kmers/D-dominated/symD_distance.txt -t $NSLOTS
+
+echo = `date` job $JOB_NAME done
