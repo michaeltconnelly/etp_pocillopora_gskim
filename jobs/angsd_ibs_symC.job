@@ -54,7 +54,7 @@ BAMS=${setdir}/${set}_symC_bamfile.txt
 # -minMaf 0.05 : only common SNPs, with allele frequency 0.05 or more.
 # set minInd to 85% of total number of samples
 nsamps=$(cat $BAMS | wc -l) 
-minindv=$(echo "$nsamps*0.50" | bc | awk '{print int($1+0.5)}')
+minindv=$(echo "$nsamps*0.85" | bc | awk '{print int($1+0.5)}')
 # also adding  filters against very badly non-HWE sites (such as, all calls are heterozygotes => lumped paralog situation) and sites with really bad strand bias:
 FILTERS="-uniqueOnly 1 -remove_bads 1 -minMapQ 20 -minQ 20 -dosnpstat 1 -doHWE 1 -sb_pval 1e-5 -hetbias_pval 1e-5 -skipTriallelic 1 -minInd $minindv -snp_pval 1e-5 -minMaf 0.05"
 
