@@ -1,0 +1,727 @@
+---
+title: "Symbiodiniaceae community analysis"
+author: "Mike Connelly"
+date: "2025-01-28"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+options(stringsAsFactors = FALSE)
+```
+
+```{r}
+library("tidyverse") # for data wrangling and plotting
+library("magrittr")
+library("RColorBrewer") # for colors
+#
+library("pheatmap")
+#
+library("ggtree")
+#
+library("adegenet")
+library("vegan")
+library("pairwiseAdonis")
+#
+library("patchwork")
+library("ggtext")
+#
+source("./R/pocillopora_etp_gksim_functions.R")
+```
+
+## Import sample metadata
+```{r import_sample_metadata}
+source("./R/sample_import.R")
+samples <- all_samples
+```
+
+## Zooxtype results for proportion of non-coral reads mapping to combined *Cladocopium* and *Durusdinium* reference
+```{r zooxtype_import}
+# import zooxtype.pl C/D counts summary
+zooxtype_cd_counts <- read.delim("./outputs/symbiont_counts/allcounts_pgra_himb_symCD.txt")
+```
+```{r zooxtype_tidy}
+# tidy zooxtype count results and join to sample metadata
+zooxtype_df <- zooxtype_cd_counts %>% 
+  dplyr::select(sample, fracA, fracB, fracC, fracD) %>% drop_na() %>% 
+  # reorder samples based on proportion of Cladocopium
+  mutate("sample" = forcats::fct_reorder2(`sample`, desc(fracC), desc(fracD))) %>% 
+  gather(clade, frac, fracA:fracD) %>% 
+  dplyr::mutate(Genus = factor(ifelse(clade == "fracA", "Symbiodinium", ifelse(clade == "fracB", "Breviolum", ifelse(clade == "fracC", "Cladocopium", "Durusdinium"))))) %>%
+  dplyr::mutate(`Sample ID` = str_extract(sample, "^.*_.*_[S]*")) %>% 
+  dplyr::mutate(`Sample ID` = str_replace(`Sample ID`, "_S.*_", "")) %>% 
+  # dplyr::filter(`Sample ID` != "Perlas_344_AP3XG35") #%>% 
+  dplyr::left_join(samples, by = "Sample ID") %>% 
+  filter(NOCLONES_SAMPLE) %>% 
+  dplyr::left_join(samples_k5_assignments, by = "Sample ID") %>% 
+  filter(`NGSAdmix K5 Species` != "Unassigned")
+# 
+zooxtype_df$Genus <- factor(zooxtype_df$Genus, levels = c("Symbiodinium", "Breviolum", "Cladocopium", "Durusdinium", ordered = T))
+zooxtype_df$`NGSAdmix K5 Species` <- factor(zooxtype_df$`NGSAdmix K5 Species`, levels = ngsadmix_spp)
+zooxtype_df$Cluster <- gsub("Cluster ", "", names(ngsadmix_spp_clusters)[zooxtype_df$`NGSAdmix K5 Species`])
+```
+```{r}
+zooxtype_cd_plot <- zooxtype_df %>% 
+  filter(Set == "STRI" & Country == "Panama", Region == "Panama") %>%
+  ggplot() + 
+  geom_bar(aes(y = frac, x = sample, fill = Genus), stat = "identity") +
+  # facet_grid(. ~ `Cluster`, scales = "free",  space = "free") +
+  facet_grid(. ~`Cluster` + `Region` + `Site` , scales = "free",  space = "free") +
+  scale_fill_brewer(palette = "Spectral", name = "Genus") +
+  scale_y_continuous(breaks = c(0, 0.15, 0.5, 0.85, 1), expand = expansion(mult = c(0, 0))) + 
+  theme_classic() +
+  ylab("Proportion Mapped Reads") +
+  xlab(NULL) +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        legend.position = "right",
+        legend.margin = margin(0,0,0,-2, unit = "pt")) +
+  theme(axis.title = element_text(size = 10),
+        axis.text = element_text(size = 8),
+        legend.title = element_blank(),
+        legend.text = element_text(size = 7),
+        panel.spacing = unit(0.5, "mm"),
+        plot.margin = margin(0,0,1,0, unit = "pt"))
+
+print(zooxtype_cd_plot)
+```
+
+## Categorize samples as C-dominated, D-dominated, or mixed
+```{r categorize_communities}
+samples_cd_categories <- zooxtype_cd_counts %>%
+  # clean sam filenames to Sample IDs
+  dplyr::mutate(`Sample ID` = str_extract(sample, "^.*_.*_[S]*")) %>% 
+  dplyr::mutate(`Sample ID` = str_replace(`Sample ID`, "_S.*_", "")) %>% 
+  # join to sample metadata
+  dplyr::left_join(samples, by = "Sample ID") %>% 
+  filter(NOCLONES_SAMPLE) %>% 
+  dplyr::left_join(samples_k5_assignments, by = "Sample ID") %>% 
+  # assign C/D dominance categories
+  mutate(`Symbiont Community` = ifelse(fracC > 0.85, "C-dominated", ifelse(fracD > 0.85, "D-dominated", "Mixed")))
+
+symbiont_categories <- dplyr::select(samples_cd_categories, `Sample ID`, `Symbiont Community`)
+```
+```{r count_categories}
+samples_cd_categories %>%
+  group_by(`Symbiont Community`) %>% 
+  count()
+```
+```{r count_categories_species}
+samples_cd_categories %>%
+  group_by(`NGSAdmix K5 Species`, `Symbiont Community`) %>%
+  count() %>% 
+  pivot_wider(names_from = `NGSAdmix K5 Species`, values_from = n)
+```
+```{r count_categories_sites}
+samples_cd_categories %>%
+  group_by(`Region`, `Symbiont Community`) %>%
+  count() %>% 
+  pivot_wider(names_from = `Region`, values_from = n) %>% View()
+```
+
+```{r write_cd_samples}
+# write list of C-dominated, D-dominated, and mixed samples for downstream analyses
+c_dominated <- samples_cd_categories %>% 
+  filter(`Symbiont Community` == "C-dominated", NOCLONES_SAMPLE) 
+
+write_lines(c_dominated$`Sample ID`, "./data/C-dominated_samples.txt")
+
+d_dominated <- samples_cd_categories %>% 
+  filter(`Symbiont Community` == "D-dominated", NOCLONES_SAMPLE) 
+
+write_lines(d_dominated$`Sample ID`, "./data/D-dominated_samples.txt")
+```
+```{r}
+samples_stri_panama_cd_categories <- samples_cd_categories %>% filter(Set == "STRI" & Country == "Panama")
+```
+
+
+## graftM ITS2 results summary
+```{r import_graftM_its2}
+# import per-sample ITS2 sequence counts obtained from graftM and python summary script
+graftM_its2 <- read_csv("./outputs/graftM/graftM_its2_summary.csv")
+```
+```{r graftM_tidy}
+# tidy graftM data
+graftM_its2_tidy <- graftM_its2 %>% 
+  mutate("Sample ID" = str_replace_all(`0_sample`, "_S.*$", ""), .keep = "unused") %>% 
+  pivot_longer(cols = C1:Symbiodiniaceae_sp, names_to = "ITS2", values_to = "reads") %>% 
+  filter(ITS2 != "Symbiodiniaceae_sp") %>% 
+  left_join(samples_noclones_ngsadmix) %>% 
+  left_join(symbiont_categories)
+
+graftM_its2_tidy$`NGSAdmix K5 Species` <- factor(graftM_its2_tidy$`NGSAdmix K5 Species`, levels = ngsadmix_spp)
+graftM_its2_tidy$Cluster <- gsub("Cluster ", "", names(ngsadmix_spp_clusters)[graftM_its2_tidy$`NGSAdmix K5 Species`])
+```
+```{r graftM_counts}
+# exploratory figure of total ITS2 counts by sample
+graftM_its2_tidy %>%
+  ggplot(aes(`Sample ID`, ITS2)) +
+  geom_tile(aes(fill = reads)) +
+  scale_fill_gradient(low = "white", high = "navy") +
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank())
+```
+```{r graftM_relative}
+# transform to relative abundance per sample
+graftM_its2_relative <- graftM_its2_tidy %>% 
+  group_by(`Sample ID`) %>% 
+  mutate("sum" = sum(reads),
+         "proportion" = reads/sum(reads))
+```
+```{r graftM_proportions}
+# exploratory figure of relative ITS2 counts by sample
+graftM_its2_relplot <- graftM_its2_relative %>%
+  filter(!is.na(proportion)) %>% 
+  ggplot(aes(`Sample ID`, ITS2)) + geom_tile(aes(fill = proportion)) +
+  scale_fill_gradient(low = "white", high = "navy") + 
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank())
+#
+print(graftM_its2_relplot)
+```
+```{r}
+graftM_its2_relplot + facet_grid(. ~ `NGSAdmix K5 Species`, scales = "free", space = "free")
+#
+graftM_its2_relplot + facet_grid(. ~ `Symbiont Community`, scales = "free", space = "free")
+```
+```{r}
+# reorder samples in same order as zooxtype plot
+sample_order <- zooxtype_cd_counts %>% 
+  dplyr::select(sample, fracC, fracD) %>% drop_na() %>% 
+  # reorder samples based on proportion of Cladocopium
+  mutate("sample" = forcats::fct_reorder2(`sample`, desc(fracC), desc(fracD))) %>% 
+  arrange(sample) %>% 
+  dplyr::mutate(`Sample ID` = str_extract(sample, "^.*_.*_[S]*")) %>% 
+  dplyr::mutate(`Sample ID` = str_replace(`Sample ID`, "_S.*_", "")) %>% 
+  dplyr::left_join(samples, by = "Sample ID") %>% 
+  filter(NOCLONES_SAMPLE) %>% 
+  dplyr::left_join(samples_k5_assignments, by = "Sample ID") 
+
+# sample_order$`Sample ID`
+
+# ordered factor of ITS2 sequence variants
+ITS2_seqs <- c("Symbiodiniaceae_sp", "Cladocopium_sp", "C1", "C3", "C4", "C8", "C15", "C18", "C21", "C27", "C39", "C40", "C41", "C42", "C45", "C66", "C72", "C87", "C91", "C105", "C115", "C120",
+               "Durusdinium_sp", "D1", "D2", "D3", "D4", "D6", "D9", "D17")
+
+graftM_its2_relative_ordered <- graftM_its2_relative %>% 
+  mutate("Sample ID" = factor(`Sample ID`, levels = sample_order$`Sample ID`, ordered = T),
+         "ITS2" = factor(ITS2, levels = rev(ITS2_seqs), ordered = T)) %>% 
+  arrange(`Sample ID`, ITS2) %>% 
+  filter(`NGSAdmix K5 Species` != "Unassigned")
+```
+```{r}
+graftM_its2_relplot_ordered <- graftM_its2_relative_ordered %>%
+  filter(!is.na(proportion)) %>% 
+  ggplot(aes(`Sample ID`, ITS2)) + geom_tile(aes(fill = proportion)) +
+  scale_fill_gradient(low = "white", high = "navy") + 
+  theme_classic() +
+  ylab("Proportion ITS2 sequences") +
+  xlab(NULL) +
+  facet_grid(. ~ `Cluster`, scales = "free", space = "free") +
+  theme(axis.title = element_text(size = 10),
+        axis.text = element_text(size = 6),
+        legend.position = "right",
+        legend.title = element_blank(),
+        legend.text = element_text(size = 8),
+        legend.key.height = unit(5, "mm"),
+        legend.margin = margin(0,0,0,-2, unit = "pt"),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        strip.background.x = element_blank(),
+        strip.text.x = element_blank(),
+        panel.spacing = unit(0.5, "mm"),
+        plot.margin = margin(10,0,0,0, unit = "pt"))  
+```
+
+```{r}
+figAB <- (zooxtype_cd_plot/ graftM_its2_relplot_ordered) + plot_layout(heights = c(0.85,1))
+```
+### Figure 4A/B
+```{r}
+pdf("./outputs/figures/Fig#AB_zooxtype_graftM.pdf", width = 6.65, height = 4.5)
+(zooxtype_cd_plot/ graftM_its2_relplot_ordered) + plot_layout(heights = c(0.85,1))
+dev.off()
+```
+
+## d2ssect C/D kmer-based distance metrics
+```{r import_d2s}
+# reading D2s distance matrix based on kmers
+d2s <- read.table("./outputs/symCD_distance.txt")
+kmer_samples <- d2s$V1 %>% gsub("_S.*_symCD", "", .)
+# convert to distance matrix
+ma <- as.matrix(d2s[, -1])
+dimnames(ma) <- list(kmer_samples, kmer_samples)
+```
+```{r d2s_dendrogram_test}
+# plotting hierarchical clustering dendrogram
+hc <- hclust(as.dist(ma), "ave")
+plot(hc, cex = 0.4)
+```
+```{r dbRDA}
+
+vars <- samples_noclones_ngsadmix %>% dplyr::select(`Sample ID`, Region, Latitude, Longitude, `NGSAdmix K5 Species`) %>%
+  left_join(symbiont_categories, by = "Sample ID") %>%
+  arrange(`Sample ID`) 
+
+pp0 <- capscale(ma ~ 1, data = vars)
+
+# plotting dbRDA 
+plot(pp0, scaling = 1)
+```
+```{r}
+mds_scores <- as.data.frame(scores(pp0, display="sites")) %>%
+  rownames_to_column("Sample ID") %>% 
+  left_join(samples, by = "Sample ID") %>% 
+  left_join(samples_k5_assignments, by = "Sample ID") %>% 
+  left_join(symbiont_categories, by = "Sample ID")
+```
+
+```{r}
+mds_plot_1 <- mds_scores %>%
+  ggplot(aes(MDS1, MDS2)) +
+  geom_point(aes(fill = `NGSAdmix K5 Species`), shape = 21, size = 4, alpha = 0.65, show.legend = T) +
+  scale_fill_manual(values = ngsadmix_pop_colors, name = "NGSAdmix Species (K=5)") +
+  guides(fill = guide_legend(override.aes = list(size = 3, alpha = 1))) +
+  # coord_fixed(pcvar[2]/pcvar[1]) +
+  # xlab(paste0( "PC1 (", pcvar[1], "%)")) + 
+  # ylab(paste0( "PC2 (", pcvar[2], "%)")) +
+  theme(plot.title = element_text(size = 16, hjust = -0.2),
+        legend.background = element_rect(color = "lightgrey"),
+        # panel.grid = element_blank(),
+        axis.title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        legend.title = element_text(size = 10, margin = margin(b = 0.5, unit = "mm")),
+        legend.text = element_text(size = 8),
+        legend.position = "right",
+        # legend.position = c(0.151, 0.695),
+        legend.key.spacing.y = unit(-1.6, "mm"))
+
+print(mds_plot_1)
+```
+```{r}
+symbiont_colors = c("#ABDDA4", "#2B83BA", "darkgrey")
+#
+mds_plot_2 <- mds_scores %>%
+  ggplot(aes(MDS1, MDS2)) +
+  geom_point(aes(fill = `Symbiont Community`), shape = 21, size = 4, alpha = 0.65, show.legend = T) +
+  scale_fill_manual(values = symbiont_colors) +
+  theme(plot.title = element_text(size = 16, hjust = -0.2),
+        legend.background = element_rect(color = "lightgrey"),
+        # panel.grid = element_blank(),
+        axis.title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        legend.title = element_text(size = 10, margin = margin(b = 0.5, unit = "mm")),
+        legend.text = element_text(size = 8),
+        legend.position = "none",
+        # legend.position = c(0.151, 0.695),
+        legend.key.spacing.y = unit(-1.6, "mm"))
+```
+```{r}
+mds_plot_1 / mds_plot_2
+```
+
+## d2ssect C-dominated kmer-based distance metrics
+```{r import_d2s}
+# reading D2s distance matrix based on kmers
+d2s <- read.table("./outputs/symC_distance.txt")
+kmer_samples <- d2s$V1 %>% gsub("_S.*_symC", "", .)
+# convert to distance matrix
+ma <- as.matrix(d2s[, -1])
+dimnames(ma) <- list(kmer_samples, kmer_samples)
+```
+```{r d2s_dendrogram_test}
+# plotting hierarchical clustering dendrogram
+hc <- hclust(as.dist(ma), "ave")
+plot(hc, cex = 0.4)
+```
+```{r}
+# plotting dbRDA 
+vars <- samples_noclones_ngsadmix %>%
+  dplyr::select(`Sample ID`, Region, Latitude, Longitude, `NGSAdmix K5 Species`) %>%
+  filter(`Sample ID` %in% kmer_samples) %>% 
+  arrange(`Sample ID`)
+
+pp0 <- capscale(ma ~ `NGSAdmix K5 Species`, data = vars)
+
+plot(pp0, scaling = 1)
+```
+```{r}
+mds_scores <- as.data.frame(scores(pp0, display="sites")) %>%
+  rownames_to_column("Sample ID") %>% 
+  left_join(samples, by = "Sample ID") %>% 
+  left_join(samples_k5_assignments, by = "Sample ID") %>% 
+  left_join(symbiont_categories, by = "Sample ID")
+```
+```{r}
+mds_plot_C <- mds_scores %>%
+  ggplot(aes(CAP1, CAP2)) +
+  geom_point(aes(fill = `NGSAdmix K5 Species`), shape = 21, size = 4, alpha = 0.65, show.legend = F) +
+  scale_fill_manual(values = ngsadmix_pop_colors, name = "NGSAdmix Species (K=5)") +
+  guides(fill = guide_legend(override.aes = list(size = 3, alpha = 1))) +
+  # coord_fixed(pcvar[2]/pcvar[1]) +
+  # xlab(paste0( "PC1 (", pcvar[1], "%)")) + 
+  # ylab(paste0( "PC2 (", pcvar[2], "%)")) +
+  theme(plot.title = element_text(size = 16, hjust = -0.2),
+        legend.background = element_rect(color = "lightgrey"),
+        # panel.grid = element_blank(),
+        axis.title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        legend.title = element_text(size = 10, margin = margin(b = 0.5, unit = "mm")),
+        legend.text = element_text(size = 8),
+        legend.position = c(0.15, 0.8),
+        # legend.position = c(0.151, 0.695),
+        legend.key.spacing.y = unit(-1.6, "mm"))
+
+print(mds_plot_C)
+```
+
+## d2ssect D-dominated kmer-based distance metrics
+```{r import_d2s}
+# reading D2s distance matrix based on kmers
+d2s <- read.table("./outputs/symD_distance.txt")
+kmer_samples <- d2s$V1 %>% gsub("_S.*_symD", "", .)
+# convert to distance matrix
+ma <- as.matrix(d2s[, -1])
+dimnames(ma) <- list(kmer_samples, kmer_samples)
+```
+```{r d2s_dendrogram_test}
+# plotting hierarchical clustering dendrogram
+hc <- hclust(as.dist(ma), "ave")
+plot(hc, cex = 0.4)
+```
+```{r}
+# plotting dbRDA 
+vars <- samples_noclones_ngsadmix %>%
+  dplyr::select(`Sample ID`, Region, Latitude, Longitude, `NGSAdmix K5 Species`) %>%
+  filter(`Sample ID` %in% kmer_samples) %>% 
+  arrange(`Sample ID`)
+
+pp0 <- capscale(ma ~ `NGSAdmix K5 Species`, data = vars)
+
+plot(pp0, scaling = 1)
+```
+```{r}
+mds_scores <- as.data.frame(scores(pp0, display="sites")) %>%
+  rownames_to_column("Sample ID") %>% 
+  left_join(samples, by = "Sample ID") %>% 
+  left_join(samples_k5_assignments, by = "Sample ID") %>% 
+  left_join(symbiont_categories, by = "Sample ID")
+```
+```{r}
+mds_plot_D <- mds_scores %>%
+  ggplot(aes(CAP1, CAP2)) +
+  geom_point(aes(fill = `NGSAdmix K5 Species`), shape = 21, size = 4, alpha = 0.65, show.legend = F) +
+  scale_fill_manual(values = ngsadmix_pop_colors, name = "NGSAdmix Species (K=5)") +
+  guides(fill = guide_legend(override.aes = list(size = 3, alpha = 1))) +
+  # coord_fixed(pcvar[2]/pcvar[1]) +
+  # xlab(paste0( "PC1 (", pcvar[1], "%)")) + 
+  # ylab(paste0( "PC2 (", pcvar[2], "%)")) +
+  theme(plot.title = element_text(size = 16, hjust = -0.2),
+        legend.background = element_rect(color = "lightgrey"),
+        # panel.grid = element_blank(),
+        axis.title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        legend.title = element_text(size = 10, margin = margin(b = 0.5, unit = "mm")),
+        legend.text = element_text(size = 8),
+        legend.position = c(0.15, 0.8),
+        # legend.position = c(0.151, 0.695),
+        legend.key.spacing.y = unit(-1.6, "mm"))
+
+print(mds_plot_D)
+```
+
+```{r}
+mds_plot_2 / (mds_plot_D + mds_plot_C)
+```
+
+## PCangsd approach
+## C-dominated samples (no-clones) PCA
+```{r pca}
+# *P. grandis* aligments of full analysis samples
+C <- as.matrix(read.table("./outputs/angsd/C-dominated_symC/C-dominated_symC.cov"))
+C <- as.matrix(read.table("./outputs/angsd/C-dominated_symC/C-dominated_symC_0.85.cov"))
+e <- eigen(C)
+```
+```{r pca_test_plot}
+plot(e$vectors[,1:2],xlab="PC1",ylab="PC2", main="individual allele frequency")
+#
+plot(e$vectors[,2:3],xlab="PC2",ylab="PC3", main="individual allele frequency")
+# 
+```
+```{r bamfile}
+# reading list of bam files = order of samples in IBS matrix
+bams <- read.table("./outputs/angsd/C-dominated_symC/C-dominated_symC_bamfile.txt",header=F)[,1]
+#
+bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/symbiont_alignments/", "", bams, perl=T)
+bam_ids <- sub("_symC.sorted.bam", "", bam_ids, perl=T)
+bam_ids <- sub("_S[[:digit:]]+$", "", bam_ids)
+#
+bam_ids
+```
+```{r select_samples}
+# aligning sample metadata with bams list, then check again
+samples_C <- samples[match(bam_ids, samples$`Sample ID`),] 
+# do all the sample ids match the bam file ids in the correct order?
+all(samples_C$`Sample ID` == bam_ids) # TRUE
+```
+```{r combine_pca_metadata}
+# combine pc coordinates with sample metadata
+pcs <- as.data.frame(e$vectors) %>% cbind(samples_C) %>% left_join(samples_k5_assignments, by = "Sample ID")
+# store variable with % variance explained by each PC
+pcvar <- round(e$values, 2)
+#
+```
+```{r screeplot}
+pcvardf <- data.frame("PC"=seq(1:length(pcvar)), pcvar)
+pcvardf %>% ggplot(aes(PC, pcvar)) + geom_col() #+ xlim(c(0,10))
+# only first 4 PCs have >5% variance explained
+```
+```{r}
+# pdf(file="./outputs/figures/pcangsd_symC_species.pdf", width = 5.5, height = 3.75)
+pca_C <- pcs %>% ggplot(aes(x = V1, y = V2)) +
+  # geom_point(aes(fill = `Region`), shape = 21, size = 3, alpha = 0.75, show.legend = T) +
+  geom_point(aes(fill = `NGSAdmix K5 Species`), shape = 21, size = 3, alpha = 0.75, show.legend = F) +
+  scale_fill_manual(values = ngsadmix_pop_colors) +
+  # facet_wrap(Region ~ .) +
+  # facet_wrap(mtorf_type ~ .) +
+  # coord_fixed(pcvar[2]/pcvar[1]) +
+  xlab(paste0( "PC1 (", pcvar[1], "%)")) + 
+  ylab(paste0( "PC2 (", pcvar[2], "%)")) +
+  ggtitle("Cladocopium-dominated samples") + 
+  theme(plot.title = element_text(size = 10, hjust = 0),
+        axis.title = element_text(size = 10),
+        axis.text = element_text(size = 8),
+        legend.title = element_text(size = 10),
+        legend.text = element_text(size = 8)) 
+
+print(pca_C)
+# dev.off()
+```
+
+## D-dominated samples (no-clones) PCA
+```{r pca}
+D <- as.matrix(read.table("./outputs/angsd/D-dominated_symD/D-dominated_symD.cov"))
+D <- as.matrix(read.table("./outputs/angsd/D-dominated_symD/D-dominated_symD_0.85.cov"))
+e <- eigen(D)
+```
+```{r pca_test_plot}
+plot(e$vectors[,1:2],xlab="PC1",ylab="PC2", main="individual allele frequency")
+#
+plot(e$vectors[,2:3],xlab="PC2",ylab="PC3", main="individual allele frequency")
+# 
+```
+```{r bamfile}
+# reading list of bam files = order of samples in IBS matrix
+bams <- read.table("./outputs/angsd/D-dominated_symD/D-dominated_symD_bamfile.txt",header=F)[,1]
+#
+bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/symbiont_alignments/", "", bams, perl=T)
+bam_ids <- sub("_symD.sorted.bam", "", bam_ids, perl=T)
+bam_ids <- sub("_S[[:digit:]]+$", "", bam_ids)
+#
+bam_ids
+```
+```{r select_samples}
+# aligning sample metadata with bams list, then check again
+samples_D <- samples[match(bam_ids, samples$`Sample ID`),] 
+# do all the sample ids match the bam file ids in the correct order?
+all(samples_D$`Sample ID` == bam_ids) # TRUE
+```
+```{r combine_pca_metadata}
+# combine pc coordinates with sample metadata
+pcs <- as.data.frame(e$vectors) %>% cbind(samples_D) %>% left_join(samples_k5_assignments, by = "Sample ID")
+# store variable with % variance explained by each PC
+pcvar <- round(e$values, 2)
+#
+```
+```{r screeplot}
+pcvardf <- data.frame("PC"=seq(1:length(pcvar)), pcvar)
+pcvardf %>% ggplot(aes(PC, pcvar)) + geom_col() #+ xlim(c(0,10))
+# only first 4 PCs have >5% variance explained
+```
+```{r}
+# pdf(file="./outputs/figures/sicb/pcangsd_species.pdf", width = 5.5, height = 3.75)
+pca_D <- pcs %>% ggplot(aes(x = V1, y = V2)) +
+  geom_point(aes(fill = `NGSAdmix K5 Species`), shape = 21, size = 3, alpha = 0.75, show.legend = F) +
+  scale_fill_manual(values = ngsadmix_pop_colors) +
+  # facet_grid(Region ~ .) +
+  # facet_wrap(mtorf_type ~ .) +
+  # coord_fixed(pcvar[2]/pcvar[1]) +
+  xlab(paste0( "PC1 (", pcvar[1], "%)")) +
+  ylab(paste0( "PC2 (", pcvar[2], "%)")) +
+  ggtitle("Durusdinium-dominated samples") + 
+  theme(plot.title = element_text(size = 10, hjust = 0),
+        axis.title = element_text(size = 10),
+        axis.text = element_text(size = 8),
+        legend.title = element_text(size = 10),
+        legend.text = element_text(size = 8)) 
+
+print(pca_D)
+# dev.off()
+```
+
+### Figure 4 C/D
+```{r}
+pdf("./outputs/figures/Fig#CD_pcangsd.pdf", width = 6.65, height = 2.78)
+(pca_C + pca_D)
+dev.off()
+```
+
+## Scatterpie plot on map 
+to examine geographic patterns of C/D/mixed
+```{r}
+# prepare coordinate data
+region_coords <- samples_cd_categories %>% group_by(Region) %>% summarise(Longitude=mean(Longitude), Latitude=mean(Latitude))
+```
+```{r region_abbreviations}
+regions_abbv <- c(
+"Clipperton" = "CLIP",
+"Galapagos Northern" = "GPN",
+"Galapagos Central" = "GPC",
+"Coco" = "COCO",
+"Bahia Culebra" = "BCU",
+"Golfo Dulce" = "GDU",
+"Chiriqui" = "CHIQ",
+"Panama" = "PAN",
+"Gorgona" = "GOR"
+)
+```
+
+```{r}
+samples_cd_categories %>%
+  group_by(`NGSAdmix K5 Species`, `Symbiont Community`) %>%
+  count() %>% 
+  pivot_wider(names_from = `NGSAdmix K5 Species`, values_from = n)
+```
+```{r prepare_scatterpie_data}
+# see example at: https://cran.r-project.org/web/packages/scatterpie/vignettes/scatterpie.html
+  
+regions_cd_categories <- samples_cd_categories %>% 
+  group_by(`Region`, `Symbiont Community`) %>% 
+  dplyr::count() %>% 
+  pivot_wider(names_from = `Symbiont Community`, values_from = n, values_fill = 0) %>% 
+  # dplyr::rename("Type 1" = Type_1, "Type 3" = Type_3) %>% 
+  mutate("radius" = (`C-dominated` + `D-dominated` + `Mixed`)/50) %>%
+  left_join(region_coords, by = "Region")
+
+regions_cd_categories$Region_Label <- unname(regions_abbv[regions_cd_categories$Region])
+```
+```{r}
+par(mar = c(0.5, 0.5, 0.5, 0.5))
+symMapTest <-
+  ggplot() +
+  geom_sf(data = ocean, color = "black", size = 0.1, fill = "aliceblue") +
+  geom_sf(data = rivers, color = "#d7f2fa", size = 0.5)+
+  geom_sf(data = states, color = "darkgrey", size = 0.1, fill = "antiquewhite", alpha = 0.5) +
+  geom_sf(data = map, color = "black", size = 0.1, fill = "antiquewhite", alpha = 0.5) +
+    coord_sf(
+    xlim = c(-112, -76),
+    ylim = c(-2, 12)) +
+  #
+  new_scale_fill() +
+  geom_scatterpie(aes(x = Longitude, y = Latitude, group = `Region`, r = 1),
+                    data = regions_cd_categories, cols = c("C-dominated", "D-dominated", "Mixed"), size = 5, alpha = .8) + 
+  # scale_fill_manual(values = ngsadmix_pop_colors, name = "NGSAdmix Species (K=5)") +
+  scale_fill_manual(values = symbiont_colors) +
+  #
+  geom_label_repel(aes(x = Longitude, y = Latitude, label = Region_Label), size = 2, box.padding = 0.65, min.segment.length = 2, seed = 3, data = regions_cd_categories) +
+  labs(x="Longitude", y="Latitude", elevation = "Elevation") +
+  scale_y_continuous(breaks = (seq(0,15,5))) +
+  theme(panel.grid.major = element_blank(),
+        panel.background = element_rect(fill = "#f0f8ff"),
+        panel.border = element_rect(fill = NA),
+        plot.title = element_blank(),
+        plot.subtitle = element_blank(),
+        axis.title = element_blank(), 
+        axis.text = element_text(size = 10),
+        # legend.position = "none")
+        legend.title = element_text(size = 10),
+        legend.text = element_text(size = 8),
+        legend.background = element_rect(color = "lightgrey"),
+        legend.position = c(0.14, 0.36))
+        # ) +
+  # ggtitle(expression(italic("Pocillopora")*' species distribution and genotype counts'), subtitle = "All non-admixed genotypes (N = 211)")
+# subtitle = "All East Pacific samples (N = 337)")
+symMapTest
+```
+
+```{r}
+# facet by spp.
+regions_spp_cd_categories <- samples_cd_categories %>% 
+  group_by(`Region`, `NGSAdmix K5 Species`, `Symbiont Community`) %>% 
+  dplyr::count() %>% 
+  pivot_wider(names_from = `Symbiont Community`, values_from = n, values_fill = 0) %>% 
+  # dplyr::rename("Type 1" = Type_1, "Type 3" = Type_3) %>% 
+  mutate("sum" = (`C-dominated` + `D-dominated` + `Mixed`),
+          "radius" = (`C-dominated` + `D-dominated` + `Mixed`)/20) %>%
+  left_join(region_coords, by = "Region")
+
+regions_spp_cd_categories$Region_Label <- unname(regions_abbv[regions_spp_cd_categories$Region])
+```
+```{r}
+
+
+par(mar = c(0.5, 0.5, 0.5, 0.5))
+spp_cd_map <- function(spp_cd_df, spp_title){
+  
+  elevMapTest <-
+  ggplot() +
+  geom_sf(data = ocean, color = "black", size = 0.1, fill = "aliceblue") +
+  geom_sf(data = rivers, color = "#d7f2fa", size = 0.5)+
+  geom_sf(data = states, color = "darkgrey", size = 0.1, fill = "antiquewhite", alpha = 0.5) +
+  geom_sf(data = map, color = "black", size = 0.1, fill = "antiquewhite", alpha = 0.5) +
+    coord_sf(
+    xlim = c(-112, -76),
+    ylim = c(-2, 12)) +
+  #
+  new_scale_fill() +
+  geom_scatterpie(aes(x = Longitude, y = Latitude, group = `Region`, r = 1),
+                    data = spp_cd_df, cols = c("C-dominated", "D-dominated", "Mixed"), size = 5, alpha = .8) +
+  scale_fill_manual(values = ngsadmix_pop_colors, name = "NGSAdmix Species (K=5)") +
+  scale_fill_manual(values = symbiont_colors) +
+
+  geom_label_repel(aes(x = Longitude, y = Latitude, label = Region_Label), size = 2, box.padding = 0.35, min.segment.length = 2, seed = 3, data = spp_cd_df) +
+  labs(x="Longitude", y="Latitude", elevation = "Elevation") +
+  scale_y_continuous(breaks = (seq(0,15,5))) +
+  ggtitle(spp_title) +
+  theme(panel.grid.major = element_blank(),
+        panel.background = element_rect(fill = "#f0f8ff"),
+        panel.border = element_rect(fill = NA),
+        # plot.title = element_text(size = 8, margin = margin(0,0,2,0, unit = "pt")),
+        plot.title = element_markdown(size = 8, margin = margin(0,0,2,0, unit = "pt")),
+        plot.subtitle = element_blank(),
+        axis.title = element_blank(), 
+        axis.text = element_text(size = 6),
+        # legend.position = "none")
+        legend.title = element_blank(),
+        legend.text = element_text(size = 6),
+        legend.background = element_rect(color = "lightgrey"),
+        legend.position = "right", #c(0.14, 0.36)
+        plot.margin = margin(2,0,0,0, unit = "mm"))
+  # expression(italic(spp), "geographic symbiont variation") 
+
+elevMapTest
+}
+```
+```{r}
+map_list <- list()
+for (i in seq(1:5)){
+  spp <- ngsadmix_spp[i] # need to cluster ID,  total n samples per plot, scale pie chart size?
+  print(spp)
+  spp_cd_df <- regions_spp_cd_categories %>% dplyr::filter(`NGSAdmix K5 Species` == spp)
+  spp_n <- sum(spp_cd_df$sum)
+  spp_title <- paste0("*", spp, "*", " (", ngsadmix_clusters[i], ", n = ", spp_n, ")")
+  map_list[[i]] <- spp_cd_map(spp_cd_df, spp_title) 
+}
+```
+```{r}
+spp_cd_maps <- wrap_plots(map_list, nrow = 5)
+```
+### Figure S16
+```{r}
+pdf("./outputs/figures/FigS16_spp_cd_maps.pdf", width = 6.5, height = 9)
+print(spp_cd_maps)
+dev.off()
+```
+
