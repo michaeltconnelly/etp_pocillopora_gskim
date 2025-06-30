@@ -1,0 +1,2414 @@
++ Thu Apr 10 16:40:09 EDT 2025 job iqtree_phyluce_partitions started in lThC.q with jobID=7223886 on compute-76-14
++ NSLOTS = 24
+IQ-TREE multicore version 2.3.1 COVID-edition for Linux 64-bit built Mar 25 2024
+Developed by Bui Quang Minh, James Barbetti, Nguyen Lam Tung,
+Olga Chernomor, Heiko Schmidt, Dominik Schrempf, Michael Woodhams, Ly Trong Nhan, Thomas Wong
+
+Host:    compute-76-14 (AVX512, FMA3, 1007 GB RAM)
+Command: iqtree2 -s /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/uce-taxon-sets/representative_5X_plus3b_phyluce_iqtree/representative_5X_plus3b_phyluce_iqtree-mafft-nexus-internal-trimmed-gblocks-clean-50p-raxml/representative_5X_plus3b_phyluce_iqtree-mafft-nexus-internal-trimmed-gblocks-clean-50p-raxml.phylip -p /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/uce-taxon-sets/representative_5X_plus3b_phyluce_iqtree/representative_5X_plus3b_phyluce_iqtree-mafft-nexus-internal-trimmed-gblocks-clean-50p-raxml/representative_5X_plus3b_phyluce_iqtree-mafft-nexus-internal-trimmed-gblocks-clean-50p-raxml.partitions --seqtype DNA -m MFP+MERGE -bb 1000 -alrt 1000 -nt 24 --prefix /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/iqtree/representative_5X_plus3b_phyluce_iqtree/iqtree_representative_5X_plus3b_phyluce_iqtree_50
+Seed:    782386 (Using SPRNG - Scalable Parallel Random Number Generator)
+Time:    Thu Apr 10 16:40:09 2025
+Kernel:  AVX+FMA - 24 threads (128 CPU cores detected)
+
+Reading partition model file /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/uce-taxon-sets/representative_5X_plus3b_phyluce_iqtree/representative_5X_plus3b_phyluce_iqtree-mafft-nexus-internal-trimmed-gblocks-clean-50p-raxml/representative_5X_plus3b_phyluce_iqtree-mafft-nexus-internal-trimmed-gblocks-clean-50p-raxml.partitions ...
+Reading alignment file /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/uce-taxon-sets/representative_5X_plus3b_phyluce_iqtree/representative_5X_plus3b_phyluce_iqtree-mafft-nexus-internal-trimmed-gblocks-clean-50p-raxml/representative_5X_plus3b_phyluce_iqtree-mafft-nexus-internal-trimmed-gblocks-clean-50p-raxml.phylip ... Phylip format detected
+Alignment most likely contains DNA/RNA sequences
+Alignment has 143 sequences with 710682 columns, 403559 distinct patterns
+192776 parsimony-informative, 135728 singleton sites, 382178 constant sites
+                                      Gap/Ambiguity  Composition  p-value
+Analyzing sequences: done in 0.0330275 secs using 2270% CPU
+   1  BahiaCulebra_14_S32_contigs            17.50%    passed     59.20%
+   2  Clip_02_S199_contigs                   28.60%    passed     37.03%
+   3  Clip_03_S200_contigs                   32.68%    passed     14.68%
+   4  Clip_15_S201_contigs                   32.43%    passed     21.11%
+   5  Clip_16_S155_contigs                   59.91%    failed      0.00%
+   6  Clip_19_S202_contigs                   33.60%    passed     34.27%
+   7  Clip_26_S204_contigs                   30.17%    passed      7.72%
+   8  Coco_611_AP3XF77_S91_contigs           35.24%    failed      0.00%
+   9  Coco_612_AP3XF78_S92_contigs           33.46%    failed      0.00%
+  10  Coco_613_AP3XF79_S93_contigs           26.39%    failed      0.91%
+  11  Coco_614_AP3XF80_S94_contigs           31.43%    failed      0.00%
+  12  Coco_616_AP3XF82_S96_contigs           46.91%    failed      0.00%
+  13  Coco_618_AP3XF84_S98_contigs           37.95%    failed      0.00%
+  14  Coco_647_AP3XF91_S146_contigs          46.49%    failed      0.00%
+  15  Coco_651_AP3XF95_S109_contigs          33.47%    failed      0.00%
+  16  Coco_653_AP3XF97_S111_contigs          30.93%    failed      0.21%
+  17  Coco_658_AP3XG02_S148_contigs          19.74%    passed     66.90%
+  18  Coco_665_AP3XG09_S170_contigs          24.37%    passed     45.51%
+  19  Darwin_1A_S85_contigs                  18.99%    passed     69.31%
+  20  Darwin_2A_S86_contigs                  20.66%    passed     66.14%
+  21  Darwin_3A_S87_contigs                  21.49%    passed     20.21%
+  22  Espanola_1A_S90_contigs                20.88%    passed     69.35%
+  23  Espanola_4A_S93_contigs                18.76%    failed      1.83%
+  24  Espanola_5A_S94_contigs                27.90%    passed      6.11%
+  25  GolfoDulce_21_S55_contigs              19.20%    passed     84.30%
+  26  Isabela_2E_S101_contigs                18.33%    passed     39.44%
+  27  Perlas_349_AP3XG40_S132_contigs        21.04%    passed     88.41%
+  28  Perlas_374_AP3XG65_S139_contigs        29.33%    passed     12.10%
+  29  Perlas_411_AP3XG78_S152_contigs        31.35%    passed     21.03%
+  30  SRR19052129_contigs                     8.51%    passed     84.79%
+  31  SRR19052131_contigs                    10.90%    passed     85.47%
+  32  SRR19052132_contigs                     7.41%    passed     72.84%
+  33  SRR19052139_contigs                    19.58%    passed     39.02%
+  34  SRR19052142_contigs                    13.90%    passed     56.70%
+  35  SRR19052143_contigs                    18.38%    passed     69.07%
+  36  SRR19052148_contigs                    22.44%    passed     76.91%
+  37  SRR19052149_contigs                    13.04%    passed     40.27%
+  38  SRR19052150_contigs                    14.54%    passed     55.38%
+  39  SRR19052151_contigs                    26.14%    passed      8.72%
+  40  SRR19052152_contigs                    15.76%    passed     78.07%
+  41  SRR19052157_contigs                     7.46%    passed     45.18%
+  42  SRR19052160_contigs                     8.27%    passed     17.92%
+  43  SRR19052170_contigs                    21.04%    passed     44.32%
+  44  SRR19052171_contigs                    48.25%    failed      1.01%
+  45  SRR19052177_contigs                     7.40%    passed     63.64%
+  46  SRR19052205_contigs                    42.17%    failed      0.23%
+  47  SRR19052206_contigs                    12.61%    passed     98.46%
+  48  SRR19052210_contigs                     7.82%    passed     94.55%
+  49  SRR19052214_contigs                     7.69%    passed     73.59%
+  50  SRR19052217_contigs                     6.16%    passed     73.14%
+  51  SRR19052219_contigs                     8.85%    passed     94.39%
+  52  SRR19052222_contigs                    12.15%    passed     60.28%
+  53  SRR19052223_contigs                     6.58%    passed     81.77%
+  54  SRR19052231_contigs                    14.23%    passed     51.03%
+  55  SRR19052232_contigs                    70.72%    passed     21.29%
+  56  SRR19052233_contigs                    12.79%    passed     66.89%
+  57  SRR19052238_contigs                    10.43%    passed     46.67%
+  58  SRR19052240_contigs                     8.79%    passed     38.93%
+  59  SRR19052246_contigs                     9.87%    passed     91.75%
+  60  SRR19052248_contigs                     8.39%    passed     40.85%
+  61  SRR19052249_contigs                     7.42%    passed     77.56%
+  62  SRR19052253_contigs                     6.52%    passed     66.59%
+  63  SRR19052258_contigs                     9.79%    passed     69.55%
+  64  SRR19052261_contigs                     8.09%    passed     92.17%
+  65  SRR19052263_contigs                    10.15%    passed     77.55%
+  66  SRR19052264_contigs                    12.48%    passed     84.16%
+  67  SRR19052266_contigs                    15.24%    passed     54.48%
+  68  SRR19052290_contigs                    12.50%    passed     83.73%
+  69  SRR19052291_contigs                    16.79%    passed     32.64%
+  70  SRR19052292_contigs                    12.47%    passed     67.08%
+  71  SRR19052294_contigs                     8.24%    passed     48.74%
+  72  SRR19052297_contigs                     8.94%    passed     90.41%
+  73  SRR19052301_contigs                     7.79%    passed     53.56%
+  74  SRR19052305_contigs                    30.42%    failed      0.00%
+  75  SRR19052306_contigs                    28.86%    failed      0.00%
+  76  SRR19052307_contigs                    23.91%    failed      0.00%
+  77  SRR19052309_contigs                    24.67%    failed      0.00%
+  78  SRR19052311_contigs                    10.18%    passed     82.87%
+  79  SRR19052318_contigs                     6.76%    passed     66.12%
+  80  SRR19052326_contigs                    14.01%    passed     87.36%
+  81  SRR19052332_contigs                     7.51%    passed     24.85%
+  82  SRR19052339_contigs                    10.66%    passed     75.45%
+  83  SRR19052341_contigs                    20.63%    passed     99.77%
+  84  SRR19052344_contigs                    13.88%    passed     94.78%
+  85  SRR19052346_contigs                    23.27%    passed     25.28%
+  86  SRR19052347_contigs                    22.58%    failed      1.05%
+  87  SRR19052349_contigs                    18.01%    passed     12.72%
+  88  SRR19052362_contigs                    16.12%    passed     90.29%
+  89  SRR19052364_contigs                     4.31%    passed     63.88%
+  90  SRR19052370_contigs                    13.55%    passed     31.78%
+  91  SRR19052373_contigs                     6.00%    passed     16.46%
+  92  SRR19052374_contigs                     7.59%    passed     58.46%
+  93  SRR19052375_contigs                     5.91%    passed     40.31%
+  94  SRR19052386_contigs                    10.09%    passed     37.43%
+  95  SRR19052388_contigs                    14.15%    passed     62.95%
+  96  SRR19052390_contigs                     6.30%    passed     80.15%
+  97  SRR19052399_contigs                     7.08%    passed     58.69%
+  98  SRR19052400_contigs                     7.15%    passed     72.08%
+  99  SRR19052401_contigs                    17.43%    passed     73.61%
+ 100  SRR19052409_contigs                    19.10%    passed     87.32%
+ 101  SRR19052410_contigs                     8.47%    passed     69.67%
+ 102  SRR19052413_contigs                    11.29%    passed     80.72%
+ 103  SRR19052419_contigs                    11.50%    passed     34.74%
+ 104  SRR19052423_contigs                    20.58%    passed     30.13%
+ 105  SRR19052424_contigs                     6.30%    passed     75.97%
+ 106  SRR19052427_contigs                     6.51%    passed     88.93%
+ 107  SRR19052429_contigs                    10.90%    passed     59.12%
+ 108  SRR19052438_contigs                    10.04%    passed     31.35%
+ 109  SRR19052439_contigs                    11.45%    passed     56.10%
+ 110  SRR19052441_contigs                     9.91%    passed     84.72%
+ 111  SRR19052442_contigs                    10.05%    passed     84.14%
+ 112  SRR19052448_contigs                     5.43%    passed     78.03%
+ 113  SRR19052451_contigs                     7.32%    passed     17.77%
+ 114  SRR19052455_contigs                     8.75%    passed     91.06%
+ 115  SRR19052468_contigs                    15.08%    passed     19.88%
+ 116  SRR19052469_contigs                    14.04%    passed     64.12%
+ 117  SRR19052472_contigs                     6.53%    passed     95.25%
+ 118  SRR19052476_contigs                    15.14%    passed     45.09%
+ 119  SRR19052478_contigs                    12.29%    passed     88.95%
+ 120  SRR19052484_contigs                    12.03%    passed     32.88%
+ 121  SRR19052486_contigs                     9.89%    passed     68.48%
+ 122  SRR19052487_contigs                    12.65%    passed     32.70%
+ 123  SRR19052488_contigs                    14.58%    passed     98.71%
+ 124  SRR19052489_contigs                     8.50%    passed     88.56%
+ 125  SRR19052490_contigs                    10.86%    passed     89.37%
+ 126  SRR19052496_contigs                    13.01%    passed     65.44%
+ 127  SRR19052499_contigs                     7.60%    passed     87.37%
+ 128  SRR19052500_contigs                    12.45%    passed     87.60%
+ 129  SantaCruz_1A_S105_contigs              24.32%    passed      8.39%
+ 130  SRR19052226_contigs                    11.70%    passed     85.68%
+ 131  SRR19052350_contigs                    18.52%    passed     98.23%
+ 132  SRR19052360_contigs                    14.28%    passed     53.05%
+ 133  SRR19052493_contigs                    11.88%    passed     46.86%
+ 134  Stylophora_pistillata_ANT17_contigs    64.59%    failed      0.00%
+ 135  Coco_615_AP3XF81_S95_contigs           47.63%    failed      0.00%
+ 136  pocillopora_acuta_SAMN22898959         80.72%    passed     48.91%
+ 137  pocillopora_damicornis_GCF_003704095   80.93%    passed     46.38%
+ 138  pocillopora_effusa_GCA_942486045       80.62%    passed     23.62%
+ 139  pocillopora_grandis_GCA_964027065      80.31%    passed     11.85%
+ 140  pocillopora_meandrina_SAMN21845732     80.84%    passed     29.96%
+ 141  pocillopora_verrucosa_GCA_014529365    81.35%    passed     26.31%
+ 142  pocillopora_verrucosa_GCF_030620025    80.98%    passed     16.07%
+ 143  pocillopora_verrucosa_GCA_036669915    81.64%    passed     27.55%
+WARNING: 11 sequences contain more than 50% gaps/ambiguity
+****  TOTAL                                  21.13%  20 sequences failed composition chi2 test (p-value<5%; df=3)
+
+Partition file is not in NEXUS format, assuming RAxML-style partition file...
+Subset	Type	Seqs	Sites	Infor	Invar	Model	Name
+1	DNA	129	393	104	228	GTR+MERGE	uce-111008.nexus
+2	DNA	133	460	94	336	GTR+MERGE	uce-111031.nexus
+3	DNA	125	315	110	140	GTR+MERGE	uce-111033.nexus
+4	DNA	126	494	120	269	GTR+MERGE	uce-111037.nexus
+5	DNA	130	435	134	222	GTR+MERGE	uce-111040.nexus
+6	DNA	105	555	173	300	GTR+MERGE	uce-111044.nexus
+7	DNA	121	548	174	218	GTR+MERGE	uce-111048.nexus
+8	DNA	132	485	97	257	GTR+MERGE	uce-111060.nexus
+9	DNA	117	501	121	309	GTR+MERGE	uce-111070.nexus
+10	DNA	112	559	111	376	GTR+MERGE	uce-111074.nexus
+11	DNA	95	224	44	167	GTR+MERGE	uce-111077.nexus
+12	DNA	125	521	182	266	GTR+MERGE	uce-111079.nexus
+13	DNA	75	451	132	265	GTR+MERGE	uce-111089.nexus
+14	DNA	125	542	156	259	GTR+MERGE	uce-111094.nexus
+15	DNA	123	549	131	286	GTR+MERGE	uce-111105.nexus
+16	DNA	132	506	122	287	GTR+MERGE	uce-111109.nexus
+17	DNA	128	504	246	220	GTR+MERGE	uce-11112.nexus
+18	DNA	125	501	171	269	GTR+MERGE	uce-11113.nexus
+19	DNA	128	435	130	212	GTR+MERGE	uce-111130.nexus
+20	DNA	128	375	150	189	GTR+MERGE	uce-111138.nexus
+21	DNA	134	559	190	251	GTR+MERGE	uce-11114.nexus
+22	DNA	129	469	159	197	GTR+MERGE	uce-111140.nexus
+23	DNA	125	396	84	183	GTR+MERGE	uce-111151.nexus
+24	DNA	103	570	144	211	GTR+MERGE	uce-111163.nexus
+25	DNA	121	519	160	288	GTR+MERGE	uce-111164.nexus
+26	DNA	127	442	194	102	GTR+MERGE	uce-111171.nexus
+27	DNA	84	410	82	308	GTR+MERGE	uce-111179.nexus
+28	DNA	85	489	64	395	GTR+MERGE	uce-111180.nexus
+29	DNA	129	349	93	107	GTR+MERGE	uce-111188.nexus
+30	DNA	125	513	103	223	GTR+MERGE	uce-111193.nexus
+31	DNA	123	561	183	287	GTR+MERGE	uce-111194.nexus
+32	DNA	132	458	157	195	GTR+MERGE	uce-111199.nexus
+33	DNA	114	412	155	170	GTR+MERGE	uce-111204.nexus
+34	DNA	125	509	56	366	GTR+MERGE	uce-11121.nexus
+35	DNA	106	506	162	321	GTR+MERGE	uce-111214.nexus
+36	DNA	127	312	31	200	GTR+MERGE	uce-11122.nexus
+37	DNA	131	490	154	179	GTR+MERGE	uce-111220.nexus
+38	DNA	120	564	220	249	GTR+MERGE	uce-111226.nexus
+39	DNA	75	465	101	257	GTR+MERGE	uce-111228.nexus
+40	DNA	78	421	79	234	GTR+MERGE	uce-111229.nexus
+41	DNA	124	485	67	277	GTR+MERGE	uce-111258.nexus
+42	DNA	125	358	60	222	GTR+MERGE	uce-111264.nexus
+43	DNA	127	598	102	427	GTR+MERGE	uce-111265.nexus
+44	DNA	123	581	96	392	GTR+MERGE	uce-111281.nexus
+45	DNA	124	504	97	295	GTR+MERGE	uce-111282.nexus
+46	DNA	120	455	156	224	GTR+MERGE	uce-111294.nexus
+47	DNA	131	524	109	320	GTR+MERGE	uce-111297.nexus
+48	DNA	134	567	130	285	GTR+MERGE	uce-11132.nexus
+49	DNA	127	430	70	265	GTR+MERGE	uce-111341.nexus
+50	DNA	120	497	170	234	GTR+MERGE	uce-111346.nexus
+51	DNA	100	213	38	137	GTR+MERGE	uce-111352.nexus
+52	DNA	110	513	183	214	GTR+MERGE	uce-111353.nexus
+53	DNA	122	439	172	194	GTR+MERGE	uce-111358.nexus
+54	DNA	126	475	81	298	GTR+MERGE	uce-111359.nexus
+55	DNA	130	416	113	264	GTR+MERGE	uce-11136.nexus
+56	DNA	127	462	190	199	GTR+MERGE	uce-111363.nexus
+57	DNA	126	350	87	207	GTR+MERGE	uce-111368.nexus
+58	DNA	116	569	172	222	GTR+MERGE	uce-111384.nexus
+59	DNA	126	352	56	287	GTR+MERGE	uce-111387.nexus
+60	DNA	125	450	142	224	GTR+MERGE	uce-111403.nexus
+61	DNA	131	498	158	207	GTR+MERGE	uce-11141.nexus
+62	DNA	126	478	127	272	GTR+MERGE	uce-111413.nexus
+63	DNA	116	612	84	319	GTR+MERGE	uce-111417.nexus
+64	DNA	130	505	149	273	GTR+MERGE	uce-11143.nexus
+65	DNA	119	503	138	283	GTR+MERGE	uce-111432.nexus
+66	DNA	111	426	114	243	GTR+MERGE	uce-111452.nexus
+67	DNA	121	363	104	194	GTR+MERGE	uce-111500.nexus
+68	DNA	96	539	179	305	GTR+MERGE	uce-111501.nexus
+69	DNA	97	529	230	214	GTR+MERGE	uce-111503.nexus
+70	DNA	115	538	178	244	GTR+MERGE	uce-111509.nexus
+71	DNA	113	265	4	242	GTR+MERGE	uce-111512.nexus
+72	DNA	117	606	177	271	GTR+MERGE	uce-111524.nexus
+73	DNA	110	498	136	188	GTR+MERGE	uce-111527.nexus
+74	DNA	105	605	186	309	GTR+MERGE	uce-111528.nexus
+75	DNA	118	526	39	399	GTR+MERGE	uce-111532.nexus
+76	DNA	114	490	90	290	GTR+MERGE	uce-111534.nexus
+77	DNA	111	589	151	256	GTR+MERGE	uce-111537.nexus
+78	DNA	137	650	103	399	GTR+MERGE	uce-111539.nexus
+79	DNA	125	398	33	350	GTR+MERGE	uce-111542.nexus
+80	DNA	109	521	148	209	GTR+MERGE	uce-11155.nexus
+81	DNA	130	537	95	325	GTR+MERGE	uce-111550.nexus
+82	DNA	94	420	139	217	GTR+MERGE	uce-111553.nexus
+83	DNA	128	488	196	178	GTR+MERGE	uce-111565.nexus
+84	DNA	78	357	52	190	GTR+MERGE	uce-111569.nexus
+85	DNA	116	407	134	196	GTR+MERGE	uce-111575.nexus
+86	DNA	112	495	132	232	GTR+MERGE	uce-11159.nexus
+87	DNA	116	508	120	281	GTR+MERGE	uce-111590.nexus
+88	DNA	122	575	76	292	GTR+MERGE	uce-111596.nexus
+89	DNA	117	574	106	335	GTR+MERGE	uce-111598.nexus
+90	DNA	113	332	80	210	GTR+MERGE	uce-11160.nexus
+91	DNA	132	403	47	306	GTR+MERGE	uce-111623.nexus
+92	DNA	108	419	27	305	GTR+MERGE	uce-11163.nexus
+93	DNA	129	432	94	272	GTR+MERGE	uce-111630.nexus
+94	DNA	79	225	37	167	GTR+MERGE	uce-111633.nexus
+95	DNA	127	451	96	315	GTR+MERGE	uce-111644.nexus
+96	DNA	110	520	142	300	GTR+MERGE	uce-111645.nexus
+97	DNA	131	392	46	299	GTR+MERGE	uce-111647.nexus
+98	DNA	119	648	170	319	GTR+MERGE	uce-111692.nexus
+99	DNA	128	423	157	183	GTR+MERGE	uce-111694.nexus
+100	DNA	123	536	120	264	GTR+MERGE	uce-111697.nexus
+101	DNA	129	347	79	236	GTR+MERGE	uce-1117.nexus
+102	DNA	115	591	120	363	GTR+MERGE	uce-111707.nexus
+103	DNA	129	529	120	356	GTR+MERGE	uce-111709.nexus
+104	DNA	120	554	127	333	GTR+MERGE	uce-111715.nexus
+105	DNA	123	351	114	168	GTR+MERGE	uce-111723.nexus
+106	DNA	127	481	101	239	GTR+MERGE	uce-111726.nexus
+107	DNA	114	366	45	243	GTR+MERGE	uce-11173.nexus
+108	DNA	121	449	46	380	GTR+MERGE	uce-111730.nexus
+109	DNA	127	359	52	255	GTR+MERGE	uce-111733.nexus
+110	DNA	123	480	39	346	GTR+MERGE	uce-111744.nexus
+111	DNA	131	500	122	267	GTR+MERGE	uce-111754.nexus
+112	DNA	117	390	105	227	GTR+MERGE	uce-111757.nexus
+113	DNA	127	529	129	272	GTR+MERGE	uce-111762.nexus
+114	DNA	127	487	143	251	GTR+MERGE	uce-11177.nexus
+115	DNA	128	608	167	320	GTR+MERGE	uce-111770.nexus
+116	DNA	126	896	112	677	GTR+MERGE	uce-111774.nexus
+117	DNA	129	487	51	378	GTR+MERGE	uce-111784.nexus
+118	DNA	124	507	210	230	GTR+MERGE	uce-111790.nexus
+119	DNA	129	444	150	186	GTR+MERGE	uce-111801.nexus
+120	DNA	83	620	80	453	GTR+MERGE	uce-111811.nexus
+121	DNA	122	546	182	243	GTR+MERGE	uce-111831.nexus
+122	DNA	134	436	138	237	GTR+MERGE	uce-111837.nexus
+123	DNA	123	368	132	136	GTR+MERGE	uce-111863.nexus
+124	DNA	119	501	200	192	GTR+MERGE	uce-111868.nexus
+125	DNA	119	603	144	378	GTR+MERGE	uce-11187.nexus
+126	DNA	125	472	99	300	GTR+MERGE	uce-111870.nexus
+127	DNA	99	463	202	210	GTR+MERGE	uce-111876.nexus
+128	DNA	125	473	151	251	GTR+MERGE	uce-111885.nexus
+129	DNA	115	478	135	206	GTR+MERGE	uce-111888.nexus
+130	DNA	112	482	195	186	GTR+MERGE	uce-111900.nexus
+131	DNA	114	436	132	259	GTR+MERGE	uce-111902.nexus
+132	DNA	126	516	192	191	GTR+MERGE	uce-111908.nexus
+133	DNA	125	426	97	261	GTR+MERGE	uce-111934.nexus
+134	DNA	111	575	203	289	GTR+MERGE	uce-111937.nexus
+135	DNA	129	477	99	284	GTR+MERGE	uce-111951.nexus
+136	DNA	128	536	155	249	GTR+MERGE	uce-111955.nexus
+137	DNA	129	556	79	345	GTR+MERGE	uce-111959.nexus
+138	DNA	125	622	104	398	GTR+MERGE	uce-111969.nexus
+139	DNA	117	564	204	227	GTR+MERGE	uce-111976.nexus
+140	DNA	114	514	157	242	GTR+MERGE	uce-111978.nexus
+141	DNA	112	334	32	232	GTR+MERGE	uce-111991.nexus
+142	DNA	123	441	41	308	GTR+MERGE	uce-1120.nexus
+143	DNA	118	428	158	218	GTR+MERGE	uce-112005.nexus
+144	DNA	129	552	103	310	GTR+MERGE	uce-112009.nexus
+145	DNA	129	571	50	371	GTR+MERGE	uce-112015.nexus
+146	DNA	121	451	183	191	GTR+MERGE	uce-11202.nexus
+147	DNA	99	512	195	247	GTR+MERGE	uce-112029.nexus
+148	DNA	98	476	122	299	GTR+MERGE	uce-112030.nexus
+149	DNA	112	497	185	256	GTR+MERGE	uce-112034.nexus
+150	DNA	114	558	221	160	GTR+MERGE	uce-112043.nexus
+151	DNA	117	475	163	242	GTR+MERGE	uce-112055.nexus
+152	DNA	126	525	122	255	GTR+MERGE	uce-112062.nexus
+153	DNA	124	371	88	226	GTR+MERGE	uce-112065.nexus
+154	DNA	118	508	234	178	GTR+MERGE	uce-112067.nexus
+155	DNA	114	515	144	285	GTR+MERGE	uce-112068.nexus
+156	DNA	106	491	219	203	GTR+MERGE	uce-11207.nexus
+157	DNA	104	519	200	235	GTR+MERGE	uce-112073.nexus
+158	DNA	109	481	151	200	GTR+MERGE	uce-112076.nexus
+159	DNA	96	354	145	133	GTR+MERGE	uce-112078.nexus
+160	DNA	103	285	39	208	GTR+MERGE	uce-112083.nexus
+161	DNA	120	425	117	162	GTR+MERGE	uce-112085.nexus
+162	DNA	129	587	121	378	GTR+MERGE	uce-1121.nexus
+163	DNA	97	221	18	177	GTR+MERGE	uce-112122.nexus
+164	DNA	125	333	89	221	GTR+MERGE	uce-112125.nexus
+165	DNA	125	494	210	174	GTR+MERGE	uce-112129.nexus
+166	DNA	87	623	227	341	GTR+MERGE	uce-11213.nexus
+167	DNA	120	278	61	179	GTR+MERGE	uce-112157.nexus
+168	DNA	121	573	66	393	GTR+MERGE	uce-112159.nexus
+169	DNA	125	550	129	266	GTR+MERGE	uce-112161.nexus
+170	DNA	131	594	146	257	GTR+MERGE	uce-112165.nexus
+171	DNA	109	468	171	233	GTR+MERGE	uce-112176.nexus
+172	DNA	105	467	132	216	GTR+MERGE	uce-112180.nexus
+173	DNA	116	428	112	269	GTR+MERGE	uce-112181.nexus
+174	DNA	107	452	149	221	GTR+MERGE	uce-112184.nexus
+175	DNA	120	481	108	285	GTR+MERGE	uce-112186.nexus
+176	DNA	117	499	121	281	GTR+MERGE	uce-112192.nexus
+177	DNA	98	245	44	141	GTR+MERGE	uce-112199.nexus
+178	DNA	129	441	57	252	GTR+MERGE	uce-112202.nexus
+179	DNA	123	543	159	284	GTR+MERGE	uce-112213.nexus
+180	DNA	101	277	60	161	GTR+MERGE	uce-112225.nexus
+181	DNA	121	543	158	286	GTR+MERGE	uce-11223.nexus
+182	DNA	126	492	66	273	GTR+MERGE	uce-112235.nexus
+183	DNA	112	582	63	426	GTR+MERGE	uce-112240.nexus
+184	DNA	113	539	78	341	GTR+MERGE	uce-112242.nexus
+185	DNA	125	514	116	271	GTR+MERGE	uce-112251.nexus
+186	DNA	112	460	155	182	GTR+MERGE	uce-112259.nexus
+187	DNA	124	479	185	212	GTR+MERGE	uce-112263.nexus
+188	DNA	123	456	170	237	GTR+MERGE	uce-112277.nexus
+189	DNA	125	590	127	361	GTR+MERGE	uce-1123.nexus
+190	DNA	127	607	190	297	GTR+MERGE	uce-112308.nexus
+191	DNA	115	472	147	201	GTR+MERGE	uce-112317.nexus
+192	DNA	104	499	189	234	GTR+MERGE	uce-112318.nexus
+193	DNA	122	316	50	246	GTR+MERGE	uce-11232.nexus
+194	DNA	133	491	138	197	GTR+MERGE	uce-112322.nexus
+195	DNA	121	502	154	220	GTR+MERGE	uce-112327.nexus
+196	DNA	127	419	57	311	GTR+MERGE	uce-11234.nexus
+197	DNA	124	648	223	359	GTR+MERGE	uce-112344.nexus
+198	DNA	121	489	119	306	GTR+MERGE	uce-112348.nexus
+199	DNA	126	549	236	224	GTR+MERGE	uce-112351.nexus
+200	DNA	139	524	146	253	GTR+MERGE	uce-112363.nexus
+201	DNA	107	391	99	267	GTR+MERGE	uce-112374.nexus
+202	DNA	94	526	156	306	GTR+MERGE	uce-112375.nexus
+203	DNA	95	361	93	229	GTR+MERGE	uce-112376.nexus
+204	DNA	127	372	42	236	GTR+MERGE	uce-11240.nexus
+205	DNA	110	236	37	138	GTR+MERGE	uce-112433.nexus
+206	DNA	127	578	183	258	GTR+MERGE	uce-112459.nexus
+207	DNA	112	652	199	302	GTR+MERGE	uce-112467.nexus
+208	DNA	113	576	79	328	GTR+MERGE	uce-112469.nexus
+209	DNA	123	269	22	231	GTR+MERGE	uce-112483.nexus
+210	DNA	115	568	112	393	GTR+MERGE	uce-112495.nexus
+211	DNA	85	494	50	336	GTR+MERGE	uce-1125.nexus
+212	DNA	97	438	131	217	GTR+MERGE	uce-112513.nexus
+213	DNA	126	267	58	174	GTR+MERGE	uce-112514.nexus
+214	DNA	129	475	82	326	GTR+MERGE	uce-112515.nexus
+215	DNA	123	519	106	381	GTR+MERGE	uce-112516.nexus
+216	DNA	125	367	134	112	GTR+MERGE	uce-112525.nexus
+217	DNA	121	569	67	416	GTR+MERGE	uce-112527.nexus
+218	DNA	117	480	129	216	GTR+MERGE	uce-112531.nexus
+219	DNA	116	517	117	317	GTR+MERGE	uce-112532.nexus
+220	DNA	125	421	93	217	GTR+MERGE	uce-112534.nexus
+221	DNA	103	507	142	278	GTR+MERGE	uce-112538.nexus
+222	DNA	110	553	144	302	GTR+MERGE	uce-112541.nexus
+223	DNA	124	555	136	315	GTR+MERGE	uce-112548.nexus
+224	DNA	125	402	117	209	GTR+MERGE	uce-112550.nexus
+225	DNA	129	447	150	227	GTR+MERGE	uce-112552.nexus
+226	DNA	134	344	35	238	GTR+MERGE	uce-112555.nexus
+227	DNA	117	501	196	180	GTR+MERGE	uce-112556.nexus
+228	DNA	74	238	8	207	GTR+MERGE	uce-112567.nexus
+229	DNA	127	597	174	298	GTR+MERGE	uce-112569.nexus
+230	DNA	131	464	87	282	GTR+MERGE	uce-112581.nexus
+231	DNA	113	505	150	269	GTR+MERGE	uce-112582.nexus
+232	DNA	122	536	206	284	GTR+MERGE	uce-112586.nexus
+233	DNA	116	442	64	212	GTR+MERGE	uce-112587.nexus
+234	DNA	130	557	126	364	GTR+MERGE	uce-112590.nexus
+235	DNA	133	585	81	309	GTR+MERGE	uce-112601.nexus
+236	DNA	128	587	117	275	GTR+MERGE	uce-112605.nexus
+237	DNA	128	393	113	229	GTR+MERGE	uce-11262.nexus
+238	DNA	100	315	59	221	GTR+MERGE	uce-11263.nexus
+239	DNA	126	472	205	182	GTR+MERGE	uce-112633.nexus
+240	DNA	123	498	196	207	GTR+MERGE	uce-112638.nexus
+241	DNA	128	548	167	284	GTR+MERGE	uce-112650.nexus
+242	DNA	122	482	89	313	GTR+MERGE	uce-112654.nexus
+243	DNA	118	468	180	191	GTR+MERGE	uce-112666.nexus
+244	DNA	127	324	26	224	GTR+MERGE	uce-112672.nexus
+245	DNA	140	544	34	459	GTR+MERGE	uce-112674.nexus
+246	DNA	127	428	39	289	GTR+MERGE	uce-112681.nexus
+247	DNA	104	526	231	219	GTR+MERGE	uce-112683.nexus
+248	DNA	130	584	117	391	GTR+MERGE	uce-112689.nexus
+249	DNA	126	527	125	281	GTR+MERGE	uce-112690.nexus
+250	DNA	125	466	117	316	GTR+MERGE	uce-112691.nexus
+251	DNA	121	469	81	336	GTR+MERGE	uce-112692.nexus
+252	DNA	110	505	72	229	GTR+MERGE	uce-112695.nexus
+253	DNA	109	473	120	239	GTR+MERGE	uce-112696.nexus
+254	DNA	125	553	103	319	GTR+MERGE	uce-11270.nexus
+255	DNA	116	484	229	169	GTR+MERGE	uce-112710.nexus
+256	DNA	72	196	8	159	GTR+MERGE	uce-112711.nexus
+257	DNA	99	426	184	189	GTR+MERGE	uce-112714.nexus
+258	DNA	106	410	53	245	GTR+MERGE	uce-112716.nexus
+259	DNA	116	500	161	261	GTR+MERGE	uce-112718.nexus
+260	DNA	118	425	166	226	GTR+MERGE	uce-11272.nexus
+261	DNA	117	529	126	315	GTR+MERGE	uce-112720.nexus
+262	DNA	118	519	178	320	GTR+MERGE	uce-112721.nexus
+263	DNA	126	519	107	205	GTR+MERGE	uce-112724.nexus
+264	DNA	124	548	199	272	GTR+MERGE	uce-112726.nexus
+265	DNA	114	451	131	266	GTR+MERGE	uce-11273.nexus
+266	DNA	117	552	175	270	GTR+MERGE	uce-112730.nexus
+267	DNA	126	645	271	206	GTR+MERGE	uce-112739.nexus
+268	DNA	132	543	138	264	GTR+MERGE	uce-112741.nexus
+269	DNA	121	511	181	232	GTR+MERGE	uce-112746.nexus
+270	DNA	116	491	245	172	GTR+MERGE	uce-112767.nexus
+271	DNA	103	439	164	219	GTR+MERGE	uce-112769.nexus
+272	DNA	119	457	92	294	GTR+MERGE	uce-112774.nexus
+273	DNA	116	580	87	366	GTR+MERGE	uce-112783.nexus
+274	DNA	112	545	87	373	GTR+MERGE	uce-112784.nexus
+275	DNA	116	338	151	153	GTR+MERGE	uce-112785.nexus
+276	DNA	99	292	83	190	GTR+MERGE	uce-11279.nexus
+277	DNA	128	510	136	299	GTR+MERGE	uce-1128.nexus
+278	DNA	128	349	84	201	GTR+MERGE	uce-112801.nexus
+279	DNA	115	498	88	293	GTR+MERGE	uce-112820.nexus
+280	DNA	130	506	147	234	GTR+MERGE	uce-112834.nexus
+281	DNA	128	532	109	303	GTR+MERGE	uce-112843.nexus
+282	DNA	127	405	113	226	GTR+MERGE	uce-112846.nexus
+283	DNA	116	584	106	329	GTR+MERGE	uce-11285.nexus
+284	DNA	116	512	97	330	GTR+MERGE	uce-112857.nexus
+285	DNA	118	391	124	130	GTR+MERGE	uce-112859.nexus
+286	DNA	130	469	177	206	GTR+MERGE	uce-112867.nexus
+287	DNA	119	610	236	303	GTR+MERGE	uce-112874.nexus
+288	DNA	126	479	157	216	GTR+MERGE	uce-112877.nexus
+289	DNA	125	305	34	210	GTR+MERGE	uce-11288.nexus
+290	DNA	120	417	145	203	GTR+MERGE	uce-112886.nexus
+291	DNA	130	548	93	319	GTR+MERGE	uce-112892.nexus
+292	DNA	126	489	142	267	GTR+MERGE	uce-11290.nexus
+293	DNA	121	324	116	130	GTR+MERGE	uce-112905.nexus
+294	DNA	123	508	122	319	GTR+MERGE	uce-112909.nexus
+295	DNA	119	509	158	232	GTR+MERGE	uce-112924.nexus
+296	DNA	129	464	146	189	GTR+MERGE	uce-112926.nexus
+297	DNA	121	528	189	242	GTR+MERGE	uce-112927.nexus
+298	DNA	129	375	113	121	GTR+MERGE	uce-112931.nexus
+299	DNA	113	508	205	212	GTR+MERGE	uce-112941.nexus
+300	DNA	127	461	96	294	GTR+MERGE	uce-112944.nexus
+301	DNA	118	540	180	298	GTR+MERGE	uce-112945.nexus
+302	DNA	102	554	146	253	GTR+MERGE	uce-112947.nexus
+303	DNA	122	451	115	261	GTR+MERGE	uce-112955.nexus
+304	DNA	121	526	117	263	GTR+MERGE	uce-112958.nexus
+305	DNA	116	566	167	271	GTR+MERGE	uce-112981.nexus
+306	DNA	114	494	142	220	GTR+MERGE	uce-112983.nexus
+307	DNA	106	506	82	351	GTR+MERGE	uce-112985.nexus
+308	DNA	128	499	44	405	GTR+MERGE	uce-112986.nexus
+309	DNA	116	501	170	219	GTR+MERGE	uce-112989.nexus
+310	DNA	107	494	134	288	GTR+MERGE	uce-11299.nexus
+311	DNA	116	464	205	182	GTR+MERGE	uce-112990.nexus
+312	DNA	117	541	61	341	GTR+MERGE	uce-112998.nexus
+313	DNA	104	349	83	248	GTR+MERGE	uce-11300.nexus
+314	DNA	130	381	33	245	GTR+MERGE	uce-113002.nexus
+315	DNA	118	505	106	254	GTR+MERGE	uce-113011.nexus
+316	DNA	105	497	169	225	GTR+MERGE	uce-113018.nexus
+317	DNA	130	559	118	375	GTR+MERGE	uce-113021.nexus
+318	DNA	87	194	36	147	GTR+MERGE	uce-113031.nexus
+319	DNA	112	482	101	281	GTR+MERGE	uce-113035.nexus
+320	DNA	112	476	159	225	GTR+MERGE	uce-113036.nexus
+321	DNA	92	213	29	155	GTR+MERGE	uce-113054.nexus
+322	DNA	127	355	89	196	GTR+MERGE	uce-113063.nexus
+323	DNA	119	438	178	201	GTR+MERGE	uce-113064.nexus
+324	DNA	131	482	63	309	GTR+MERGE	uce-113069.nexus
+325	DNA	112	582	184	350	GTR+MERGE	uce-113078.nexus
+326	DNA	127	397	116	251	GTR+MERGE	uce-113083.nexus
+327	DNA	124	481	114	309	GTR+MERGE	uce-113088.nexus
+328	DNA	90	553	206	302	GTR+MERGE	uce-113089.nexus
+329	DNA	112	406	99	175	GTR+MERGE	uce-11309.nexus
+330	DNA	131	401	79	273	GTR+MERGE	uce-113097.nexus
+331	DNA	128	572	120	349	GTR+MERGE	uce-113104.nexus
+332	DNA	130	514	161	251	GTR+MERGE	uce-113115.nexus
+333	DNA	131	525	142	337	GTR+MERGE	uce-113120.nexus
+334	DNA	81	207	33	142	GTR+MERGE	uce-113128.nexus
+335	DNA	129	556	216	261	GTR+MERGE	uce-11313.nexus
+336	DNA	128	550	107	358	GTR+MERGE	uce-113130.nexus
+337	DNA	120	558	127	314	GTR+MERGE	uce-113131.nexus
+338	DNA	116	442	239	176	GTR+MERGE	uce-113132.nexus
+339	DNA	120	520	153	314	GTR+MERGE	uce-113138.nexus
+340	DNA	129	492	94	351	GTR+MERGE	uce-113139.nexus
+341	DNA	119	455	162	136	GTR+MERGE	uce-113143.nexus
+342	DNA	127	355	53	291	GTR+MERGE	uce-113149.nexus
+343	DNA	72	215	22	187	GTR+MERGE	uce-113150.nexus
+344	DNA	125	529	213	204	GTR+MERGE	uce-113153.nexus
+345	DNA	124	546	199	186	GTR+MERGE	uce-113154.nexus
+346	DNA	127	555	132	370	GTR+MERGE	uce-113162.nexus
+347	DNA	101	462	131	287	GTR+MERGE	uce-113173.nexus
+348	DNA	141	538	100	326	GTR+MERGE	uce-11319.nexus
+349	DNA	125	551	166	284	GTR+MERGE	uce-113193.nexus
+350	DNA	120	309	73	223	GTR+MERGE	uce-113200.nexus
+351	DNA	132	550	135	291	GTR+MERGE	uce-113203.nexus
+352	DNA	109	420	105	233	GTR+MERGE	uce-113207.nexus
+353	DNA	110	528	153	198	GTR+MERGE	uce-113208.nexus
+354	DNA	103	433	65	301	GTR+MERGE	uce-11321.nexus
+355	DNA	93	445	113	192	GTR+MERGE	uce-113232.nexus
+356	DNA	121	329	33	252	GTR+MERGE	uce-113237.nexus
+357	DNA	126	570	103	341	GTR+MERGE	uce-11324.nexus
+358	DNA	127	344	45	234	GTR+MERGE	uce-113240.nexus
+359	DNA	127	475	181	214	GTR+MERGE	uce-113242.nexus
+360	DNA	127	513	122	308	GTR+MERGE	uce-113263.nexus
+361	DNA	98	218	22	163	GTR+MERGE	uce-113266.nexus
+362	DNA	118	377	126	213	GTR+MERGE	uce-113272.nexus
+363	DNA	120	396	50	252	GTR+MERGE	uce-113279.nexus
+364	DNA	132	415	125	271	GTR+MERGE	uce-113282.nexus
+365	DNA	121	488	154	246	GTR+MERGE	uce-113290.nexus
+366	DNA	127	476	104	300	GTR+MERGE	uce-113293.nexus
+367	DNA	95	559	120	370	GTR+MERGE	uce-113299.nexus
+368	DNA	127	422	132	215	GTR+MERGE	uce-113332.nexus
+369	DNA	116	301	91	189	GTR+MERGE	uce-113335.nexus
+370	DNA	128	552	62	314	GTR+MERGE	uce-113337.nexus
+371	DNA	126	520	71	330	GTR+MERGE	uce-113394.nexus
+372	DNA	101	519	133	330	GTR+MERGE	uce-113396.nexus
+373	DNA	131	425	147	178	GTR+MERGE	uce-113399.nexus
+374	DNA	127	434	120	218	GTR+MERGE	uce-113405.nexus
+375	DNA	122	372	73	260	GTR+MERGE	uce-113423.nexus
+376	DNA	129	458	159	149	GTR+MERGE	uce-113437.nexus
+377	DNA	125	265	37	201	GTR+MERGE	uce-113439.nexus
+378	DNA	111	565	177	325	GTR+MERGE	uce-113460.nexus
+379	DNA	118	580	159	298	GTR+MERGE	uce-113461.nexus
+380	DNA	120	378	115	127	GTR+MERGE	uce-113462.nexus
+381	DNA	121	456	143	142	GTR+MERGE	uce-113465.nexus
+382	DNA	123	313	39	236	GTR+MERGE	uce-113480.nexus
+383	DNA	102	410	159	207	GTR+MERGE	uce-113486.nexus
+384	DNA	130	469	185	203	GTR+MERGE	uce-113496.nexus
+385	DNA	127	552	166	247	GTR+MERGE	uce-113499.nexus
+386	DNA	81	410	236	95	GTR+MERGE	uce-113510.nexus
+387	DNA	122	369	128	158	GTR+MERGE	uce-113539.nexus
+388	DNA	126	545	125	278	GTR+MERGE	uce-113544.nexus
+389	DNA	125	476	122	238	GTR+MERGE	uce-113545.nexus
+390	DNA	124	383	22	286	GTR+MERGE	uce-11356.nexus
+391	DNA	128	571	130	282	GTR+MERGE	uce-113561.nexus
+392	DNA	130	567	179	209	GTR+MERGE	uce-113571.nexus
+393	DNA	122	473	148	253	GTR+MERGE	uce-113577.nexus
+394	DNA	123	453	144	207	GTR+MERGE	uce-113580.nexus
+395	DNA	119	567	90	382	GTR+MERGE	uce-113587.nexus
+396	DNA	113	625	109	317	GTR+MERGE	uce-113594.nexus
+397	DNA	97	541	146	198	GTR+MERGE	uce-113615.nexus
+398	DNA	109	519	130	314	GTR+MERGE	uce-113617.nexus
+399	DNA	121	374	78	208	GTR+MERGE	uce-113628.nexus
+400	DNA	122	501	175	241	GTR+MERGE	uce-113629.nexus
+401	DNA	139	484	42	376	GTR+MERGE	uce-113630.nexus
+402	DNA	127	501	191	271	GTR+MERGE	uce-113633.nexus
+403	DNA	131	625	157	289	GTR+MERGE	uce-113641.nexus
+404	DNA	125	533	119	308	GTR+MERGE	uce-113642.nexus
+405	DNA	123	336	19	209	GTR+MERGE	uce-113649.nexus
+406	DNA	98	463	123	207	GTR+MERGE	uce-113650.nexus
+407	DNA	109	400	100	211	GTR+MERGE	uce-113651.nexus
+408	DNA	119	452	106	249	GTR+MERGE	uce-113653.nexus
+409	DNA	130	527	78	357	GTR+MERGE	uce-113657.nexus
+410	DNA	124	414	78	273	GTR+MERGE	uce-113669.nexus
+411	DNA	128	505	96	288	GTR+MERGE	uce-113670.nexus
+412	DNA	121	590	108	269	GTR+MERGE	uce-113672.nexus
+413	DNA	118	402	126	213	GTR+MERGE	uce-113676.nexus
+414	DNA	111	539	173	265	GTR+MERGE	uce-113679.nexus
+415	DNA	121	601	191	279	GTR+MERGE	uce-11368.nexus
+416	DNA	113	522	135	285	GTR+MERGE	uce-113680.nexus
+417	DNA	125	543	231	251	GTR+MERGE	uce-113681.nexus
+418	DNA	125	547	215	295	GTR+MERGE	uce-113686.nexus
+419	DNA	125	465	166	191	GTR+MERGE	uce-113692.nexus
+420	DNA	113	467	80	307	GTR+MERGE	uce-113696.nexus
+421	DNA	121	270	52	169	GTR+MERGE	uce-1137.nexus
+422	DNA	119	479	99	268	GTR+MERGE	uce-113706.nexus
+423	DNA	108	592	180	302	GTR+MERGE	uce-113723.nexus
+424	DNA	124	457	173	214	GTR+MERGE	uce-113725.nexus
+425	DNA	117	437	149	246	GTR+MERGE	uce-113726.nexus
+426	DNA	129	451	122	277	GTR+MERGE	uce-113733.nexus
+427	DNA	123	549	235	238	GTR+MERGE	uce-113735.nexus
+428	DNA	117	498	227	239	GTR+MERGE	uce-113739.nexus
+429	DNA	113	409	95	237	GTR+MERGE	uce-113740.nexus
+430	DNA	130	403	56	252	GTR+MERGE	uce-113741.nexus
+431	DNA	128	613	178	372	GTR+MERGE	uce-113755.nexus
+432	DNA	126	594	150	359	GTR+MERGE	uce-11376.nexus
+433	DNA	130	389	154	195	GTR+MERGE	uce-113763.nexus
+434	DNA	125	507	122	237	GTR+MERGE	uce-113764.nexus
+435	DNA	129	460	117	279	GTR+MERGE	uce-113784.nexus
+436	DNA	122	441	74	291	GTR+MERGE	uce-11379.nexus
+437	DNA	119	324	135	146	GTR+MERGE	uce-113790.nexus
+438	DNA	129	532	72	287	GTR+MERGE	uce-1138.nexus
+439	DNA	107	396	163	172	GTR+MERGE	uce-11380.nexus
+440	DNA	125	389	12	343	GTR+MERGE	uce-113802.nexus
+441	DNA	132	576	124	336	GTR+MERGE	uce-113803.nexus
+442	DNA	123	514	122	259	GTR+MERGE	uce-113813.nexus
+443	DNA	123	398	58	296	GTR+MERGE	uce-11382.nexus
+444	DNA	121	471	190	202	GTR+MERGE	uce-113825.nexus
+445	DNA	133	448	152	235	GTR+MERGE	uce-113827.nexus
+446	DNA	121	521	163	220	GTR+MERGE	uce-113830.nexus
+447	DNA	118	413	124	258	GTR+MERGE	uce-113838.nexus
+448	DNA	124	552	177	277	GTR+MERGE	uce-11384.nexus
+449	DNA	125	504	162	253	GTR+MERGE	uce-113842.nexus
+450	DNA	108	459	57	284	GTR+MERGE	uce-113850.nexus
+451	DNA	126	595	137	380	GTR+MERGE	uce-113852.nexus
+452	DNA	132	469	85	343	GTR+MERGE	uce-113869.nexus
+453	DNA	76	224	14	196	GTR+MERGE	uce-113884.nexus
+454	DNA	123	404	163	167	GTR+MERGE	uce-113893.nexus
+455	DNA	103	543	122	363	GTR+MERGE	uce-1139.nexus
+456	DNA	130	452	115	296	GTR+MERGE	uce-113926.nexus
+457	DNA	112	549	146	355	GTR+MERGE	uce-113945.nexus
+458	DNA	132	562	155	325	GTR+MERGE	uce-113949.nexus
+459	DNA	115	383	75	300	GTR+MERGE	uce-11395.nexus
+460	DNA	119	549	108	350	GTR+MERGE	uce-11396.nexus
+461	DNA	110	455	150	225	GTR+MERGE	uce-113972.nexus
+462	DNA	99	534	181	285	GTR+MERGE	uce-114002.nexus
+463	DNA	75	240	44	156	GTR+MERGE	uce-114004.nexus
+464	DNA	108	504	148	270	GTR+MERGE	uce-114006.nexus
+465	DNA	120	460	180	186	GTR+MERGE	uce-114018.nexus
+466	DNA	119	609	119	444	GTR+MERGE	uce-114019.nexus
+467	DNA	101	497	172	219	GTR+MERGE	uce-11402.nexus
+468	DNA	116	579	132	339	GTR+MERGE	uce-114021.nexus
+469	DNA	119	442	61	264	GTR+MERGE	uce-114023.nexus
+470	DNA	107	458	195	108	GTR+MERGE	uce-114027.nexus
+471	DNA	118	434	123	195	GTR+MERGE	uce-114031.nexus
+472	DNA	106	554	211	234	GTR+MERGE	uce-114033.nexus
+473	DNA	126	590	102	333	GTR+MERGE	uce-114040.nexus
+474	DNA	114	434	203	153	GTR+MERGE	uce-114042.nexus
+475	DNA	126	442	68	297	GTR+MERGE	uce-114059.nexus
+476	DNA	118	525	132	318	GTR+MERGE	uce-114061.nexus
+477	DNA	110	533	96	345	GTR+MERGE	uce-114063.nexus
+478	DNA	124	557	157	293	GTR+MERGE	uce-114069.nexus
+479	DNA	102	371	143	174	GTR+MERGE	uce-114084.nexus
+480	DNA	124	483	133	255	GTR+MERGE	uce-114087.nexus
+481	DNA	126	488	65	346	GTR+MERGE	uce-114099.nexus
+482	DNA	127	580	118	274	GTR+MERGE	uce-114104.nexus
+483	DNA	92	502	145	257	GTR+MERGE	uce-114114.nexus
+484	DNA	125	571	175	312	GTR+MERGE	uce-114124.nexus
+485	DNA	131	437	136	224	GTR+MERGE	uce-114126.nexus
+486	DNA	124	393	154	112	GTR+MERGE	uce-114141.nexus
+487	DNA	131	366	52	262	GTR+MERGE	uce-114142.nexus
+488	DNA	129	511	140	245	GTR+MERGE	uce-114144.nexus
+489	DNA	97	277	55	196	GTR+MERGE	uce-114157.nexus
+490	DNA	124	460	152	188	GTR+MERGE	uce-114172.nexus
+491	DNA	126	489	165	193	GTR+MERGE	uce-114181.nexus
+492	DNA	125	513	203	220	GTR+MERGE	uce-114184.nexus
+493	DNA	128	309	75	187	GTR+MERGE	uce-114187.nexus
+494	DNA	109	461	114	274	GTR+MERGE	uce-114190.nexus
+495	DNA	123	210	19	158	GTR+MERGE	uce-114199.nexus
+496	DNA	100	371	118	132	GTR+MERGE	uce-114202.nexus
+497	DNA	128	492	118	328	GTR+MERGE	uce-114203.nexus
+498	DNA	118	424	154	213	GTR+MERGE	uce-114210.nexus
+499	DNA	128	287	32	209	GTR+MERGE	uce-114221.nexus
+500	DNA	121	486	156	227	GTR+MERGE	uce-114237.nexus
+501	DNA	126	445	78	287	GTR+MERGE	uce-114239.nexus
+502	DNA	125	447	136	220	GTR+MERGE	uce-114242.nexus
+503	DNA	122	268	35	209	GTR+MERGE	uce-114244.nexus
+504	DNA	119	465	221	170	GTR+MERGE	uce-114247.nexus
+505	DNA	125	303	26	222	GTR+MERGE	uce-114252.nexus
+506	DNA	131	563	78	398	GTR+MERGE	uce-114258.nexus
+507	DNA	79	208	7	144	GTR+MERGE	uce-11428.nexus
+508	DNA	125	519	133	246	GTR+MERGE	uce-114288.nexus
+509	DNA	107	531	157	182	GTR+MERGE	uce-114292.nexus
+510	DNA	114	474	150	228	GTR+MERGE	uce-114297.nexus
+511	DNA	110	532	99	257	GTR+MERGE	uce-114298.nexus
+512	DNA	122	559	135	349	GTR+MERGE	uce-114311.nexus
+513	DNA	113	447	69	297	GTR+MERGE	uce-114313.nexus
+514	DNA	126	341	97	213	GTR+MERGE	uce-114321.nexus
+515	DNA	123	567	167	308	GTR+MERGE	uce-114332.nexus
+516	DNA	129	521	146	268	GTR+MERGE	uce-114339.nexus
+517	DNA	114	556	119	272	GTR+MERGE	uce-114340.nexus
+518	DNA	119	475	125	245	GTR+MERGE	uce-114346.nexus
+519	DNA	121	461	174	237	GTR+MERGE	uce-114348.nexus
+520	DNA	107	567	87	377	GTR+MERGE	uce-114352.nexus
+521	DNA	123	535	138	223	GTR+MERGE	uce-114378.nexus
+522	DNA	80	448	115	220	GTR+MERGE	uce-114381.nexus
+523	DNA	109	351	88	212	GTR+MERGE	uce-114388.nexus
+524	DNA	132	480	155	265	GTR+MERGE	uce-114389.nexus
+525	DNA	128	562	213	287	GTR+MERGE	uce-1144.nexus
+526	DNA	122	524	148	207	GTR+MERGE	uce-114400.nexus
+527	DNA	109	471	189	198	GTR+MERGE	uce-114404.nexus
+528	DNA	127	527	141	288	GTR+MERGE	uce-114418.nexus
+529	DNA	116	394	106	246	GTR+MERGE	uce-114419.nexus
+530	DNA	128	394	99	260	GTR+MERGE	uce-114425.nexus
+531	DNA	107	432	165	183	GTR+MERGE	uce-114428.nexus
+532	DNA	120	470	146	234	GTR+MERGE	uce-114431.nexus
+533	DNA	122	462	102	251	GTR+MERGE	uce-114432.nexus
+534	DNA	112	597	123	358	GTR+MERGE	uce-114434.nexus
+535	DNA	110	346	34	296	GTR+MERGE	uce-114436.nexus
+536	DNA	119	554	95	356	GTR+MERGE	uce-114439.nexus
+537	DNA	117	529	209	248	GTR+MERGE	uce-114441.nexus
+538	DNA	101	523	189	218	GTR+MERGE	uce-114444.nexus
+539	DNA	108	526	206	193	GTR+MERGE	uce-114445.nexus
+540	DNA	99	383	151	194	GTR+MERGE	uce-114451.nexus
+541	DNA	91	552	170	257	GTR+MERGE	uce-114453.nexus
+542	DNA	125	524	154	225	GTR+MERGE	uce-114459.nexus
+543	DNA	117	428	150	196	GTR+MERGE	uce-114462.nexus
+544	DNA	113	591	142	334	GTR+MERGE	uce-114465.nexus
+545	DNA	92	535	138	300	GTR+MERGE	uce-114478.nexus
+546	DNA	93	273	61	149	GTR+MERGE	uce-114485.nexus
+547	DNA	124	447	93	272	GTR+MERGE	uce-114486.nexus
+548	DNA	123	500	162	237	GTR+MERGE	uce-114488.nexus
+549	DNA	111	449	128	212	GTR+MERGE	uce-114490.nexus
+550	DNA	126	500	178	255	GTR+MERGE	uce-114506.nexus
+551	DNA	126	475	204	190	GTR+MERGE	uce-114508.nexus
+552	DNA	101	500	109	217	GTR+MERGE	uce-114516.nexus
+553	DNA	125	525	175	215	GTR+MERGE	uce-114519.nexus
+554	DNA	127	322	30	282	GTR+MERGE	uce-114523.nexus
+555	DNA	129	581	176	277	GTR+MERGE	uce-114528.nexus
+556	DNA	123	546	165	201	GTR+MERGE	uce-11453.nexus
+557	DNA	125	515	225	219	GTR+MERGE	uce-114531.nexus
+558	DNA	130	631	112	438	GTR+MERGE	uce-114533.nexus
+559	DNA	122	433	85	212	GTR+MERGE	uce-114538.nexus
+560	DNA	129	454	92	320	GTR+MERGE	uce-114554.nexus
+561	DNA	122	602	86	346	GTR+MERGE	uce-114560.nexus
+562	DNA	133	572	165	226	GTR+MERGE	uce-114579.nexus
+563	DNA	127	478	142	207	GTR+MERGE	uce-114580.nexus
+564	DNA	111	492	135	264	GTR+MERGE	uce-114581.nexus
+565	DNA	122	429	125	232	GTR+MERGE	uce-114586.nexus
+566	DNA	126	467	153	239	GTR+MERGE	uce-114590.nexus
+567	DNA	121	286	27	232	GTR+MERGE	uce-114598.nexus
+568	DNA	126	517	131	352	GTR+MERGE	uce-114600.nexus
+569	DNA	112	254	46	204	GTR+MERGE	uce-114606.nexus
+570	DNA	113	361	107	177	GTR+MERGE	uce-114619.nexus
+571	DNA	130	491	126	297	GTR+MERGE	uce-114629.nexus
+572	DNA	114	389	144	200	GTR+MERGE	uce-114657.nexus
+573	DNA	127	564	161	262	GTR+MERGE	uce-114665.nexus
+574	DNA	119	615	139	363	GTR+MERGE	uce-114668.nexus
+575	DNA	114	563	210	297	GTR+MERGE	uce-114678.nexus
+576	DNA	123	260	57	108	GTR+MERGE	uce-114687.nexus
+577	DNA	121	479	122	315	GTR+MERGE	uce-114735.nexus
+578	DNA	124	379	17	321	GTR+MERGE	uce-114753.nexus
+579	DNA	118	416	144	207	GTR+MERGE	uce-114766.nexus
+580	DNA	109	515	101	222	GTR+MERGE	uce-114772.nexus
+581	DNA	106	571	83	408	GTR+MERGE	uce-114775.nexus
+582	DNA	129	455	136	160	GTR+MERGE	uce-114785.nexus
+583	DNA	128	458	58	381	GTR+MERGE	uce-114792.nexus
+584	DNA	117	541	249	147	GTR+MERGE	uce-114806.nexus
+585	DNA	128	572	113	338	GTR+MERGE	uce-114807.nexus
+586	DNA	119	332	70	189	GTR+MERGE	uce-114809.nexus
+587	DNA	128	410	152	226	GTR+MERGE	uce-11481.nexus
+588	DNA	124	453	104	249	GTR+MERGE	uce-114818.nexus
+589	DNA	110	262	18	203	GTR+MERGE	uce-114819.nexus
+590	DNA	103	515	154	258	GTR+MERGE	uce-114820.nexus
+591	DNA	121	438	101	274	GTR+MERGE	uce-114835.nexus
+592	DNA	114	510	195	250	GTR+MERGE	uce-114836.nexus
+593	DNA	117	256	20	182	GTR+MERGE	uce-114841.nexus
+594	DNA	95	456	195	165	GTR+MERGE	uce-114844.nexus
+595	DNA	122	484	175	243	GTR+MERGE	uce-114850.nexus
+596	DNA	129	385	87	193	GTR+MERGE	uce-114856.nexus
+597	DNA	127	413	184	162	GTR+MERGE	uce-114864.nexus
+598	DNA	127	596	153	339	GTR+MERGE	uce-11487.nexus
+599	DNA	123	390	126	189	GTR+MERGE	uce-114873.nexus
+600	DNA	128	364	29	277	GTR+MERGE	uce-114878.nexus
+601	DNA	129	521	173	281	GTR+MERGE	uce-114885.nexus
+602	DNA	133	527	149	220	GTR+MERGE	uce-114890.nexus
+603	DNA	119	526	200	224	GTR+MERGE	uce-114895.nexus
+604	DNA	119	523	187	265	GTR+MERGE	uce-114901.nexus
+605	DNA	107	530	125	246	GTR+MERGE	uce-114908.nexus
+606	DNA	132	428	103	248	GTR+MERGE	uce-114911.nexus
+607	DNA	128	340	122	183	GTR+MERGE	uce-114927.nexus
+608	DNA	116	493	193	201	GTR+MERGE	uce-114952.nexus
+609	DNA	114	415	112	229	GTR+MERGE	uce-114973.nexus
+610	DNA	121	524	193	270	GTR+MERGE	uce-114975.nexus
+611	DNA	108	533	128	262	GTR+MERGE	uce-114991.nexus
+612	DNA	103	454	104	262	GTR+MERGE	uce-115000.nexus
+613	DNA	103	477	99	248	GTR+MERGE	uce-115002.nexus
+614	DNA	130	549	164	280	GTR+MERGE	uce-115004.nexus
+615	DNA	112	617	139	259	GTR+MERGE	uce-115005.nexus
+616	DNA	115	501	103	264	GTR+MERGE	uce-115008.nexus
+617	DNA	117	454	125	237	GTR+MERGE	uce-115009.nexus
+618	DNA	113	567	147	320	GTR+MERGE	uce-115010.nexus
+619	DNA	91	473	177	265	GTR+MERGE	uce-115011.nexus
+620	DNA	114	314	66	223	GTR+MERGE	uce-115021.nexus
+621	DNA	116	395	112	223	GTR+MERGE	uce-115023.nexus
+622	DNA	130	405	69	229	GTR+MERGE	uce-115027.nexus
+623	DNA	126	501	91	314	GTR+MERGE	uce-115033.nexus
+624	DNA	113	435	129	241	GTR+MERGE	uce-115037.nexus
+625	DNA	97	228	42	119	GTR+MERGE	uce-115038.nexus
+626	DNA	130	464	51	363	GTR+MERGE	uce-115043.nexus
+627	DNA	125	525	135	312	GTR+MERGE	uce-115048.nexus
+628	DNA	93	232	16	195	GTR+MERGE	uce-115054.nexus
+629	DNA	115	554	113	366	GTR+MERGE	uce-115074.nexus
+630	DNA	127	447	159	208	GTR+MERGE	uce-115082.nexus
+631	DNA	118	416	64	276	GTR+MERGE	uce-115086.nexus
+632	DNA	99	432	139	234	GTR+MERGE	uce-115088.nexus
+633	DNA	125	491	120	243	GTR+MERGE	uce-11510.nexus
+634	DNA	126	538	130	291	GTR+MERGE	uce-115105.nexus
+635	DNA	129	590	117	256	GTR+MERGE	uce-115112.nexus
+636	DNA	132	475	126	235	GTR+MERGE	uce-115113.nexus
+637	DNA	122	545	131	220	GTR+MERGE	uce-115115.nexus
+638	DNA	122	382	115	169	GTR+MERGE	uce-115126.nexus
+639	DNA	91	413	140	201	GTR+MERGE	uce-115131.nexus
+640	DNA	129	380	112	219	GTR+MERGE	uce-115151.nexus
+641	DNA	128	575	112	280	GTR+MERGE	uce-115159.nexus
+642	DNA	125	521	139	261	GTR+MERGE	uce-115181.nexus
+643	DNA	113	517	193	139	GTR+MERGE	uce-115194.nexus
+644	DNA	107	375	108	181	GTR+MERGE	uce-115207.nexus
+645	DNA	108	296	28	224	GTR+MERGE	uce-11523.nexus
+646	DNA	119	624	192	342	GTR+MERGE	uce-115238.nexus
+647	DNA	122	566	162	230	GTR+MERGE	uce-115240.nexus
+648	DNA	129	515	153	273	GTR+MERGE	uce-115252.nexus
+649	DNA	123	480	188	215	GTR+MERGE	uce-115279.nexus
+650	DNA	129	537	164	174	GTR+MERGE	uce-115300.nexus
+651	DNA	129	586	153	336	GTR+MERGE	uce-115319.nexus
+652	DNA	124	523	126	310	GTR+MERGE	uce-115321.nexus
+653	DNA	131	543	189	275	GTR+MERGE	uce-115324.nexus
+654	DNA	117	439	189	190	GTR+MERGE	uce-115330.nexus
+655	DNA	115	484	132	225	GTR+MERGE	uce-115348.nexus
+656	DNA	121	526	71	338	GTR+MERGE	uce-115350.nexus
+657	DNA	115	462	134	223	GTR+MERGE	uce-115356.nexus
+658	DNA	128	535	117	305	GTR+MERGE	uce-115361.nexus
+659	DNA	129	479	31	378	GTR+MERGE	uce-115363.nexus
+660	DNA	103	599	145	274	GTR+MERGE	uce-115364.nexus
+661	DNA	130	519	138	279	GTR+MERGE	uce-115379.nexus
+662	DNA	71	335	99	215	GTR+MERGE	uce-11539.nexus
+663	DNA	111	438	191	189	GTR+MERGE	uce-115421.nexus
+664	DNA	125	479	130	266	GTR+MERGE	uce-115426.nexus
+665	DNA	117	312	96	200	GTR+MERGE	uce-115441.nexus
+666	DNA	72	311	64	178	GTR+MERGE	uce-115465.nexus
+667	DNA	110	572	91	386	GTR+MERGE	uce-115477.nexus
+668	DNA	71	334	54	216	GTR+MERGE	uce-115482.nexus
+669	DNA	110	421	99	270	GTR+MERGE	uce-115512.nexus
+670	DNA	123	537	155	238	GTR+MERGE	uce-115538.nexus
+671	DNA	90	207	38	146	GTR+MERGE	uce-115551.nexus
+672	DNA	125	382	146	204	GTR+MERGE	uce-115566.nexus
+673	DNA	132	481	103	253	GTR+MERGE	uce-115569.nexus
+674	DNA	105	514	130	301	GTR+MERGE	uce-115576.nexus
+675	DNA	114	445	149	252	GTR+MERGE	uce-115577.nexus
+676	DNA	90	243	26	184	GTR+MERGE	uce-115578.nexus
+677	DNA	103	465	55	367	GTR+MERGE	uce-115591.nexus
+678	DNA	125	541	98	315	GTR+MERGE	uce-115602.nexus
+679	DNA	135	571	88	382	GTR+MERGE	uce-115607.nexus
+680	DNA	111	414	181	186	GTR+MERGE	uce-115615.nexus
+681	DNA	79	214	18	150	GTR+MERGE	uce-115616.nexus
+682	DNA	102	581	135	309	GTR+MERGE	uce-115622.nexus
+683	DNA	129	446	110	255	GTR+MERGE	uce-115625.nexus
+684	DNA	124	520	140	310	GTR+MERGE	uce-115633.nexus
+685	DNA	127	398	115	248	GTR+MERGE	uce-115634.nexus
+686	DNA	126	513	114	242	GTR+MERGE	uce-115664.nexus
+687	DNA	126	465	143	203	GTR+MERGE	uce-115670.nexus
+688	DNA	132	513	152	222	GTR+MERGE	uce-115672.nexus
+689	DNA	127	543	192	236	GTR+MERGE	uce-115678.nexus
+690	DNA	123	446	57	303	GTR+MERGE	uce-115687.nexus
+691	DNA	131	495	153	298	GTR+MERGE	uce-115690.nexus
+692	DNA	122	502	196	194	GTR+MERGE	uce-1157.nexus
+693	DNA	119	433	181	191	GTR+MERGE	uce-115705.nexus
+694	DNA	128	443	79	229	GTR+MERGE	uce-115712.nexus
+695	DNA	126	517	181	164	GTR+MERGE	uce-115722.nexus
+696	DNA	120	566	76	299	GTR+MERGE	uce-115724.nexus
+697	DNA	103	474	144	214	GTR+MERGE	uce-115732.nexus
+698	DNA	129	385	38	244	GTR+MERGE	uce-115736.nexus
+699	DNA	93	427	132	135	GTR+MERGE	uce-11574.nexus
+700	DNA	97	484	96	298	GTR+MERGE	uce-115743.nexus
+701	DNA	127	483	98	277	GTR+MERGE	uce-115747.nexus
+702	DNA	134	364	84	213	GTR+MERGE	uce-115765.nexus
+703	DNA	126	462	207	155	GTR+MERGE	uce-115770.nexus
+704	DNA	132	523	102	274	GTR+MERGE	uce-115771.nexus
+705	DNA	134	451	114	240	GTR+MERGE	uce-115782.nexus
+706	DNA	114	571	163	281	GTR+MERGE	uce-115788.nexus
+707	DNA	122	536	135	324	GTR+MERGE	uce-115789.nexus
+708	DNA	125	293	46	222	GTR+MERGE	uce-115802.nexus
+709	DNA	124	534	150	234	GTR+MERGE	uce-115821.nexus
+710	DNA	129	493	211	170	GTR+MERGE	uce-115835.nexus
+711	DNA	125	478	144	261	GTR+MERGE	uce-115841.nexus
+712	DNA	130	449	117	222	GTR+MERGE	uce-115858.nexus
+713	DNA	122	561	174	255	GTR+MERGE	uce-115859.nexus
+714	DNA	128	340	68	201	GTR+MERGE	uce-115865.nexus
+715	DNA	128	370	137	180	GTR+MERGE	uce-115869.nexus
+716	DNA	119	297	64	174	GTR+MERGE	uce-115883.nexus
+717	DNA	112	471	136	219	GTR+MERGE	uce-115888.nexus
+718	DNA	129	586	185	308	GTR+MERGE	uce-115890.nexus
+719	DNA	125	400	60	268	GTR+MERGE	uce-11590.nexus
+720	DNA	121	466	148	303	GTR+MERGE	uce-115909.nexus
+721	DNA	110	396	128	223	GTR+MERGE	uce-11592.nexus
+722	DNA	118	519	216	224	GTR+MERGE	uce-11593.nexus
+723	DNA	126	590	289	261	GTR+MERGE	uce-115932.nexus
+724	DNA	127	447	141	199	GTR+MERGE	uce-115944.nexus
+725	DNA	125	472	115	319	GTR+MERGE	uce-115966.nexus
+726	DNA	127	366	78	238	GTR+MERGE	uce-115970.nexus
+727	DNA	121	555	172	256	GTR+MERGE	uce-115972.nexus
+728	DNA	125	523	117	275	GTR+MERGE	uce-115981.nexus
+729	DNA	123	540	192	233	GTR+MERGE	uce-115991.nexus
+730	DNA	125	424	156	245	GTR+MERGE	uce-115996.nexus
+731	DNA	98	470	166	197	GTR+MERGE	uce-115999.nexus
+732	DNA	123	551	155	283	GTR+MERGE	uce-116006.nexus
+733	DNA	111	524	161	240	GTR+MERGE	uce-116009.nexus
+734	DNA	88	198	28	99	GTR+MERGE	uce-116011.nexus
+735	DNA	109	240	45	138	GTR+MERGE	uce-116012.nexus
+736	DNA	117	541	113	386	GTR+MERGE	uce-116014.nexus
+737	DNA	131	488	137	299	GTR+MERGE	uce-116019.nexus
+738	DNA	89	174	26	121	GTR+MERGE	uce-116025.nexus
+739	DNA	112	593	125	315	GTR+MERGE	uce-11604.nexus
+740	DNA	111	429	44	311	GTR+MERGE	uce-11606.nexus
+741	DNA	129	627	98	415	GTR+MERGE	uce-116061.nexus
+742	DNA	114	553	134	302	GTR+MERGE	uce-116063.nexus
+743	DNA	84	542	152	334	GTR+MERGE	uce-116064.nexus
+744	DNA	119	428	165	222	GTR+MERGE	uce-116073.nexus
+745	DNA	124	485	124	252	GTR+MERGE	uce-116083.nexus
+746	DNA	100	204	26	137	GTR+MERGE	uce-116085.nexus
+747	DNA	129	523	56	288	GTR+MERGE	uce-116096.nexus
+748	DNA	126	531	224	259	GTR+MERGE	uce-116099.nexus
+749	DNA	127	268	82	166	GTR+MERGE	uce-116101.nexus
+750	DNA	116	435	124	231	GTR+MERGE	uce-116105.nexus
+751	DNA	127	399	78	245	GTR+MERGE	uce-116112.nexus
+752	DNA	130	513	223	183	GTR+MERGE	uce-116114.nexus
+753	DNA	121	606	213	276	GTR+MERGE	uce-116117.nexus
+754	DNA	102	251	31	206	GTR+MERGE	uce-11612.nexus
+755	DNA	114	433	122	204	GTR+MERGE	uce-116123.nexus
+756	DNA	123	514	176	212	GTR+MERGE	uce-116125.nexus
+757	DNA	113	433	51	238	GTR+MERGE	uce-116142.nexus
+758	DNA	109	545	137	304	GTR+MERGE	uce-116148.nexus
+759	DNA	122	343	84	198	GTR+MERGE	uce-11615.nexus
+760	DNA	130	441	118	169	GTR+MERGE	uce-116160.nexus
+761	DNA	125	554	180	270	GTR+MERGE	uce-116162.nexus
+762	DNA	122	281	35	209	GTR+MERGE	uce-116164.nexus
+763	DNA	128	518	119	280	GTR+MERGE	uce-116188.nexus
+764	DNA	124	581	149	347	GTR+MERGE	uce-11619.nexus
+765	DNA	131	505	152	261	GTR+MERGE	uce-116191.nexus
+766	DNA	127	544	168	282	GTR+MERGE	uce-116196.nexus
+767	DNA	118	395	134	202	GTR+MERGE	uce-116206.nexus
+768	DNA	119	608	114	375	GTR+MERGE	uce-116220.nexus
+769	DNA	126	487	52	368	GTR+MERGE	uce-116227.nexus
+770	DNA	127	612	136	294	GTR+MERGE	uce-116233.nexus
+771	DNA	79	347	46	259	GTR+MERGE	uce-116245.nexus
+772	DNA	127	500	191	219	GTR+MERGE	uce-116250.nexus
+773	DNA	130	458	103	195	GTR+MERGE	uce-116259.nexus
+774	DNA	120	527	199	211	GTR+MERGE	uce-116267.nexus
+775	DNA	127	506	110	200	GTR+MERGE	uce-116269.nexus
+776	DNA	123	466	153	241	GTR+MERGE	uce-11627.nexus
+777	DNA	133	417	93	286	GTR+MERGE	uce-116278.nexus
+778	DNA	96	234	72	105	GTR+MERGE	uce-116280.nexus
+779	DNA	118	474	120	299	GTR+MERGE	uce-116289.nexus
+780	DNA	116	349	45	270	GTR+MERGE	uce-116291.nexus
+781	DNA	130	426	69	166	GTR+MERGE	uce-116292.nexus
+782	DNA	125	453	108	250	GTR+MERGE	uce-116293.nexus
+783	DNA	114	234	66	131	GTR+MERGE	uce-1165.nexus
+784	DNA	101	561	200	273	GTR+MERGE	uce-11657.nexus
+785	DNA	128	479	140	232	GTR+MERGE	uce-11660.nexus
+786	DNA	136	548	168	232	GTR+MERGE	uce-11661.nexus
+787	DNA	100	215	39	149	GTR+MERGE	uce-11665.nexus
+788	DNA	128	531	68	410	GTR+MERGE	uce-1168.nexus
+789	DNA	122	405	143	138	GTR+MERGE	uce-11696.nexus
+790	DNA	125	400	51	279	GTR+MERGE	uce-11716.nexus
+791	DNA	116	560	137	248	GTR+MERGE	uce-11725.nexus
+792	DNA	109	586	126	408	GTR+MERGE	uce-11726.nexus
+793	DNA	88	543	171	310	GTR+MERGE	uce-1173.nexus
+794	DNA	119	501	121	237	GTR+MERGE	uce-11732.nexus
+795	DNA	86	233	43	155	GTR+MERGE	uce-11735.nexus
+796	DNA	111	541	121	377	GTR+MERGE	uce-11737.nexus
+797	DNA	105	512	167	247	GTR+MERGE	uce-11739.nexus
+798	DNA	121	546	175	235	GTR+MERGE	uce-11740.nexus
+799	DNA	115	249	65	123	GTR+MERGE	uce-11745.nexus
+800	DNA	122	559	170	266	GTR+MERGE	uce-11753.nexus
+801	DNA	127	503	160	303	GTR+MERGE	uce-11756.nexus
+802	DNA	128	462	193	168	GTR+MERGE	uce-11768.nexus
+803	DNA	128	497	164	290	GTR+MERGE	uce-1177.nexus
+804	DNA	126	347	135	153	GTR+MERGE	uce-11779.nexus
+805	DNA	129	560	71	310	GTR+MERGE	uce-11781.nexus
+806	DNA	128	495	68	321	GTR+MERGE	uce-11792.nexus
+807	DNA	127	498	128	249	GTR+MERGE	uce-11793.nexus
+808	DNA	118	572	146	338	GTR+MERGE	uce-11795.nexus
+809	DNA	121	464	198	206	GTR+MERGE	uce-11796.nexus
+810	DNA	121	514	137	324	GTR+MERGE	uce-11809.nexus
+811	DNA	107	377	93	199	GTR+MERGE	uce-11832.nexus
+812	DNA	114	465	153	203	GTR+MERGE	uce-11838.nexus
+813	DNA	118	321	68	214	GTR+MERGE	uce-11845.nexus
+814	DNA	111	573	113	217	GTR+MERGE	uce-11872.nexus
+815	DNA	125	616	128	394	GTR+MERGE	uce-11875.nexus
+816	DNA	123	588	115	276	GTR+MERGE	uce-11877.nexus
+817	DNA	115	494	177	255	GTR+MERGE	uce-11883.nexus
+818	DNA	91	243	12	190	GTR+MERGE	uce-11884.nexus
+819	DNA	130	428	58	343	GTR+MERGE	uce-11890.nexus
+820	DNA	129	489	147	234	GTR+MERGE	uce-11897.nexus
+821	DNA	127	469	213	109	GTR+MERGE	uce-11904.nexus
+822	DNA	118	505	191	226	GTR+MERGE	uce-1192.nexus
+823	DNA	129	337	62	249	GTR+MERGE	uce-11920.nexus
+824	DNA	124	268	19	213	GTR+MERGE	uce-11924.nexus
+825	DNA	121	657	75	388	GTR+MERGE	uce-11927.nexus
+826	DNA	103	454	151	220	GTR+MERGE	uce-11930.nexus
+827	DNA	121	495	226	119	GTR+MERGE	uce-11931.nexus
+828	DNA	127	339	56	221	GTR+MERGE	uce-11942.nexus
+829	DNA	125	575	83	331	GTR+MERGE	uce-11949.nexus
+830	DNA	102	522	203	221	GTR+MERGE	uce-11953.nexus
+831	DNA	125	533	132	245	GTR+MERGE	uce-11962.nexus
+832	DNA	111	561	161	222	GTR+MERGE	uce-11966.nexus
+833	DNA	107	518	185	186	GTR+MERGE	uce-11983.nexus
+834	DNA	110	628	162	348	GTR+MERGE	uce-11985.nexus
+835	DNA	118	449	115	260	GTR+MERGE	uce-1199.nexus
+836	DNA	109	563	137	296	GTR+MERGE	uce-11994.nexus
+837	DNA	102	523	189	240	GTR+MERGE	uce-11996.nexus
+838	DNA	116	566	176	307	GTR+MERGE	uce-2025.nexus
+839	DNA	101	606	348	239	GTR+MERGE	uce-2030.nexus
+840	DNA	121	466	68	320	GTR+MERGE	uce-2032.nexus
+841	DNA	94	639	115	316	GTR+MERGE	uce-2039.nexus
+842	DNA	105	431	184	202	GTR+MERGE	uce-2041.nexus
+843	DNA	103	537	166	248	GTR+MERGE	uce-2048.nexus
+844	DNA	92	471	144	252	GTR+MERGE	uce-2049.nexus
+845	DNA	115	879	290	392	GTR+MERGE	uce-2052.nexus
+846	DNA	88	481	75	322	GTR+MERGE	uce-2054.nexus
+847	DNA	124	421	153	164	GTR+MERGE	uce-2070.nexus
+848	DNA	127	494	103	236	GTR+MERGE	uce-2080.nexus
+849	DNA	110	504	136	238	GTR+MERGE	uce-2081.nexus
+850	DNA	115	514	261	192	GTR+MERGE	uce-2082.nexus
+851	DNA	101	473	157	224	GTR+MERGE	uce-209.nexus
+852	DNA	110	285	48	193	GTR+MERGE	uce-2095.nexus
+853	DNA	120	302	99	171	GTR+MERGE	uce-2105.nexus
+854	DNA	127	469	152	201	GTR+MERGE	uce-2107.nexus
+855	DNA	120	387	107	133	GTR+MERGE	uce-2110.nexus
+856	DNA	90	444	176	100	GTR+MERGE	uce-2121.nexus
+857	DNA	124	360	112	150	GTR+MERGE	uce-2125.nexus
+858	DNA	92	181	23	112	GTR+MERGE	uce-2141.nexus
+859	DNA	125	503	108	301	GTR+MERGE	uce-2142.nexus
+860	DNA	121	303	42	201	GTR+MERGE	uce-2150.nexus
+861	DNA	117	392	173	168	GTR+MERGE	uce-2151.nexus
+862	DNA	118	504	229	188	GTR+MERGE	uce-2164.nexus
+863	DNA	122	281	31	202	GTR+MERGE	uce-217.nexus
+864	DNA	92	465	213	159	GTR+MERGE	uce-2170.nexus
+865	DNA	135	433	51	319	GTR+MERGE	uce-2180.nexus
+866	DNA	132	555	176	224	GTR+MERGE	uce-2185.nexus
+867	DNA	118	313	53	180	GTR+MERGE	uce-2197.nexus
+868	DNA	123	429	71	315	GTR+MERGE	uce-2202.nexus
+869	DNA	127	516	203	191	GTR+MERGE	uce-2206.nexus
+870	DNA	123	434	138	212	GTR+MERGE	uce-2215.nexus
+871	DNA	117	332	77	235	GTR+MERGE	uce-2237.nexus
+872	DNA	112	336	79	153	GTR+MERGE	uce-2247.nexus
+873	DNA	118	611	188	283	GTR+MERGE	uce-2248.nexus
+874	DNA	126	403	168	111	GTR+MERGE	uce-2255.nexus
+875	DNA	120	435	105	260	GTR+MERGE	uce-2258.nexus
+876	DNA	106	397	34	241	GTR+MERGE	uce-2274.nexus
+877	DNA	111	576	238	265	GTR+MERGE	uce-2275.nexus
+878	DNA	116	522	160	264	GTR+MERGE	uce-2276.nexus
+879	DNA	131	500	83	319	GTR+MERGE	uce-2281.nexus
+880	DNA	95	232	72	95	GTR+MERGE	uce-2282.nexus
+881	DNA	122	377	87	253	GTR+MERGE	uce-2284.nexus
+882	DNA	76	389	80	298	GTR+MERGE	uce-2285.nexus
+883	DNA	126	318	127	142	GTR+MERGE	uce-2287.nexus
+884	DNA	106	502	58	283	GTR+MERGE	uce-2288.nexus
+885	DNA	119	282	34	230	GTR+MERGE	uce-2290.nexus
+886	DNA	104	640	197	341	GTR+MERGE	uce-2293.nexus
+887	DNA	119	480	100	277	GTR+MERGE	uce-23.nexus
+888	DNA	106	361	124	189	GTR+MERGE	uce-2301.nexus
+889	DNA	117	535	173	241	GTR+MERGE	uce-2304.nexus
+890	DNA	118	251	92	124	GTR+MERGE	uce-2312.nexus
+891	DNA	71	252	20	200	GTR+MERGE	uce-2315.nexus
+892	DNA	103	286	47	185	GTR+MERGE	uce-2318.nexus
+893	DNA	90	515	197	239	GTR+MERGE	uce-2325.nexus
+894	DNA	105	342	84	196	GTR+MERGE	uce-2327.nexus
+895	DNA	109	468	214	213	GTR+MERGE	uce-2359.nexus
+896	DNA	124	553	189	320	GTR+MERGE	uce-2361.nexus
+897	DNA	127	463	158	225	GTR+MERGE	uce-2401.nexus
+898	DNA	139	573	146	333	GTR+MERGE	uce-2423.nexus
+899	DNA	110	528	191	259	GTR+MERGE	uce-2426.nexus
+900	DNA	104	513	250	153	GTR+MERGE	uce-2429.nexus
+901	DNA	114	409	108	240	GTR+MERGE	uce-2430.nexus
+902	DNA	105	647	199	323	GTR+MERGE	uce-2435.nexus
+903	DNA	98	652	142	429	GTR+MERGE	uce-2436.nexus
+904	DNA	116	394	101	239	GTR+MERGE	uce-2446.nexus
+905	DNA	94	343	72	224	GTR+MERGE	uce-2450.nexus
+906	DNA	115	484	76	260	GTR+MERGE	uce-2469.nexus
+907	DNA	125	489	190	245	GTR+MERGE	uce-2471.nexus
+908	DNA	125	529	191	262	GTR+MERGE	uce-2476.nexus
+909	DNA	98	203	5	164	GTR+MERGE	uce-2490.nexus
+910	DNA	125	342	58	208	GTR+MERGE	uce-2494.nexus
+911	DNA	129	565	168	271	GTR+MERGE	uce-250.nexus
+912	DNA	134	514	138	294	GTR+MERGE	uce-2501.nexus
+913	DNA	117	458	158	206	GTR+MERGE	uce-2503.nexus
+914	DNA	120	431	188	183	GTR+MERGE	uce-2507.nexus
+915	DNA	126	407	141	183	GTR+MERGE	uce-2514.nexus
+916	DNA	115	547	182	313	GTR+MERGE	uce-2520.nexus
+917	DNA	124	533	86	307	GTR+MERGE	uce-2531.nexus
+918	DNA	125	315	85	203	GTR+MERGE	uce-2538.nexus
+919	DNA	108	466	142	226	GTR+MERGE	uce-2541.nexus
+920	DNA	126	537	206	203	GTR+MERGE	uce-2551.nexus
+921	DNA	103	594	178	292	GTR+MERGE	uce-2577.nexus
+922	DNA	117	776	316	277	GTR+MERGE	uce-2580.nexus
+923	DNA	102	473	160	140	GTR+MERGE	uce-2581.nexus
+924	DNA	98	558	60	383	GTR+MERGE	uce-2585.nexus
+925	DNA	127	753	323	229	GTR+MERGE	uce-2588.nexus
+926	DNA	129	482	173	220	GTR+MERGE	uce-2592.nexus
+927	DNA	123	516	137	213	GTR+MERGE	uce-2597.nexus
+928	DNA	123	445	162	222	GTR+MERGE	uce-2601.nexus
+929	DNA	102	229	15	177	GTR+MERGE	uce-2632.nexus
+930	DNA	113	545	176	245	GTR+MERGE	uce-2656.nexus
+931	DNA	75	199	21	156	GTR+MERGE	uce-266.nexus
+932	DNA	127	567	188	242	GTR+MERGE	uce-2664.nexus
+933	DNA	121	353	101	202	GTR+MERGE	uce-2666.nexus
+934	DNA	105	556	191	266	GTR+MERGE	uce-2673.nexus
+935	DNA	74	247	51	168	GTR+MERGE	uce-2676.nexus
+936	DNA	125	249	50	100	GTR+MERGE	uce-2686.nexus
+937	DNA	124	402	87	243	GTR+MERGE	uce-2688.nexus
+938	DNA	101	463	117	279	GTR+MERGE	uce-2689.nexus
+939	DNA	124	525	186	186	GTR+MERGE	uce-2691.nexus
+940	DNA	130	465	145	267	GTR+MERGE	uce-2694.nexus
+941	DNA	106	526	119	291	GTR+MERGE	uce-2700.nexus
+942	DNA	119	250	58	171	GTR+MERGE	uce-2702.nexus
+943	DNA	126	494	167	215	GTR+MERGE	uce-2705.nexus
+944	DNA	124	528	200	229	GTR+MERGE	uce-2712.nexus
+945	DNA	134	713	176	397	GTR+MERGE	uce-2726.nexus
+946	DNA	101	215	34	145	GTR+MERGE	uce-2728.nexus
+947	DNA	123	521	84	345	GTR+MERGE	uce-2731.nexus
+948	DNA	113	583	75	408	GTR+MERGE	uce-2735.nexus
+949	DNA	105	418	92	260	GTR+MERGE	uce-2738.nexus
+950	DNA	127	417	139	189	GTR+MERGE	uce-2751.nexus
+951	DNA	127	491	143	253	GTR+MERGE	uce-2756.nexus
+952	DNA	118	498	139	309	GTR+MERGE	uce-2770.nexus
+953	DNA	131	526	115	235	GTR+MERGE	uce-2775.nexus
+954	DNA	130	593	120	289	GTR+MERGE	uce-278.nexus
+955	DNA	128	455	232	169	GTR+MERGE	uce-2783.nexus
+956	DNA	121	447	109	200	GTR+MERGE	uce-2794.nexus
+957	DNA	122	528	161	292	GTR+MERGE	uce-2796.nexus
+958	DNA	99	439	85	195	GTR+MERGE	uce-2797.nexus
+959	DNA	122	532	227	211	GTR+MERGE	uce-2813.nexus
+960	DNA	116	529	54	400	GTR+MERGE	uce-2817.nexus
+961	DNA	113	611	203	305	GTR+MERGE	uce-2819.nexus
+962	DNA	88	507	205	229	GTR+MERGE	uce-2829.nexus
+963	DNA	123	646	163	375	GTR+MERGE	uce-2836.nexus
+964	DNA	102	601	199	268	GTR+MERGE	uce-2837.nexus
+965	DNA	120	338	36	256	GTR+MERGE	uce-284.nexus
+966	DNA	127	354	31	251	GTR+MERGE	uce-2844.nexus
+967	DNA	135	589	192	190	GTR+MERGE	uce-2846.nexus
+968	DNA	113	434	110	160	GTR+MERGE	uce-2848.nexus
+969	DNA	125	576	269	218	GTR+MERGE	uce-2857.nexus
+970	DNA	133	519	140	252	GTR+MERGE	uce-2861.nexus
+971	DNA	122	533	166	172	GTR+MERGE	uce-288.nexus
+972	DNA	128	557	144	301	GTR+MERGE	uce-2883.nexus
+973	DNA	120	638	208	293	GTR+MERGE	uce-29.nexus
+974	DNA	126	324	30	260	GTR+MERGE	uce-315.nexus
+975	DNA	93	388	131	221	GTR+MERGE	uce-324.nexus
+976	DNA	99	320	104	162	GTR+MERGE	uce-325.nexus
+977	DNA	129	454	109	293	GTR+MERGE	uce-344.nexus
+978	DNA	117	432	148	219	GTR+MERGE	uce-348.nexus
+979	DNA	127	446	91	203	GTR+MERGE	uce-349.nexus
+980	DNA	79	331	72	176	GTR+MERGE	uce-35.nexus
+981	DNA	117	537	171	267	GTR+MERGE	uce-350.nexus
+982	DNA	116	296	65	202	GTR+MERGE	uce-351.nexus
+983	DNA	126	601	177	361	GTR+MERGE	uce-357.nexus
+984	DNA	129	561	221	250	GTR+MERGE	uce-363.nexus
+985	DNA	121	489	110	322	GTR+MERGE	uce-366.nexus
+986	DNA	118	519	183	204	GTR+MERGE	uce-369.nexus
+987	DNA	103	561	200	289	GTR+MERGE	uce-374.nexus
+988	DNA	127	394	145	202	GTR+MERGE	uce-379.nexus
+989	DNA	122	547	169	250	GTR+MERGE	uce-3911001.nexus
+990	DNA	115	409	128	242	GTR+MERGE	uce-3911002.nexus
+991	DNA	109	538	184	218	GTR+MERGE	uce-3911005.nexus
+992	DNA	130	407	190	133	GTR+MERGE	uce-3911011.nexus
+993	DNA	123	384	64	235	GTR+MERGE	uce-3911014.nexus
+994	DNA	75	231	22	124	GTR+MERGE	uce-3911017.nexus
+995	DNA	111	555	165	230	GTR+MERGE	uce-3911025.nexus
+996	DNA	129	384	93	214	GTR+MERGE	uce-3911031.nexus
+997	DNA	132	425	70	288	GTR+MERGE	uce-3911052.nexus
+998	DNA	125	403	124	211	GTR+MERGE	uce-3911063.nexus
+999	DNA	71	195	6	173	GTR+MERGE	uce-3911072.nexus
+1000	DNA	98	402	64	296	GTR+MERGE	uce-3911086.nexus
+1001	DNA	84	739	89	400	GTR+MERGE	uce-3911094.nexus
+1002	DNA	125	577	201	285	GTR+MERGE	uce-3911099.nexus
+1003	DNA	92	559	184	244	GTR+MERGE	uce-391110.nexus
+1004	DNA	127	448	123	269	GTR+MERGE	uce-3911102.nexus
+1005	DNA	129	353	122	178	GTR+MERGE	uce-3911105.nexus
+1006	DNA	117	591	137	352	GTR+MERGE	uce-3911107.nexus
+1007	DNA	94	632	114	375	GTR+MERGE	uce-3911124.nexus
+1008	DNA	106	585	237	282	GTR+MERGE	uce-3911125.nexus
+1009	DNA	139	551	152	251	GTR+MERGE	uce-3911137.nexus
+1010	DNA	130	479	80	335	GTR+MERGE	uce-3911138.nexus
+1011	DNA	116	378	139	203	GTR+MERGE	uce-3911143.nexus
+1012	DNA	129	530	110	326	GTR+MERGE	uce-3911145.nexus
+1013	DNA	116	397	94	211	GTR+MERGE	uce-391116.nexus
+1014	DNA	126	439	105	252	GTR+MERGE	uce-3911161.nexus
+1015	DNA	114	472	167	161	GTR+MERGE	uce-3911164.nexus
+1016	DNA	98	580	106	352	GTR+MERGE	uce-3911172.nexus
+1017	DNA	108	569	46	429	GTR+MERGE	uce-3911175.nexus
+1018	DNA	82	210	55	150	GTR+MERGE	uce-3911198.nexus
+1019	DNA	113	630	295	221	GTR+MERGE	uce-391120.nexus
+1020	DNA	112	492	84	263	GTR+MERGE	uce-3911200.nexus
+1021	DNA	127	561	186	291	GTR+MERGE	uce-3911202.nexus
+1022	DNA	118	522	146	257	GTR+MERGE	uce-3911216.nexus
+1023	DNA	114	357	91	249	GTR+MERGE	uce-3911230.nexus
+1024	DNA	128	352	104	123	GTR+MERGE	uce-3911247.nexus
+1025	DNA	113	623	82	362	GTR+MERGE	uce-3911250.nexus
+1026	DNA	123	383	112	220	GTR+MERGE	uce-3911254.nexus
+1027	DNA	126	381	98	189	GTR+MERGE	uce-3911256.nexus
+1028	DNA	124	417	34	282	GTR+MERGE	uce-3911271.nexus
+1029	DNA	130	761	161	504	GTR+MERGE	uce-3911279.nexus
+1030	DNA	95	326	104	177	GTR+MERGE	uce-3911281.nexus
+1031	DNA	122	423	116	247	GTR+MERGE	uce-3911284.nexus
+1032	DNA	113	338	105	220	GTR+MERGE	uce-3911294.nexus
+1033	DNA	109	407	70	225	GTR+MERGE	uce-3911297.nexus
+1034	DNA	111	532	200	215	GTR+MERGE	uce-39113.nexus
+1035	DNA	109	637	161	412	GTR+MERGE	uce-3911301.nexus
+1036	DNA	117	511	159	262	GTR+MERGE	uce-3911315.nexus
+1037	DNA	99	389	98	142	GTR+MERGE	uce-3911316.nexus
+1038	DNA	112	340	113	207	GTR+MERGE	uce-3911325.nexus
+1039	DNA	125	642	312	211	GTR+MERGE	uce-3911326.nexus
+1040	DNA	107	554	141	303	GTR+MERGE	uce-3911327.nexus
+1041	DNA	87	527	116	303	GTR+MERGE	uce-3911329.nexus
+1042	DNA	127	778	255	449	GTR+MERGE	uce-3911353.nexus
+1043	DNA	129	422	90	284	GTR+MERGE	uce-3911354.nexus
+1044	DNA	115	562	196	298	GTR+MERGE	uce-3911384.nexus
+1045	DNA	94	378	63	228	GTR+MERGE	uce-3911386.nexus
+1046	DNA	115	518	161	310	GTR+MERGE	uce-3911399.nexus
+1047	DNA	114	514	173	291	GTR+MERGE	uce-39114.nexus
+1048	DNA	125	455	155	255	GTR+MERGE	uce-3911411.nexus
+1049	DNA	115	370	29	222	GTR+MERGE	uce-3911419.nexus
+1050	DNA	135	610	119	362	GTR+MERGE	uce-391142.nexus
+1051	DNA	102	439	149	250	GTR+MERGE	uce-3911424.nexus
+1052	DNA	123	481	137	245	GTR+MERGE	uce-3911430.nexus
+1053	DNA	126	521	190	203	GTR+MERGE	uce-3911447.nexus
+1054	DNA	104	456	82	277	GTR+MERGE	uce-3911455.nexus
+1055	DNA	113	541	190	279	GTR+MERGE	uce-3911457.nexus
+1056	DNA	108	385	46	275	GTR+MERGE	uce-391146.nexus
+1057	DNA	111	585	191	270	GTR+MERGE	uce-3911462.nexus
+1058	DNA	121	463	79	297	GTR+MERGE	uce-3911478.nexus
+1059	DNA	100	341	50	255	GTR+MERGE	uce-3911489.nexus
+1060	DNA	113	398	29	348	GTR+MERGE	uce-391149.nexus
+1061	DNA	136	612	209	287	GTR+MERGE	uce-3911490.nexus
+1062	DNA	75	215	10	199	GTR+MERGE	uce-3911491.nexus
+1063	DNA	125	455	161	223	GTR+MERGE	uce-3911499.nexus
+1064	DNA	127	388	97	208	GTR+MERGE	uce-3911502.nexus
+1065	DNA	82	198	7	172	GTR+MERGE	uce-3911507.nexus
+1066	DNA	120	538	200	252	GTR+MERGE	uce-3911514.nexus
+1067	DNA	94	575	203	243	GTR+MERGE	uce-391152.nexus
+1068	DNA	118	482	231	220	GTR+MERGE	uce-3911522.nexus
+1069	DNA	112	594	167	251	GTR+MERGE	uce-3911526.nexus
+1070	DNA	93	539	62	392	GTR+MERGE	uce-3911528.nexus
+1071	DNA	122	485	105	341	GTR+MERGE	uce-3911529.nexus
+1072	DNA	104	422	134	224	GTR+MERGE	uce-3911535.nexus
+1073	DNA	127	866	216	581	GTR+MERGE	uce-3911540.nexus
+1074	DNA	106	542	265	149	GTR+MERGE	uce-3911544.nexus
+1075	DNA	134	623	226	239	GTR+MERGE	uce-3911559.nexus
+1076	DNA	103	434	38	377	GTR+MERGE	uce-3911564.nexus
+1077	DNA	118	661	169	340	GTR+MERGE	uce-391157.nexus
+1078	DNA	127	414	123	248	GTR+MERGE	uce-3911582.nexus
+1079	DNA	122	642	223	221	GTR+MERGE	uce-3911587.nexus
+1080	DNA	109	588	68	384	GTR+MERGE	uce-3911588.nexus
+1081	DNA	125	574	169	370	GTR+MERGE	uce-391159.nexus
+1082	DNA	131	508	173	278	GTR+MERGE	uce-3911595.nexus
+1083	DNA	126	473	102	309	GTR+MERGE	uce-3911601.nexus
+1084	DNA	111	636	263	218	GTR+MERGE	uce-3911604.nexus
+1085	DNA	115	465	39	334	GTR+MERGE	uce-3911605.nexus
+1086	DNA	112	484	117	243	GTR+MERGE	uce-3911612.nexus
+1087	DNA	120	297	39	182	GTR+MERGE	uce-3911614.nexus
+1088	DNA	130	496	173	227	GTR+MERGE	uce-3911615.nexus
+1089	DNA	124	415	156	190	GTR+MERGE	uce-3911616.nexus
+1090	DNA	126	544	37	366	GTR+MERGE	uce-3911631.nexus
+1091	DNA	121	466	168	193	GTR+MERGE	uce-3911644.nexus
+1092	DNA	124	484	167	215	GTR+MERGE	uce-3911645.nexus
+1093	DNA	116	527	199	246	GTR+MERGE	uce-3911662.nexus
+1094	DNA	133	410	124	237	GTR+MERGE	uce-3911674.nexus
+1095	DNA	133	542	106	340	GTR+MERGE	uce-3911676.nexus
+1096	DNA	131	584	165	307	GTR+MERGE	uce-3911685.nexus
+1097	DNA	122	363	86	220	GTR+MERGE	uce-3911692.nexus
+1098	DNA	113	371	123	135	GTR+MERGE	uce-3911695.nexus
+1099	DNA	115	513	94	263	GTR+MERGE	uce-391170.nexus
+1100	DNA	126	481	187	264	GTR+MERGE	uce-3911703.nexus
+1101	DNA	123	560	140	238	GTR+MERGE	uce-3911707.nexus
+1102	DNA	126	504	41	331	GTR+MERGE	uce-3911715.nexus
+1103	DNA	116	750	134	418	GTR+MERGE	uce-3911721.nexus
+1104	DNA	101	530	195	268	GTR+MERGE	uce-3911730.nexus
+1105	DNA	115	287	59	188	GTR+MERGE	uce-3911738.nexus
+1106	DNA	102	471	113	290	GTR+MERGE	uce-3911746.nexus
+1107	DNA	129	482	34	328	GTR+MERGE	uce-3911748.nexus
+1108	DNA	125	532	196	229	GTR+MERGE	uce-3911752.nexus
+1109	DNA	128	495	157	267	GTR+MERGE	uce-3911763.nexus
+1110	DNA	71	923	166	483	GTR+MERGE	uce-3911784.nexus
+1111	DNA	132	512	146	268	GTR+MERGE	uce-3911788.nexus
+1112	DNA	101	600	174	310	GTR+MERGE	uce-3911793.nexus
+1113	DNA	127	479	68	370	GTR+MERGE	uce-3911797.nexus
+1114	DNA	106	538	146	334	GTR+MERGE	uce-3911798.nexus
+1115	DNA	109	473	187	198	GTR+MERGE	uce-3911799.nexus
+1116	DNA	126	472	151	232	GTR+MERGE	uce-3911805.nexus
+1117	DNA	110	254	31	192	GTR+MERGE	uce-3911808.nexus
+1118	DNA	131	385	65	288	GTR+MERGE	uce-3911811.nexus
+1119	DNA	124	589	184	323	GTR+MERGE	uce-3911817.nexus
+1120	DNA	112	261	50	186	GTR+MERGE	uce-3911828.nexus
+1121	DNA	119	501	184	169	GTR+MERGE	uce-3911829.nexus
+1122	DNA	106	730	169	362	GTR+MERGE	uce-3911831.nexus
+1123	DNA	130	492	209	244	GTR+MERGE	uce-3911833.nexus
+1124	DNA	128	465	174	258	GTR+MERGE	uce-391185.nexus
+1125	DNA	114	424	153	211	GTR+MERGE	uce-3911854.nexus
+1126	DNA	104	411	93	170	GTR+MERGE	uce-3911858.nexus
+1127	DNA	119	556	99	351	GTR+MERGE	uce-3911860.nexus
+1128	DNA	122	604	192	317	GTR+MERGE	uce-3911868.nexus
+1129	DNA	127	549	146	281	GTR+MERGE	uce-3911877.nexus
+1130	DNA	123	344	81	242	GTR+MERGE	uce-3911882.nexus
+1131	DNA	124	491	131	262	GTR+MERGE	uce-3911883.nexus
+1132	DNA	118	282	36	211	GTR+MERGE	uce-3911888.nexus
+1133	DNA	128	461	141	218	GTR+MERGE	uce-3911890.nexus
+1134	DNA	95	250	51	185	GTR+MERGE	uce-3911903.nexus
+1135	DNA	110	365	24	244	GTR+MERGE	uce-3911909.nexus
+1136	DNA	120	280	52	183	GTR+MERGE	uce-3911924.nexus
+1137	DNA	108	348	60	267	GTR+MERGE	uce-3911925.nexus
+1138	DNA	108	594	98	313	GTR+MERGE	uce-3911936.nexus
+1139	DNA	71	283	40	229	GTR+MERGE	uce-3911949.nexus
+1140	DNA	115	422	122	243	GTR+MERGE	uce-391195.nexus
+1141	DNA	126	401	119	245	GTR+MERGE	uce-3911959.nexus
+1142	DNA	78	307	86	197	GTR+MERGE	uce-391196.nexus
+1143	DNA	129	436	130	191	GTR+MERGE	uce-3911963.nexus
+1144	DNA	129	470	92	279	GTR+MERGE	uce-3911968.nexus
+1145	DNA	114	349	46	274	GTR+MERGE	uce-3911972.nexus
+1146	DNA	110	246	16	176	GTR+MERGE	uce-3911975.nexus
+1147	DNA	131	498	95	304	GTR+MERGE	uce-3911977.nexus
+1148	DNA	107	550	115	326	GTR+MERGE	uce-3911990.nexus
+1149	DNA	111	609	121	282	GTR+MERGE	uce-3911993.nexus
+1150	DNA	108	643	166	395	GTR+MERGE	uce-3911994.nexus
+1151	DNA	136	563	231	199	GTR+MERGE	uce-393.nexus
+1152	DNA	109	294	21	238	GTR+MERGE	uce-399.nexus
+1153	DNA	113	481	151	218	GTR+MERGE	uce-4.nexus
+1154	DNA	122	349	122	145	GTR+MERGE	uce-404.nexus
+1155	DNA	101	310	14	254	GTR+MERGE	uce-407.nexus
+1156	DNA	123	489	123	264	GTR+MERGE	uce-410.nexus
+1157	DNA	119	492	190	234	GTR+MERGE	uce-411.nexus
+1158	DNA	129	311	71	213	GTR+MERGE	uce-415.nexus
+1159	DNA	107	457	160	163	GTR+MERGE	uce-416.nexus
+1160	DNA	112	332	54	236	GTR+MERGE	uce-435.nexus
+1161	DNA	132	590	179	319	GTR+MERGE	uce-442.nexus
+1162	DNA	130	461	188	219	GTR+MERGE	uce-444.nexus
+1163	DNA	122	469	177	223	GTR+MERGE	uce-463.nexus
+1164	DNA	113	324	26	194	GTR+MERGE	uce-468.nexus
+1165	DNA	101	211	17	154	GTR+MERGE	uce-47.nexus
+1166	DNA	116	443	137	233	GTR+MERGE	uce-471.nexus
+1167	DNA	118	461	134	227	GTR+MERGE	uce-477.nexus
+1168	DNA	96	621	152	295	GTR+MERGE	uce-482.nexus
+1169	DNA	137	558	142	326	GTR+MERGE	uce-524.nexus
+1170	DNA	107	508	192	213	GTR+MERGE	uce-538.nexus
+1171	DNA	127	403	26	299	GTR+MERGE	uce-540.nexus
+1172	DNA	125	550	105	359	GTR+MERGE	uce-573.nexus
+1173	DNA	122	450	176	189	GTR+MERGE	uce-579.nexus
+1174	DNA	128	466	179	196	GTR+MERGE	uce-581.nexus
+1175	DNA	121	420	40	362	GTR+MERGE	uce-597.nexus
+1176	DNA	112	292	57	181	GTR+MERGE	uce-599.nexus
+1177	DNA	128	552	100	337	GTR+MERGE	uce-6.nexus
+1178	DNA	123	466	101	270	GTR+MERGE	uce-624.nexus
+1179	DNA	123	426	201	183	GTR+MERGE	uce-625.nexus
+1180	DNA	121	464	67	211	GTR+MERGE	uce-630.nexus
+1181	DNA	117	460	112	318	GTR+MERGE	uce-632.nexus
+1182	DNA	94	327	26	237	GTR+MERGE	uce-633.nexus
+1183	DNA	104	487	165	242	GTR+MERGE	uce-645.nexus
+1184	DNA	115	694	209	445	GTR+MERGE	uce-650.nexus
+1185	DNA	130	522	126	317	GTR+MERGE	uce-652.nexus
+1186	DNA	104	541	175	251	GTR+MERGE	uce-657.nexus
+1187	DNA	114	534	193	310	GTR+MERGE	uce-661.nexus
+1188	DNA	117	464	126	270	GTR+MERGE	uce-663.nexus
+1189	DNA	80	462	83	213	GTR+MERGE	uce-667.nexus
+1190	DNA	135	561	150	337	GTR+MERGE	uce-669.nexus
+1191	DNA	117	486	131	241	GTR+MERGE	uce-677.nexus
+1192	DNA	130	370	57	268	GTR+MERGE	uce-679.nexus
+1193	DNA	126	516	224	214	GTR+MERGE	uce-695.nexus
+1194	DNA	123	395	135	185	GTR+MERGE	uce-699.nexus
+1195	DNA	110	488	136	247	GTR+MERGE	uce-703.nexus
+1196	DNA	116	478	160	184	GTR+MERGE	uce-709.nexus
+1197	DNA	88	588	66	353	GTR+MERGE	uce-711.nexus
+1198	DNA	104	224	55	133	GTR+MERGE	uce-718.nexus
+1199	DNA	105	548	121	390	GTR+MERGE	uce-729.nexus
+1200	DNA	116	370	48	252	GTR+MERGE	uce-730.nexus
+1201	DNA	126	815	213	513	GTR+MERGE	uce-731.nexus
+1202	DNA	128	771	276	365	GTR+MERGE	uce-743.nexus
+1203	DNA	124	376	113	220	GTR+MERGE	uce-753.nexus
+1204	DNA	110	488	225	197	GTR+MERGE	uce-756.nexus
+1205	DNA	117	520	219	219	GTR+MERGE	uce-759.nexus
+1206	DNA	131	631	157	282	GTR+MERGE	uce-76.nexus
+1207	DNA	119	455	67	324	GTR+MERGE	uce-760.nexus
+1208	DNA	117	589	233	231	GTR+MERGE	uce-773.nexus
+1209	DNA	122	347	67	186	GTR+MERGE	uce-780.nexus
+1210	DNA	120	514	167	224	GTR+MERGE	uce-781.nexus
+1211	DNA	118	426	88	237	GTR+MERGE	uce-783.nexus
+1212	DNA	127	441	59	313	GTR+MERGE	uce-784.nexus
+1213	DNA	102	363	106	191	GTR+MERGE	uce-798.nexus
+1214	DNA	129	331	70	200	GTR+MERGE	uce-8.nexus
+1215	DNA	112	578	93	385	GTR+MERGE	uce-805.nexus
+1216	DNA	116	221	44	165	GTR+MERGE	uce-806.nexus
+1217	DNA	128	514	131	308	GTR+MERGE	uce-813.nexus
+1218	DNA	93	370	106	219	GTR+MERGE	uce-815.nexus
+1219	DNA	127	382	99	195	GTR+MERGE	uce-816.nexus
+1220	DNA	132	431	43	319	GTR+MERGE	uce-819.nexus
+1221	DNA	111	214	31	139	GTR+MERGE	uce-821.nexus
+1222	DNA	121	486	85	372	GTR+MERGE	uce-826.nexus
+1223	DNA	123	452	122	247	GTR+MERGE	uce-830.nexus
+1224	DNA	112	521	94	278	GTR+MERGE	uce-835.nexus
+1225	DNA	128	551	98	323	GTR+MERGE	uce-851.nexus
+1226	DNA	115	508	123	304	GTR+MERGE	uce-857.nexus
+1227	DNA	132	608	163	323	GTR+MERGE	uce-889.nexus
+1228	DNA	131	510	164	207	GTR+MERGE	uce-890.nexus
+1229	DNA	107	525	167	263	GTR+MERGE	uce-896.nexus
+1230	DNA	82	279	48	206	GTR+MERGE	uce-897.nexus
+1231	DNA	127	490	197	209	GTR+MERGE	uce-91.nexus
+1232	DNA	95	269	64	142	GTR+MERGE	uce-913.nexus
+1233	DNA	103	509	145	344	GTR+MERGE	uce-926.nexus
+1234	DNA	71	218	24	156	GTR+MERGE	uce-94.nexus
+1235	DNA	101	342	108	176	GTR+MERGE	uce-945.nexus
+1236	DNA	126	521	161	241	GTR+MERGE	uce-948.nexus
+1237	DNA	118	613	214	284	GTR+MERGE	uce-952.nexus
+1238	DNA	128	596	177	296	GTR+MERGE	uce-967.nexus
+1239	DNA	117	626	130	428	GTR+MERGE	uce-970.nexus
+1240	DNA	124	537	238	188	GTR+MERGE	uce-98.nexus
+1241	DNA	73	198	42	111	GTR+MERGE	uce-987.nexus
+1242	DNA	125	548	210	286	GTR+MERGE	uce-990101.nexus
+1243	DNA	98	500	180	256	GTR+MERGE	uce-9901015.nexus
+1244	DNA	125	502	142	252	GTR+MERGE	uce-9901039.nexus
+1245	DNA	128	417	160	183	GTR+MERGE	uce-9901043.nexus
+1246	DNA	121	398	79	276	GTR+MERGE	uce-9901047.nexus
+1247	DNA	118	582	192	314	GTR+MERGE	uce-9901095.nexus
+1248	DNA	117	328	81	204	GTR+MERGE	uce-9901119.nexus
+1249	DNA	116	506	178	217	GTR+MERGE	uce-9901141.nexus
+1250	DNA	122	534	171	263	GTR+MERGE	uce-9901185.nexus
+1251	DNA	73	241	44	144	GTR+MERGE	uce-9901208.nexus
+1252	DNA	126	451	114	281	GTR+MERGE	uce-9901217.nexus
+1253	DNA	120	550	200	230	GTR+MERGE	uce-9901226.nexus
+1254	DNA	106	583	278	174	GTR+MERGE	uce-9901234.nexus
+1255	DNA	122	561	155	253	GTR+MERGE	uce-9901241.nexus
+1256	DNA	89	218	33	120	GTR+MERGE	uce-9901286.nexus
+1257	DNA	105	433	264	130	GTR+MERGE	uce-9901303.nexus
+1258	DNA	120	536	95	344	GTR+MERGE	uce-9901308.nexus
+1259	DNA	107	392	140	155	GTR+MERGE	uce-9901325.nexus
+1260	DNA	114	526	152	253	GTR+MERGE	uce-990136.nexus
+1261	DNA	101	413	257	85	GTR+MERGE	uce-9901382.nexus
+1262	DNA	126	504	219	145	GTR+MERGE	uce-990142.nexus
+1263	DNA	124	404	115	255	GTR+MERGE	uce-9901424.nexus
+1264	DNA	90	269	74	144	GTR+MERGE	uce-9901427.nexus
+1265	DNA	101	473	191	250	GTR+MERGE	uce-9901432.nexus
+1266	DNA	125	502	84	300	GTR+MERGE	uce-9901433.nexus
+1267	DNA	120	538	171	248	GTR+MERGE	uce-9901434.nexus
+1268	DNA	122	365	109	188	GTR+MERGE	uce-9901437.nexus
+1269	DNA	123	465	162	268	GTR+MERGE	uce-9901447.nexus
+1270	DNA	107	380	146	197	GTR+MERGE	uce-9901451.nexus
+1271	DNA	127	467	82	293	GTR+MERGE	uce-9901461.nexus
+1272	DNA	125	509	158	273	GTR+MERGE	uce-9901465.nexus
+1273	DNA	124	548	196	271	GTR+MERGE	uce-9901479.nexus
+1274	DNA	115	420	87	304	GTR+MERGE	uce-9901490.nexus
+1275	DNA	104	372	75	243	GTR+MERGE	uce-9901493.nexus
+1276	DNA	115	536	178	236	GTR+MERGE	uce-990150.nexus
+1277	DNA	123	455	171	186	GTR+MERGE	uce-9901517.nexus
+1278	DNA	126	397	106	219	GTR+MERGE	uce-9901549.nexus
+1279	DNA	119	441	152	237	GTR+MERGE	uce-9901553.nexus
+1280	DNA	110	341	118	134	GTR+MERGE	uce-9901580.nexus
+1281	DNA	87	522	155	297	GTR+MERGE	uce-9901590.nexus
+1282	DNA	109	408	110	259	GTR+MERGE	uce-9901596.nexus
+1283	DNA	79	220	71	115	GTR+MERGE	uce-9901613.nexus
+1284	DNA	130	502	185	264	GTR+MERGE	uce-9901622.nexus
+1285	DNA	132	429	112	240	GTR+MERGE	uce-9901635.nexus
+1286	DNA	118	407	152	176	GTR+MERGE	uce-990167.nexus
+1287	DNA	74	240	41	168	GTR+MERGE	uce-9901674.nexus
+1288	DNA	111	539	203	213	GTR+MERGE	uce-9901680.nexus
+1289	DNA	122	412	152	202	GTR+MERGE	uce-9901697.nexus
+1290	DNA	106	455	154	187	GTR+MERGE	uce-9901702.nexus
+1291	DNA	128	448	122	181	GTR+MERGE	uce-9901707.nexus
+1292	DNA	128	457	72	276	GTR+MERGE	uce-9901718.nexus
+1293	DNA	132	476	82	327	GTR+MERGE	uce-9901719.nexus
+1294	DNA	104	257	59	169	GTR+MERGE	uce-9901733.nexus
+1295	DNA	116	451	125	254	GTR+MERGE	uce-9901734.nexus
+1296	DNA	118	527	214	262	GTR+MERGE	uce-9901736.nexus
+1297	DNA	123	427	184	134	GTR+MERGE	uce-9901739.nexus
+1298	DNA	130	380	80	212	GTR+MERGE	uce-9901749.nexus
+1299	DNA	119	479	126	252	GTR+MERGE	uce-990180.nexus
+1300	DNA	118	262	59	149	GTR+MERGE	uce-990199.nexus
+1301	DNA	120	420	114	163	GTR+MERGE	uce-99021914.nexus
+1302	DNA	119	573	274	210	GTR+MERGE	uce-99021919.nexus
+1303	DNA	119	875	280	361	GTR+MERGE	uce-99021920.nexus
+1304	DNA	114	475	176	250	GTR+MERGE	uce-99021935.nexus
+1305	DNA	109	478	104	312	GTR+MERGE	uce-99021997.nexus
+1306	DNA	124	549	77	405	GTR+MERGE	uce-990230.nexus
+1307	DNA	90	215	32	149	GTR+MERGE	uce-990240.nexus
+1308	DNA	127	471	112	250	GTR+MERGE	uce-990252.nexus
+1309	DNA	91	523	209	186	GTR+MERGE	uce-99027118.nexus
+1310	DNA	117	261	52	167	GTR+MERGE	uce-990271701.nexus
+1311	DNA	103	400	162	156	GTR+MERGE	uce-990272316.nexus
+1312	DNA	109	261	50	149	GTR+MERGE	uce-990272371.nexus
+1313	DNA	91	466	183	245	GTR+MERGE	uce-990272485.nexus
+1314	DNA	98	338	76	226	GTR+MERGE	uce-990272486.nexus
+1315	DNA	122	652	211	332	GTR+MERGE	uce-990272495.nexus
+1316	DNA	112	437	74	215	GTR+MERGE	uce-99027519.nexus
+1317	DNA	106	489	195	262	GTR+MERGE	uce-99027712.nexus
+1318	DNA	124	297	102	163	GTR+MERGE	uce-990282080.nexus
+1319	DNA	128	414	86	250	GTR+MERGE	uce-990282763.nexus
+1320	DNA	103	257	69	167	GTR+MERGE	uce-990283144.nexus
+1321	DNA	134	497	129	275	GTR+MERGE	uce-990283790.nexus
+1322	DNA	130	386	52	238	GTR+MERGE	uce-990284045.nexus
+1323	DNA	103	492	133	271	GTR+MERGE	uce-990284308.nexus
+1324	DNA	117	486	87	348	GTR+MERGE	uce-990284669.nexus
+1325	DNA	114	405	91	220	GTR+MERGE	uce-990285527.nexus
+1326	DNA	127	490	164	234	GTR+MERGE	uce-99028567.nexus
+1327	DNA	122	615	91	455	GTR+MERGE	uce-990286040.nexus
+1328	DNA	132	526	177	256	GTR+MERGE	uce-990286523.nexus
+1329	DNA	120	814	212	433	GTR+MERGE	uce-990286819.nexus
+1330	DNA	113	1039	85	722	GTR+MERGE	uce-990286931.nexus
+1331	DNA	87	256	91	95	GTR+MERGE	uce-990287.nexus
+1332	DNA	107	287	85	147	GTR+MERGE	uce-990287027.nexus
+1333	DNA	89	212	17	172	GTR+MERGE	uce-990287079.nexus
+1334	DNA	99	564	198	247	GTR+MERGE	uce-990287217.nexus
+1335	DNA	129	729	203	323	GTR+MERGE	uce-990287495.nexus
+1336	DNA	116	504	134	286	GTR+MERGE	uce-990287507.nexus
+1337	DNA	129	578	152	303	GTR+MERGE	uce-990287782.nexus
+1338	DNA	115	247	33	183	GTR+MERGE	uce-99028804.nexus
+1339	DNA	125	666	177	419	GTR+MERGE	uce-99028944.nexus
+1340	DNA	127	517	145	254	GTR+MERGE	uce-990289938.nexus
+1341	DNA	117	581	179	258	GTR+MERGE	uce-990291004.nexus
+1342	DNA	110	508	146	194	GTR+MERGE	uce-990291030.nexus
+1343	DNA	116	438	103	240	GTR+MERGE	uce-990291039.nexus
+1344	DNA	126	482	92	327	GTR+MERGE	uce-99029107.nexus
+1345	DNA	111	465	182	190	GTR+MERGE	uce-990291093.nexus
+1346	DNA	129	496	182	278	GTR+MERGE	uce-99029113.nexus
+1347	DNA	107	393	118	199	GTR+MERGE	uce-990291152.nexus
+1348	DNA	127	396	55	243	GTR+MERGE	uce-990291255.nexus
+1349	DNA	95	472	93	280	GTR+MERGE	uce-990291257.nexus
+1350	DNA	109	509	163	286	GTR+MERGE	uce-990291258.nexus
+1351	DNA	88	578	243	248	GTR+MERGE	uce-990291261.nexus
+1352	DNA	97	382	85	235	GTR+MERGE	uce-990291283.nexus
+1353	DNA	117	536	152	264	GTR+MERGE	uce-990291284.nexus
+1354	DNA	119	515	199	227	GTR+MERGE	uce-990291289.nexus
+1355	DNA	106	540	107	370	GTR+MERGE	uce-990291311.nexus
+1356	DNA	97	478	173	195	GTR+MERGE	uce-990291312.nexus
+1357	DNA	92	636	89	344	GTR+MERGE	uce-990291353.nexus
+1358	DNA	119	476	125	271	GTR+MERGE	uce-990291364.nexus
+1359	DNA	85	217	18	161	GTR+MERGE	uce-99029138.nexus
+1360	DNA	109	509	131	283	GTR+MERGE	uce-990291416.nexus
+1361	DNA	83	564	122	352	GTR+MERGE	uce-990291417.nexus
+1362	DNA	122	383	39	303	GTR+MERGE	uce-990291424.nexus
+1363	DNA	129	551	142	219	GTR+MERGE	uce-990291430.nexus
+1364	DNA	88	216	11	174	GTR+MERGE	uce-990291456.nexus
+1365	DNA	112	527	249	213	GTR+MERGE	uce-990291466.nexus
+1366	DNA	135	361	121	177	GTR+MERGE	uce-990291493.nexus
+1367	DNA	130	570	255	166	GTR+MERGE	uce-990291517.nexus
+1368	DNA	115	509	165	203	GTR+MERGE	uce-990291528.nexus
+1369	DNA	93	314	33	203	GTR+MERGE	uce-990291536.nexus
+1370	DNA	113	593	177	295	GTR+MERGE	uce-990291555.nexus
+1371	DNA	128	543	141	314	GTR+MERGE	uce-990291573.nexus
+1372	DNA	130	494	255	164	GTR+MERGE	uce-990291584.nexus
+1373	DNA	108	594	86	382	GTR+MERGE	uce-990291601.nexus
+1374	DNA	125	492	162	204	GTR+MERGE	uce-990291657.nexus
+1375	DNA	119	298	61	180	GTR+MERGE	uce-990291675.nexus
+1376	DNA	122	459	82	253	GTR+MERGE	uce-990291695.nexus
+1377	DNA	127	449	78	263	GTR+MERGE	uce-990291733.nexus
+1378	DNA	122	514	76	293	GTR+MERGE	uce-990291766.nexus
+1379	DNA	124	482	131	273	GTR+MERGE	uce-990291786.nexus
+1380	DNA	92	488	200	111	GTR+MERGE	uce-990291787.nexus
+1381	DNA	111	444	104	287	GTR+MERGE	uce-990291795.nexus
+1382	DNA	131	458	135	230	GTR+MERGE	uce-990291805.nexus
+1383	DNA	127	442	144	234	GTR+MERGE	uce-990291828.nexus
+1384	DNA	109	266	17	210	GTR+MERGE	uce-990291871.nexus
+1385	DNA	128	291	43	199	GTR+MERGE	uce-990291922.nexus
+1386	DNA	119	290	69	165	GTR+MERGE	uce-990291949.nexus
+1387	DNA	131	530	129	342	GTR+MERGE	uce-990291951.nexus
+1388	DNA	137	566	150	266	GTR+MERGE	uce-990291965.nexus
+1389	DNA	109	411	84	273	GTR+MERGE	uce-990291980.nexus
+1390	DNA	117	517	146	308	GTR+MERGE	uce-990292016.nexus
+1391	DNA	126	503	196	205	GTR+MERGE	uce-990292019.nexus
+1392	DNA	136	512	84	302	GTR+MERGE	uce-990292026.nexus
+1393	DNA	119	456	198	146	GTR+MERGE	uce-990292074.nexus
+1394	DNA	114	279	55	90	GTR+MERGE	uce-990292092.nexus
+1395	DNA	124	361	82	243	GTR+MERGE	uce-990292112.nexus
+1396	DNA	107	428	162	170	GTR+MERGE	uce-990292146.nexus
+1397	DNA	112	413	89	279	GTR+MERGE	uce-990292153.nexus
+1398	DNA	110	246	56	163	GTR+MERGE	uce-990292215.nexus
+1399	DNA	126	546	201	261	GTR+MERGE	uce-990292271.nexus
+1400	DNA	120	608	256	251	GTR+MERGE	uce-990292297.nexus
+1401	DNA	107	478	142	264	GTR+MERGE	uce-990292325.nexus
+1402	DNA	131	766	243	381	GTR+MERGE	uce-990292334.nexus
+1403	DNA	106	852	277	428	GTR+MERGE	uce-990292336.nexus
+1404	DNA	121	480	31	235	GTR+MERGE	uce-99029235.nexus
+1405	DNA	96	341	57	238	GTR+MERGE	uce-990292364.nexus
+1406	DNA	125	531	155	221	GTR+MERGE	uce-990292372.nexus
+1407	DNA	131	540	145	270	GTR+MERGE	uce-990292417.nexus
+1408	DNA	109	578	157	222	GTR+MERGE	uce-990292422.nexus
+1409	DNA	89	220	13	175	GTR+MERGE	uce-990292441.nexus
+1410	DNA	106	421	168	232	GTR+MERGE	uce-990292461.nexus
+1411	DNA	116	444	171	208	GTR+MERGE	uce-990292467.nexus
+1412	DNA	111	410	162	188	GTR+MERGE	uce-990292468.nexus
+1413	DNA	127	540	156	271	GTR+MERGE	uce-990292469.nexus
+1414	DNA	129	587	218	246	GTR+MERGE	uce-990292489.nexus
+1415	DNA	123	256	50	181	GTR+MERGE	uce-990292490.nexus
+1416	DNA	116	518	170	276	GTR+MERGE	uce-990292500.nexus
+1417	DNA	126	398	118	141	GTR+MERGE	uce-990292506.nexus
+1418	DNA	137	484	83	276	GTR+MERGE	uce-990292528.nexus
+1419	DNA	129	414	165	185	GTR+MERGE	uce-990292576.nexus
+1420	DNA	130	362	141	171	GTR+MERGE	uce-990292638.nexus
+1421	DNA	125	350	133	183	GTR+MERGE	uce-990292643.nexus
+1422	DNA	125	375	123	168	GTR+MERGE	uce-99029266.nexus
+1423	DNA	126	465	178	253	GTR+MERGE	uce-990292682.nexus
+1424	DNA	101	664	63	419	GTR+MERGE	uce-990292714.nexus
+1425	DNA	93	240	23	179	GTR+MERGE	uce-99029272.nexus
+1426	DNA	130	576	211	239	GTR+MERGE	uce-99029273.nexus
+1427	DNA	120	383	51	275	GTR+MERGE	uce-990292755.nexus
+1428	DNA	114	595	226	207	GTR+MERGE	uce-990292770.nexus
+1429	DNA	130	596	153	343	GTR+MERGE	uce-990292782.nexus
+1430	DNA	119	578	168	335	GTR+MERGE	uce-99029279.nexus
+1431	DNA	110	428	124	262	GTR+MERGE	uce-990292857.nexus
+1432	DNA	119	425	106	277	GTR+MERGE	uce-990292873.nexus
+1433	DNA	74	528	33	426	GTR+MERGE	uce-990292913.nexus
+1434	DNA	122	269	35	189	GTR+MERGE	uce-990292922.nexus
+1435	DNA	108	488	196	178	GTR+MERGE	uce-990292925.nexus
+1436	DNA	111	441	163	110	GTR+MERGE	uce-990292953.nexus
+1437	DNA	85	449	143	208	GTR+MERGE	uce-990293012.nexus
+1438	DNA	106	415	108	262	GTR+MERGE	uce-990293013.nexus
+1439	DNA	84	545	137	308	GTR+MERGE	uce-990293014.nexus
+1440	DNA	121	601	128	316	GTR+MERGE	uce-990293066.nexus
+1441	DNA	110	432	54	272	GTR+MERGE	uce-990293079.nexus
+1442	DNA	136	611	206	328	GTR+MERGE	uce-990293126.nexus
+1443	DNA	131	490	189	224	GTR+MERGE	uce-990293128.nexus
+1444	DNA	119	436	189	172	GTR+MERGE	uce-990293141.nexus
+1445	DNA	124	437	149	188	GTR+MERGE	uce-990293160.nexus
+1446	DNA	130	517	140	307	GTR+MERGE	uce-990293179.nexus
+1447	DNA	98	334	68	213	GTR+MERGE	uce-990293230.nexus
+1448	DNA	111	576	166	298	GTR+MERGE	uce-990293287.nexus
+1449	DNA	123	320	115	171	GTR+MERGE	uce-99029334.nexus
+1450	DNA	76	203	25	170	GTR+MERGE	uce-990293405.nexus
+1451	DNA	126	412	152	182	GTR+MERGE	uce-990293510.nexus
+1452	DNA	131	277	42	208	GTR+MERGE	uce-990293516.nexus
+1453	DNA	131	422	63	333	GTR+MERGE	uce-990293580.nexus
+1454	DNA	108	582	231	300	GTR+MERGE	uce-99029381.nexus
+1455	DNA	114	502	158	248	GTR+MERGE	uce-99029386.nexus
+1456	DNA	95	192	34	142	GTR+MERGE	uce-99029477.nexus
+1457	DNA	114	526	95	333	GTR+MERGE	uce-99029509.nexus
+1458	DNA	126	577	206	258	GTR+MERGE	uce-99029557.nexus
+1459	DNA	119	542	220	203	GTR+MERGE	uce-99029558.nexus
+1460	DNA	115	542	203	236	GTR+MERGE	uce-99029561.nexus
+1461	DNA	133	632	132	363	GTR+MERGE	uce-99029645.nexus
+1462	DNA	131	511	168	219	GTR+MERGE	uce-99029663.nexus
+1463	DNA	125	489	204	245	GTR+MERGE	uce-99029745.nexus
+1464	DNA	138	587	248	254	GTR+MERGE	uce-99029763.nexus
+1465	DNA	122	368	102	211	GTR+MERGE	uce-99029774.nexus
+1466	DNA	116	303	43	189	GTR+MERGE	uce-99029853.nexus
+1467	DNA	103	562	199	273	GTR+MERGE	uce-99029898.nexus
+1468	DNA	129	373	133	175	GTR+MERGE	uce-99029911.nexus
+1469	DNA	129	534	232	248	GTR+MERGE	uce-99029939.nexus
+1470	DNA	131	441	163	198	GTR+MERGE	uce-99029955.nexus
+1471	DNA	128	454	154	256	GTR+MERGE	uce-99029969.nexus
+1472	DNA	128	574	133	366	GTR+MERGE	uce-990311.nexus
+1473	DNA	127	313	64	241	GTR+MERGE	uce-990350.nexus
+1474	DNA	114	377	41	232	GTR+MERGE	uce-990379.nexus
+1475	DNA	72	188	18	161	GTR+MERGE	uce-990393.nexus
+1476	DNA	127	409	161	132	GTR+MERGE	uce-990414.nexus
+1477	DNA	128	392	107	222	GTR+MERGE	uce-99042.nexus
+1478	DNA	117	461	171	193	GTR+MERGE	uce-990423.nexus
+1479	DNA	128	491	177	271	GTR+MERGE	uce-990430.nexus
+1480	DNA	115	450	144	149	GTR+MERGE	uce-990437.nexus
+1481	DNA	127	526	128	317	GTR+MERGE	uce-990440.nexus
+1482	DNA	118	393	94	253	GTR+MERGE	uce-990442.nexus
+1483	DNA	100	191	36	131	GTR+MERGE	uce-990473.nexus
+1484	DNA	104	483	182	195	GTR+MERGE	uce-990476.nexus
+1485	DNA	121	433	107	206	GTR+MERGE	uce-990488.nexus
+1486	DNA	120	610	196	328	GTR+MERGE	uce-99049.nexus
+1487	DNA	108	457	61	302	GTR+MERGE	uce-990496.nexus
+1488	DNA	99	266	12	225	GTR+MERGE	uce-990505.nexus
+1489	DNA	115	444	114	261	GTR+MERGE	uce-990527.nexus
+1490	DNA	126	413	178	217	GTR+MERGE	uce-990555.nexus
+1491	DNA	127	470	105	267	GTR+MERGE	uce-990556.nexus
+1492	DNA	116	555	130	312	GTR+MERGE	uce-990566.nexus
+1493	DNA	112	451	144	252	GTR+MERGE	uce-990575.nexus
+1494	DNA	113	541	171	299	GTR+MERGE	uce-990583.nexus
+1495	DNA	132	465	208	185	GTR+MERGE	uce-990623.nexus
+1496	DNA	124	418	91	275	GTR+MERGE	uce-990627.nexus
+1497	DNA	122	522	163	204	GTR+MERGE	uce-990635.nexus
+1498	DNA	128	460	113	262	GTR+MERGE	uce-990669.nexus
+1499	DNA	115	470	209	224	GTR+MERGE	uce-9907.nexus
+1500	DNA	123	440	120	219	GTR+MERGE	uce-990702.nexus
+1501	DNA	125	374	86	203	GTR+MERGE	uce-990716.nexus
+1502	DNA	127	493	128	242	GTR+MERGE	uce-990738.nexus
+1503	DNA	124	549	165	295	GTR+MERGE	uce-990745.nexus
+1504	DNA	123	488	170	166	GTR+MERGE	uce-990763.nexus
+1505	DNA	127	632	145	305	GTR+MERGE	uce-990767.nexus
+1506	DNA	107	524	159	262	GTR+MERGE	uce-990782.nexus
+1507	DNA	115	495	171	241	GTR+MERGE	uce-990783.nexus
+1508	DNA	127	343	68	229	GTR+MERGE	uce-990804.nexus
+1509	DNA	123	589	140	294	GTR+MERGE	uce-990818.nexus
+1510	DNA	110	383	103	254	GTR+MERGE	uce-990820.nexus
+1511	DNA	89	201	9	169	GTR+MERGE	uce-990822.nexus
+1512	DNA	118	529	142	311	GTR+MERGE	uce-990845.nexus
+1513	DNA	118	415	129	217	GTR+MERGE	uce-990846.nexus
+1514	DNA	116	465	175	213	GTR+MERGE	uce-990874.nexus
+1515	DNA	123	279	72	165	GTR+MERGE	uce-990881.nexus
+1516	DNA	127	591	102	363	GTR+MERGE	uce-990907.nexus
+1517	DNA	123	504	162	229	GTR+MERGE	uce-990959.nexus
+1518	DNA	129	517	168	214	GTR+MERGE	uce-990964.nexus
+1519	DNA	111	439	18	348	GTR+MERGE	uce-991.nexus
+1520	DNA	112	395	103	188	GTR+MERGE	uce-992.nexus
+1521	DNA	128	501	164	245	GTR+MERGE	uce-997.nexus
+Degree of missing data: 0.176
+Info: multi-threading strategy over partitions
+
+
+
+Create initial parsimony tree by phylogenetic likelihood library (PLL)... 6.015 seconds
+Perform fast likelihood tree search using GTR+I+G model...
+Estimate model parameters (epsilon = 5.000)
+Initial log-likelihood: -6311209.322
+Current log-likelihood at step 1: -6052733.861
+Current log-likelihood at step 2: -6045326.112
+Current log-likelihood at step 3: -6043948.597
+Current log-likelihood at step 4: -6043379.400
+Current log-likelihood at step 5: -6042739.928
+Current log-likelihood at step 6: -6042283.350
+Current log-likelihood at step 7: -6041570.397
+Current log-likelihood at step 8: -6041151.329
+Current log-likelihood at step 9: -6040944.722
+Current log-likelihood at step 10: -6040847.165
+Current log-likelihood at step 11: -6040772.961
+Current log-likelihood at step 12: -6040711.276
+Current log-likelihood at step 13: -6040659.365
+Current log-likelihood at step 14: -6040615.660
+Current log-likelihood at step 15: -6040578.051
+Current log-likelihood at step 16: -6040546.645
+Current log-likelihood at step 17: -6040520.969
+Current log-likelihood at step 18: -6040307.003
+Current log-likelihood at step 19: -6040272.496
+Current log-likelihood at step 20: -6040252.035
+Current log-likelihood at step 21: -6040236.118
+Current log-likelihood at step 22: -6040222.713
+Current log-likelihood at step 23: -6040210.994
+Current log-likelihood at step 24: -6040200.548
+Current log-likelihood at step 25: -6040191.149
+Current log-likelihood at step 26: -6040182.644
+Current log-likelihood at step 27: -6040174.916
+Current log-likelihood at step 28: -6040167.808
+Current log-likelihood at step 29: -6040161.272
+Current log-likelihood at step 30: -6040155.172
+Current log-likelihood at step 31: -6040149.355
+Current log-likelihood at step 32: -6040143.808
+Current log-likelihood at step 33: -6039957.880
+Current log-likelihood at step 34: -6039940.536
+Current log-likelihood at step 35: -6039932.265
+Current log-likelihood at step 36: -6039926.359
+Current log-likelihood at step 37: -6039921.598
+Parameters optimization took 36 rounds (369.603 sec)
+
+
+WARNING: Estimated model parameters are at boundary that can cause numerical instability!
+
+Perform nearest neighbor interchange...
+Estimate model parameters (epsilon = 1.000)
+Initial log-likelihood: -6039053.595
+Current log-likelihood at step 1: -6038944.082
+Current log-likelihood at step 2: -6038932.761
+Current log-likelihood at step 3: -6038927.678
+Current log-likelihood at step 4: -6038923.269
+Current log-likelihood at step 5: -6038918.831
+Current log-likelihood at step 6: -6038915.494
+Current log-likelihood at step 7: -6038912.558
+Current log-likelihood at step 8: -6038909.901
+Current log-likelihood at step 9: -6038907.449
+Current log-likelihood at step 10: -6038905.164
+Current log-likelihood at step 11: -6038903.035
+Current log-likelihood at step 12: -6038901.041
+Current log-likelihood at step 13: -6038899.167
+Current log-likelihood at step 14: -6038897.399
+Current log-likelihood at step 15: -6038895.732
+Current log-likelihood at step 16: -6038894.154
+Current log-likelihood at step 17: -6038892.656
+Current log-likelihood at step 18: -6038891.238
+Current log-likelihood at step 19: -6038889.887
+Current log-likelihood at step 20: -6038888.602
+Current log-likelihood at step 21: -6038887.381
+Current log-likelihood at step 22: -6038886.199
+Current log-likelihood at step 23: -6038885.076
+Current log-likelihood at step 24: -6038884.013
+Current log-likelihood at step 25: -6038882.992
+Current log-likelihood at step 26: -6038882.018
+Partition-specific rates:  0.533 0.269 0.502 0.925 0.417 0.587 0.642 0.223 0.896 0.884 0.674 1.326 0.594 0.413 0.284 0.276 1.069 0.314 0.646 0.302 1.518 0.491 0.292 0.641 0.523 0.725 0.178 0.204 0.577 0.323 0.492 0.873 0.588 0.479 0.373 0.154 1.348 1.877 0.602 0.338 0.219 0.750 0.278 0.511 0.421 1.548 0.221 0.344 0.198 1.072 1.093 1.351 0.499 0.221 1.013 0.752 0.337 0.532 0.241 0.377 0.478 0.326 0.260 2.444 0.616 0.412 0.994 0.661 1.469 0.520 0.064 0.588 1.011 0.985 0.116 0.324 0.692 0.318 0.048 0.718 0.693 47.563 0.493 0.330 0.442 0.683 0.471 0.269 0.288 0.329 0.124 0.241 0.208 0.206 0.696 1.708 0.767 0.712 0.618 0.323 0.234 1.165 0.245 0.313 0.771 0.461 1.268 0.175 0.142 0.238 0.472 0.367 0.417 0.465 0.466 0.139 0.127 0.513 0.725 0.293 0.669 0.460 1.804 1.278 0.453 0.809 1.529 1.069 0.660 0.546 0.414 0.514 0.317 0.686 0.795 0.495 0.194 0.786 0.791 1.371 0.624 0.143 2.136 0.326 0.146 2.745 1.300 0.650 0.780 1.235 1.851 0.396 0.399 1.156 1.216 2.873 1.140 1.341 2.654 0.412 1.739 0.722 0.201 0.503 0.751 1.250 1.180 0.147 0.293 0.454 1.269 1.789 1.049 1.242 0.972 0.322 0.934 0.220 0.426 0.812 1.020 0.233 0.270 0.224 0.374 1.929 1.101 0.392 0.428 0.403 0.664 1.963 0.767 0.857 0.752 0.531 0.477 0.389 1.256 0.354 0.795 0.882 1.016 0.208 0.536 0.479 0.520 0.224 0.197 0.250 0.974 0.710 0.342 0.809 0.674 1.350 0.196 0.441 0.308 2.526 1.202 0.508 0.659 1.560 0.750 0.128 0.845 0.195 0.348 0.234 1.214 1.338 0.303 0.409 0.276 0.341 0.359 0.670 0.741 0.786 1.789 0.308 1.234 0.218 0.073 0.259 0.860 0.309 0.497 0.203 0.204 0.338 0.440 0.321 0.636 0.129 4.229 0.242 0.593 0.514 0.251 0.527 0.987 0.926 0.468 1.522 0.544 0.300 0.707 1.301 0.727 1.134 0.500 0.209 1.924 0.560 0.350 0.852 0.306 0.462 0.739 0.487 0.835 0.992 0.427 0.555 0.936 1.645 0.299 0.544 0.294 1.338 0.640 0.325 0.386 1.062 2.076 0.543 0.806 0.258 0.566 0.477 0.294 0.720 0.664 0.586 0.276 0.188 1.819 0.355 2.403 0.216 0.824 0.161 0.431 2.043 0.357 0.322 0.414 1.592 0.646 0.560 1.895 0.206 1.439 0.398 0.746 2.740 0.491 0.163 0.345 0.644 0.432 0.441 0.676 0.196 0.458 0.881 0.630 0.270 0.609 0.262 0.078 0.769 1.095 0.407 0.520 0.230 0.451 1.558 0.325 0.408 0.619 0.986 2.197 0.415 0.316 0.253 0.486 0.376 0.161 1.235 0.175 0.678 0.712 0.997 0.292 0.639 0.622 0.208 0.196 1.072 0.456 0.952 0.497 1.220 0.136 0.612 0.503 0.504 0.584 0.529 1.287 0.678 0.387 0.951 1.307 0.357 0.601 0.128 0.372 0.649 0.613 0.401 0.701 0.326 0.844 0.378 0.303 1.780 0.096 0.724 0.443 0.277 0.262 0.512 1.680 0.807 0.526 0.216 0.325 1.065 0.723 0.466 0.474 0.358 1.102 0.516 1.116 0.367 0.711 0.472 0.628 0.419 0.387 0.372 1.913 2.999 2.151 0.865 0.434 0.290 0.435 0.784 0.396 0.389 1.399 0.234 1.048 0.080 0.354 1.851 0.276 28.073 0.344 0.960 1.037 0.628 0.590 0.248 0.278 0.152 0.094 0.806 1.035 0.835 0.478 0.626 0.543 0.257 1.451 1.141 0.519 0.755 1.428 0.430 1.018 0.434 0.233 0.652 0.343 0.648 0.269 1.150 0.190 0.545 0.230 0.404 2.465 0.685 0.142 0.334 0.438 1.104 0.623 1.967 0.150 0.566 0.196 0.567 0.789 1.247 0.283 0.470 0.136 0.728 0.961 14.265 0.783 0.991 0.282 0.461 0.130 0.966 0.337 0.240 0.256 0.557 0.716 0.780 0.939 0.306 0.165 0.490 0.355 0.483 0.378 1.919 0.372 0.203 0.469 1.825 0.746 0.437 1.541 0.441 0.947 0.301 0.409 0.921 0.609 6.098 1.034 0.270 0.090 17.792 2.707 2.197 0.813 11.731 1.896 0.616 1.465 0.369 0.946 0.338 0.668 2.103 1.419 0.736 1.111 0.497 0.510 0.057 0.519 1.453 0.709 0.359 0.482 0.276 0.238 0.465 0.373 0.948 0.986 1.062 0.109 0.240 0.331 1.288 0.405 2.100 0.449 0.448 1.514 0.388 0.333 0.131 1.450 0.441 0.313 0.585 0.126 1.628 0.220 0.868 0.653 1.024 0.232 0.461 0.697 1.743 0.410 0.843 0.516 0.595 0.461 0.386 0.643 0.342 0.476 0.536 1.050 0.501 2.479 0.280 1.356 2.448 0.407 0.754 0.369 0.348 0.311 0.316 0.488 0.456 0.394 0.589 0.882 0.677 0.646 0.242 0.909 1.772 0.629 0.206 0.351 0.079 0.468 0.541 0.203 0.893 0.608 0.309 0.465 0.343 0.439 0.702 1.976 1.097 0.429 0.467 2.013 1.792 0.807 0.453 0.518 0.650 0.680 0.468 0.267 0.487 1.566 0.811 0.559 0.291 0.449 0.368 0.086 0.690 0.407 19.134 1.667 0.652 0.624 0.461 0.331 1.073 0.463 1.354 0.238 0.490 0.320 0.821 0.926 0.182 0.271 0.418 0.237 1.665 1.232 0.606 0.344 0.560 0.295 0.320 0.488 0.478 0.486 0.377 0.414 2.158 0.739 0.309 0.851 0.423 0.565 0.231 0.828 2.817 0.720 0.560 1.476 0.247 0.329 0.422 0.391 0.281 0.478 0.673 0.566 0.312 0.810 0.281 1.701 0.241 1.508 0.563 0.631 0.854 0.589 1.330 0.788 0.725 0.318 0.206 0.565 0.341 0.563 0.432 1.502 0.918 1.624 0.332 1.069 0.316 0.312 27.341 0.556 0.132 0.233 0.809 2.277 0.442 0.432 0.636 0.228 0.702 0.987 0.785 0.280 0.633 1.431 0.311 0.885 2.001 0.367 1.595 0.251 0.913 0.963 0.604 0.331 0.522 0.353 0.419 0.529 0.905 0.275 0.348 0.226 0.547 0.348 0.708 1.061 0.412 0.204 0.360 0.540 0.109 0.331 0.342 0.349 0.720 0.754 0.510 0.202 0.341 1.106 0.135 0.412 0.220 0.523 1.708 0.272 1.165 1.232 0.768 37.962 0.428 0.427 0.687 0.940 1.110 0.254 0.231 0.435 1.865 1.686 0.321 0.337 0.468 0.456 0.384 0.335 0.300 0.480 0.141 0.224 0.582 0.877 0.792 0.199 0.084 0.245 1.009 1.261 1.061 0.253 1.572 0.351 0.453 0.613 0.412 0.448 0.340 1.313 0.616 2.228 0.332 0.519 40.538 0.817 1.128 0.771 0.596 0.701 0.361 0.455 1.295 0.682 0.173 1.599 0.667 0.543 0.887 0.600 0.664 1.016 1.710 0.952 2.318 0.537 3.480 0.154 0.552 1.834 0.421 0.881 0.861 0.270 0.395 1.862 1.127 0.864 0.196 0.732 0.426 0.284 1.910 1.540 0.448 0.957 0.435 0.538 0.649 0.373 1.357 2.132 0.955 0.437 0.174 1.803 0.999 18.171 0.470 0.423 0.394 2.869 0.708 0.452 0.514 0.301 0.297 0.272 0.311 0.546 0.867 0.208 0.248 0.625 1.242 1.257 0.663 38.298 0.560 0.268 0.528 0.383 0.833 0.879 0.667 0.963 0.324 0.978 0.854 1.978 0.549 0.254 0.762 1.275 2.237 0.643 1.886 0.283 0.411 0.391 0.368 0.900 1.146 0.955 0.334 0.600 0.660 0.742 1.129 0.264 1.463 0.311 1.674 0.476 0.577 0.402 0.376 0.937 0.513 1.280 0.675 32.276 0.381 1.191 1.107 0.434 0.656 0.426 0.720 1.293 1.133 1.347 1.395 2.321 0.769 1.171 0.882 0.691 1.495 1.442 0.404 0.460 0.373 0.472 1.198 0.582 0.783 0.650 0.645 1.287 0.716 0.867 0.516 1.157 1.585 0.269 0.420 0.719 0.237 1.461 0.815 0.116 12.791 0.687 0.578 1.024 0.586 2.373 0.328 0.871 0.703 0.673 0.163 1.145 0.229 0.878 0.530 0.737 0.686 0.515 0.210 1.879 0.809 0.572 0.507 0.326 0.445 1.708 2.102 0.870 0.267 0.306 0.597 0.416 0.999 0.306 0.610 0.424 1.866 0.515 1.495 1.872 1.762 15.033 1.071 0.217 0.443 0.883 0.513 1.540 0.423 1.299 0.370 0.748 0.614 0.596 0.339 0.369 0.580 1.456 0.412 0.996 0.509 2.172 0.046 0.789 0.364 0.251 0.544 1.147 0.803 1.517 0.439 0.208 1.357 0.204 2.108 0.544 0.436 0.516 0.280 2.064 0.747 0.308 1.968 1.841 0.847 0.245 2.282 7.946 1.918 2.083 0.219 0.841 1.367 0.671 0.480 0.325 0.688 1.645 1.009 0.607 1.885 1.418 0.248 0.337 0.591 0.303 0.455 0.128 0.998 0.699 0.954 0.312 0.939 0.350 0.339 1.145 0.527 0.839 0.450 0.503 0.371 0.867 0.713 0.316 0.450 1.473 0.655 0.818 0.566 0.344 0.342 0.937 0.955 0.523 8.482 0.139 0.186 0.224 0.732 7.131 1.134 0.674 0.330 1.763 0.244 0.100 0.201 0.413 1.165 0.753 0.343 0.970 6.770 2.421 0.713 0.171 0.359 0.883 1.121 0.692 0.407 0.464 0.749 1.375 0.191 0.205 1.473 1.686 0.753 0.329 1.495 0.118 0.436 0.668 2.371 0.268 0.349 0.249 0.317 1.195 0.461 0.511 0.301 10.460 0.569 0.308 0.936 1.946 0.289 0.652 0.352 0.491 0.231 1.055 1.408 0.458 1.024 0.543 0.580 0.356 0.773 0.381 1.051 12.722 1.317 1.649 0.441 0.392 0.938 0.773 1.525 0.255 0.243 2.385 0.220 0.268 0.177 0.791 0.420 1.002 0.204 0.975 0.151 1.451 1.833 0.310 0.402 0.586 0.832 0.417 0.203 0.602 0.675 0.504 1.175 1.162 0.496 1.911 0.486 0.426 0.694 0.356 1.264 0.630 2.106 1.690 0.891 0.727 0.572 1.009 0.321 16.581 0.226 0.849 2.194 0.610 1.726 1.353 0.762 2.681 0.901 1.002 0.980 0.419 0.493 0.844 0.193 0.554 0.369 1.492 2.224 1.042 0.607 0.818 0.782 0.455 0.947 0.907 0.855 0.604 0.820 0.468 1.413 0.762 0.451 0.479 1.241 0.834 0.877 1.869 2.355 0.633 0.215 0.233 0.583 0.717 0.579 0.992 0.639 0.453 0.833 0.848 0.915 1.807 0.517 0.441 0.181 0.263 0.393 0.803 0.273 2.117 0.840 1.271 1.166 1.537 0.552 1.354 1.297 0.350 0.295 0.496 0.450 0.663 0.165 0.666 1.028 0.224 0.439 0.590 0.276 0.845 1.100 0.548 0.828 1.147 0.340 0.494 0.320 0.365 0.451 0.962 0.582 0.886 0.278 2.137 1.049 1.116 1.017 0.736 0.735 1.912 2.268 1.679 1.892 1.086 2.184 0.968 1.019 0.288 0.742 0.428 0.133 0.719 0.314 1.215 0.683 1.007 0.891 0.416 1.147 0.378 0.773 0.458 0.590 0.410 0.485 0.372 0.398 1.020 2.051 1.140 0.387 1.944 0.219 0.656 0.837 0.864 0.494 0.920 0.864 0.800 0.372 1.653 0.888 0.243 1.683 9.222 1.339 0.478 0.888 0.404 1.189 0.620 0.305 0.902 1.670 0.659 0.709 0.188 1.342 0.689 0.730 1.117 0.685 1.146 0.324 1.993 0.253 1.440 2.449 0.567 1.963 0.572 0.303 0.376 1.522 0.172 2.024 0.338 0.532 0.416 0.432 0.411 0.213 1.891 1.849 1.589 1.495 0.983 1.027 0.271 0.456 0.554 1.484 1.109 1.027 1.032 1.462 1.456 0.480 0.847 0.238 0.337 0.394 0.745 0.713 0.552 1.280 1.814 1.146 0.307 0.389 1.266 0.522 0.376 0.719 2.291 15.921 0.812 0.487 0.409 0.299 0.328 0.296 0.165 2.001 1.010 1.033 0.849 0.508 0.286 0.202 0.206 2.633 1.843 1.189 0.981 0.377 0.945 1.507 0.681 0.374 0.931 1.204 0.757 0.235 1.013 0.450 2.428 1.254 1.263 0.486 0.989 0.888 0.343 0.662 0.757 0.380 0.314 0.302 0.256 0.861 1.859 2.950 0.514 0.227 1.040 0.954 0.200 1.000 0.541
+Parameters optimization took 25 rounds (127.114 sec)
+
+
+WARNING: Estimated model parameters are at boundary that can cause numerical instability!
+
+Time for fast ML tree search: 605.555 seconds
+
+NOTE: ModelFinder requires 493 MB RAM!
+Selecting individual models for 1521 charsets using BIC...
+Full partition model BIC score: 12306993.788 (LnL: -6038880.480  df:17013)
+Merging models to increase model fit (about 2311921 total partition schemes)...
+NOTE: 3.068 seconds to dump checkpoint file, increase to 62.000
+NOTE: 3.284 seconds to dump checkpoint file, increase to 66.000
+NOTE: 3.847 seconds to dump checkpoint file, increase to 77.000
+NOTE: 3.992 seconds to dump checkpoint file, increase to 80.000
+NOTE: 4.364 seconds to dump checkpoint file, increase to 88.000
+NOTE: 4.887 seconds to dump checkpoint file, increase to 98.000
+NOTE: 5.389 seconds to dump checkpoint file, increase to 108.000
+NOTE: 7.352 seconds to dump checkpoint file, increase to 148.000
+NOTE: 7.427 seconds to dump checkpoint file, increase to 149.000
+NOTE: 8.265 seconds to dump checkpoint file, increase to 166.000
+NOTE: 36.130 seconds to dump checkpoint file, increase to 723.000
+NOTE: 38.179 seconds to dump checkpoint file, increase to 764.000
+NOTE: 43.086 seconds to dump checkpoint file, increase to 862.000
+NOTE: 72.212 seconds to dump checkpoint file, increase to 1445.000
+NOTE: 76.205 seconds to dump checkpoint file, increase to 1525.000
+NOTE: 86.871 seconds to dump checkpoint file, increase to 1738.000
+NOTE: 101.371 seconds to dump checkpoint file, increase to 2028.000
+NOTE: 117.235 seconds to dump checkpoint file, increase to 2345.000
+758 compatible better partition pairs found
+ModelFinder2	Fast Relaxed Algorithm	Step 1	1155960 Subsets	BIC 12200094.371	deltaBIC -106899.417
+NOTE: 127.668 seconds to dump checkpoint file, increase to 2554.000
+NOTE: 136.289 seconds to dump checkpoint file, increase to 2726.000
+NOTE: 144.031 seconds to dump checkpoint file, increase to 2881.000
+NOTE: 206.091 seconds to dump checkpoint file, increase to 4122.000
+377 compatible better partition pairs found
+ModelFinder2	Fast Relaxed Algorithm	Step 2	290693 Subsets	BIC 12155173.527	deltaBIC -44920.844
+184 compatible better partition pairs found
+ModelFinder2	Fast Relaxed Algorithm	Step 3	74269 Subsets	BIC 12137890.091	deltaBIC -17283.436
+79 compatible better partition pairs found
+ModelFinder2	Fast Relaxed Algorithm	Step 4	20148 Subsets	BIC 12133354.815	deltaBIC -4535.276
+21 compatible better partition pairs found
+ModelFinder2	Fast Relaxed Algorithm	Step 5	6557 Subsets	BIC 12132634.798	deltaBIC -720.016
+ModelFinder2	Fast Relaxed Algorithm	Step 6	1911 Subsets	BIC 12132594.275	deltaBIC -40.523
+ModelFinder2	Fast Relaxed Algorithm	Step 7	100 Subsets	BIC 12132594.275	deltaBIC 0.000
+Merging into 101 partitions...
+
+No. Model        Score       Charset
+   1 TIM+F+R3     230509.021  uce-111105.nexus+uce-111109.nexus+uce-111151.nexus+uce-111193.nexus+uce-111417.nexus+uce-111596.nexus+uce-112062.nexus+uce-112161.nexus+uce-112569.nexus+uce-112587.nexus+uce-112601.nexus+uce-112741.nexus+uce-113203.nexus+uce-113594.nexus+uce-114040.nexus+uce-114418.nexus+uce-114485.nexus+uce-115002.nexus+uce-115004.nexus+uce-115105.nexus+uce-115113.nexus+uce-115664.nexus+uce-115858.nexus+uce-116011.nexus+uce-116259.nexus+uce-11962.nexus+uce-2531.nexus+uce-3911031.nexus+uce-3911297.nexus+uce-3911788.nexus+uce-990767.nexus+uce-990818.nexus	11h:49m:50s (5h:48m:8s left)
+   2 GTR+F+I+R3   154660.386  uce-111384.nexus+uce-111900.nexus+uce-112459.nexus+uce-112531.nexus+uce-112867.nexus+uce-112947.nexus+uce-112983.nexus+uce-114516.nexus+uce-114519.nexus+uce-115005.nexus+uce-115348.nexus+uce-115678.nexus+uce-116250.nexus+uce-11661.nexus+uce-11793.nexus+uce-2081.nexus	11h:51m:54s (5h:49m:9s left)
+   3 TIM2+F+R5    189410.030  uce-111863.nexus+uce-111876.nexus+uce-112259.nexus+uce-112730.nexus+uce-113735.nexus+uce-113972.nexus+uce-114184.nexus+uce-114381.nexus+uce-115538.nexus+uce-116009.nexus+uce-116125.nexus+uce-2304.nexus+uce-3911326.nexus+uce-990291289.nexus+uce-99029558.nexus+uce-990414.nexus	11h:52m:54s (5h:49m:38s left)
+WARNING: Log-likelihood -154211 of GTR+F+R6 worse than GTR+F+R5 -154210
+   4 TIM2+F+I+R4  172679.011  uce-111801.nexus+uce-111831.nexus+uce-111976.nexus+uce-112322.nexus+uce-112556.nexus+uce-113672.nexus+uce-114181.nexus+uce-115944.nexus+uce-11740.nexus+uce-2471.nexus+uce-2705.nexus+uce-3911137.nexus+uce-91.nexus+uce-9901517.nexus+uce-990287217.nexus+uce-990291584.nexus	11h:57m:1s (5h:51m:39s left)
+   5 GTR+F+I+R4   251050.248  uce-11112.nexus+uce-11159.nexus+uce-111888.nexus+uce-112746.nexus+uce-11380.nexus+uce-113830.nexus+uce-114404.nexus+uce-115364.nexus+uce-2048.nexus+uce-2797.nexus+uce-363.nexus+uce-3911094.nexus+uce-3911662.nexus+uce-404.nexus+uce-709.nexus+uce-773.nexus+uce-913.nexus+uce-9901226.nexus+uce-990136.nexus+uce-9901479.nexus+uce-9901680.nexus+uce-99021919.nexus+uce-990291528.nexus+uce-990964.nexus	11h:58m:18s (5h:52m:17s left)
+   6 HKY+F+I+R3   146777.579  uce-111229.nexus+uce-111598.nexus+uce-112192.nexus+uce-112955.nexus+uce-113827.nexus+uce-114348.nexus+uce-115712.nexus+uce-115865.nexus+uce-115981.nexus+uce-11832.nexus+uce-2446.nexus+uce-3911107.nexus+uce-3911354.nexus+uce-3911540.nexus+uce-3911715.nexus+uce-3911833.nexus+uce-3911994.nexus+uce-624.nexus+uce-663.nexus+uce-987.nexus+uce-990287507.nexus+uce-990292500.nexus+uce-990292714.nexus+uce-99029645.nexus	11h:58m:52s (5h:52m:34s left)
+   7 TPM2u+F+R4   197221.756  uce-112067.nexus+uce-112767.nexus+uce-112926.nexus+uce-113437.nexus+uce-113790.nexus+uce-114042.nexus+uce-114141.nexus+uce-11453.nexus+uce-115770.nexus+uce-2082.nexus+uce-2857.nexus+uce-3911005.nexus+uce-3911799.nexus+uce-9901303.nexus+uce-990167.nexus+uce-990635.nexus	11h:59m:26s (5h:52m:50s left)
+   8 TIM3+F+R4    191535.744  uce-112351.nexus+uce-112683.nexus+uce-113132.nexus+uce-114247.nexus+uce-114508.nexus+uce-11593.nexus+uce-115932.nexus+uce-116162.nexus+uce-11696.nexus+uce-1192.nexus+uce-2712.nexus+uce-2783.nexus+uce-391110.nexus+uce-695.nexus+uce-99029561.nexus+uce-990623.nexus	11h:59m:53s (5h:53m:3s left)
+   9 GTR+F+I+R4   181332.758  uce-111074.nexus+uce-112186.nexus+uce-11223.nexus+uce-1125.nexus+uce-112538.nexus+uce-112550.nexus+uce-112582.nexus+uce-113293.nexus+uce-113396.nexus+uce-113633.nexus+uce-113838.nexus+uce-1139.nexus+uce-114818.nexus+uce-115151.nexus+uce-115482.nexus+uce-990199.nexus+uce-990282080.nexus+uce-990291255.nexus+uce-990291786.nexus+uce-990291980.nexus+uce-990293179.nexus+uce-990575.nexus+uce-990716.nexus+uce-990745.nexus	11h:59m:53s (5h:53m:3s left)
+  10 TIM+F+I+R4   308579.424  uce-11114.nexus+uce-111220.nexus+uce-111353.nexus+uce-111503.nexus+uce-111527.nexus+uce-111868.nexus+uce-112029.nexus+uce-112076.nexus+uce-112180.nexus+uce-112184.nexus+uce-113154.nexus+uce-113692.nexus+uce-114490.nexus+uce-114619.nexus+uce-115888.nexus+uce-11739.nexus+uce-11996.nexus+uce-2503.nexus+uce-2846.nexus+uce-2848.nexus+uce-29.nexus+uce-3911011.nexus+uce-3911462.nexus+uce-3911526.nexus+uce-538.nexus+uce-756.nexus+uce-945.nexus+uce-99029273.nexus	12h:3m:13s (5h:54m:42s left)
+  11 GTR+F+R5     223989.680  uce-112525.nexus+uce-114806.nexus+uce-115194.nexus+uce-2597.nexus+uce-288.nexus+uce-391120.nexus+uce-3911544.nexus+uce-3911587.nexus+uce-9901234.nexus+uce-99021920.nexus+uce-990291787.nexus+uce-990292074.nexus+uce-990292146.nexus+uce-990292770.nexus+uce-990292925.nexus+uce-990292953.nexus	12h:3m:22s (5h:54m:46s left)
+  12 TVM+F+I+R3   149846.207  uce-111130.nexus+uce-111537.nexus+uce-111754.nexus+uce-11177.nexus+uce-113676.nexus+uce-114528.nexus+uce-115038.nexus+uce-115622.nexus+uce-115972.nexus+uce-11604.nexus+uce-250.nexus+uce-3911514.nexus+uce-391157.nexus+uce-391170.nexus+uce-9901241.nexus+uce-9901707.nexus	12h:4m:18s (5h:55m:13s left)
+  13 HKY+F+R4     263121.289  uce-111044.nexus+uce-111164.nexus+uce-111432.nexus+uce-111501.nexus+uce-112548.nexus+uce-11273.nexus+uce-112886.nexus+uce-113686.nexus+uce-113723.nexus+uce-113949.nexus+uce-114190.nexus+uce-114339.nexus+uce-114419.nexus+uce-11481.nexus+uce-115252.nexus+uce-115321.nexus+uce-115890.nexus+uce-11592.nexus+uce-116063.nexus+uce-1173.nexus+uce-1199.nexus+uce-2520.nexus+uce-3911099.nexus+uce-3911730.nexus+uce-3911805.nexus+uce-889.nexus+uce-9901465.nexus+uce-9901635.nexus+uce-99021997.nexus+uce-990291417.nexus+uce-990292417.nexus+uce-99029279.nexus	12h:4m:34s (5h:55m:21s left)
+  14 GTR+F+I+R4   153914.499  uce-112263.nexus+uce-112874.nexus+uce-113405.nexus+uce-114581.nexus+uce-11779.nexus+uce-2215.nexus+uce-2287.nexus+uce-2476.nexus+uce-2656.nexus+uce-3911001.nexus+uce-3911200.nexus+uce-743.nexus+uce-9901141.nexus+uce-9901549.nexus+uce-99029386.nexus+uce-99029939.nexus	12h:5m:19s (5h:55m:43s left)
+  15 TVM+F+R4     253154.432  uce-111140.nexus+uce-111509.nexus+uce-112696.nexus+uce-112834.nexus+uce-113011.nexus+uce-113641.nexus+uce-113650.nexus+uce-113763.nexus+uce-114242.nexus+uce-114665.nexus+uce-114820.nexus+uce-114890.nexus+uce-115112.nexus+uce-115159.nexus+uce-115356.nexus+uce-115465.nexus+uce-115788.nexus+uce-11838.nexus+uce-2039.nexus+uce-2401.nexus+uce-2794.nexus+uce-349.nexus+uce-3911017.nexus+uce-3911455.nexus+uce-703.nexus+uce-9901427.nexus+uce-9901590.nexus+uce-99027519.nexus+uce-990289938.nexus+uce-990292271.nexus+uce-99029763.nexus+uce-99029955.nexus	12h:6m:0s (5h:56m:3s left)
+  16 TVM+F+R5     145700.630  uce-111368.nexus+uce-11187.nexus+uce-112721.nexus+uce-113063.nexus+uce-113120.nexus+uce-113237.nexus+uce-113945.nexus+uce-114019.nexus+uce-114061.nexus+uce-114252.nexus+uce-114533.nexus+uce-114775.nexus+uce-115074.nexus+uce-115591.nexus+uce-116014.nexus+uce-11756.nexus+uce-11845.nexus+uce-3911478.nexus+uce-3911817.nexus+uce-760.nexus+uce-9901493.nexus+uce-990283144.nexus+uce-990291456.nexus+uce-990350.nexus	12h:6m:37s (5h:56m:21s left)
+  17 TIM+F+R4     145333.402  uce-111575.nexus+uce-112467.nexus+uce-112905.nexus+uce-113242.nexus+uce-11368.nexus+uce-114033.nexus+uce-114288.nexus+uce-114378.nexus+uce-114428.nexus+uce-114538.nexus+uce-114785.nexus+uce-115082.nexus+uce-115240.nexus+uce-115379.nexus+uce-3911559.nexus+uce-990252.nexus	12h:8m:25s (5h:57m:14s left)
+  18 TN+F+I+R3    225384.325  uce-111094.nexus+uce-11113.nexus+uce-11132.nexus+uce-111697.nexus+uce-112308.nexus+uce-112363.nexus+uce-112605.nexus+uce-112924.nexus+uce-113561.nexus+uce-113680.nexus+uce-114104.nexus+uce-114340.nexus+uce-114991.nexus+uce-115319.nexus+uce-116233.nexus+uce-1165.nexus+uce-11725.nexus+uce-11753.nexus+uce-11994.nexus+uce-2080.nexus+uce-2276.nexus+uce-2469.nexus+uce-2541.nexus+uce-2775.nexus+uce-35.nexus+uce-3911457.nexus+uce-3911877.nexus+uce-896.nexus	12h:9m:21s (5h:57m:42s left)
+  19 TIM3+F+R4    239617.521  uce-111403.nexus+uce-111413.nexus+uce-111452.nexus+uce-111534.nexus+uce-111726.nexus+uce-111955.nexus+uce-112251.nexus+uce-11270.nexus+uce-112892.nexus+uce-11299.nexus+uce-113670.nexus+uce-114069.nexus+uce-114114.nexus+uce-114332.nexus+uce-114434.nexus+uce-114465.nexus+uce-11487.nexus+uce-114973.nexus+uce-115000.nexus+uce-115009.nexus+uce-115361.nexus+uce-116083.nexus+uce-116196.nexus+uce-11985.nexus+uce-23.nexus+uce-278.nexus+uce-3911014.nexus+uce-3911271.nexus+uce-3911721.nexus+uce-410.nexus+uce-990291805.nexus+uce-99029381.nexus	12h:10m:5s (5h:58m:3s left)
+  20 GTR+F+I+R3   133819.809  uce-111079.nexus+uce-111500.nexus+uce-112552.nexus+uce-114298.nexus+uce-114478.nexus+uce-114975.nexus+uce-115023.nexus+uce-116123.nexus+uce-2700.nexus+uce-3911124.nexus+uce-3911256.nexus+uce-3911499.nexus+uce-3911752.nexus+uce-990272371.nexus+uce-990291039.nexus+uce-990293014.nexus	12h:11m:14s (5h:58m:37s left)
+  21 TIM3+F+I+R4  141539.441  uce-111089.nexus+uce-113332.nexus+uce-113545.nexus+uce-114126.nexus+uce-114297.nexus+uce-115010.nexus+uce-115426.nexus+uce-115841.nexus+uce-2025.nexus+uce-2293.nexus+uce-2361.nexus+uce-3911281.nexus+uce-444.nexus+uce-9901553.nexus+uce-9901736.nexus+uce-990286819.nexus	12h:11m:27s (5h:58m:43s left)
+  22 TIM2+F+I+R3  109769.120  uce-11163.nexus+uce-111633.nexus+uce-112527.nexus+uce-112692.nexus+uce-112944.nexus+uce-113852.nexus+uce-114063.nexus+uce-114735.nexus+uce-114819.nexus+uce-115607.nexus+uce-115970.nexus+uce-116278.nexus+uce-11726.nexus+uce-3911198.nexus+uce-3911605.nexus+uce-3911631.nexus+uce-47.nexus+uce-633.nexus+uce-784.nexus+uce-805.nexus+uce-806.nexus+uce-990230.nexus+uce-990292755.nexus+uce-990627.nexus	12h:12m:7s (5h:59m:3s left)
+WARNING: Log-likelihood -95417.9 of TVM+F+R5 worse than TVM+F+R4 -95404.8
+  23 TVM+F+I+R4   172969.974  uce-111226.nexus+uce-11143.nexus+uce-113064.nexus+uce-113813.nexus+uce-114210.nexus+uce-1144.nexus+uce-114444.nexus+uce-116148.nexus+uce-2105.nexus+uce-3911250.nexus+uce-477.nexus+uce-990272495.nexus+uce-990291284.nexus+uce-990291828.nexus+uce-99029898.nexus+uce-990488.nexus	12h:14m:21s (6h:0m:8s left)
+  24 GTR+F+I+R4   147004.677  uce-113486.nexus+uce-114002.nexus+uce-114124.nexus+uce-114431.nexus+uce-11745.nexus+uce-11930.nexus+uce-2142.nexus+uce-2312.nexus+uce-2501.nexus+uce-2694.nexus+uce-2796.nexus+uce-99027712.nexus+uce-990291949.nexus+uce-990293287.nexus+uce-99029557.nexus+uce-990845.nexus	12h:14m:35s (6h:0m:15s left)
+  25 GTR+F+I+R4   150069.295  uce-112085.nexus+uce-112877.nexus+uce-112927.nexus+uce-114453.nexus+uce-114836.nexus+uce-115421.nexus+uce-115869.nexus+uce-115999.nexus+uce-116117.nexus+uce-2301.nexus+uce-2673.nexus+uce-3911327.nexus+uce-759.nexus+uce-99029745.nexus	12h:14m:49s (6h:0m:22s left)
+WARNING: Log-likelihood -66339.7 of SYM+R5 worse than SYM+R4 -66321.7
+  26 TN+F+R4      143392.368  uce-111565.nexus+uce-111908.nexus+uce-112165.nexus+uce-11309.nexus+uce-113462.nexus+uce-113580.nexus+uce-114400.nexus+uce-114579.nexus+uce-114772.nexus+uce-115115.nexus+uce-115300.nexus+uce-11966.nexus+uce-3911247.nexus+uce-630.nexus+uce-76.nexus+uce-990437.nexus	12h:16m:24s (6h:1m:9s left)
+WARNING: Log-likelihood -66345.7 of TVMe+R5 worse than TVMe+R4 -66326.4
+  27 TIM+F+I+R3   226769.781  uce-111539.nexus+uce-111590.nexus+uce-111811.nexus+uce-112532.nexus+uce-1128.nexus+uce-112909.nexus+uce-113131.nexus+uce-113263.nexus+uce-113803.nexus+uce-114311.nexus+uce-114389.nexus+uce-115048.nexus+uce-115238.nexus+uce-115724.nexus+uce-115996.nexus+uce-116019.nexus+uce-11883.nexus+uce-2423.nexus+uce-2436.nexus+uce-2738.nexus+uce-391159.nexus+uce-3911676.nexus+uce-3911738.nexus+uce-3911798.nexus+uce-524.nexus+uce-599.nexus+uce-669.nexus+uce-990291536.nexus+uce-990292782.nexus+uce-990292857.nexus+uce-99029774.nexus+uce-990820.nexus	12h:18m:25s (6h:2m:8s left)
+  28 TVM+F+R4     115778.102  uce-1123.nexus+uce-112590.nexus+uce-112783.nexus+uce-113021.nexus+uce-114004.nexus+uce-114668.nexus+uce-115687.nexus+uce-115789.nexus+uce-2689.nexus+uce-357.nexus+uce-3911230.nexus+uce-573.nexus+uce-731.nexus+uce-926.nexus+uce-970.nexus	12h:19m:19s (6h:2m:35s left)
+  29 TPM2u+F+R4   102047.005  uce-111138.nexus+uce-111569.nexus+uce-112695.nexus+uce-113499.nexus+uce-114031.nexus+uce-114580.nexus+uce-114687.nexus+uce-116280.nexus+uce-116292.nexus+uce-11872.nexus+uce-11877.nexus+uce-2247.nexus+uce-2686.nexus+uce-9901185.nexus+uce-99029235.nexus+uce-99029663.nexus	12h:19m:38s (6h:2m:44s left)
+WARNING: Log-likelihood -66409.3 of TIM3e+R5 worse than TIM3e+R4 -66392.2
+  30 GTR+F+I+R3   114773.678  uce-111363.nexus+uce-112958.nexus+uce-112981.nexus+uce-113290.nexus+uce-113681.nexus+uce-113893.nexus+uce-116267.nexus+uce-3911685.nexus+uce-579.nexus+uce-9901015.nexus+uce-990291657.nexus+uce-990293510.nexus	12h:21m:19s (6h:3m:33s left)
+  31 TIM+F+I+R4   107851.822  uce-111214.nexus+uce-111902.nexus+uce-112348.nexus+uce-11262.nexus+uce-112945.nexus+uce-2688.nexus+uce-2836.nexus+uce-3911002.nexus+uce-3911301.nexus+uce-3911674.nexus+uce-3911977.nexus+uce-815.nexus+uce-857.nexus+uce-99021935.nexus+uce-990271701.nexus+uce-990283790.nexus	12h:22m:26s (6h:4m:6s left)
+  32 GTR+F+R5     165104.845  uce-112078.nexus+uce-114018.nexus+uce-115615.nexus+uce-11953.nexus+uce-2170.nexus+uce-2248.nexus+uce-2282.nexus+uce-2325.nexus+uce-2664.nexus+uce-3911615.nexus+uce-9901043.nexus+uce-990291261.nexus+uce-990291312.nexus+uce-990292372.nexus	12h:22m:28s (6h:4m:7s left)
+WARNING: Log-likelihood -66383.3 of TIM2e+R5 worse than TIM2e+R4 -66367.6
+  33 GTR+F+I+R2   78765.896   uce-111265.nexus+uce-112125.nexus+uce-112240.nexus+uce-11288.nexus+uce-112985.nexus+uce-113031.nexus+uce-113139.nexus+uce-113162.nexus+uce-113240.nexus+uce-11379.nexus+uce-11382.nexus+uce-115477.nexus+uce-115512.nexus+uce-2237.nexus+uce-99029138.nexus+uce-990291601.nexus	12h:23m:26s (6h:4m:35s left)
+WARNING: Log-likelihood -66448 of TIMe+R5 worse than TIMe+R4 -66432.9
+  34 TN+F+R4      105195.102  uce-113510.nexus+uce-11574.nexus+uce-11904.nexus+uce-11931.nexus+uce-2121.nexus+uce-2588.nexus+uce-9901382.nexus+uce-990291517.nexus	12h:25m:49s (6h:5m:45s left)
+  35 GTR+F+I+R3   83359.959   uce-112083.nexus+uce-113149.nexus+uce-113657.nexus+uce-114606.nexus+uce-114878.nexus+uce-115802.nexus+uce-11612.nexus+uce-116227.nexus+uce-1168.nexus+uce-217.nexus+uce-2490.nexus+uce-2538.nexus+uce-2632.nexus+uce-284.nexus+uce-3911528.nexus+uce-3911797.nexus+uce-3911811.nexus+uce-3911828.nexus+uce-3911925.nexus+uce-632.nexus+uce-99028804.nexus+uce-990292913.nexus+uce-990293405.nexus+uce-990822.nexus	12h:26m:12s (6h:5m:57s left)
+WARNING: Log-likelihood -66413.7 of TPM3+R5 worse than TPM3+R4 -66395.6
+  36 HKY+F+R3     202645.672  uce-111060.nexus+uce-111341.nexus+uce-111359.nexus+uce-111959.nexus+uce-1120.nexus+uce-112202.nexus+uce-112242.nexus+uce-11240.nexus+uce-112469.nexus+uce-112581.nexus+uce-112720.nexus+uce-112784.nexus+uce-112998.nexus+uce-113069.nexus+uce-113097.nexus+uce-11319.nexus+uce-113279.nexus+uce-1138.nexus+uce-11428.nexus+uce-114560.nexus+uce-114807.nexus+uce-115027.nexus+uce-115086.nexus+uce-115771.nexus+uce-11884.nexus+uce-11927.nexus+uce-2318.nexus+uce-3911145.nexus+uce-3911924.nexus+uce-3911968.nexus+uce-468.nexus+uce-783.nexus+uce-8.nexus+uce-9901217.nexus+uce-9901433.nexus+uce-9901718.nexus+uce-990292528.nexus+uce-990442.nexus+uce-990473.nexus+uce-990907.nexus	12h:27m:29s (6h:6m:34s left)
+  37 GTR+F+R4     143354.584  uce-111645.nexus+uce-112586.nexus+uce-112650.nexus+uce-11290.nexus+uce-113036.nexus+uce-114766.nexus+uce-115324.nexus+uce-2197.nexus+uce-39114.nexus+uce-3911703.nexus+uce-471.nexus+uce-990292461.nexus+uce-99029266.nexus+uce-99029334.nexus+uce-990555.nexus+uce-990583.nexus	12h:27m:31s (6h:6m:35s left)
+  38 TN+F+I+R3    84195.359   uce-112495.nexus+uce-113850.nexus+uce-114187.nexus+uce-114258.nexus+uce-114554.nexus+uce-115350.nexus+uce-11920.nexus+uce-2281.nexus+uce-2585.nexus+uce-407.nexus+uce-6.nexus+uce-819.nexus+uce-990286040.nexus+uce-99028944.nexus+uce-99029107.nexus+uce-990292441.nexus	12h:28m:7s (6h:6m:53s left)
+  39 GTR+F+R4     102455.372  uce-111282.nexus+uce-112065.nexus+uce-112344.nexus+uce-112514.nexus+uce-113173.nexus+uce-113696.nexus+uce-113733.nexus+uce-114885.nexus+uce-11619.nexus+uce-2141.nexus+uce-2702.nexus+uce-3911399.nexus+uce-391185.nexus+uce-711.nexus+uce-990291766.nexus+uce-990669.nexus	12h:29m:16s (6h:7m:27s left)
+WARNING: Log-likelihood -66389.3 of TPM2+R5 worse than TPM2+R4 -66372.3
+  40 TIM+F+I+R2   49901.246   uce-111179.nexus+uce-111623.nexus+uce-111733.nexus+uce-111774.nexus+uce-111784.nexus+uce-112555.nexus+uce-113150.nexus+uce-113630.nexus+uce-115054.nexus+uce-115363.nexus+uce-116291.nexus+uce-11924.nexus+uce-2180.nexus+uce-3911972.nexus+uce-540.nexus+uce-990291424.nexus	12h:29m:25s (6h:7m:31s left)
+  41 TIM3+F+R4    132798.604  uce-112199.nexus+uce-114006.nexus+uce-114087.nexus+uce-114432.nexus+uce-2327.nexus+uce-3911063.nexus+uce-391116.nexus+uce-3911172.nexus+uce-3911588.nexus+uce-3911763.nexus+uce-3911793.nexus+uce-657.nexus+uce-816.nexus+uce-990292334.nexus+uce-990293066.nexus+uce-990783.nexus	12h:29m:27s (6h:7m:32s left)
+  42 GTR+F+R4     126706.962  uce-113138.nexus+uce-113577.nexus+uce-115576.nexus+uce-115633.nexus+uce-11660.nexus+uce-2258.nexus+uce-324.nexus+uce-3911959.nexus+uce-813.nexus+uce-9901095.nexus+uce-990284308.nexus+uce-990291258.nexus+uce-990291416.nexus+uce-990291922.nexus+uce-99029853.nexus+uce-990430.nexus	12h:29m:54s (6h:7m:45s left)
+  43 TIM3+F+R3    61524.353   uce-111297.nexus+uce-1117.nexus+uce-113669.nexus+uce-11376.nexus+uce-113869.nexus+uce-114157.nexus+uce-2095.nexus+uce-2450.nexus+uce-3911138.nexus+uce-3911529.nexus+uce-3911975.nexus+uce-897.nexus+uce-990240.nexus+uce-990284669.nexus+uce-990292112.nexus+uce-990293079.nexus	12h:30m:10s (6h:7m:53s left)
+  44 TN+F+R3      118361.155  uce-111258.nexus+uce-111630.nexus+uce-112235.nexus+uce-112672.nexus+uce-112691.nexus+uce-112716.nexus+uce-113130.nexus+uce-113266.nexus+uce-113337.nexus+uce-113394.nexus+uce-113642.nexus+uce-114023.nexus+uce-114059.nexus+uce-114142.nexus+uce-114352.nexus+uce-115883.nexus+uce-11606.nexus+uce-116096.nexus+uce-11615.nexus+uce-11665.nexus+uce-11781.nexus+uce-11792.nexus+uce-11949.nexus+uce-2274.nexus	12h:30m:38s (6h:8m:6s left)
+WARNING: Log-likelihood -95404.7 of TIM3+F+R5 worse than TIM3+F+R4 -95395.5
+WARNING: Log-likelihood -66452.5 of K3P+R5 worse than K3P+R4 -66436.2
+  45 TIM+F+I+R3   74592.963   uce-111770.nexus+uce-11272.nexus+uce-113617.nexus+uce-114021.nexus+uce-3911868.nexus+uce-990287782.nexus+uce-990293126.nexus+uce-990293128.nexus	12h:31m:43s (6h:8m:38s left)
+  46 GTR+F+I+R4   91750.233   uce-111070.nexus+uce-111644.nexus+uce-111707.nexus+uce-112157.nexus+uce-11234.nexus+uce-112374.nexus+uce-112376.nexus+uce-112774.nexus+uce-113926.nexus+uce-11523.nexus+uce-11590.nexus+uce-11737.nexus+uce-11942.nexus+uce-2844.nexus+uce-3911325.nexus+uce-9901047.nexus	12h:34m:56s (6h:10m:13s left)
+  47 GTR+F+I+R4   94219.813   uce-113078.nexus+uce-113200.nexus+uce-114203.nexus+uce-114439.nexus+uce-11539.nexus+uce-115616.nexus+uce-11795.nexus+uce-3911254.nexus+uce-415.nexus+uce-661.nexus+uce-9901461.nexus+uce-990291283.nexus	12h:35m:24s (6h:10m:27s left)
+  48 HKY+F+I+R3   76662.142   uce-11121.nexus+uce-113128.nexus+uce-113423.nexus+uce-113480.nexus+uce-114841.nexus+uce-2202.nexus+uce-2285.nexus+uce-2315.nexus+uce-2817.nexus+uce-366.nexus+uce-3911279.nexus+uce-391146.nexus+uce-3911746.nexus+uce-3911882.nexus+uce-435.nexus+uce-729.nexus	12h:35m:27s (6h:10m:28s left)
+WARNING: Log-likelihood -66448.1 of TNe+R5 worse than TNe+R4 -66432.9
+  49 TIM+F+I+R5   87814.399   uce-112785.nexus+uce-113629.nexus+uce-114678.nexus+uce-114952.nexus+uce-2514.nexus+uce-3911315.nexus+uce-645.nexus+uce-835.nexus	12h:35m:37s (6h:10m:33s left)
+  50 TIM3+F+I+R2  39750.744   uce-111512.nexus+uce-111542.nexus+uce-111730.nexus+uce-112674.nexus+uce-112986.nexus+uce-113439.nexus+uce-113802.nexus+uce-113884.nexus+uce-114199.nexus+uce-114436.nexus+uce-114523.nexus+uce-114598.nexus+uce-114753.nexus+uce-114792.nexus+uce-115578.nexus+uce-3911072.nexus+uce-3911491.nexus+uce-826.nexus	12h:36m:16s (6h:10m:52s left)
+  51 TN+F+I+R3    80847.616   uce-111692.nexus+uce-11285.nexus+uce-113587.nexus+uce-11384.nexus+uce-115088.nexus+uce-650.nexus+uce-9901432.nexus+uce-990291257.nexus	12h:36m:39s (6h:11m:3s left)
+  52 GTR+F+R5     148806.775  uce-11207.nexus+uce-112990.nexus+uce-114908.nexus+uce-2164.nexus+uce-2359.nexus+uce-3911105.nexus+uce-3911612.nexus+uce-581.nexus+uce-952.nexus+uce-9901325.nexus+uce-9901702.nexus+uce-990272316.nexus	12h:36m:59s (6h:11m:13s left)
+WARNING: Log-likelihood -66452.6 of K2P+R5 worse than K2P+R4 -66436.3
+  53 TIM3+F+I+R3  73596.581   uce-112375.nexus+uce-112857.nexus+uce-2861.nexus+uce-3911143.nexus+uce-3911990.nexus+uce-9901447.nexus+uce-990292016.nexus+uce-990293012.nexus	12h:37m:48s (6h:11m:37s left)
+  54 TPM2u+F+I+R4 155129.937  uce-112666.nexus+uce-112726.nexus+uce-114895.nexus+uce-2829.nexus+uce-3911424.nexus+uce-3911963.nexus+uce-411.nexus+uce-463.nexus+uce-781.nexus+uce-990291152.nexus+uce-990291353.nexus+uce-990291466.nexus+uce-990292576.nexus+uce-990293141.nexus+uce-990293160.nexus+uce-990423.nexus	12h:38m:16s (6h:11m:51s left)
+  55 GTR+F+R4     97977.627   uce-111008.nexus+uce-112030.nexus+uce-112433.nexus+uce-112843.nexus+uce-1137.nexus+uce-114321.nexus+uce-114388.nexus+uce-114835.nexus+uce-116012.nexus+uce-2770.nexus+uce-379.nexus+uce-9901424.nexus+uce-990292643.nexus+uce-990292682.nexus+uce-99029509.nexus+uce-990556.nexus	12h:39m:16s (6h:12m:20s left)
+  56 TIM3+F+I+R4  85823.759   uce-112005.nexus+uce-112318.nexus+uce-113232.nexus+uce-114488.nexus+uce-2041.nexus+uce-3911490.nexus+uce-9901286.nexus+uce-99029911.nexus	12h:39m:21s (6h:12m:22s left)
+WARNING: Log-likelihood -67634.9 of JC+R5 worse than JC+R4 -67618.8
+  57 TIM+F+I+R4   131978.930  uce-111228.nexus+uce-111723.nexus+uce-111937.nexus+uce-113764.nexus+uce-114531.nexus+uce-114809.nexus+uce-114856.nexus+uce-115279.nexus+uce-115705.nexus+uce-209.nexus+uce-3911522.nexus+uce-780.nexus+uce-9901613.nexus+uce-990291493.nexus+uce-990292467.nexus+uce-990782.nexus	12h:40m:12s (6h:12m:48s left)
+  58 TIM3+F+R4    244880.138  uce-111048.nexus+uce-111204.nexus+uce-11155.nexus+uce-111694.nexus+uce-112317.nexus+uce-113496.nexus+uce-114873.nexus+uce-116114.nexus+uce-11768.nexus+uce-11983.nexus+uce-2052.nexus+uce-2107.nexus+uce-2125.nexus+uce-2185.nexus+uce-2507.nexus+uce-2837.nexus+uce-39113.nexus+uce-3911447.nexus+uce-3911858.nexus+uce-890.nexus+uce-98.nexus+uce-990292336.nexus+uce-990292422.nexus+uce-990292489.nexus	12h:40m:27s (6h:12m:55s left)
+  59 TIM2+F+R4    75499.077   uce-111294.nexus+uce-113651.nexus+uce-115131.nexus+uce-3911645.nexus+uce-3911707.nexus+uce-699.nexus+uce-990291093.nexus+uce-990292506.nexus	12h:41m:5s (6h:13m:13s left)
+  60 GTR+F+I+R4   64946.487   uce-11136.nexus+uce-11213.nexus+uce-112181.nexus+uce-2666.nexus+uce-3911353.nexus+uce-391195.nexus+uce-990292469.nexus+uce-990293230.nexus	12h:41m:7s (6h:13m:14s left)
+  61 TIM3+F+I+R3  59945.530   uce-11232.nexus+uce-2284.nexus+uce-2735.nexus+uce-351.nexus+uce-3911086.nexus+uce-3911808.nexus+uce-3911903.nexus+uce-94.nexus+uce-990291311.nexus+uce-990292153.nexus+uce-990292215.nexus+uce-990292490.nexus	12h:41m:28s (6h:13m:25s left)
+  62 TVM+F+I+R4   69364.791   uce-112989.nexus+uce-114462.nexus+uce-115207.nexus+uce-753.nexus+uce-798.nexus+uce-9901596.nexus+uce-990287027.nexus+uce-990527.nexus	12h:42m:26s (6h:13m:53s left)
+  63 HKY+F+R5     103488.091  uce-11202.nexus+uce-112714.nexus+uce-113739.nexus+uce-114441.nexus+uce-2813.nexus+uce-3911329.nexus+uce-990476.nexus	12h:42m:31s (6h:13m:55s left)
+  64 GTR+F+R4     139204.314  uce-112034.nexus+uce-112769.nexus+uce-113460.nexus+uce-113653.nexus+uce-11402.nexus+uce-114506.nexus+uce-115747.nexus+uce-116006.nexus+uce-116105.nexus+uce-11657.nexus+uce-2430.nexus+uce-2577.nexus+uce-3911161.nexus+uce-3911831.nexus+uce-3911883.nexus+uce-990702.nexus	12h:42m:37s (6h:13m:58s left)
+  65 TPM2u+F+I+R5 77841.956   uce-113089.nexus+uce-113825.nexus+uce-115743.nexus+uce-2426.nexus+uce-3911614.nexus+uce-9901451.nexus+uce-9907.nexus	12h:42m:47s (6h:14m:3s left)
+  66 K3Pu+F+I+R2  55580.342   uce-111969.nexus+uce-1121.nexus+uce-113088.nexus+uce-3911860.nexus+uce-9901308.nexus+uce-990291951.nexus	12h:42m:50s (6h:14m:5s left)
+  67 GTR+F+I+R4   141712.544  uce-111194.nexus+uce-112541.nexus+uce-112718.nexus+uce-11313.nexus+uce-113842.nexus+uce-114144.nexus+uce-114459.nexus+uce-11510.nexus+uce-11897.nexus+uce-2601.nexus+uce-2756.nexus+uce-3911125.nexus+uce-3911202.nexus+uce-3911430.nexus+uce-3911890.nexus+uce-718.nexus	12h:43m:4s (6h:14m:11s left)
+  68 GTR+F+R4     80442.771   uce-111346.nexus+uce-111885.nexus+uce-113539.nexus+uce-114590.nexus+uce-2819.nexus+uce-625.nexus+uce-990287495.nexus+uce-990291555.nexus	12h:43m:28s (6h:14m:23s left)
+  69 TIM2+F+I+R4  108585.408  uce-111978.nexus+uce-112068.nexus+uce-112176.nexus+uce-112513.nexus+uce-114927.nexus+uce-115577.nexus+uce-116101.nexus+uce-11732.nexus+uce-374.nexus+uce-3911535.nexus+uce-990101.nexus+uce-990272485.nexus	12h:43m:39s (6h:14m:28s left)
+  70 HKY+F+R4     181460.040  uce-111163.nexus+uce-111188.nexus+uce-112129.nexus+uce-112633.nexus+uce-112710.nexus+uce-113571.nexus+uce-113615.nexus+uce-114292.nexus+uce-115835.nexus+uce-2429.nexus+uce-2580.nexus+uce-369.nexus+uce-3911604.nexus+uce-416.nexus+uce-990142.nexus+uce-99027118.nexus	12h:44m:3s (6h:14m:40s left)
+  71 TVM+F+I+R3   43619.697   uce-11321.nexus+uce-114425.nexus+uce-115021.nexus+uce-3911489.nexus+uce-3911888.nexus+uce-730.nexus+uce-990291795.nexus+uce-990496.nexus	12h:44m:10s (6h:14m:44s left)
+  72 TIM2+F+I+R3  42030.991   uce-111264.nexus+uce-111550.nexus+uce-114486.nexus+uce-115033.nexus+uce-115765.nexus+uce-990286931.nexus	12h:44m:19s (6h:14m:48s left)
+  73 HKY+F+R3     45115.582   uce-11122.nexus+uce-111532.nexus+uce-112015.nexus+uce-112159.nexus+uce-112711.nexus+uce-113002.nexus+uce-11356.nexus+uce-114099.nexus+uce-114313.nexus+uce-11716.nexus+uce-3911748.nexus+uce-3911909.nexus	12h:44m:45s (6h:15m:1s left)
+  74 TVM+F+R4     59516.951   uce-111553.nexus+uce-114451.nexus+uce-4.nexus+uce-9901039.nexus+uce-990292638.nexus+uce-990874.nexus	12h:44m:58s (6h:15m:7s left)
+  75 TPM3u+F+R4   73847.259   uce-113272.nexus+uce-114346.nexus+uce-2751.nexus+uce-325.nexus+uce-3911616.nexus+uce-3911854.nexus+uce-9901697.nexus+uce-99049.nexus	12h:45m:3s (6h:15m:9s left)
+  76 TIM3+F+R4    40158.644   uce-112043.nexus+uce-114844.nexus+uce-115722.nexus+uce-990287.nexus	12h:45m:19s (6h:15m:17s left)
+  77 GTR+F+I+R4   44300.271   uce-113018.nexus+uce-114084.nexus+uce-11796.nexus+uce-3911595.nexus	12h:45m:28s (6h:15m:22s left)
+  78 TIM2+F+R4    80681.980   uce-111037.nexus+uce-111199.nexus+uce-111528.nexus+uce-112073.nexus+uce-116160.nexus+uce-2049.nexus+uce-3911936.nexus+uce-990959.nexus	12h:45m:32s (6h:15m:23s left)
+  79 TIM3+F+R3    13047.709   uce-112483.nexus+uce-116025.nexus+uce-266.nexus+uce-3911949.nexus	12h:45m:33s (6h:15m:24s left)
+  80 TIM2+F+R3    12589.796   uce-3911784.nexus	12h:45m:33s (6h:15m:24s left)
+  81 K3Pu+F+R3    37913.167   uce-1157.nexus+uce-2030.nexus	12h:45m:39s (6h:15m:27s left)
+  82 GTR+F+R4     50812.053   uce-11173.nexus+uce-114657.nexus+uce-115037.nexus+uce-115909.nexus+uce-2728.nexus+uce-344.nexus+uce-3911052.nexus+uce-990272486.nexus	12h:45m:53s (6h:15m:34s left)
+  83 TIM+F+R4     66709.500   uce-112801.nexus+uce-116220.nexus+uce-2151.nexus+uce-2883.nexus+uce-3911386.nexus+uce-9901734.nexus+uce-99028567.nexus+uce-992.nexus	12h:46m:0s (6h:15m:37s left)
+  84 TIM2+F+R4    58171.947   uce-111281.nexus+uce-114586.nexus+uce-115011.nexus+uce-1177.nexus+uce-9901733.nexus+uce-990285527.nexus+uce-99029113.nexus+uce-99042.nexus	12h:46m:10s (6h:15m:42s left)
+  85 TIM+F+I+R3   50433.676   uce-113755.nexus+uce-391142.nexus+uce-652.nexus+uce-990282763.nexus+uce-990284045.nexus+uce-990311.nexus+uce-990804.nexus+uce-990881.nexus	12h:46m:18s (6h:15m:46s left)
+  86 GTR+F+R4     34105.476   uce-112055.nexus+uce-116064.nexus+uce-3911601.nexus+uce-3911692.nexus	12h:46m:24s (6h:15m:49s left)
+  87 TVM+F+R5     32402.967   uce-111387.nexus+uce-111647.nexus+uce-112567.nexus+uce-11395.nexus+uce-2290.nexus+uce-315.nexus+uce-391149.nexus+uce-3911507.nexus+uce-3911564.nexus+uce-597.nexus+uce-990287079.nexus+uce-990505.nexus	12h:46m:27s (6h:15m:50s left)
+  88 GTR+F+R4     50724.430   uce-111352.nexus+uce-111951.nexus+uce-11279.nexus+uce-113282.nexus+uce-116099.nexus+uce-116164.nexus+uce-116289.nexus+uce-2726.nexus	12h:46m:46s (6h:15m:59s left)
+  89 GTR+F+I+R3   15322.771   uce-114221.nexus+uce-2150.nexus+uce-399.nexus+uce-990293580.nexus	12h:46m:51s (6h:16m:2s left)
+  90 K3Pu+F+R4    68414.006   uce-111077.nexus+uce-111870.nexus+uce-111991.nexus+uce-112515.nexus+uce-112516.nexus+uce-11263.nexus+uce-11300.nexus+uce-113054.nexus+uce-113741.nexus+uce-3911175.nexus+uce-3911294.nexus+uce-821.nexus+uce-9901119.nexus+uce-9901490.nexus+uce-9901674.nexus	12h:47m:16s (6h:16m:14s left)
+WARNING: Log-likelihood -95414.3 of TIM2+F+R5 worse than TIM2+F+R4 -95405
+  91 GTR+F+R4     57609.167   uce-112534.nexus+uce-113740.nexus+uce-3911419.nexus+uce-830.nexus+uce-9901208.nexus+uce-990291364.nexus+uce-990293013.nexus+uce-990846.nexus	12h:47m:37s (6h:16m:24s left)
+  92 TPM3u+F+I+R3 35136.269   uce-112225.nexus+uce-113335.nexus+uce-115441.nexus+uce-116085.nexus+uce-2054.nexus+uce-3911102.nexus+uce-990292364.nexus+uce-99029477.nexus	12h:47m:54s (6h:16m:33s left)
+  93 TN+F+R4      114621.098  uce-11160.nexus+uce-111762.nexus+uce-111837.nexus+uce-112277.nexus+uce-112690.nexus+uce-112846.nexus+uce-113207.nexus+uce-113461.nexus+uce-114850.nexus+uce-115181.nexus+uce-3911284.nexus+uce-3911502.nexus+uce-9901437.nexus+uce-990286523.nexus+uce-990738.nexus+uce-997.nexus	12h:49m:27s (6h:17m:18s left)
+  94 TPM2u+F+I+R3 39368.676   uce-111031.nexus+uce-111180.nexus+uce-115043.nexus+uce-116245.nexus+uce-11890.nexus+uce-679.nexus+uce-9901719.nexus+uce-990291871.nexus+uce-99029272.nexus+uce-990293516.nexus+uce-990393.nexus+uce-991.nexus	12h:49m:33s (6h:17m:21s left)
+  95 TIM+F+R3     27581.412   uce-111744.nexus+uce-112122.nexus+uce-112681.nexus+uce-114239.nexus+uce-114244.nexus+uce-114600.nexus+uce-115551.nexus+uce-990292922.nexus	12h:52m:5s (6h:18m:35s left)
+WARNING: Log-likelihood -95765.2 of TIM2e+R5 worse than TIM2e+R4 -95755.4
+WARNING: Log-likelihood -84081.9 of JC+I+R5 worse than JC+I+R4 -84054.6
+  96 TVM+F+I+R4   164999.662  uce-112327.nexus+uce-112724.nexus+uce-115126.nexus+uce-115859.nexus+uce-116269.nexus+uce-2206.nexus+uce-2275.nexus+uce-2592.nexus+uce-391152.nexus+uce-3911644.nexus+uce-3911695.nexus+uce-3911993.nexus+uce-393.nexus+uce-9901580.nexus+uce-990292468.nexus+uce-990763.nexus	12h:56m:11s (6h:20m:36s left)
+  97 TN+F+R5      251771.013  uce-112638.nexus+uce-112941.nexus+uce-113115.nexus+uce-113153.nexus+uce-114202.nexus+uce-114237.nexus+uce-114445.nexus+uce-115330.nexus+uce-2070.nexus+uce-2255.nexus+uce-2551.nexus+uce-2581.nexus+uce-2691.nexus+uce-3911025.nexus+uce-3911829.nexus+uce-482.nexus+uce-990150.nexus+uce-9901739.nexus+uce-99021914.nexus+uce-990291004.nexus+uce-990291430.nexus+uce-990292019.nexus+uce-990292092.nexus+uce-990292297.nexus	12h:59m:32s (6h:22m:15s left)
+  98 TPM3u+F+R4   127135.586  uce-111171.nexus+uce-112739.nexus+uce-112859.nexus+uce-112931.nexus+uce-113143.nexus+uce-113208.nexus+uce-113465.nexus+uce-114027.nexus+uce-114172.nexus+uce-2110.nexus+uce-3911164.nexus+uce-3911316.nexus+uce-667.nexus+uce-990291030.nexus	13h:3m:39s (6h:24m:16s left)
+WARNING: Log-likelihood -95402 of TIM+F+R5 worse than TIM+F+R4 -95392.7
+WARNING: Log-likelihood -95791.4 of TIMe+R5 worse than TIMe+R4 -95781
+  99 TVM+F+R5     213458.259  uce-111757.nexus+uce-112654.nexus+uce-112689.nexus+uce-113035.nexus+uce-113083.nexus+uce-113104.nexus+uce-113299.nexus+uce-113706.nexus+uce-113784.nexus+uce-114629.nexus+uce-115008.nexus+uce-115566.nexus+uce-115602.nexus+uce-115625.nexus+uce-115690.nexus+uce-115966.nexus+uce-116206.nexus+uce-11875.nexus+uce-2032.nexus+uce-3911411.nexus+uce-391196.nexus+uce-442.nexus+uce-967.nexus+uce-9901622.nexus+uce-9901749.nexus+uce-990180.nexus+uce-990291573.nexus+uce-990291675.nexus+uce-990291733.nexus+uce-990292026.nexus+uce-990292873.nexus+uce-99029969.nexus	13h:20m:30s (6h:32m:32s left)
+WARNING: Log-likelihood -95427.3 of TPM3u+F+R5 worse than TPM3u+F+R4 -95414
+WARNING: Log-likelihood -95767.3 of TPM3+R5 worse than TPM3+R4 -95756.3
+WARNING: Log-likelihood -95436.3 of TPM2u+F+R5 worse than TPM2u+F+R4 -95423
+WARNING: Log-likelihood -95777.9 of TPM2+R5 worse than TPM2+R4 -95763.8
+ 100 TIM3+F+R4    266143.004  uce-111033.nexus+uce-111040.nexus+uce-111358.nexus+uce-11141.nexus+uce-111524.nexus+uce-111790.nexus+uce-112213.nexus+uce-113193.nexus+uce-113399.nexus+uce-113679.nexus+uce-113725.nexus+uce-113726.nexus+uce-114864.nexus+uce-114901.nexus+uce-115670.nexus+uce-115672.nexus+uce-115732.nexus+uce-115821.nexus+uce-115991.nexus+uce-116073.nexus+uce-11627.nexus+uce-2288.nexus+uce-2435.nexus+uce-348.nexus+uce-350.nexus+uce-3911216.nexus+uce-3911384.nexus+uce-677.nexus+uce-948.nexus+uce-9901434.nexus+uce-990291695.nexus+uce-990291965.nexus	13h:53m:24s (6h:48m:39s left)
+WARNING: Log-likelihood -95424.1 of K3Pu+F+R5 worse than K3Pu+F+R4 -95410.8
+WARNING: Log-likelihood -95803.9 of K3P+R5 worse than K3P+R4 -95789.4
+WARNING: Log-likelihood -95414.3 of TN+F+R5 worse than TN+F+R4 -95405
+WARNING: Log-likelihood -95811.7 of TNe+R5 worse than TNe+R4 -95801.5
+WARNING: Log-likelihood -95436.2 of HKY+F+R5 worse than HKY+F+R4 -95423.1
+WARNING: Log-likelihood -95824.2 of K2P+R5 worse than K2P+R4 -95809.8
+WARNING: Log-likelihood -97086 of F81+F+R5 worse than F81+F+R4 -97074.2
+WARNING: Log-likelihood -97406.7 of JC+R5 worse than JC+R4 -97394.9
+ 101 TIM+F+R4     190910.203  uce-111709.nexus+uce-111715.nexus+uce-111934.nexus+uce-112009.nexus+uce-112820.nexus+uce-11324.nexus+uce-113544.nexus+uce-113628.nexus+uce-113649.nexus+uce-11396.nexus+uce-114911.nexus+uce-115569.nexus+uce-115634.nexus+uce-115736.nexus+uce-115782.nexus+uce-116061.nexus+uce-116112.nexus+uce-116142.nexus+uce-116188.nexus+uce-116191.nexus+uce-116293.nexus+uce-11735.nexus+uce-11809.nexus+uce-2494.nexus+uce-2676.nexus+uce-2731.nexus+uce-3911582.nexus+uce-851.nexus+uce-990292325.nexus+uce-990379.nexus+uce-990440.nexus+uce-990566.nexus	14h:51m:56s (7h:17m:21s left)
+Best partition model BIC score: 12004759.642 (LnL: -5991432.212  df:1625)
+Partition information was printed to /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/iqtree/representative_5X_plus3b_phyluce_iqtree/iqtree_representative_5X_plus3b_phyluce_iqtree_50.best_scheme.nex
+Partition information in Raxml format was printed to /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/iqtree/representative_5X_plus3b_phyluce_iqtree/iqtree_representative_5X_plus3b_phyluce_iqtree_50.best_scheme
+
+All model information printed to /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/iqtree/representative_5X_plus3b_phyluce_iqtree/iqtree_representative_5X_plus3b_phyluce_iqtree_50.model.gz
+CPU time for ModelFinder: 1067463.106 seconds (296h:31m:3s)
+Wall-clock time for ModelFinder: 54298.355 seconds (15h:4m:58s)
+Generating 1000 samples for ultrafast bootstrap (seed: 782386)...
+
+NOTE: 8646 MB RAM (8 GB) is required!
+Estimate model parameters (epsilon = 0.100)
+Initial log-likelihood: -5991621.321
+Current log-likelihood at step 1: -5991232.098
+Current log-likelihood at step 2: -5991215.101
+Current log-likelihood at step 3: -5991208.325
+Current log-likelihood at step 4: -5991203.388
+Current log-likelihood at step 5: -5991199.426
+Current log-likelihood at step 6: -5991195.992
+Current log-likelihood at step 7: -5991192.907
+Current log-likelihood at step 8: -5991190.135
+Current log-likelihood at step 9: -5991187.609
+Current log-likelihood at step 10: -5991185.316
+Current log-likelihood at step 11: -5991183.191
+Current log-likelihood at step 12: -5991181.245
+Current log-likelihood at step 13: -5991179.430
+Current log-likelihood at step 14: -5991177.739
+Current log-likelihood at step 15: -5991176.071
+Current log-likelihood at step 16: -5991174.356
+Current log-likelihood at step 17: -5991172.331
+Current log-likelihood at step 18: -5991170.623
+Current log-likelihood at step 19: -5991169.392
+Current log-likelihood at step 20: -5991168.284
+Current log-likelihood at step 21: -5991167.249
+Current log-likelihood at step 22: -5991166.276
+Current log-likelihood at step 23: -5991165.353
+Current log-likelihood at step 24: -5991164.495
+Current log-likelihood at step 25: -5991163.667
+Current log-likelihood at step 26: -5991162.898
+Current log-likelihood at step 27: -5991162.166
+Current log-likelihood at step 28: -5991161.489
+Current log-likelihood at step 29: -5991160.821
+Current log-likelihood at step 30: -5991160.201
+Current log-likelihood at step 31: -5991159.593
+Current log-likelihood at step 32: -5991159.018
+Current log-likelihood at step 33: -5991158.473
+Current log-likelihood at step 34: -5991157.940
+Current log-likelihood at step 35: -5991157.439
+Current log-likelihood at step 36: -5991156.949
+Current log-likelihood at step 37: -5991156.489
+Current log-likelihood at step 38: -5991156.036
+Current log-likelihood at step 39: -5991155.598
+Current log-likelihood at step 40: -5991155.175
+Current log-likelihood at step 41: -5991154.787
+Current log-likelihood at step 42: -5991154.411
+Current log-likelihood at step 43: -5991154.044
+Current log-likelihood at step 44: -5991153.689
+Current log-likelihood at step 45: -5991153.352
+Current log-likelihood at step 46: -5991153.032
+Current log-likelihood at step 47: -5991152.715
+Current log-likelihood at step 48: -5991152.421
+Current log-likelihood at step 49: -5991152.127
+Current log-likelihood at step 50: -5991151.857
+Current log-likelihood at step 51: -5991151.583
+Current log-likelihood at step 52: -5991151.318
+Current log-likelihood at step 53: -5991151.054
+Current log-likelihood at step 54: -5991150.804
+Current log-likelihood at step 55: -5991150.561
+Current log-likelihood at step 56: -5991150.332
+Current log-likelihood at step 57: -5991150.099
+Current log-likelihood at step 58: -5991149.873
+Current log-likelihood at step 59: -5991149.647
+Current log-likelihood at step 60: -5991149.442
+Current log-likelihood at step 61: -5991149.233
+Current log-likelihood at step 62: -5991149.027
+Current log-likelihood at step 63: -5991148.819
+Current log-likelihood at step 64: -5991148.623
+Current log-likelihood at step 65: -5991148.432
+Current log-likelihood at step 66: -5991148.244
+Current log-likelihood at step 67: -5991148.054
+Current log-likelihood at step 68: -5991147.870
+Current log-likelihood at step 69: -5991147.685
+Current log-likelihood at step 70: -5991147.515
+Current log-likelihood at step 71: -5991147.344
+Current log-likelihood at step 72: -5991147.175
+Current log-likelihood at step 73: -5991146.997
+Current log-likelihood at step 74: -5991146.828
+Current log-likelihood at step 75: -5991146.667
+Current log-likelihood at step 76: -5991146.503
+Current log-likelihood at step 77: -5991146.347
+Current log-likelihood at step 78: -5991146.191
+Current log-likelihood at step 79: -5991146.045
+Current log-likelihood at step 80: -5991145.886
+Current log-likelihood at step 81: -5991145.734
+Current log-likelihood at step 82: -5991145.578
+Current log-likelihood at step 83: -5991145.417
+Current log-likelihood at step 84: -5991145.273
+Current log-likelihood at step 85: -5991145.123
+Current log-likelihood at step 86: -5991144.969
+Current log-likelihood at step 87: -5991144.829
+Current log-likelihood at step 88: -5991144.691
+Current log-likelihood at step 89: -5991144.550
+Current log-likelihood at step 90: -5991144.414
+Current log-likelihood at step 91: -5991144.281
+Current log-likelihood at step 92: -5991144.142
+Current log-likelihood at step 93: -5991144.012
+Current log-likelihood at step 94: -5991143.881
+Current log-likelihood at step 95: -5991143.749
+Current log-likelihood at step 96: -5991143.617
+Current log-likelihood at step 97: -5991143.494
+Current log-likelihood at step 98: -5991143.361
+Current log-likelihood at step 99: -5991143.243
+Partition-specific rates:  0.833 0.365 0.868 1.292 0.879 1.124 0.415 0.856 1.112 0.745 1.105 0.988 0.693 0.587 1.306 0.957 0.670 1.486 0.844 1.301 1.096 0.228 0.969 0.626 0.725 0.272 1.618 1.134 0.568 0.410 0.629 0.536 0.952 0.736 1.488 0.400 1.280 0.803 1.106 1.084 0.663 0.941 0.436 0.671 0.194 0.648 2.044 0.864 0.939 0.767 0.433 1.348 1.138 0.560 1.192 0.399 0.671 0.842 1.181 1.721 0.995 1.353 1.922 2.982 1.055 1.518 1.521 1.764 2.296 2.044 0.480 1.636 1.058 0.834 1.169 0.721 1.128 1.274 1.510 1.302 1.761 0.472 1.980 1.328 1.319 1.365 1.878 1.128 1.549 1.958 1.504 2.442 0.979 0.972 1.513 1.333 1.673 0.608 0.705 3.159 1.735
+Parameters optimization took 99 rounds (427.395 sec)
+
+Wrote distance file to... 
+Computing ML distances based on estimated model parameters...
+Calculating distance matrix: done in 0.000976514 secs using 1561% CPU
+Computing ML distances took 0.001113 sec (of wall-clock time) 0.023506 sec (of CPU time)
+Setting up auxiliary I and S matrices: done in 0.00168411 secs using 1426% CPU
+Computing RapidNJ tree took 0.267674 sec (of wall-clock time) 2.144082 sec (of CPU time)
+Log-likelihood of RapidNJ tree: -6872700.324
+--------------------------------------------------------------------
+|             INITIALIZING CANDIDATE TREE SET                      |
+--------------------------------------------------------------------
+Generating 98 parsimony trees... 530.197 second
+Computing log-likelihood of 98 initial trees ... 333.455 seconds
+Current best score: -5991143.243
+
+Do NNI search on 20 best initial trees
+Estimate model parameters (epsilon = 0.100)
+Initial log-likelihood: -5991118.682
+Current log-likelihood at step 1: -5991116.796
+Current log-likelihood at step 2: -5991116.377
+Current log-likelihood at step 3: -5991116.100
+Current log-likelihood at step 4: -5991115.878
+Current log-likelihood at step 5: -5991115.690
+Current log-likelihood at step 6: -5991115.533
+Current log-likelihood at step 7: -5991115.361
+Current log-likelihood at step 8: -5991115.213
+Current log-likelihood at step 9: -5991115.068
+Current log-likelihood at step 10: -5991114.933
+Current log-likelihood at step 11: -5991114.797
+Current log-likelihood at step 12: -5991114.665
+Current log-likelihood at step 13: -5991114.550
+Current log-likelihood at step 14: -5991114.428
+Current log-likelihood at step 15: -5991114.315
+Current log-likelihood at step 16: -5991114.206
+Current log-likelihood at step 17: -5991114.103
+Current log-likelihood at step 18: -5991113.998
+Current log-likelihood at step 19: -5991113.904
+Parameters optimization took 18 rounds (75.195 sec)
+
+BETTER TREE FOUND at iteration 1: -5991113.904
+Estimate model parameters (epsilon = 0.100)
+Initial log-likelihood: -5991083.375
+Current log-likelihood at step 1: -5991058.771
+Current log-likelihood at step 2: -5991054.776
+Current log-likelihood at step 3: -5991053.028
+Current log-likelihood at step 4: -5991051.961
+Current log-likelihood at step 5: -5991051.220
+Current log-likelihood at step 6: -5991050.641
+Current log-likelihood at step 7: -5991050.171
+Current log-likelihood at step 8: -5991049.765
+Current log-likelihood at step 9: -5991049.423
+Current log-likelihood at step 10: -5991049.110
+Current log-likelihood at step 11: -5991048.834
+Current log-likelihood at step 12: -5991048.570
+Current log-likelihood at step 13: -5991048.330
+Current log-likelihood at step 14: -5991048.100
+Current log-likelihood at step 15: -5991047.889
+Current log-likelihood at step 16: -5991047.714
+Current log-likelihood at step 17: -5991047.515
+Current log-likelihood at step 18: -5991047.337
+Current log-likelihood at step 19: -5991047.191
+Current log-likelihood at step 20: -5991047.017
+Current log-likelihood at step 21: -5991046.876
+Current log-likelihood at step 22: -5991046.729
+Current log-likelihood at step 23: -5991046.587
+Current log-likelihood at step 24: -5991046.454
+Current log-likelihood at step 25: -5991046.337
+Current log-likelihood at step 26: -5991046.224
+Current log-likelihood at step 27: -5991046.109
+Current log-likelihood at step 28: -5991046.000
+Current log-likelihood at step 29: -5991045.895
+Current log-likelihood at step 30: -5991045.796
+Parameters optimization took 29 rounds (125.973 sec)
+
+BETTER TREE FOUND at iteration 2: -5991045.796
+Estimate model parameters (epsilon = 0.100)
+Initial log-likelihood: -5990795.888
+Current log-likelihood at step 1: -5990783.444
+Current log-likelihood at step 2: -5990781.866
+Current log-likelihood at step 3: -5990781.170
+Current log-likelihood at step 4: -5990780.758
+Current log-likelihood at step 5: -5990780.453
+Current log-likelihood at step 6: -5990780.200
+Current log-likelihood at step 7: -5990779.999
+Current log-likelihood at step 8: -5990779.822
+Current log-likelihood at step 9: -5990779.670
+Current log-likelihood at step 10: -5990779.542
+Current log-likelihood at step 11: -5990779.409
+Current log-likelihood at step 12: -5990779.295
+Current log-likelihood at step 13: -5990779.183
+Current log-likelihood at step 14: -5990779.088
+Parameters optimization took 13 rounds (57.386 sec)
+
+BETTER TREE FOUND at iteration 4: -5990779.088
+Iteration 10 / LogL: -5991120.351 / Time: 15h:38m:32s
+Iteration 20 / LogL: -5991102.164 / Time: 15h:45m:56s
+Finish initializing candidate tree set (20)
+Current best tree score: -5990779.088 / CPU time: 1998.458
+Number of iterations: 20
+--------------------------------------------------------------------
+|               OPTIMIZING CANDIDATE TREE SET                      |
+--------------------------------------------------------------------
+Iteration 30 / LogL: -5991238.206 / Time: 15h:54m:45s (2h:7m:1s left)
+Iteration 40 / LogL: -5991006.121 / Time: 16h:2m:52s (1h:35m:0s left)
+Iteration 50 / LogL: -5990804.097 / Time: 16h:11m:46s (1h:13m:36s left)
+Log-likelihood cutoff on original alignment: -5991485.440
+Iteration 60 / LogL: -5990938.639 / Time: 16h:19m:35s (0h:55m:38s left)
+Iteration 70 / LogL: -5990934.701 / Time: 16h:28m:29s (0h:41m:9s left)
+Iteration 80 / LogL: -5990852.227 / Time: 16h:36m:36s (0h:27m:50s left)
+Estimate model parameters (epsilon = 0.100)
+Initial log-likelihood: -5990764.124
+Current log-likelihood at step 1: -5990746.597
+Current log-likelihood at step 2: -5990744.164
+Current log-likelihood at step 3: -5990743.085
+Current log-likelihood at step 4: -5990742.402
+Current log-likelihood at step 5: -5990741.915
+Current log-likelihood at step 6: -5990741.515
+Current log-likelihood at step 7: -5990741.181
+Current log-likelihood at step 8: -5990740.902
+Current log-likelihood at step 9: -5990740.661
+Current log-likelihood at step 10: -5990740.458
+Current log-likelihood at step 11: -5990740.261
+Current log-likelihood at step 12: -5990740.090
+Current log-likelihood at step 13: -5990739.934
+Current log-likelihood at step 14: -5990739.801
+Current log-likelihood at step 15: -5990739.673
+Current log-likelihood at step 16: -5990739.555
+Current log-likelihood at step 17: -5990739.452
+Current log-likelihood at step 18: -5990739.337
+Current log-likelihood at step 19: -5990739.252
+Parameters optimization took 18 rounds (80.847 sec)
+
+BETTER TREE FOUND at iteration 87: -5990739.252
+Iteration 90 / LogL: -5991445.606 / Time: 16h:46m:31s (1h:50m:40s left)
+Iteration 100 / LogL: -6027307.325 / Time: 16h:54m:40s (1h:36m:24s left)
+Log-likelihood cutoff on original alignment: -5991447.330
+NOTE: Bootstrap correlation coefficient of split occurrence frequencies: 0.981
+NOTE: UFBoot does not converge, continue at least 100 more iterations
+Iteration 110 / LogL: -5990911.333 / Time: 17h:3m:24s (1h:37m:47s left)
+Iteration 120 / LogL: -5991289.336 / Time: 17h:11m:56s (1h:25m:21s left)
+Iteration 130 / LogL: -6005553.574 / Time: 17h:20m:9s (1h:13m:21s left)
+Iteration 140 / LogL: -5991192.273 / Time: 17h:28m:52s (1h:2m:6s left)
+Estimate model parameters (epsilon = 0.100)
+Initial log-likelihood: -5990715.187
+Current log-likelihood at step 1: -5990705.854
+Current log-likelihood at step 2: -5990704.517
+Current log-likelihood at step 3: -5990703.910
+Current log-likelihood at step 4: -5990703.544
+Current log-likelihood at step 5: -5990703.301
+Current log-likelihood at step 6: -5990703.106
+Current log-likelihood at step 7: -5990702.946
+Current log-likelihood at step 8: -5990702.802
+Current log-likelihood at step 9: -5990702.689
+Current log-likelihood at step 10: -5990702.580
+Current log-likelihood at step 11: -5990702.479
+Current log-likelihood at step 12: -5990702.384
+Parameters optimization took 11 rounds (49.549 sec)
+
+BETTER TREE FOUND at iteration 150: -5990702.384
+Iteration 150 / LogL: -5990702.384 / Time: 17h:38m:20s (1h:42m:56s left)
+Log-likelihood cutoff on original alignment: -5991447.330
+Estimate model parameters (epsilon = 0.100)
+Initial log-likelihood: -5990696.514
+Current log-likelihood at step 1: -5990691.970
+Current log-likelihood at step 2: -5990691.493
+Current log-likelihood at step 3: -5990691.289
+Current log-likelihood at step 4: -5990691.163
+Current log-likelihood at step 5: -5990691.064
+Parameters optimization took 4 rounds (21.818 sec)
+
+BETTER TREE FOUND at iteration 159: -5990691.064
+Iteration 160 / LogL: -5990950.986 / Time: 17h:47m:20s (1h:41m:5s left)
+Estimate model parameters (epsilon = 0.100)
+Initial log-likelihood: -5990652.147
+Current log-likelihood at step 1: -5990641.754
+Current log-likelihood at step 2: -5990640.468
+Current log-likelihood at step 3: -5990639.891
+Current log-likelihood at step 4: -5990639.565
+Current log-likelihood at step 5: -5990639.336
+Current log-likelihood at step 6: -5990639.171
+Current log-likelihood at step 7: -5990639.039
+Current log-likelihood at step 8: -5990638.931
+Current log-likelihood at step 9: -5990638.837
+Parameters optimization took 8 rounds (39.538 sec)
+
+BETTER TREE FOUND at iteration 167: -5990638.837
+Iteration 170 / LogL: -5991034.786 / Time: 17h:55m:56s (1h:38m:7s left)
+Iteration 180 / LogL: -5990945.641 / Time: 18h:4m:27s (1h:27m:13s left)
+Iteration 190 / LogL: -5991002.187 / Time: 18h:13m:12s (1h:16m:41s left)
+Iteration 200 / LogL: -5990870.004 / Time: 18h:21m:58s (1h:6m:19s left)
+Log-likelihood cutoff on original alignment: -5991447.330
+NOTE: Bootstrap correlation coefficient of split occurrence frequencies: 0.982
+NOTE: UFBoot does not converge, continue at least 100 more iterations
+Iteration 210 / LogL: -5990688.496 / Time: 18h:30m:3s (1h:28m:18s left)
+Iteration 220 / LogL: -5995959.542 / Time: 18h:38m:8s (1h:17m:52s left)
+Iteration 230 / LogL: -5990866.952 / Time: 18h:46m:32s (1h:7m:43s left)
+Iteration 240 / LogL: -5991112.281 / Time: 18h:54m:53s (0h:57m:43s left)
+Iteration 250 / LogL: -5990902.089 / Time: 19h:3m:33s (0h:47m:54s left)
+Log-likelihood cutoff on original alignment: -5991447.330
+Iteration 260 / LogL: -5990808.547 / Time: 19h:12m:14s (0h:38m:11s left)
+Iteration 270 / LogL: -5991083.578 / Time: 19h:19m:49s (0h:28m:25s left)
+Iteration 280 / LogL: -5991363.615 / Time: 19h:27m:55s (0h:18m:50s left)
+Iteration 290 / LogL: -5990815.381 / Time: 19h:36m:2s (0h:9m:22s left)
+Iteration 300 / LogL: -5991940.589 / Time: 19h:44m:33s (0h:0m:0s left)
+Log-likelihood cutoff on original alignment: -5991447.330
+NOTE: Bootstrap correlation coefficient of split occurrence frequencies: 0.993
+TREE SEARCH COMPLETED AFTER 300 ITERATIONS / Time: 19h:44m:34s
+
+--------------------------------------------------------------------
+|                    FINALIZING TREE SEARCH                        |
+--------------------------------------------------------------------
+Performs final model parameters optimization
+Estimate model parameters (epsilon = 0.010)
+Initial log-likelihood: -5990638.837
+Current log-likelihood at step 1: -5990638.755
+Current log-likelihood at step 2: -5990638.684
+Current log-likelihood at step 3: -5990638.623
+Current log-likelihood at step 4: -5990638.558
+Current log-likelihood at step 5: -5990638.493
+Current log-likelihood at step 6: -5990638.441
+Current log-likelihood at step 7: -5990638.388
+Current log-likelihood at step 8: -5990638.336
+Current log-likelihood at step 9: -5990638.275
+Current log-likelihood at step 10: -5990638.222
+Current log-likelihood at step 11: -5990638.174
+Current log-likelihood at step 12: -5990638.127
+Current log-likelihood at step 13: -5990638.073
+Current log-likelihood at step 14: -5990638.030
+Current log-likelihood at step 15: -5990637.978
+Current log-likelihood at step 16: -5990637.936
+Current log-likelihood at step 17: -5990637.883
+Current log-likelihood at step 18: -5990637.833
+Current log-likelihood at step 19: -5990637.783
+Current log-likelihood at step 20: -5990637.736
+Current log-likelihood at step 21: -5990637.688
+Current log-likelihood at step 22: -5990637.639
+Current log-likelihood at step 23: -5990637.591
+Current log-likelihood at step 24: -5990637.545
+Current log-likelihood at step 25: -5990637.496
+Current log-likelihood at step 26: -5990637.454
+Current log-likelihood at step 27: -5990637.409
+Current log-likelihood at step 28: -5990637.359
+Current log-likelihood at step 29: -5990637.318
+Current log-likelihood at step 30: -5990637.272
+Current log-likelihood at step 31: -5990637.219
+Current log-likelihood at step 32: -5990637.181
+Current log-likelihood at step 33: -5990637.139
+Current log-likelihood at step 34: -5990637.094
+Current log-likelihood at step 35: -5990637.056
+Current log-likelihood at step 36: -5990637.013
+Current log-likelihood at step 37: -5990636.970
+Current log-likelihood at step 38: -5990636.929
+Current log-likelihood at step 39: -5990636.890
+Current log-likelihood at step 40: -5990636.849
+Current log-likelihood at step 41: -5990636.808
+Current log-likelihood at step 42: -5990636.771
+Current log-likelihood at step 43: -5990636.729
+Current log-likelihood at step 44: -5990636.693
+Current log-likelihood at step 45: -5990636.655
+Current log-likelihood at step 46: -5990636.618
+Current log-likelihood at step 47: -5990636.578
+Current log-likelihood at step 48: -5990636.541
+Current log-likelihood at step 49: -5990636.505
+Current log-likelihood at step 50: -5990636.468
+Current log-likelihood at step 51: -5990636.432
+Current log-likelihood at step 52: -5990636.399
+Current log-likelihood at step 53: -5990636.366
+Current log-likelihood at step 54: -5990636.327
+Current log-likelihood at step 55: -5990636.295
+Current log-likelihood at step 56: -5990636.265
+Current log-likelihood at step 57: -5990636.228
+Current log-likelihood at step 58: -5990636.192
+Current log-likelihood at step 59: -5990636.160
+Current log-likelihood at step 60: -5990636.123
+Current log-likelihood at step 61: -5990636.091
+Current log-likelihood at step 62: -5990636.058
+Current log-likelihood at step 63: -5990636.025
+Current log-likelihood at step 64: -5990635.988
+Current log-likelihood at step 65: -5990635.956
+Current log-likelihood at step 66: -5990635.925
+Current log-likelihood at step 67: -5990635.896
+Current log-likelihood at step 68: -5990635.870
+Current log-likelihood at step 69: -5990635.836
+Current log-likelihood at step 70: -5990635.805
+Current log-likelihood at step 71: -5990635.775
+Current log-likelihood at step 72: -5990635.745
+Current log-likelihood at step 73: -5990635.715
+Current log-likelihood at step 74: -5990635.683
+Current log-likelihood at step 75: -5990635.651
+Current log-likelihood at step 76: -5990635.621
+Current log-likelihood at step 77: -5990635.594
+Current log-likelihood at step 78: -5990635.567
+Current log-likelihood at step 79: -5990635.532
+Current log-likelihood at step 80: -5990635.509
+Current log-likelihood at step 81: -5990635.483
+Current log-likelihood at step 82: -5990635.456
+Current log-likelihood at step 83: -5990635.428
+Current log-likelihood at step 84: -5990635.399
+Current log-likelihood at step 85: -5990635.377
+Current log-likelihood at step 86: -5990635.348
+Current log-likelihood at step 87: -5990635.321
+Current log-likelihood at step 88: -5990635.295
+Current log-likelihood at step 89: -5990635.270
+Current log-likelihood at step 90: -5990635.242
+Current log-likelihood at step 91: -5990635.216
+Current log-likelihood at step 92: -5990635.197
+Current log-likelihood at step 93: -5990635.169
+Current log-likelihood at step 94: -5990635.144
+Current log-likelihood at step 95: -5990635.120
+Current log-likelihood at step 96: -5990635.092
+Current log-likelihood at step 97: -5990635.076
+Current log-likelihood at step 98: -5990635.053
+Current log-likelihood at step 99: -5990635.029
+Partition-specific rates:  0.835 0.363 0.867 1.285 0.880 1.127 0.415 0.857 1.112 0.746 1.107 0.985 0.695 0.586 1.305 0.958 0.670 1.492 0.838 1.300 1.091 0.227 0.970 0.624 0.722 0.275 1.617 1.138 0.571 0.411 0.625 0.533 0.949 0.740 1.494 0.400 1.268 0.804 1.105 1.088 0.666 0.941 0.432 0.671 0.193 0.648 2.050 0.866 0.936 0.769 0.436 1.351 1.133 0.560 1.190 0.399 0.672 0.841 1.179 1.713 1.011 1.354 1.952 2.979 1.054 1.517 1.508 1.770 2.293 2.049 0.479 1.656 1.054 0.831 1.170 0.722 1.134 1.272 1.504 1.301 1.728 0.471 1.982 1.321 1.318 1.371 1.865 1.131 1.549 1.945 1.490 2.439 0.976 0.968 1.518 1.324 1.676 0.607 0.709 3.149 1.725
+Parameters optimization took 99 rounds (359.893 sec)
+
+Partition information was printed to /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/iqtree/representative_5X_plus3b_phyluce_iqtree/iqtree_representative_5X_plus3b_phyluce_iqtree_50.best_model.nex
+BEST SCORE FOUND : -5990635.029
+
+Testing tree branches by SH-like aLRT with 1000 replicates...
+74.931 sec.
+Creating bootstrap support values...
+Split supports printed to NEXUS file /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/iqtree/representative_5X_plus3b_phyluce_iqtree/iqtree_representative_5X_plus3b_phyluce_iqtree_50.splits.nex
+Total tree length: 1.789
+
+Total number of iterations: 300
+CPU time used for tree search: 374148.148 sec (103h:55m:48s)
+Wall-clock time used for tree search: 16316.249 sec (4h:31m:56s)
+Total CPU time used: 1461754.502 sec (406h:2m:34s)
+Total wall-clock time used: 71509.326 sec (19h:51m:49s)
+
+Computing bootstrap consensus tree...
+Reading input file /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/iqtree/representative_5X_plus3b_phyluce_iqtree/iqtree_representative_5X_plus3b_phyluce_iqtree_50.splits.nex...
+143 taxa and 520 splits.
+Consensus tree written to /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/iqtree/representative_5X_plus3b_phyluce_iqtree/iqtree_representative_5X_plus3b_phyluce_iqtree_50.contree
+Reading input trees file /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/iqtree/representative_5X_plus3b_phyluce_iqtree/iqtree_representative_5X_plus3b_phyluce_iqtree_50.contree
+Log-likelihood of consensus tree: -5990663.625
+
+Analysis results written to: 
+  IQ-TREE report:                /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/iqtree/representative_5X_plus3b_phyluce_iqtree/iqtree_representative_5X_plus3b_phyluce_iqtree_50.iqtree
+  Maximum-likelihood tree:       /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/iqtree/representative_5X_plus3b_phyluce_iqtree/iqtree_representative_5X_plus3b_phyluce_iqtree_50.treefile
+  Likelihood distances:          /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/iqtree/representative_5X_plus3b_phyluce_iqtree/iqtree_representative_5X_plus3b_phyluce_iqtree_50.mldist
+  Best partitioning scheme:      /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/iqtree/representative_5X_plus3b_phyluce_iqtree/iqtree_representative_5X_plus3b_phyluce_iqtree_50.best_scheme.nex
+           in RAxML format:      /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/iqtree/representative_5X_plus3b_phyluce_iqtree/iqtree_representative_5X_plus3b_phyluce_iqtree_50.best_scheme
+
+Ultrafast bootstrap approximation results written to:
+  Split support values:          /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/iqtree/representative_5X_plus3b_phyluce_iqtree/iqtree_representative_5X_plus3b_phyluce_iqtree_50.splits.nex
+  Consensus tree:                /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/iqtree/representative_5X_plus3b_phyluce_iqtree/iqtree_representative_5X_plus3b_phyluce_iqtree_50.contree
+  Screen log file:               /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/iqtree/representative_5X_plus3b_phyluce_iqtree/iqtree_representative_5X_plus3b_phyluce_iqtree_50.log
+
+Date and Time: Fri Apr 11 12:32:57 2025
+= Fri Apr 11 12:32:58 EDT 2025 job iqtree_phyluce_partitions done

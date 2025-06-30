@@ -74,3 +74,6 @@ outputs/graftM
 #
 
 logs/
+data/seqs/cladocopium_psbA.fasta.amb data/seqs/cladocopium_psbA.fasta.ann data/seqs/cladocopium_psbA.fasta.bwt data/seqs/cladocopium_psbA.fasta.fai data/seqs/cladocopium_psbA.fasta.pac data/seqs/cladocopium_psbA.fasta.sa
+data/seqs/ITS2_graftm_final.gpkg
+data/seqs/PocHist_Refs.fasta
