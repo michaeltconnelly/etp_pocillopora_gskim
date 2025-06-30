@@ -1,0 +1,35 @@
+Loading gcc/7.3/gsl
+  Loading requirement: gcc/7.3.0
++ Fri Feb 23 12:44:50 EST 2024 job ngsLD_site_filtering_10 started in mThM.q with jobID=22911001 on compute-75-07
++ NSLOTS = 8
+==> Input Arguments:
+	geno: /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/angsd/final_noclones/final_noclones_ibs05.geno.gz
+	probs: true
+	log_scale: false
+	n_ind: 229
+	n_sites: 5314312
+	pos: /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/angsd/final_noclones/final_noclones_ibs05.sites.txt (WITHOUT header)
+	max_kb_dist (kb): 10
+	max_snp_dist: 0
+	min_maf: 0.000000
+	ignore_miss_data: false
+	call_geno: false
+	N_thresh: 0.000000
+	call_thresh: 0.000000
+	rnd_sample: 1.000000
+	seed: 1708710812
+	extend_out: true
+	out: /scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/angsd/final_noclones/LD.out
+	n_threads: 8
+	verbose: 1
+	version: 1.2.1 (Feb 22 2024 @ 12:28:23)
+
+==> GZIP input file (not BINARY)
+> Reading data from file...
+==> Calculating MAF for all sites...
+==> Getting sites coordinates
+==> Launching threads...
+==> Waiting for all threads to finish...
+==> Freeing memory...
+Done!
+= Fri Feb 23 18:12:33 EST 2024 job ngsLD_site_filtering_10 done

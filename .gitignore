@@ -77,3 +77,6 @@ logs/
 data/seqs/cladocopium_psbA.fasta.amb data/seqs/cladocopium_psbA.fasta.ann data/seqs/cladocopium_psbA.fasta.bwt data/seqs/cladocopium_psbA.fasta.fai data/seqs/cladocopium_psbA.fasta.pac data/seqs/cladocopium_psbA.fasta.sa
 data/seqs/ITS2_graftm_final.gpkg
 data/seqs/PocHist_Refs.fasta
+data/seqs/peffusa_reference_pgra_himb_ancestral.fa
+data/Pocillopora_361ADN_1559SNP.min4.phy data/Pocillopora_361ADN_1559SNP.vcf data/Pocillopora_361ADN_1559SNP.vcf.gz data/Pocillopora_361ADN_1559SNP.vcf.gz.csi data/Pocillopora_361ADN_1559SNP_original.vcf
+data/seqs/cladocopium_psbA.fasta.amb data/seqs/cladocopium_psbA.fasta.ann data/seqs/cladocopium_psbA.fasta.bwt data/seqs/cladocopium_psbA.fasta.fai data/seqs/cladocopium_psbA.fasta.pac data/seqs/cladocopium_psbA.fasta.sa
