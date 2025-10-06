@@ -1,0 +1,157 @@
+---
+title: "PCAngsd SymCD"
+author: "Mike Connelly"
+date: "2025-01-24"
+output: html_document
+---
+
+## Setup and packages
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = TRUE)
+options(stringsAsFactors = FALSE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+```{r packages}
+library("tidyverse")
+library("ggrepel")
+#
+source("./R/pocillopora_etp_gksim_functions.R")
+```
+
+## Import sample metadata
+```{r import_sample_metadata}
+source("./R/sample_import.R")
+samples <- all_samples
+```
+
+## C-dominated samples (no-clones) PCA
+```{r pca}
+# *P. grandis* aligments of full analysis samples
+C <- as.matrix(read.table("./outputs/angsd/C-dominated_symC/C-dominated_symC.cov"))
+C <- as.matrix(read.table("./outputs/angsd/C-dominated_symC/C-dominated_symC_0.85.cov"))
+e <- eigen(C)
+```
+```{r pca_test_plot}
+plot(e$vectors[,1:2],xlab="PC1",ylab="PC2", main="individual allele frequency")
+#
+plot(e$vectors[,2:3],xlab="PC2",ylab="PC3", main="individual allele frequency")
+# 
+```
+```{r bamfile}
+# reading list of bam files = order of samples in IBS matrix
+bams <- read.table("./outputs/angsd/C-dominated_symC/C-dominated_symC_bamfile.txt",header=F)[,1]
+#
+bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/symbiont_alignments/", "", bams, perl=T)
+bam_ids <- sub("_symC.sorted.bam", "", bam_ids, perl=T)
+bam_ids <- sub("_S[[:digit:]]+$", "", bam_ids)
+#
+bam_ids
+```
+```{r select_samples}
+# aligning sample metadata with bams list, then check again
+samples_C <- samples[match(bam_ids, samples$`Sample ID`),] 
+# do all the sample ids match the bam file ids in the correct order?
+all(samples_C$`Sample ID` == bam_ids) # TRUE
+```
+```{r combine_pca_metadata}
+# combine pc coordinates with sample metadata
+pcs <- as.data.frame(e$vectors) %>% cbind(samples_C) %>% left_join(samples_k5_assignments, by = "Sample ID")
+# store variable with % variance explained by each PC
+pcvar <- round(e$values, 2)
+#
+```
+```{r screeplot}
+pcvardf <- data.frame("PC"=seq(1:length(pcvar)), pcvar)
+pcvardf %>% ggplot(aes(PC, pcvar)) + geom_col() #+ xlim(c(0,10))
+# only first 4 PCs have >5% variance explained
+```
+```{r}
+# pdf(file="./outputs/figures/pcangsd_symC_species.pdf", width = 5.5, height = 3.75)
+pca_C <- pcs %>% ggplot(aes(x = V1, y = V2)) +
+  # geom_point(aes(fill = `Region`), shape = 21, size = 3, alpha = 0.75, show.legend = T) +
+  geom_point(aes(fill = `NGSAdmix K5 Species`), shape = 21, size = 3, alpha = 0.75, show.legend = F) +
+  scale_fill_manual(values = ngsadmix_pop_colors) +
+  # facet_wrap(Region ~ .) +
+  # facet_wrap(mtorf_type ~ .) +
+  # coord_fixed(pcvar[2]/pcvar[1]) +
+  xlab(paste0( "PC1 (", pcvar[1], "%)")) + 
+  ylab(paste0( "PC2 (", pcvar[2], "%)")) +
+  ggtitle("Cladocopium-dominated samples") + 
+  theme(plot.title = element_text(size = 10, hjust = 0),
+        axis.title = element_text(size = 10),
+        axis.text = element_text(size = 8),
+        legend.title = element_text(size = 10),
+        legend.text = element_text(size = 8)) 
+
+print(pca_C)
+# dev.off()
+```
+
+## D-dominated samples (no-clones) PCA
+```{r pca}
+D <- as.matrix(read.table("./outputs/angsd/D-dominated_symD/D-dominated_symD.cov"))
+D <- as.matrix(read.table("./outputs/angsd/D-dominated_symD/D-dominated_symD_0.85.cov"))
+e <- eigen(D)
+```
+```{r pca_test_plot}
+plot(e$vectors[,1:2],xlab="PC1",ylab="PC2", main="individual allele frequency")
+#
+plot(e$vectors[,2:3],xlab="PC2",ylab="PC3", main="individual allele frequency")
+# 
+```
+```{r bamfile}
+# reading list of bam files = order of samples in IBS matrix
+bams <- read.table("./outputs/angsd/D-dominated_symD/D-dominated_symD_bamfile.txt",header=F)[,1]
+#
+bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/symbiont_alignments/", "", bams, perl=T)
+bam_ids <- sub("_symD.sorted.bam", "", bam_ids, perl=T)
+bam_ids <- sub("_S[[:digit:]]+$", "", bam_ids)
+#
+bam_ids
+```
+```{r select_samples}
+# aligning sample metadata with bams list, then check again
+samples_D <- samples[match(bam_ids, samples$`Sample ID`),] 
+# do all the sample ids match the bam file ids in the correct order?
+all(samples_D$`Sample ID` == bam_ids) # TRUE
+```
+```{r combine_pca_metadata}
+# combine pc coordinates with sample metadata
+pcs <- as.data.frame(e$vectors) %>% cbind(samples_D) %>% left_join(samples_k5_assignments, by = "Sample ID")
+# store variable with % variance explained by each PC
+pcvar <- round(e$values, 2)
+#
+```
+```{r screeplot}
+pcvardf <- data.frame("PC"=seq(1:length(pcvar)), pcvar)
+pcvardf %>% ggplot(aes(PC, pcvar)) + geom_col() #+ xlim(c(0,10))
+# only first 4 PCs have >5% variance explained
+```
+```{r}
+# pdf(file="./outputs/figures/sicb/pcangsd_species.pdf", width = 5.5, height = 3.75)
+pca_D <- pcs %>% ggplot(aes(x = V1, y = V2)) +
+  geom_point(aes(fill = `NGSAdmix K5 Species`), shape = 21, size = 3, alpha = 0.75, show.legend = F) +
+  scale_fill_manual(values = ngsadmix_pop_colors) +
+  # facet_grid(Region ~ .) +
+  # facet_wrap(mtorf_type ~ .) +
+  # coord_fixed(pcvar[2]/pcvar[1]) +
+  xlab(paste0( "PC1 (", pcvar[1], "%)")) +
+  ylab(paste0( "PC2 (", pcvar[2], "%)")) +
+  ggtitle("Durusdinium-dominated samples") + 
+  theme(plot.title = element_text(size = 10, hjust = 0),
+        axis.title = element_text(size = 10),
+        axis.text = element_text(size = 8),
+        legend.title = element_text(size = 10),
+        legend.text = element_text(size = 8)) 
+
+print(pca_D)
+# dev.off()
+```
+
+### Figure # C/D
+```{r}
+pdf("./outputs/figures/Fig#CD_pcangsd.pdf", width = 6.65, height = 2.78)
+(pca_C + pca_D)
+dev.off()
+```
+

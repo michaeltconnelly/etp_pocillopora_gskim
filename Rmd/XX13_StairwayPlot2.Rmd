@@ -1,0 +1,90 @@
+---
+title: "Stairway Plots"
+author: "Mike Connelly"
+date: "2024-10-22"
+output: html_document
+---
+## Setup and packages
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = TRUE)
+options(stringsAsFactors = FALSE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+```{r packages}
+library("tidyverse")
+library("patchwork")
+#
+source("./R/pocillopora_etp_gksim_functions.R")
+```
+
+## Import sample metadata
+```{r import_samples_metadata}
+source("./R/sample_import.R")
+samples <- all_samples
+```
+
+## Import stairwayplot results
+```{r import_stairwayplot}
+#
+stairs_cluster1 <- read.delim("outputs/stairwayplot/peffusa_fold.final.summary", header = T) %>% mutate("Lineage" = "Cluster 1")
+#
+stairs_cluster2 <- read.delim("outputs/stairwayplot/pmeandrina_fold.final.summary", header = T) %>% mutate("Lineage" = "Cluster 2")
+#
+stairs_cluster3A <- read.delim("outputs/stairwayplot/pgrandisoffshore_fold.final.summary", header = T) %>% mutate("Lineage" = "Cluster 3A")
+#
+stairs_cluster3B <- read.delim("outputs/stairwayplot/pgrandiscontinent_fold.final.summary", header = T) %>% mutate("Lineage" = "Cluster 3B")
+#
+stairs_cluster4 <- read.delim("outputs/stairwayplot/pverrucosa3a_fold.final.summary", header = T) %>% mutate("Lineage" = "Cluster 4")
+#
+```
+```{r}
+swData <- rbind(stairs_cluster1, stairs_cluster2, stairs_cluster3A, stairs_cluster3B, stairs_cluster4)
+swData$Lineage <- factor(swData$Lineage)
+swData$Lineage <- factor(swData$Lineage, levels = levels(swData$Lineage)[c(1,2,3,4,5)])
+```
+
+
+## Plot changes in Ne across time for species clusters
+```{r}
+swPlotA <- swData %>% 
+  ggplot(aes(x = year, y = Ne_median, ymin = Ne_12.5., ymax = Ne_87.5., color = Lineage, fill = Lineage)) +
+  geom_ribbon(color = NA, aes(alpha = Lineage)) +
+  # geom_line(size = 0.6) +
+  geom_line(linewidth = 1.15) +
+  scale_fill_manual(values = unname(ngsadmix_pop_colors[c(1,2,3,4,5)])) +
+  scale_color_manual(values = unname(ngsadmix_pop_colors[c(1,2,3,4,5)])) +
+  scale_alpha_manual(values = c(0.25, 0.25, 0.25, 0.25, 0.25)) +
+  scale_x_continuous(name = "KYA",
+                     limits = c(0, 7.5e5),
+                     breaks = c(0, 1e5, 2e5, 3e5, 4e5, 5e5, 6e5),
+                     labels = c("0", "100","200", "300", "400", "500", "600")) +
+  scale_y_continuous(name = bquote(italic(N[e])~"(x10"^"3"*")"),
+                     limits = c(0, 1.1e6),
+                     breaks = c(0, 2.5e5, 5e5, 7.5e5, 1e6, 1.5e6, 2e6),
+                     labels = c("0", "250","500", "750", "1000", "1500", "2000"))+
+  coord_cartesian(xlim = c(0, 2.75e5), 
+                  expand = FALSE) +
+  theme_bw()
+
+swPlot <- swPlotA + theme(
+    axis.title = element_text(color = "black", size = 12),
+    axis.text = element_text(color = "black", size = 10),
+    legend.key.size = unit(0.3, 'cm'),
+    legend.title = element_text(color = "black", size = 12),
+    legend.text = element_text(color = "black", size = 12),
+    # legend.position = "none",
+    legend.position = c(0.85, 0.75),
+    plot.background = element_blank(),
+    panel.background = element_blank(),
+    panel.border = element_rect(size = 1),
+    panel.grid = element_blank()
+)
+
+print(swPlot)
+```
+```{r}
+pdf("outputs/figures/Fig4A_stairwayplot_lineages_representatives.pdf", width = 6.5, height = 3.5)
+print(swPlot)
+dev.off()
+```
+

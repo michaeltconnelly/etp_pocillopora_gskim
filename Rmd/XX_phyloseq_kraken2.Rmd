@@ -1,0 +1,129 @@
+---
+title: "Kraken2 phyloseq analysis"
+author: "Mike Connelly"
+date: "2024-06-25"
+output: html_document
+---
+## Setup and packages
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = TRUE)
+options(stringsAsFactors = FALSE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+```{r packages}
+library("phyloseq")
+library("tidyverse")
+#
+source("./R/pocillopora_etp_gksim_functions.R")
+```
+## Import sample metadata
+```{r import_samples_metadata}
+source("./R/sample_import.R")
+samples <- all_samples
+```
+```{r}
+# write_delim(samples_noclones_ngsadmix, file = "outputs/kraken/final_noclones_samples.txt", delim = "\t")
+```
+
+```{r import_biom_file}
+# list.files("./outputs/kraken")
+merged_metagenomes <- import_biom("outputs/kraken/final_noclones.biom")
+# ?import_biom()
+```
+```{r configure_biom_file}
+sample_names(merged_metagenomes) <- stringr::str_remove_all(merged_metagenomes@sam_data$Id, "_S.*")# %>% stringr::str_remove_all(., "_AP.*")
+merged_metagenomes@sam_data$Id <- stringr::str_remove_all(merged_metagenomes@sam_data$Id, "_S.*") #%>% stringr::str_remove_all(., "_AP.*")
+
+# rownames(merged_metagenomes@sam_data) <- stringr::str_remove_all(merged_metagenomes@sam_data$Id, "_S.*") %>% stringr::str_remove_all(., "_AP.*")
+
+sd <- import_qiime_sample_data("outputs/kraken/final_noclones_samples.txt")
+
+merged_metagenomes <- merge_phyloseq(merged_metagenomes, sd)
+```
+
+
+```{r}
+# inspect phyloseq object
+View(merged_metagenomes@tax_table@.Data)
+
+# view unique kingdoms and phyla
+unique(merged_metagenomes@tax_table@.Data[,"Rank1"])
+unique(merged_metagenomes@tax_table@.Data[,"Rank2"])
+
+# view sample data - note whitespace converted to periods
+merged_metagenomes@sam_data
+
+# inspect otu table
+merged_metagenomes@otu_table@.Data
+
+# view sample sums
+sample_sums(merged_metagenomes) %>% hist(breaks = 200) 
+```
+
+
+## Filter OTUs to only bacteria
+```{r}
+merged_metagenomes_bacteria <- subset_taxa(merged_metagenomes, Rank1 == "k__Bacteria") # Rank3 == "c__Gammaproteobacteria"
+```
+```{r}
+sample_sums(merged_metagenomes_bacteria)
+```
+
+## Alpha diversity
+```{r}
+# raw numbers of OTU "hits" 
+plot_richness(physeq = merged_metagenomes_bacteria, 
+              x = "Set", color = "Species",
+              measures = c("Observed")) # "Chao1","Shannon"
+```
+```{r}
+
+```
+
+
+```{r prune_samples}
+# remove low-diversity samples (ie. samples w/ low read depth)
+filtered_lowd_metagenomes_bacteria <- prune_samples(sample_sums(merged_metagenomes_bacteria) >= 4000, merged_metagenomes_bacteria)
+```
+```{r convert_percentages}
+merged_metagenomes_bacteria_pct <- transform_sample_counts(filtered_lowd_metagenomes_bacteria, function(x) x / sum(x) )
+```
+```{r filter_taxa}
+filtered_A_metagenomes_bacteria <- filter_taxa(merged_metagenomes_bacteria_pct, function(x) mean(x) > 1e-5, TRUE)
+filtered_B_metagenomes_bacteria <- filter_taxa(filtered_lowd_metagenomes_bacteria, function(x) sum(x > 3) > (0.2*length(x)), TRUE)
+```
+```{r}
+filtered_B_metagenomes_bacteria_pct <- transform_sample_counts(filtered_B_metagenomes_bacteria, function(x) x / sum(x) )
+```
+
+```{r}
+ps <- filtered_A_metagenomes_bacteria
+ps <- filtered_B_metagenomes_bacteria_pct
+```
+
+```{r}
+plot_bar(filtered_B_metagenomes_bacteria_pct, fill = "Rank2")
+```
+
+## Beta diversity
+
+```{r}
+meta_ord <- ordinate(physeq = ps, method = "NMDS", 
+                     distance = "bray")
+
+meta_ord <- ordinate(physeq = ps, method = "PCoA", 
+                     distance = "bray")
+```
+```{r}
+pdf("~/Desktop/kraken_pcoa_ordination_final_noclones.pdf")
+plot_ordination(physeq = percentages, type = "split", ordination = meta_ord, color = "Region") +
+  # geom_text(aes(label = percentages@sam_data$Id), size = 3, vjust = 1.5) 
+theme_bw()
+dev.off()
+```
+```{r}
+View(merged_metagenomes_bacteria@tax_table@.Data)
+merged_metagenomes_bacteria@sam_data
+merged_metagenomes_bacteria@otu_table
+```
+

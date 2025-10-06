@@ -412,4 +412,36 @@ hc_noclones
 dev.off()
 ```
 
+### Summary table of clonal genotypes
+```{r}
+samples_per_natural_clonegroup <- samples %>% filter(CLONAL_GENOTYPE) %>% filter(!TECHNICAL_REPLICATE) %>% filter(!RSMAS) %>%  group_by(`Genotype ID`, Country, Region, Site, Species) %>% count()
+
+clonegroups_per_site_spp <- samples_per_natural_clonegroup %>% group_by(Country, Region, Site, Species) %>% count() 
+
+clonegroups_per_site <- samples_per_natural_clonegroup %>% group_by(Country, Region, Site) %>% count() 
+
+clonegroups_per_region_spp <- samples_per_natural_clonegroup %>% group_by(Country, Region, Species) %>% count() 
+
+median_clonegroup_size_per_region <- samples_per_natural_clonegroup %>% group_by(Country, Region, Species) %>% summarise("median_size" = median(n))
+```
+```{r}
+mean(samples_per_natural_clonegroup$n)
+median(samples_per_natural_clonegroup$n)
+```
+
+
+
+```{r}
+clonegroups_per_site_spp %>%
+  # mutate("Country, Region" = paste(Country, Region, sep = ", ")) %>% 
+  # select(-Country, -Region) %>%
+  pivot_wider(names_from = Species, values_from = n) %>% 
+  write_csv("outputs/clonegroups_per_site_spp.csv")
+
+clonegroups_per_region_spp %>%
+  # mutate("Country, Region" = paste(Country, Region, sep = ", ")) %>% 
+  # select(-Country, -Region) %>%
+  pivot_wider(names_from = Species, values_from = n) %>% 
+  write_csv("outputs/clonegroups_per_region_spp.csv")
+```
 

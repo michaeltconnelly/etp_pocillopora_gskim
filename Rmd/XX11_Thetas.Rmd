@@ -1,0 +1,173 @@
+---
+title: "Thetas"
+author: "Mike Connelly"
+date: "2024-10-17"
+output: html_document
+---
+
+## Setup and packages
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = TRUE)
+options(stringsAsFactors = FALSE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+```{r packages}
+library("tidyverse")
+#
+library("patchwork")
+#
+source("./R/pocillopora_etp_gksim_functions.R")
+```
+
+## Import sample metadata
+```{r import_sample_metadata}
+source("./R/sample_import.R")
+samples <- all_samples
+```
+```{r theta_columns}
+#REGION = (indexStart,indexStop)(posStart,posStop)(regStat,regStop)
+angsd_theta_colnames <- c("REGION", "CHR", "wincenter", "tW", "tP", "tF", "tH", "tL", "tajD", "fulif", "fuliD", "fayH", "zengsE", "Nsites")
+```
+```{r chr_abbreviations}
+chrs_abbv <- list(
+"OZ034731.1" = "CHR1",
+"OZ034732.1" = "CHR2",
+"OZ034733.1" = "CHR3",
+"OZ034734.1" = "CHR4",
+"OZ034735.1" = "CHR5",
+"OZ034736.1" = "CHR6",
+"OZ034737.1" = "CHR7",
+"OZ034738.1" = "CHR8",
+"OZ034739.1" = "CHR9",
+"OZ034740.1" = "CHR10",
+"OZ034741.1" = "CHR11",
+"OZ034742.1" = "CHR12",
+"OZ034743.1" = "CHR13",
+"OZ034744.1" = "CHR14"
+)
+chrs_labeller <- function(variable, value){
+  return(chrs_abbv[value])
+}
+```
+
+## Genome-wide, per-scaffold estimates of theta
+```{r import_thetas_scaffolds}
+theta_files <- list.files("./outputs/angsd/thetas", full.names = T)
+theta_df_list <- list()
+for (i in seq(1,5,1)) { 
+  file = theta_files[i]
+  theta_df <- read_delim(file, delim = "\t", skip = 1, col_names = angsd_theta_colnames)
+  #
+  theta_df_list[[i]] <- theta_df
+}
+```
+
+```{r}
+theta_df_list[[1]] %>% 
+  ggplot(aes(CHR, tW)) + geom_point() + theme(axis.text.x = element_text(angle = 90))
+```
+
+### 50 kb windows
+```{r import_thetas_50kb}
+theta_files_50kb <- list.files("./outputs/angsd/thetas/windows_50kb", full.names = T)
+theta_50kb_df_list <- list()
+for (i in seq(1,5,1)) { 
+  file = theta_files_50kb[i]
+  theta_df <- read_delim(file, delim = "\t", skip = 1, col_names = angsd_theta_colnames)
+  #
+  theta_50kb_df_list[[i]] <- theta_df
+}
+```
+
+```{r}
+theta_50kb_df_list[[1]]
+theta_50kb_df_list[[2]]
+```
+
+```{r theta_50kb_vis}
+for (i in seq(1,5,1)) { 
+  
+  theta_50kb_boxplot <- theta_50kb_df_list[[i]] %>% 
+  filter(CHR %in% names(chrs_abbv)) %>% 
+  ggplot(aes(CHR, tW/50000)) + geom_boxplot() + theme(axis.text.x = element_text(angle = 90))
+  #
+  theta_50kb_plot <- theta_50kb_df_list[[i]] %>% 
+  filter(CHR %in% names(chrs_abbv)) %>% 
+  ggplot(aes(wincenter, tW/50000, color = CHR)) +
+    geom_point(size = 0.1, show.legend = F) + 
+    # geom_smooth(se = F) +
+    facet_grid(CHR ~ ., scales = "free_x", space = "free", labeller = chrs_labeller) +
+    theme(axis.text.x = element_text(angle = 0))
+  #
+  # print(theta_50kb_boxplot)
+  print(theta_50kb_plot)
+}
+```
+
+```{r pi_50kb_vis}
+for (i in seq(1,5,1)) { 
+  
+  tP_50kb_plot <- theta_50kb_df_list[[i]] %>% 
+  filter(CHR %in% names(chrs_abbv)) %>% 
+  ggplot(aes(wincenter, tP/50000, color = CHR)) +
+    geom_point(size = 0.1, show.legend = F) + 
+    # geom_smooth(se = F) +
+    facet_grid(CHR ~ ., scales = "free_x", space = "free", labeller = chrs_labeller) +
+    theme(axis.text.x = element_text(angle = 0))
+  #
+  print(tP_50kb_plot)
+}
+```
+
+```{r tajimaD_50kb_vis}
+for (i in seq(1,5,1)) { 
+  
+  tajD_50kb_plot <- theta_50kb_df_list[[i]] %>% 
+  filter(CHR %in% names(chrs_abbv)) %>% 
+  ggplot(aes(wincenter, tajD, color = CHR)) +
+    geom_point(size = 0.1, show.legend = F) + 
+    # geom_smooth(se = F) +
+    facet_grid(CHR ~ ., scales = "free_x", space = "free", labeller = chrs_labeller) +
+    theme(axis.text.x = element_text(angle = 0))
+  #
+  print(tajD_50kb_plot)
+}
+```
+
+```{r}
+
+theta_df_chrs <- theta_df %>% 
+  filter(CHR %in% names(chrs_abbv))
+
+theta_df_cumulative <- theta_df_chrs %>% 
+  # Compute chromosome size
+  group_by(CHR) %>% 
+  summarise(chr_len = max(wincenter) + 25000) %>% 
+  # Calculate cumulative position of each chromosome
+  mutate(tot = cumsum(chr_len) - chr_len) %>% select(-chr_len)
+  
+  # Add this info to the initial dataset
+
+theta_df_chrs_cum <- left_join(theta_df_chrs, theta_df_cumulative,  by = "CHR") %>% 
+  
+  # Add a cumulative position of each SNP
+  arrange(CHR, wincenter) %>%
+  mutate(wincenter_cum = wincenter + tot)
+
+theta_df_chrs_cum %>% 
+   ggplot(aes(wincenter_cum, (tP)/50000, color = CHR)) +
+    geom_point(size = 0.1, show.legend = F) + 
+    # geom_smooth(se = F, color = "red", n = 1000) +
+    # facet_grid(CHR ~ ., scales = "free_x", space = "free", labeller = chrs_labeller) +
+    scale_color_manual(values = c(rep(c("black", "grey"), 7)))
+    theme(axis.text.x = element_text(angle = 0))
+
+```
+### Plot relative theta's across species
+```{r}
+
+```
+
+
+### 10 kb windows
+

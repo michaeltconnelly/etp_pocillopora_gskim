@@ -1,0 +1,128 @@
+---
+title: "orthodotter"
+author: "Mike Connelly"
+date: "2024-07-03"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+```{r packages, message=FALSE}
+library("tidyverse")
+```
+```{r}
+pgra <- read_tsv("~/Desktop/pgrandis/pgrandis_gene_coordinates.txt", col_names = c("chr", "start", "end", "gene"))
+pdam <- read_tsv("./data/pdam_genome_gene_coordinates.txt", col_names = c("chr", "start", "end", "gene"))
+```
+```{r}
+synteny <- left_join(pgra, pdam, by = "gene", suffix = c(".pgra", ".pdam")) %>% relocate(gene)
+?left_join()
+```
+```{r}
+synteny_orthodotter <- synteny
+
+synteny_orthodotter$pgra <- "pgra"
+synteny_orthodotter$pdam <- "pdam"
+
+synteny_orthodotter_final <- synteny_orthodotter %>%
+  relocate("pgra", .before = chr.pgra) %>%
+  relocate("pdam", .before = chr.pdam) %>% 
+  filter(chr.pgra == "OZ034744.1") %>% 
+  select(-gene)
+
+```
+```{r}
+write_delim(synteny_orthodotter_final, "~/Desktop/synteny_orthodotter_OZ034744.1.txt")
+```
+
+## macrosyntR approach
+```{r}
+library("macrosyntR")
+```
+
+```{r}
+# prep for macrosyntR input
+orthologs <- data.frame(pgra$gene[pgra$gene %in% pdam$gene])
+orthologs$pdam <- orthologs$`pgra.gene.pgra.gene..in..pdam.gene.`
+orthologs$pgra <- gsub("pdam", "pgra", orthologs$pdam)
+orthologs <- orthologs[,2:3]
+
+pgra$gene <- gsub("pdam", "pgra", pgra$gene)
+
+write_tsv(pgra, "~/Desktop/pgrandis/pgrandis.bed", col_names = F)
+write_tsv(pdam, "~/Desktop/pgrandis/pdam.bed", col_names = F)
+write_tsv(orthologs, "~/Desktop/pgrandis/orthologs.tsv", col_names = F)
+```
+```{r}
+# filter to just longest *P. grandis* chromosome
+pgra_chr1 <- pgra %>% filter(chr == "OZ034731.1")
+orthologs_chr1 <- orthologs %>% filter(pgra %in% pgra_chr1$gene)
+pdam_chr1 <- pdam %>% filter(gene %in% orthologs_chr1$pdam)
+
+write_tsv(pgra_chr1, "~/Desktop/pgrandis/pgrandis_chr1.bed", col_names = F)
+write_tsv(pdam_chr1, "~/Desktop/pgrandis/pdam_chr1.bed", col_names = F)
+write_tsv(orthologs_chr1, "~/Desktop/pgrandis/orthologs_chr1.tsv", col_names = F)
+```
+
+
+
+```{r}
+my_orthologs <- load_orthologs(orthologs_table = "~/Desktop/pgrandis/orthologs.tsv",
+               bedfiles = c("~/Desktop/pgrandis/pdam.bed", "~/Desktop/pgrandis/pgrandis.bed"))
+my_orthologs_chr1 <- load_orthologs(orthologs_table = "~/Desktop/pgrandis/orthologs_chr1.tsv",
+               bedfiles = c("~/Desktop/pgrandis/pdam_chr1.bed", "~/Desktop/pgrandis/pgrandis_chr1.bed"))
+```
+```{r}
+# filter to just CHR1 for P. grandis to demonstrate
+my_orthologs_chr1 <- filter(my_orthologs, sp2.Chr == "OZ034744.1") %>% group_by(sp1.Chr) %>% slice_max(., order_by = sp2.Start, n = 10)
+```
+```{r}
+# select only the orthologs falling in the chromosomes of interest and plot: 
+subset_of_orthologs <- subset(my_orthologs, sp2.Chr %in% c("OZ034744.1"))
+```
+```{r}
+pdam_chrs_filter <- subset_of_orthologs %>% count(sp1.Chr) %>% filter(n > 5) %>% select(sp1.Chr)
+```
+```{r}
+# select only the orthologs falling in the chromosomes of interest and plot: 
+subset_of_orthologs <- subset(my_orthologs, sp2.Chr %in% c("OZ034744.1") & sp1.Chr %in% pdam_chrs_filter$sp1.Chr)
+```
+
+```{r}
+p1 <- plot_oxford_grid(subset_of_orthologs, reverse_species = T, reorder = T)
+```
+```{r}
+pdf("~/Desktop/p1.pdf", height = 11.5, width = 11.5)
+p1
+dev.off()
+```
+
+
+```{r}
+# Plot the significant linkage groups :
+my_macrosynteny <- compute_macrosynteny(my_orthologs)
+p3 <- plot_macrosynteny(my_macrosynteny)
+p3
+```
+
+```{r}
+# Call the reordering function, test significance and plot it :
+my_orthologs_reordered <- reorder_macrosynteny(my_orthologs)
+my_macrosynteny <- compute_macrosynteny(my_orthologs_reordered)
+p4 <- plot_macrosynteny(my_macrosynteny)
+p4
+```
+```{r}
+p5 <- plot_chord_diagram(subset_of_orthologs, reorder_chromosomes = F)
+```
+```{r}
+pdf("~/Desktop/p5.pdf", height = 6.5, width = 11.5)
+# p5 + theme(legend.position = "none")
+plot_chord_diagram(my_orthologs, color_by = "sp2.Chr") + theme(legend.position = "none")
+dev.off()
+```
+
+
+

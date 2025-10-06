@@ -246,12 +246,28 @@ pdam_cd_cats <- abcd_pdam %>%
   dplyr::left_join(samples, by = "Sample ID") %>% 
   filter(NOCLONES_SAMPLE) %>% 
   dplyr::left_join(samples_k5_assignments, by = "Sample ID") %>% 
-  mutate(`Symbiont Community` = ifelse(fracC > 0.9, "C-dominated", ifelse(fracD > 0.9, "D-dominated", "Mixed")))
+  mutate(`Symbiont Community` = ifelse(fracC > 0.85, "C-dominated", ifelse(fracD > 0.85, "D-dominated", "Mixed")))
 
 pdam_cd_cats %>% group_by(`Symbiont Community`) %>% count()
 
-pdam_cd_cats %>% group_by(`NGSAdmix K5 Species`, `Symbiont Community`) %>% count() %>% pivot_wider(names_from = `NGSAdmix K5 Species`, values_from = n) %>% View()
+pdam_cd_cats %>% group_by(`NGSAdmix K5 Species`, `Symbiont Community`) %>% count() %>% pivot_wider(names_from = `NGSAdmix K5 Species`, values_from = n)
 
-pdam_cd_cats %>% ggplot(aes(fracD, fracC)) + geom_point(aes(color = `Symbiont Community`)) + facet_wrap(~`NGSAdmix K5 Species`)
+symbiont_categories <- dplyr::select(pdam_cd_cats, `Sample ID`, `Symbiont Community`)
+```
+```{r}
+# write list of C-dominated, D-dominated, and mixed samples for downstream analyses w/ ANGSD
+c_dominated <- pdam_cd_cats %>% 
+  filter(`Symbiont Community` == "C-dominated", NOCLONES_SAMPLE) %>%
+  arrange(desc(fracC)) %>%
+  dplyr::select(`Sample ID`)
+
+d_dominated <- pdam_cd_cats %>% 
+  filter(`Symbiont Community` == "D-dominated", NOCLONES_SAMPLE) %>%
+  arrange(desc(fracD)) %>%
+  dplyr::select(`Sample ID`)
+
+write_lines(c_dominated$`Sample ID`, "C-dominated_samples.txt")
+
+write_lines(d_dominated$`Sample ID`, "D-dominated_samples.txt")
 ```
 

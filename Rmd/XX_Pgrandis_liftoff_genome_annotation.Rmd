@@ -1,0 +1,162 @@
+---
+title: "P. grandis Liftoff genome annotation"
+author: "Mike Connelly"
+date: "2025-01-24"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+```{r packages}
+library("tidyverse")
+library("readxl")
+```
+
+## NCBI *Pocillopora grandis* assembly
+Annotations transferred from *P. damicornis* assembly using Liftoff
+25,748 transcripts total
+
+```{r}
+pgra_faa <- ampir::read_faa("./data/pgra_annotations/pgra_genome_protein.fasta")
+ntx <- nrow(pgra_faa)
+```
+
+## DIAMOND best hits to nr 
+```{r}
+blastp_cols <- c("qseqid", "sscinames", "sskingdoms", "skingdoms", "sphylums", "staxids", "sseqid", "pident", "length", "mismatch", "gapopen", "qstart", "qend", "sstart", "send", "evalue", "bitscore")
+pgra_diamond_hits <- read_tsv("./data/pgra_annotations/pgra_nr_matches_best_taxa.tsv", col_names = blastp_cols)
+# how many gene models have NCBI nr hits? --> 24,833 (96.4%)
+nrow(pgra_diamond_hits)
+nrow(pgra_diamond_hits)/ntx
+```
+
+
+## eggNOG-mapper
+```{r eggnog_annotations}
+pgra_eggnog <- read_xlsx("./data/pgra_annotations/out.emapper.annotations.xlsx", skip = 2)
+# how many gene models have eggNOG-mapper annotations? --> 12,411 (48.2%)
+nrow(pgra_eggnog)
+nrow(pgra_eggnog)/ntx
+```
+
+## PANNZER
+```{r pannzer_annotations}
+pgra_pannzer <- read_tsv("./data/pgra_annotations/pannzer.anno.out")
+#
+pgra_pannzer %>% filter(type == "original_DE")
+```
+```{r pannzer_DE}
+pgra_pannzer_DE <- read_tsv("./data/pgra_annotations/pannzer.DE.out")
+# how many gene models have PANNZER DE annotations? --> 15,497 (60.2%)
+pgra_pannzer_DE %>% group_by(qpid) %>% count() %>% arrange(desc(n)) %>% nrow()
+pgra_pannzer_DE %>% group_by(qpid) %>% count() %>% arrange(desc(n)) %>% nrow()/ntx
+```
+```{r pannzer_GO}
+pgra_pannzer_GO <- read_tsv("./data/pgra_annotations/pannzer.GO.out")
+# how many gene models have PANNZER GO annotations? --> 14,105 (54.8%)
+pgra_pannzer_GO %>% group_by(qpid) %>% count() %>% nrow()  #%>% arrange(desc(n)) %>% ggplot(aes(n)) + geom_histogram(binwidth = 2)
+pgra_pannzer_GO %>% group_by(qpid) %>% count() %>% nrow()/ntx
+```
+
+## InterProScan
+```{r}
+pgra_interproscan <- read_tsv("./data/pgra_annotations/pgra_interproscan.tsv",
+                              col_names = F)
+# how many gene models have InterProScan annotations? --> 21,891 (85.0%)
+pgra_interproscan %>% group_by(X1) %>% count() %>% arrange(desc(n))
+pgra_interproscan %>% group_by(X1) %>% count() %>% arrange(desc(n)) %>% nrow()/ntx
+
+# how many gene models have IPR domain annotations? --> 17,051 (66.2%)
+pgra_interproscan %>% filter(X12 != "-") %>% group_by(X1) %>% count() %>% arrange(desc(n)) %>% nrow()#/ntx
+
+# parse annotations to obtain predicted PFAM domains
+pgra_interproscan_pfam <- pgra_interproscan %>% filter(X4 == "Pfam")
+
+pgra_interproscan_pfam %>% group_by(X1) %>% count() %>% arrange(desc(n))
+
+pgra_interproscan_pfam %>% select(X1, X5) %>% group_by(X1) %>% 
+       summarise("IPS_PFAMs" = paste(X5, collapse=", "))
+
+pgra_interproscan_pfam %>% select(X1, X6) %>% group_by(X1) %>% 
+       summarise("IPS_PFAMs_desc" = paste(X6, collapse=", "))
+
+pgra_interproscan %>% filter(X12 != "-") %>% select(X1, X12) %>% group_by(X1) %>% 
+       summarise("IPS_IPRs" = paste(X12, collapse=", "))
+
+pgra_interproscan_pfam %>% select(X1, X13)
+```
+
+## KEGG Automated Annotation Server (KAAS)
+```{r import_kaas}
+pgra_KO <- read_delim("./data/pgra_annotations/query.ko", col_names = c("query", "KAAS_ko"), delim = "\t") 
+
+# how many gene models have KAAS KO annotations? --> 7,716 (30.0%)
+pgra_KO %>% filter(!is.na(KAAS_ko)) %>%  nrow()/ntx
+```
+
+## Ampir
+```{r}
+pgra_predicted_amps <- ampir::predict_amps(pgra_faa, model = "precursor")
+# how many gene models are predicted AMPs? --> 126 (0.49%)
+pgra_predicted_amps %>% filter(prob_AMP > 0.85) %>% nrow()/ntx
+```
+
+## Combine annotation information into master table
+```{r reformat_annotation_sources}
+# reformat eggNOG-mapper column names - only run once!
+newcolnames <- paste("eggNOG", colnames(pgra_eggnog)[-c(1,5)], sep = '_')
+colnames(pgra_eggnog) <- c(colnames(pgra_eggnog)[1], newcolnames[1:3],colnames(pgra_eggnog)[5],newcolnames[4:19])
+
+# reformat PANNZER DE annotations
+ppDE <- pgra_pannzer_DE %>%
+  # select(qpid, desc) %>%
+  group_by(qpid) %>% summarise(PANNZER_DE = paste(desc, collapse = ", ")) %>% 
+  rename("query" = qpid)
+
+# reformat PANNZER GO annotations
+ppGO <- pgra_pannzer_GO %>% 
+  mutate(GOid = gsub("^","GO:", goid)) %>% 
+  group_by(qpid) %>% summarise(PANNZER_GO = paste(GOid, collapse = ","), PANNZER_GO_desc = paste(desc, collapse = ", ")) %>% 
+  rename("query" = qpid)
+
+# reformat KAAS KO terms
+pgra_KO <- pgra_KO %>% mutate("KAAS_ko" = gsub("^", "ko:", KAAS_ko))
+
+# then InterProScan
+
+# then ampir
+pgra_amps <- pgra_predicted_amps %>% 
+  rename("query" = seq_name)
+
+# then DIAMOND blastp hits
+pgra_hits <- pgra_diamond_hits %>% 
+  rename("query" = qseqid)
+```
+```{r combine_pgra_annotation}
+pgra_master_annotation <- left_join(pgra_KO, pgra_eggnog, by = "query") %>% 
+  left_join(., ppDE, by = "query") %>% 
+  left_join(., ppGO, by = "query") %>% 
+  left_join(., pgra_amps, by = "query") %>% 
+  left_join(., pgra_hits, by = "query") %>% 
+  select(query, contains("eggNOG"), contains("PANNZER"), KAAS_ko, prob_AMP, seq_aa, sscinames:bitscore)
+```
+```{r write_annotations}
+# write master annotations file as CSV and excel spreadsheet
+write_csv(pgra_master_annotation, "./data/pgra_annotations/pgrandis_master_annotation.csv")
+writexl::write_xlsx(pgra_master_annotation, "./data/pgra_annotations/pgrandis_master_annotation.xlsx")
+```
+
+## Query master table for all GO annotation
+```{r}
+pgra_go_annotation <- pgra_master_annotation %>% 
+  filter(!is.na(eggNOG_GOs) | !is.na(PANNZER_GO)) %>% 
+  filter(!(eggNOG_GOs=="-" & is.na(PANNZER_GO))) %>%
+  select(query, eggNOG_GOs, PANNZER_GO)
+# how many gene models have any eggNOG/PANNZER GO annotations? --> 9,949 (42%)
+
+pgra_ips_go_annotation <- pgra_interproscan %>% filter(grepl("GO:", X13)) %>% group_by(X1) %>% count() %>% arrange(desc(n)) 
+
+pgra_ips_go_annotation %>% rename("query" = X1) %>% full_join(pgra_go_annotation, by = "query")
+```

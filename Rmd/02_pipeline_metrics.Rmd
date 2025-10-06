@@ -494,7 +494,7 @@ table(samples_rep_depth$`Sample ID` %in% samples_rep_5X$`Sample ID`)
 # raw reads
 multiqc_unmapqc <- read_tsv("./outputs/QCs/unmappedqcs/multiqc_data/multiqc_fastqc.txt") %>%
   mutate("Sample ID" = gsub("_S.*_R[12]_PE", "", Sample)) %>%
-  mutate(`Sample ID` = gsub("^05_", "", `Sample ID`))
+  mutate(`Sample ID` = gsub("^05_", "", `Sample ID`)) 
 ```
 ```{r inspect_read_depth}
 # quick check of sample depth
@@ -509,6 +509,7 @@ multiqc_unmapqc %>%
 # Produce total read summary statistics for manuscript
 sum(multiqc_unmapqc$`Total Sequences`)
 # 314,355,341
+sum(multiqc_unmapqc[multiqc_unmapqc$`Sample ID` %in% samples_noclones$`Sample ID`,]$`Total Sequences`)
 mean(multiqc_unmapqc$`Total Sequences`)
 # 932,805
 sd(multiqc_unmapqc$`Total Sequences`)
@@ -528,20 +529,42 @@ multiqc_data <- left_join(multiqc_fastqc_reads, multiqc_trimqc_reads, by = "Samp
   left_join(., multiqc_flagstat_reads, by = "Sample ID") %>% 
   left_join(., multiqc_unmapqc_reads, by = "Sample ID") %>% 
   mutate("Unmapped Proportion" = `Unmapped Reads` / `Trimmed Reads`) %>%
-  left_join(samples, by = "Sample ID")
-#
+  left_join(samples, by = "Sample ID") %>% 
+#   # filter for panama samples
+  filter(Set == "STRI" & Country == "Panama", Region == "Panama")
+# #
 multiqc_data %>% group_by(Region) %>% summarize(mean_unmapped_pct = mean(`Unmapped Proportion`))
 
 multiqc_data  %>% 
-  ggplot(aes(`Region`, `Unmapped Proportion`)) + geom_boxplot()
+  ggplot(aes(`Site`, `Unmapped Proportion`)) + geom_violin()
 # 
 # Bahia Culebra has highest proportion of unmapped reads (~50%), other regions are between 3-8%
 ```
 ```{r}
+range(multiqc_data$`Unmapped Reads`)
+mean(multiqc_data$`Unmapped Reads`)
+sd(multiqc_data$`Unmapped Reads`)
+
 mean(multiqc_data$`Unmapped Proportion`)
 sd(multiqc_data$`Unmapped Proportion`)
 range(multiqc_data$`Unmapped Proportion`)
 ```
+### Symbiont mapped reads
+
+# samples for Raul collaboratoin
+
+```{r}
+samples_stri_panama_cd_categories %>% left_join(multiqc_fastqc_reads, multiqc_trimqc_reads, by = "Sample ID") %>%
+  left_join(., multiqc_flagstat_reads, by = "Sample ID") %>% 
+  left_join(., multiqc_unmapqc_reads, by = "Sample ID") %>% 
+  filter(Region == "Panama" & `Symbiont Community` != "Mixed" & Site != "Saboga") %>% 
+  # dplyr::relocate(`Sample ID`:`Unmapped Reads`) %>%
+  dplyr::select(`Sample ID`, `Site`, `mtorf_type`, `Species`, `Symbiont Community`:`Unmapped Reads`, `sitesC`:`sitesD`, `countC`:`countD`, `fracC`:`fracD`) %>%
+  group_by(`Site`,`Species`, `Symbiont Community`) %>% 
+  top_n(1, `Unmapped Reads`) %>%
+  write_excel_csv("~/Desktop/panama_samples_subset_symbiont_metrics.csv")
+```
+
 
 ### Kraken2 taxonomy assignment
 #### Unmapped reads

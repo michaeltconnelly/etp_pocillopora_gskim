@@ -1,0 +1,85 @@
+---
+title: "Dxy"
+author: "Mike Connelly"
+date: "2024-10-22"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = TRUE)
+options(stringsAsFactors = FALSE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+```{r packages}
+library("tidyverse")
+#
+library("pheatmap")
+#
+library("patchwork")
+#
+source("./R/pocillopora_etp_gksim_functions.R")
+```
+
+```{r}
+# plot sliding-window estimates of dxy 
+```
+
+```{r}
+spp_dxy <- read_delim("./outputs/angsd/dxy/peffusa_pverrucosa3a_combined_angsd_DxySummary.txt",
+                      delim = "\t")
+
+spp_dxy_df <- spp_dxy %>% mutate(WinCenter = WindowStart + 25000)
+```
+```{r}
+  dxy_plot <- spp_dxy_df %>%
+    # filter(!grepl("CA", CHR)) %>% 
+    ggplot(aes(WinCenter, AvgOverSitesWithDxyEstimate)) + 
+    geom_point(size = 0.1) +
+    facet_grid(Chrom ~ ., scales = "free") +
+    ylim(c(0,1)) +
+    theme(axis.text.x = element_blank())
+
+print(dxy_plot)
+```
+
+```{r}
+dxy_files <- list.files("./outputs/angsd/dxy", full.names = T)
+for (file in dxy_files) { 
+  dxy_df <- read_delim(file, delim = "\t") # , skip = 1, col_names = angsd_fst_colnames, col_types = angsd_fst_cols
+  #
+  spp_dxy_df <- dxy_df %>% mutate(WinCenter = WindowStart + 25000)
+  #
+  dxy_plot <- spp_dxy_df %>%
+    # filter(!grepl("CA", CHR)) %>% 
+    ggplot(aes(WinCenter, AvgOverSitesWithDxyEstimate)) + 
+    geom_point(size = 0.1) +
+    facet_grid(Chrom ~ ., scales = "free") +
+    ylim(c(0,1)) +
+    theme(axis.text.x = element_blank())
+
+print(dxy_plot)
+}            
+```
+
+```{r}
+dxy_colnames = c("CHR", "position", "dxy")
+```
+
+```{r}
+dxy_files <- list.files("./outputs/angsd/dxy/persite", full.names = T)
+for (file in dxy_files) { 
+  site_dxy_df <- read_delim(file, delim = "\t", col_names = dxy_colnames) # , skip = 1,  col_types = angsd_fst_cols
+  #
+  # spp_dxy_df <- dxy_df %>% mutate(WinCenter = WindowStart + 25000)
+  #
+  dxy_plot <- site_dxy_df %>%
+    # filter(!grepl("CA", CHR)) %>% 
+    ggplot(aes(position, dxy)) + 
+    geom_point(size = 0.1) +
+    facet_grid(CHR ~ ., scales = "free") +
+    ylim(c(0,1)) +
+    theme(axis.text.x = element_blank())
+
+print(dxy_plot)
+}            
+```

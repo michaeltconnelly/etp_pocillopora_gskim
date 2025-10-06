@@ -1,0 +1,409 @@
+---
+title: "Evolution 2024 reference tree"
+author: "Mike Connelly"
+date: "2024-07-23"
+output: html_document
+---
+## Setup and packages
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = TRUE)
+options(stringsAsFactors = FALSE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+```{r packages}
+library("tidyverse")
+library("treeio")
+library("ggtree")
+library("phytools")
+# 
+source("./R/pocillopora_etp_gksim_functions.R")
+```
+
+## Import sample metadata
+```{r import_sample_metadata}
+source("./R/sample_import.R")
+samples <- all_samples
+```
+```{r reference_sample_metadata}
+# Oury contemporary samples
+oury_samples <- read_csv("./data/top5_oury_samples.csv") %>% 
+  mutate(tip_label = str_c(GSH, Sample_Name, sep = " ")) # NCBI_SSR,
+
+# Reference genomes
+
+```
+```{r outgroup_metadata}
+# outgroups <- read_csv("./data/outgroups.csv")
+# samples_out <- rbind(samples, outgroups)
+```
+
+## IQ-TREE w/ PHYLUCE alignments
+### PociGSkim NGSAdmix K=6 top 5 reps (29) + Oury GSH top 5 reps (103) + reference genome samples (8) + outgroups (1) (n = 141 samples)
+#### 50% matrix - ETP samples removed
+ 141 taxa, 1,519 UCE loci, 713,305 bp, 193,855 informative sites
+```{r import_tree}
+tree <- read.newick("./outputs/iqtree/iqtree_snapp_subset_K6_5X_50.treefile")
+
+# midpoint root
+tree <- midpoint.root(tree)
+
+# drop outgroup tips (easier to view node labels)
+tree <- ape::drop.tip(tree, tip = "Stylophora_pistillata_ANT17_contigs")
+tree <- ape::drop.tip(tree, tip = "SRR19052307_contigs")
+tree <- ape::drop.tip(tree, tip = "SRR19052309_contigs")
+tree <- ape::drop.tip(tree, tip = "SRR19052305_contigs")
+tree <- ape::drop.tip(tree, tip = "SRR19052306_contigs")
+#
+tree <- ape::drop.tip(tree, tip = "SRR19052232_contigs")
+
+# drop all ETP sample tips
+tree <- ape::drop.tip(tree, tree$tip.label[!grepl("SRR|pocillopora", tree$tip.label)])
+
+# set root-edge
+tree$root.edge <- 1
+# check topology
+ggtree(tree)
+```
+
+```{r adjust_tip_labels}
+# adjust tip labels
+# remove contigs suffix 
+tips <- gsub("_contigs$", "", tree$tip.label)
+# remove sample number suffix 
+tips <- gsub("_S[[:digit:]]*$", "", tips)
+
+# Reference genomes: tip names
+tips <- gsub("Stylophora_", "S. ", tips)
+tips <- gsub("_ANT17", " ANT17", tips)
+tips <- gsub("pocillopora_", "P. ", tips)
+tips <- gsub("_G", " G", tips)
+tips <- gsub("_SAMN", " SAMN", tips)
+
+# Oury samples:
+oury_tip_order <- tips[tips %in% oury_samples$NCBI_SSR]
+
+tips[tips %in% oury_samples$NCBI_SSR] <- oury_samples[match(oury_tip_order, oury_samples$NCBI_SSR),]$tip_label
+
+# Oury samples: remove all labels!~
+# tips <- ifelse(grepl("USNM", tips), tips, "")
+tips[grepl("^GSH", tips)] <- ""
+
+# need to change reference genome labels to include GenBank accessions
+# Stephens et al. 2022 genomes do not have GenBank/RefSeq accessions, using BioSample numbers
+# SAMN21845732 - P. meandrina
+# SAMN22898959 - P. acuta
+```
+```{r check_tree_tips}
+# check tips
+tips
+# assign new tip labels to tree
+tree$tip.label <- tips
+
+# basic viz
+gg_tree(tree)
+```
+```{r tip_metadata}
+# create dataframe holding metadata 
+tips_metadata <- data.frame(tips)
+tips_metadata$class <- ifelse(grepl("P\\.|S\\.", tips), tips, "Oury")
+# colors for reference genomes
+
+genome_colors <- c("#E7298A", "darkorange4", "skyblue3", "#D95F02", "#E6AB02", "#66A64F", "seagreen4", "turquoise3")
+```
+```{r node_labels}
+# node labels with bootstrap support
+node.labels <- tree$node.label
+# preserve original labels
+node.labels.original <- node.labels
+node.labels <- node.labels.original
+
+# remove root label
+node.labels[node.labels == "Root"] <- ""
+# remove 100% supported node labels
+# node.labels[node.labels == "100/100"] <- ""
+# define high-support bootstrap values - >90%?
+node.labels[grepl("^100", node.labels)] <- ""
+node.labels[grepl("^9", node.labels)] <- ""
+# mark low-support bootstrap values with asterisks - <80%?
+# node.labels[grepl("^[8]", node.labels)] <- ""
+# node.labels[grepl("^[5-7]", node.labels)] <- "<80"
+# node.labels[grepl("^[0-4]", node.labels)] <- "<50"
+
+# check to see if formatting is correct
+node.labels
+#
+tree$node.label <- node.labels
+tree$node.label <- NULL # remove all node labels to use ggrepel
+```
+```{r full_ggtree_viz}
+pdf("./outputs/figures/Evolution2024_iqtree_50pct_reference_tree.pdf", width = 7.5, height = 6.5)
+#
+tree_title <- expression(paste("IQ-TREE Maximum Likelihood Tree with reference ", italic("Pocillopora"), " GSH samples"))
+loci_info <- c("50% sample occupancy, 1,519 UCE loci, 713,305 bp, 193,855 informative sites")
+#
+
+p <- tree %>% ggtree(., right = TRUE) %<+% tips_metadata + 
+  
+  
+  # highlight clades
+  # geom_highlight(node = 69, fill = "orange", type = "gradient", gradient.direction = 'rt', alpha = 1, to.bottom = T) +
+  # geom_highlight(node = 115, fill = "turquoise", type = "gradient", gradient.direction = 'rt', alpha = 1, to.bottom = T) +
+  # geom_highlight(node = 105, fill = "magenta", type = "gradient", gradient.direction = 'rt', alpha = 1, to.bottom = T) +
+  # geom_highlight(node = 62, fill = "purple", type = "gradient", gradient.direction = 'rt', alpha = .6) +
+  # geom_highlight(node = 70, fill = "purple", type = "gradient", gradient.direction = 'rt', alpha = .6) +
+
+  # node labels (numeric)
+  # geom_text(aes(label=node), hjust=-.3, size = 1) +
+  
+  # node labels
+  # geom_nodelab(size = 2, hjust = 0, nudge_y = 0, geom = "shadowtext", color = "grey90", bg.color = "white") +
+  
+  # tip labels
+  # geom_tiplab(hjust = 0, aes(color = `class`, size = `class`), fontface = 2) +
+  geom_text_repel(hjust = 0, aes(label = label, color = class, size = class), fontface = 2, box.padding = 0.25, nudge_x = 0.016) + #
+  
+  # label clades
+  geom_cladelab(node = 207, label = "P. effusa", fontsize = 5, fontface = 3, offset = 0.024, offset.text = 0.0004) +
+  
+  geom_cladelab(node = 197, label = "P. meandrina", fontsize = 5, fontface = 3, offset = 0.026, offset.text = 0.0004) +
+  
+  geom_cladelab(node = 181, label = "P. grandis", fontsize = 5, fontface = 3, offset = 0.028, offset.text = 0.0004) +
+  
+  geom_cladelab(node = 163, label = "P. damicornis", fontsize = 5, fontface = 3, offset = 0.013, offset.text = 0.0004) +
+  
+  geom_cladelab(node = 137, label = "P. acuta", fontsize = 5, fontface = 3, offset = 0.013, offset.text = 0.0004) +
+  
+  geom_cladelab(node = 110, label = "P. verrucosa", fontsize = 5, fontface = 3, offset = 0.02, offset.text = 0.0004) +
+  
+  # label GSH clades
+  # geom_cladelab(node = 207, label = "GSH01", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 203, label = "GSH13b", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 198, label = "GSH09b", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 193, label = "GSH09a", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 182, label = "GSH09c", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 176, label = "GSH04b", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 172, label = "GSH04a", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 167, label = "GSH10", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 166, label = "GSH04c", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 160, label = "GSH05a-3", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 157, label = "GSH05c-2", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 153, label = "GSH05a-2", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 147, label = "GSH05d", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 143, label = "GSH05a-1", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 141, label = "GSH05c-1", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 132, label = "GSH14", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 127, label = "GSH12", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 122, label = "GSH13a", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 117, label = "GSH13c", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 112, label = "GSH15", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+
+
+  # setup tree visualization
+  geom_rootedge(rootedge = 0.001) +
+  geom_treescale(width = 0.01, x = 0, y = -1, linesize = 0.75) +
+  ggplot2::xlim(-0.001, 0.06) +
+  scale_color_manual(values = c("black", genome_colors)) +
+  scale_size_manual(values = rep(3.5, 9)) +
+  theme(plot.margin = margin(2,2,2,2, unit = "mm"),
+        legend.position = "none",
+        plot.title = element_blank(),
+        plot.subtitle = element_text(size = 10))
+#
+pfinal <- p #%>%
+  # collapse(176, 'mixed', fill='steelblue', color="black", alpha=.4) %>%
+  # collapse(172, 'mixed', fill='steelblue4', color="black", alpha=.4) %>%
+  # collapse(167, 'mixed', fill='steelblue1', color="black", alpha=.4) %>%
+  # collapse(160, 'mixed', fill='firebrick1', color="black", alpha=.4) %>%
+  # collapse(143, 'mixed', fill='firebrick4', color="black", alpha=.4) %>%
+  # collapse(141, 'mixed', fill='firebrick', color='black', alpha=.4) %>%
+  # collapse(123, 'mixed', fill='firebrick2', color="black", alpha=.4)
+
+print(pfinal)
+  
+dev.off()
+```
+
+#### 50% matrix - ETP samples retained
+ 141 taxa, 1,519 UCE loci, 713,305 bp, 193,855 informative sites
+```{r import_tree}
+tree <- read.newick("./outputs/iqtree/iqtree_snapp_subset_K6_5X_50.treefile")
+
+# midpoint root
+tree <- midpoint.root(tree)
+
+# drop outgroup tips (easier to view node labels)
+tree <- ape::drop.tip(tree, tip = "Stylophora_pistillata_ANT17_contigs")
+tree <- ape::drop.tip(tree, tip = "SRR19052307_contigs")
+tree <- ape::drop.tip(tree, tip = "SRR19052309_contigs")
+tree <- ape::drop.tip(tree, tip = "SRR19052305_contigs")
+tree <- ape::drop.tip(tree, tip = "SRR19052306_contigs")
+#
+tree <- ape::drop.tip(tree, tip = "SRR19052232_contigs")
+
+# set root-edge
+tree$root.edge <- 1
+# check topology
+ggtree(tree)
+```
+
+```{r adjust_tip_labels}
+# adjust tip labels
+# remove contigs suffix 
+tips <- gsub("_contigs$", "", tree$tip.label)
+# remove sample number suffix 
+tips <- gsub("_S[[:digit:]]*$", "", tips)
+
+# Reference genomes: tip names
+tips <- gsub("Stylophora_", "S. ", tips)
+tips <- gsub("_ANT17", " ANT17", tips)
+tips <- gsub("pocillopora_", "P. ", tips)
+tips <- gsub("_G", " G", tips)
+tips <- gsub("_SAMN", " SAMN", tips)
+
+# Reference genomes: remove all labels!~
+
+# Oury samples:
+oury_tip_order <- tips[tips %in% oury_samples$NCBI_SSR]
+
+tips[tips %in% oury_samples$NCBI_SSR] <- oury_samples[match(oury_tip_order, oury_samples$NCBI_SSR),]$tip_label
+
+# Oury samples: remove all labels!~
+# tips <- ifelse(grepl("USNM", tips), tips, "")
+tips[grepl("^GSH", tips)] <- ""
+
+# need to change reference genome labels to include GenBank accessions
+# Stephens et al. 2022 genomes do not have GenBank/RefSeq accessions, using BioSample numbers
+# SAMN21845732 - P. meandrina
+# SAMN22898959 - P. acuta
+```
+```{r check_tree_tips}
+# check tips
+tips
+# assign new tip labels to tree
+tree$tip.label <- tips
+
+# drop P. verrucosa 3b tips
+pv3btips <- c("Coco_612_AP3XF78", "Coco_613_AP3XF79", "Coco_615_AP3XF81", "Coco_616_AP3XF82", "Coco_653_AP3XF97")
+tree <- ape::drop.tip(tree, tip = pv3btips)
+
+# basic viz
+gg_tree(tree)
+```
+```{r tip_metadata}
+# create dataframe holding metadata 
+tips_metadata <- data.frame(tips)
+tips_metadata$class <- ifelse(grepl("P\\.|S\\.", tips), tips, ifelse(grepl("^[BCDEFGIPS]", tips),"Connelly", "Oury"))
+# red for USNM, dark blue for genomes, dark green for Oury, black for Connelly
+```
+```{r node_labels}
+# node labels with bootstrap support
+node.labels <- tree$node.label
+# preserve original labels
+node.labels.original <- node.labels
+node.labels <- node.labels.original
+
+# remove root label
+node.labels[node.labels == "Root"] <- ""
+# remove 100% supported node labels
+# node.labels[node.labels == "100/100"] <- ""
+# define high-support bootstrap values - >90%?
+node.labels[grepl("^100", node.labels)] <- ""
+node.labels[grepl("^9", node.labels)] <- ""
+# mark low-support bootstrap values with asterisks - <80%?
+# node.labels[grepl("^[8]", node.labels)] <- ""
+# node.labels[grepl("^[5-7]", node.labels)] <- "<80"
+# node.labels[grepl("^[0-4]", node.labels)] <- "<50"
+
+# check to see if formatting is correct
+node.labels
+#
+tree$node.label <- node.labels
+tree$node.label <- NULL # remove all node labels to use ggrepel
+```
+```{r full_ggtree_viz}
+pdf("./outputs/figures/Evolution2024_iqtree_50pct_ETP_tree.pdf", width = 9.63625, height = 6.5)
+#
+tree_title <- expression(paste("IQ-TREE Maximum Likelihood Tree with reference ", italic("Pocillopora"), " GSH samples"))
+loci_info <- c("50% sample occupancy, 1,519 UCE loci, 713,305 bp, 193,855 informative sites")
+#
+
+p <- tree %>% ggtree(., right = TRUE) %<+% tips_metadata + 
+  
+  
+  # highlight clades
+  geom_highlight(node = 213, fill = "darkorange", type = "gradient", gradient.direction = 'rt', alpha = 1, to.bottom = T) +
+  geom_highlight(node = 144, fill = "turquoise2", type = "gradient", gradient.direction = 'rt', alpha = 1, to.bottom = T) +
+  geom_highlight(node = 240, fill = "gold2", type = "gradient", gradient.direction = 'rt', alpha = 1, to.bottom = T) +
+  geom_highlight(node = 253, fill = "purple3", type = "gradient", gradient.direction = 'rt', alpha = 1, to.bottom = T) +
+  # geom_highlight(node = 70, fill = "purple", type = "gradient", gradient.direction = 'rt', alpha = .6) +
+
+  # node labels (numeric)
+  # geom_text(aes(label=node), hjust=-.3, size = 1) +
+  
+  # node labels
+  # geom_nodelab(size = 2, hjust = 0, nudge_y = 0, geom = "shadowtext", color = "grey90", bg.color = "white") +
+  
+  # tip labels
+  geom_tiplab(hjust = 0, aes(color = `class`, size = `class`), fontface = 2) +
+  # geom_text_repel(hjust = 0, aes(label = label, color = class, size = class), fontface = 2, box.padding = 0.25, nudge_x = 0.016) + #
+  
+  # label clades
+  geom_cladelab(node = 251, label = "P. effusa", fontsize = 5, fontface = 3, offset = 0.008, offset.text = 0.0004) +
+  # 
+  geom_cladelab(node = 237, label = "P. meandrina", fontsize = 5, fontface = 3, offset = 0.009, offset.text = 0.0004) +
+  # 
+  geom_cladelab(node = 210, label = "P. grandis", fontsize = 5, fontface = 3, offset = 0.011, offset.text = 0.0004) +
+  # 
+  # geom_cladelab(node = 192, label = "P. damicornis", fontsize = 5, fontface = 3, offset = 0.008, offset.text = 0.0004) +
+  # # 
+  # geom_cladelab(node = 166, label = "P. acuta", fontsize = 5, fontface = 3, offset = 0.008, offset.text = 0.0004) +
+  # 
+  geom_cladelab(node = 139, label = "P. verrucosa", fontsize = 5, fontface = 3, offset = 0.007, offset.text = 0.0004) +
+
+  # label GSH clades
+  # geom_cladelab(node = 207, label = "GSH01", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 203, label = "GSH13b", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 198, label = "GSH09b", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 193, label = "GSH09a", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 182, label = "GSH09c", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 176, label = "GSH04b", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 172, label = "GSH04a", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 167, label = "GSH10", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 166, label = "GSH04c", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 160, label = "GSH05a-3", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 157, label = "GSH05c-2", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 153, label = "GSH05a-2", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 147, label = "GSH05d", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 143, label = "GSH05a-1", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 141, label = "GSH05c-1", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 132, label = "GSH14", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 127, label = "GSH12", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 122, label = "GSH13a", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 117, label = "GSH13c", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+  # geom_cladelab(node = 112, label = "GSH15", fontsize = 2, fontface = 1, offset = 0.0025, offset.text = 0.0002) +
+
+
+  # setup tree visualization
+  geom_rootedge(rootedge = 0.001) +
+  geom_treescale(width = 0.01, x = 0, y = -1, linesize = 0.75) +
+  ggplot2::xlim(-0.001, 0.05) +
+  scale_color_manual(values = c("red", rep("navyblue", 9))) +
+  scale_size_manual(values = rep(2, 10)) +
+  theme(plot.margin = margin(2,2,2,2, unit = "mm"),
+        legend.position = "none",
+        plot.title = element_blank(),
+        plot.subtitle = element_text(size = 10))
+#
+pfinal <- p #%>%
+  # collapse(176, 'mixed', fill='steelblue', color="black", alpha=.4) %>%
+  # collapse(172, 'mixed', fill='steelblue4', color="black", alpha=.4) %>%
+  # collapse(167, 'mixed', fill='steelblue1', color="black", alpha=.4) %>%
+  # collapse(160, 'mixed', fill='firebrick1', color="black", alpha=.4) %>%
+  # collapse(143, 'mixed', fill='firebrick4', color="black", alpha=.4) %>%
+  # collapse(141, 'mixed', fill='firebrick', color='black', alpha=.4) %>%
+  # collapse(123, 'mixed', fill='firebrick2', color="black", alpha=.4)
+
+print(pfinal)
+  
+dev.off()
+```

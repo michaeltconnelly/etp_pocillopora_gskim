@@ -347,6 +347,16 @@ distinct_genes <- outlier_site_genes %>%
   arrange(qval, desc(n))
 
 # 16,519 genes with outlier SNPs between lineages... needs enrichment tests (rank-based?)
+
+highly_distinct_genes <- outlier_site_genes %>% 
+  filter(qval < 1e-10) %>% filter(grepl("OZ", chr)) %>% 
+  group_by(ID) %>%
+  mutate(n = n()) %>%
+  # arrange(desc(n)) %>%
+  distinct(ID, .keep_all = T) %>% 
+  arrange(qval, desc(n))
+
+top_distinct_genes_chr <- highly_distinct_genes %>% group_by(chr) %>% slice_min(order_by = qval, n = 100)
 ```
 
 ### Pairwise comparisons between *P. grandis* continental lineage populations
@@ -455,8 +465,9 @@ return(sigRes)
 ```
 
 ```{r}
-topGOtest <- topGOanalyzeDE(distinct_genes) 
+topGOtest <- topGOanalyzeDE(highly_distinct_genes) 
 ```
+
 ## Perform topGO tests 
 ### Between species lineages
 ```{r}

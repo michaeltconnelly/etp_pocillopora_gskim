@@ -44,29 +44,29 @@ ngsadmix_clusters <- c("Cluster 1",
 #
 ngsadmix_spp <- c("P. effusa",
                   "P. meandrina",
-                  "P. grandis - Offshore",
-                  "P. grandis - Continent",
-                  "P. verrucosa 3a",
+                  "P. capitata - Offshore",
+                  "P. capitata - Continent",
+                  "P. lacera",
                   "Unassigned")
 #
 ngsadmix_spp_clusters <- c("Cluster 1" = "P. effusa",
                        "Cluster 2" = "P. meandrina",
-                       "Cluster 3A" = "P. grandis - Offshore",
-                       "Cluster 3B" = "P. grandis - Continent", 
-                       "Cluster 4" = "P. verrucosa 3a")
+                       "Cluster 3A" = "P. capitata - Offshore",
+                       "Cluster 3B" = "P. capitata - Continent", 
+                       "Cluster 4" = "P. lacera")
 #
 ngsadmix_pop_colors <- c("P. effusa"="purple3",
                          "P. meandrina"="gold2",
-                         "P. grandis - Offshore"="darkorange",
-                         "P. grandis - Continent"="darkorange3",
-                         "P. verrucosa 3a"="turquoise2",
+                         "P. capitata - Offshore"="darkorange",
+                         "P. capitata - Continent"="darkorange3",
+                         "P. lacera"="turquoise2",
                          "Unassigned"="grey90")
 
 ngsadmix_pop_colors_k6 <- c("P. effusa"="purple3",
                          "P. meandrina"="gold2",
-                         "P. grandis - Offshore"="darkorange",
-                         "P. grandis - Continent"="darkorange3",
-                         "P. verrucosa 3a"="turquoise2",
+                         "P. capitata - Offshore"="darkorange",
+                         "P. capitata - Continent"="darkorange3",
+                         "P. lacera"="turquoise2",
                          "P. verrucosa 3b"="turquoise4",
                          "Unassigned"="grey90")
 

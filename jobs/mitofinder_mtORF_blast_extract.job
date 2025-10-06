@@ -43,7 +43,7 @@ makeblastdb -dbtype 'nucl' -in ${prodir}/outputs/mitofinder/mtorf_extract/all_mt
 
 # complete BLAST search, format results to include matching subject sequences (sseq)
 blastn \
--query ${prodir}/data/seqs/pocillopora_mtORF_Type3_ORF46_HQ378760.fasta \
+-query ${prodir}/data/seqs/pocillopora_mtORF_Type3a_ORF46_HQ378760.fasta \
 -db ${prodir}/outputs/mitofinder/mtorf_extract/all_mt_contigs.fasta \
 -out ${prodir}/outputs/mitofinder/mtorf_extract/mtORF_type3_blastn.tsv \
 -outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore sseq"

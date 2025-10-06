@@ -1,0 +1,212 @@
+---
+title: "Symbiont IBS PCoA"
+author: "Mike Connelly"
+date: "2025-01-23"
+output: html_document
+---
+modified from: https://github.com/sanna2110/SYMBIO_WA/blob/main/PCA.R
+## Setup and packages
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = TRUE)
+options(stringsAsFactors = FALSE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+```{r packages}
+library("tidyverse")
+library("magrittr")
+library("ggtree")
+#
+library("adegenet")
+library("RColorBrewer")
+library("vegan")
+library("pairwiseAdonis")
+#
+#library("WGCNA") # for coloring clonal groups
+#library("sparcl") # for ColorDendrogram
+# 
+source("./R/pocillopora_etp_gksim_functions.R")
+```
+
+## Import sample metadata
+```{r import_sample_metadata}
+source("./R/sample_import.R")
+samples <- all_samples
+```
+
+# Final no-clones C-dominated samples
+### Import BAM list and IBS matrix
+```{r bamfile}
+# reading list of bam files = order of samples in IBS matrix
+bams <- read.table("./outputs/angsd/C-dominated_symC/C-dominated_symC_bamfile.txt",header=F)[,1]
+#
+bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/symbiont_alignments/", "", bams, perl=T)
+bam_ids <- sub("_symC.sorted.bam", "", bam_ids, perl=T)
+bam_ids <- sub("_S[[:digit:]]+$", "", bam_ids)
+#
+bam_ids
+```
+```{r bam_sample_order_check}
+# are all the bam files in the sample metadata?
+all(bam_ids %in% samples$`Sample ID`) # TRUE
+# which bam files are not in the sample metadata?
+bam_ids[bam_ids %notin% samples$`Sample ID`] # character(0)
+#
+# are all samples in the bam files?
+all(samples$`Sample ID` %in% bam_ids) # FALSE, but OK
+# which samples are not in the bam files?
+samples[samples$`Sample ID` %notin% bam_ids,]
+#
+# do all the sample ids match the bam file ids in the correct order?
+all(samples$`Sample ID` == bam_ids) # TRUE
+# which samples ids do not match? 
+samples[samples$`Sample ID` != bam_ids,]
+#
+# aligning sample metadata with bams list, then check again
+samples <- samples[match(bam_ids, samples$`Sample ID`),] 
+# do all the sample ids match the bam file ids in the correct order?
+all(samples$`Sample ID` == bam_ids) # TRUE
+```
+```{r import_ibs_matrix}
+# reading IBS matrix based on SNPs with allele frequency >= 0.05:
+ma <- as.matrix(read.table("./outputs/angsd/C-dominated_symC/C-dominated_symC_ibs05.ibsMat"))
+```
+```{r ibs_matrix_names}
+# remove biorepository codes from sample labels
+sample_names <- gsub("_AP3X.*", "", samples$`Sample ID`)
+# IMPORTANT: verify that the order of ids in sample metadata and in the bam file list used for IBS in ANGSD match
+dimnames(ma) <- list(samples$`Sample ID`, samples$`Sample ID`)
+# OR
+# dimnames(ma) <- list(sample_names, sample_names)
+# OR
+# dimnames(ma)=list(samples$Site,samples$Site)
+# OR
+# dimnames(ma) <- list(bam_ids, bam_ids)
+```
+### Plot IBS hierarchical clustering dendrograms
+```{r ibs_dendrogram_test}
+# plotting hierarchical clustering dendrogram
+hc <- hclust(as.dist(ma), "ave")
+plot(hc, cex = 0.4)
+```
+```{r}
+# plotting PCA with 80% ibs matrix
+pp0=capscale(ma~1)
+plot(pp0, scaling=1)
+```
+# Final no-clones D-dominated samples
+### Import BAM list and IBS matrix
+```{r bamfile}
+# reading list of bam files = order of samples in IBS matrix
+bams <- read.table("./outputs/angsd/D-dominated_symD/D-dominated_symD_bamfile.txt",header=F)[,1]
+#
+bam_ids <- sub("/scratch/nmnh_corals/connellym/projects/etp_pocillopora_gskim/outputs/symbiont_alignments/", "", bams, perl=T)
+bam_ids <- sub("_symD.sorted.bam", "", bam_ids, perl=T)
+bam_ids <- sub("_S[[:digit:]]+$", "", bam_ids)
+#
+bam_ids
+```
+```{r bam_sample_order_check}
+# are all the bam files in the sample metadata?
+all(bam_ids %in% samples$`Sample ID`) # TRUE
+# which bam files are not in the sample metadata?
+bam_ids[bam_ids %notin% samples$`Sample ID`] # character(0)
+#
+# are all samples in the bam files?
+all(samples$`Sample ID` %in% bam_ids) # FALSE, but OK
+# which samples are not in the bam files?
+samples[samples$`Sample ID` %notin% bam_ids,]
+#
+# do all the sample ids match the bam file ids in the correct order?
+all(samples$`Sample ID` == bam_ids) # TRUE
+# which samples ids do not match? 
+samples[samples$`Sample ID` != bam_ids,]
+#
+# aligning sample metadata with bams list, then check again
+samples <- samples[match(bam_ids, samples$`Sample ID`),] 
+# do all the sample ids match the bam file ids in the correct order?
+all(samples$`Sample ID` == bam_ids) # TRUE
+```
+```{r import_ibs_matrix}
+# reading IBS matrix based on SNPs with allele frequency >= 0.05:
+ma <- as.matrix(read.table("./outputs/angsd/D-dominated_symD/D-dominated_symD_ibs05.ibsMat"))
+```
+```{r ibs_matrix_names}
+# remove biorepository codes from sample labels
+sample_names <- gsub("_AP3X.*", "", samples$`Sample ID`)
+# IMPORTANT: verify that the order of ids in sample metadata and in the bam file list used for IBS in ANGSD match
+dimnames(ma) <- list(samples$`Sample ID`, samples$`Sample ID`)
+# OR
+# dimnames(ma) <- list(sample_names, sample_names)
+# OR
+# dimnames(ma)=list(samples$Site,samples$Site)
+# OR
+# dimnames(ma) <- list(bam_ids, bam_ids)
+```
+### Plot IBS hierarchical clustering dendrograms
+```{r ibs_dendrogram_test}
+# plotting hierarchical clustering dendrogram
+hc <- hclust(as.dist(ma), "ave")
+plot(hc, cex = 0.4)
+```
+```{r}
+# plotting PCA with 80% ibs matrix
+pp0=capscale(ma~1)
+plot(pp0, scaling=1)
+```
+
+## Final no-clones samples k-mer based approach
+```{r}
+# reading Ds2 distance matrix based on kmers
+d2s <- read.table("./outputs/symCD_distance.txt")
+bams <- d2s$V1 %>% gsub("_S.*_symCD", "", .)
+bams
+
+ma <- as.matrix(d2s[, -1])
+dimnames(ma) <- list(bams, bams)
+```
+```{r d2s_dendrogram_test}
+# plotting hierarchical clustering dendrogram
+hc <- hclust(as.dist(ma), "ave")
+plot(hc, cex = 0.4)
+```
+```{r}
+# plotting dbRDA 
+vars <- samples_noclones %>% dplyr::select(`Sample ID`, Region, Latitude, Longitude) %>% arrange(`Sample ID`)
+pp0 <- capscale(ma ~ Region, data = vars)
+
+plot(pp0, scaling = 1)
+```
+```{r}
+mds_scores <- as.data.frame(scores(pp0, display="sites")) %>%
+  rownames_to_column("Sample ID") %>% 
+  left_join(samples, by = "Sample ID") %>% 
+  left_join(samples_k5_assignments, by = "Sample ID") %>% 
+  left_join(symbiont_categories, by = "Sample ID")
+```
+
+```{r}
+mds_scores %>%
+  ggplot(aes(CAP1, CAP2)) +
+  geom_point(aes(fill = `NGSAdmix K5 Species`), shape = 21, size = 4, alpha = 0.65, show.legend = T) +
+  scale_fill_manual(values = ngsadmix_pop_colors, name = "NGSAdmix Species (K=5)") +
+  guides(fill = guide_legend(override.aes = list(size = 3, alpha = 1))) +
+  # coord_fixed(pcvar[2]/pcvar[1]) +
+  # xlab(paste0( "PC1 (", pcvar[1], "%)")) + 
+  # ylab(paste0( "PC2 (", pcvar[2], "%)")) +
+  theme(plot.title = element_text(size = 16, hjust = -0.2),
+        legend.background = element_rect(color = "lightgrey"),
+        # panel.grid = element_blank(),
+        axis.title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        legend.title = element_text(size = 10, margin = margin(b = 0.5, unit = "mm")),
+        legend.text = element_text(size = 8),
+        legend.position = "none",
+        # legend.position = c(0.151, 0.695),
+        legend.key.spacing.y = unit(-1.6, "mm"))
+```
+```{r}
+mds_scores %>%
+  ggplot(aes(CAP1, CAP2)) +
+  geom_point(aes(fill = `Symbiont Community`), shape = 21, size = 4, alpha = 0.65, show.legend = T) 
+```
+

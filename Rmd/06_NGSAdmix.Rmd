@@ -365,9 +365,9 @@ representative <- function(x) {x >= 0.85}
 samples_noclones_ngsadmix_assignments_k5 <- qpop_best %>% mutate(`NGSADMIX_REP_K5` = if_any(contains("pop"), representative),
                      `NGSAdmix K5 Species` = ifelse(representative(pop1), "P. meandrina", 
                                            ifelse(representative(pop2), "P. effusa",
-                                                  ifelse(representative(pop3), "P. grandis - Offshore",
-                                                         ifelse(representative(pop4), "P. verrucosa 3a",
-                                                                ifelse(representative(pop5), "P. grandis - Continent", "Unassigned")))))) %>%
+                                                  ifelse(representative(pop3), "P. capitata - Offshore",
+                                                         ifelse(representative(pop4), "P. lacera",
+                                                                ifelse(representative(pop5), "P. capitata - Continent", "Unassigned")))))) %>%
   select(`Sample ID`, `NGSADMIX_REP_K5`, `NGSAdmix K5 Species`)
 # next, join this to no-clones sample data for use in maps, PCA plots, etc.
 # write_csv(samples_noclones_ngsadmix_assignments_k5, "./data/samples_noclones_ngsadmix_assignments_k5.csv")
@@ -390,9 +390,9 @@ q_pop_besttidy %>%
 # 210 non-admixed individuals
 # pop1 = P. meandrina (10)
 # pop2 = P. effusa (4)
-# pop3 = Offshore P. grandis  (33)
-# pop4 = P. verrucosa 3a (33) (P. lacera?)
-# pop5 = Continental P. grandis (130) (P. capitata?) 
+# pop3 = Offshore P. capitata  (33)
+# pop4 = P. lacera (33) 
+# pop5 = Continental P. capitata (130) 
 ```
 ```{r bestK_admixed_samples}
 # Using best K admixture results, identify admixed/unassigned samples from clusters (all q < 0.85)
@@ -466,15 +466,15 @@ representative <- function(x) {x >= 0.85}
 
 # create new metadata columns to identify representative vs. admixed samples and assign population labels
 samples_noclones_ngsadmix <- qpop_best %>% mutate(`NGSADMIX_REP_K6` = if_any(contains("pop"), representative),
-                     `NGSAdmix K6 Species` = ifelse(representative(pop1), "P. grandis - Continent", 
+                     `NGSAdmix K6 Species` = ifelse(representative(pop1), "P. capitata - Continent", 
                                            ifelse(representative(pop2), "P. meandrina",
-                                                  ifelse(representative(pop3), "P. grandis - Offshore",
+                                                  ifelse(representative(pop3), "P. capitata - Offshore",
                                                          ifelse(representative(pop4), "P. effusa",
                                                                 ifelse(representative(pop5), "P. verrucosa 3b",
-                                                                       ifelse(representative(pop6), "P. verrucosa 3a", "Unassigned"))))))) %>%
+                                                                       ifelse(representative(pop6), "P. lacera", "Unassigned"))))))) %>%
   dplyr::select(`Sample ID`, `NGSADMIX_REP_K6`, `NGSAdmix K6 Species`)
 # next, join this to no-clones sample data for use in maps, PCA plots, etc.
-write_csv(samples_noclones_ngsadmix, "./data/samples_noclones_ngsadmix_assignments_k6.csv")
+# write_csv(samples_noclones_ngsadmix, "./data/samples_noclones_ngsadmix_assignments_k6.csv")
 ```
 
 ### Figure 1B
@@ -529,17 +529,17 @@ representative <- function(x) {x >= 0.5}
 samples_k5_noadmix_assignments <- qpop_best %>% mutate(`NGSADMIX_REP_K5` = if_any(contains("pop"), representative),
                      `NGSAdmix K5 Species` = ifelse(representative(pop1), "P. meandrina", 
                                            ifelse(representative(pop2), "P. effusa",
-                                                  ifelse(representative(pop3), "P. grandis - Offshore",
-                                                         ifelse(representative(pop4), "P. verrucosa 3a",
-                                                                ifelse(representative(pop5), "P. grandis - Continent",
+                                                  ifelse(representative(pop3), "P. capitata - Offshore",
+                                                         ifelse(representative(pop4), "P. lacera",
+                                                                ifelse(representative(pop5), "P. capitata - Continent",
                                                                        "Unassigned")))))) %>%
   dplyr::select(`Sample ID`, `NGSADMIX_REP_K5`, `NGSAdmix K5 Species`)
 
 ngsadmix_spp_code <- c("P. effusa" = "A",
                   "P. meandrina" = "B",
-                  "P. grandis - Offshore" = "C",
-                  "P. grandis - Continent" = "D",
-                  "P. verrucosa 3a" = "E")
+                  "P. capitata - Offshore" = "C",
+                  "P. capitata - Continent" = "D",
+                  "P. lacera" = "E")
 ```
 
 ```{r barplot_k5}
@@ -893,5 +893,24 @@ dev.off()
 samples_k5_assignments %>% left_join(., samples, by = "Sample ID") %>% 
   count(Region, `NGSAdmix K5 Species`) %>%
   pivot_wider(names_from = `NGSAdmix K5 Species`, values_from = n)
+```
+
+## Extend cluster assignments back to full-clones dataframe (for summarizing clone groups across clusters)
+```{r}
+left_join(samples, samples_k5_assignments) %>% filter(CLONAL_GENOTYPE) %>% filter(!TECHNICAL_REPLICATE) %>%
+  # filter(!is.na(`NGSAdmix K5 Species`)) %>% 
+  View()
+  
+  group_by(`Genotype ID`, Country, Region, Site, Species, `NGSAdmix K5 Species`) %>%
+  count() %>% ungroup() %>% group_by(Country, Region, Site, `NGSAdmix K5 Species`) %>% count() %>%   pivot_wider(names_from = `NGSAdmix K5 Species`, values_from = n) %>% 
+  write_csv("outputs/clonegroups_per_cluster_site_spp.csv")
+
+mutate(
+    clonal_cluster = case_when(
+      category == "A" ~ Genotype_ID == ,
+      category == "B" ~ value1 + value2,
+      TRUE ~ NA_real_ # For categories not matching "A" or "B"
+    )
+  )
 ```
 

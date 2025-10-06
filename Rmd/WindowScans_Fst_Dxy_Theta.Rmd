@@ -1,0 +1,230 @@
+---
+title: "WindowScans_Fst_Dxy_Theta"
+author: "Mike Connelly"
+date: "2024-11-01"
+output: html_document
+---
+## Setup and packages
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = TRUE)
+options(stringsAsFactors = FALSE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+```{r packages}
+library("tidyverse")
+#
+library("patchwork")
+#
+source("./R/pocillopora_etp_gksim_functions.R")
+```
+
+## 50kb window-based estimates of Fst, Dxy, and Theta for *Pocillopora* species lineages
+```{r chr_abbreviations}
+chrs_abbv <- list(
+"OZ034731.1" = "CHR1",
+"OZ034732.1" = "CHR2",
+"OZ034733.1" = "CHR3",
+"OZ034734.1" = "CHR4",
+"OZ034735.1" = "CHR5",
+"OZ034736.1" = "CHR6",
+"OZ034737.1" = "CHR7",
+"OZ034738.1" = "CHR8",
+"OZ034739.1" = "CHR9",
+"OZ034740.1" = "CHR10",
+"OZ034741.1" = "CHR11",
+"OZ034742.1" = "CHR12",
+"OZ034743.1" = "CHR13",
+"OZ034744.1" = "CHR14"
+)
+chrs_labeller <- function(variable, value){
+  return(chrs_abbv[value])
+}
+```
+
+### Fst
+```{r fst_cols}
+angsd_fst_colnames <- c("REGION", "CHR", "wincenter", "Nsites", "Fst")
+angsd_fst_cols <- cols("REGION" = col_character(),
+                       "CHR" = col_character(),
+                       "wincenter" = col_double(), # midPos
+                       "Nsites" = col_double(),
+                       "Fst" = col_double())
+```
+```{r import_fst_files}
+# Import pairwise Fst files from ANGSD realSFS fst stats2 
+# -win 49999 -step 50000
+fst_files <- list.files("./outputs/angsd/50kb_fst/spp", full.names = T)
+#
+fst_df_list <- list()
+for (i in seq(1,10,1)) { 
+  file = fst_files[i]
+  fst_df <- read_delim(file, delim = "\t", skip = 1, col_names = angsd_fst_colnames, col_types = angsd_fst_cols)
+  #
+  fst_df_list[[i]] <- fst_df
+}            
+```
+
+### Dxy
+```{r dxy_cols}
+angsd_dxy_window_colnames <- c("REGION", "CHR", "wincenter", "Nsites", "Fst", "DxyAllSites", "DxyEstSites")
+angsd_dxy_window_cols <- cols("REGION" = col_character(),
+                       "CHR" = col_character(),
+                       "wincenter" = col_double(), # midPos
+                       "Nsites" = col_double(),
+                       "Fst" = col_double(),
+                       "DxyAllSites" = col_double(),
+                       "DxyEstSites" = col_double())
+```
+```{r}
+# Import pairwise Dxy files from calcDxy.
+# 
+dxy_files <- list.files("./outputs/angsd/dxy", full.names = T)
+#
+dxy_df_list <- list()
+for (i in seq(1,10,1)) { 
+  file = dxy_files[i]
+  dxy_df <- read_delim(file, delim = "\t", skip = 1, col_names = angsd_dxy_window_colnames, col_types = angsd_dxy_window_cols) 
+  #
+  dxy_df_list[[i]] <- dxy_df
+}            
+```
+
+### Theta 
+```{r theta_cols}
+#REGION = (indexStart,indexStop)(posStart,posStop)(regStat,regStop)
+angsd_theta_colnames <- c("REGION", "CHR", "wincenter", "tW", "tP", "tF", "tH", "tL", "tajD", "fulif", "fuliD", "fayH", "zengsE", "Nsites")
+```
+```{r import_thetas_50kb}
+# Import theta files from ANGSD realSFS saf2theta, thetaStat do_stat
+# -win 49999 -step 50000
+theta_files <- list.files("./outputs/angsd/thetas/windows_50kb", full.names = T)
+theta_df_list <- list()
+for (i in seq(1,5,1)) { 
+  file = theta_files[i]
+  theta_df <- read_delim(file, delim = "\t", skip = 1, col_names = angsd_theta_colnames)
+  #
+  theta_df_list[[i]] <- theta_df
+}
+```
+
+
+```{r}
+fst_df_list[[1]]
+# dxy_df_list[1]
+theta_df_list[[1]]
+```
+
+```{r}
+# do window regions for Fst and Theta match?
+# fst_df_list[[1]]$REGION
+# theta_df_list[[1]]$REGION
+# 1 bp offset in thetas indexStop 
+
+chr1_fst_df <- fst_df_list[[1]] %>% filter(CHR %in% names(chrs_abbv)[1]) %>% mutate(window = str_c(CHR, wincenter, sep = "_"))
+
+chr1_theta_df <- theta_df_list[[1]]  %>% filter(CHR %in% names(chrs_abbv)[1]) %>% mutate(window = str_c(CHR, wincenter, sep = "_"))
+```
+```{r}
+all(chr1_fst_df$window %in% chr1_theta_df$window)
+chr1_theta_df[chr1_theta_df$window %in% chr1_fst_df$window == F,]
+# 50kb regions with missing data drop out of Fst data frame, return NA in theta data frame
+```
+
+```{r}
+chr1_window_df <- left_join(chr1_theta_df, chr1_fst_df,  by = "window")
+```
+```{r}
+theta_plot <- chr1_window_df %>% ggplot(aes(wincenter.x, tW/50000, color = CHR.x)) +
+    geom_point(size = 0.5, show.legend = F)
+
+pi_plot <- chr1_window_df %>% ggplot(aes(wincenter.x, tP/50000, color = CHR.x)) +
+    geom_point(size = 0.5, show.legend = F)
+
+tajima_plot <- chr1_window_df %>% ggplot(aes(wincenter.x, tajD, color = CHR.x)) +
+    geom_hline(yintercept = 0) +
+    geom_point(size = 0.5, show.legend = F)
+
+fst_plot <- chr1_window_df %>% ggplot(aes(wincenter.x, Fst, color = CHR.x)) +
+    geom_point(size = 0.5, show.legend = F) 
+
+neutral_stats_window_plot <- theta_plot / pi_plot / tajima_plot
+
+print(neutral_stats_window_plot)
+```
+```{r}
+pdf("outputs/figures/neutralstats_chr1.pdf", width = 6.5, height = 5)
+print(neutral_stats_window_plot)
+dev.off()
+```
+
+### Plot chromosome scaffolds side-by-side for all species
+```{r}
+CHR_totlen <- fst_df_list[[1]] %>%
+  # filter(CHR %in% names(chrs_abbv)) %>% 
+  # Compute chromosome size
+  group_by(CHR) %>% 
+  summarise(chr_len = max(wincenter) + 25000) %>% 
+  # Calculate cumulative position of each chromosome
+  mutate(tot = cumsum(chr_len) - chr_len) %>%
+  select(-chr_len)
+```
+
+```{r}
+pdf("outputs/figures/neutralstats_all.pdf", width = 6.5, height = 5)
+for (i in seq(1,5,1)) { 
+fst_clean <- fst_df_list[[i]] %>% mutate(window = str_c(CHR, wincenter, sep = "_"))
+theta_clean <- theta_df_list[[i]] %>% mutate(window = str_c(CHR, wincenter, sep = "_")) %>% select(-REGION, -CHR, -wincenter, -Nsites)
+
+window_df <- left_join(theta_clean,
+                            fst_clean,  by = "window")
+
+# join window stats dataset to cumulative chromosome length
+ window_df_tot  <- window_df %>% 
+  filter(CHR %in% names(chrs_abbv)) %>%
+  left_join(CHR_totlen,  by = "CHR") %>% 
+  # Add a cumulative position of each SNP
+  arrange(CHR, wincenter) %>%
+  mutate(BPtot = wincenter + tot)
+
+theta_plot <- window_df_tot %>% ggplot(aes(BPtot, tW/50000, color = CHR)) +
+    geom_point(size = 0.5, show.legend = F) +
+    scale_color_manual(values = c(rep(c("black", "grey"), 15))) +
+    ylim(c(0,0.025)) +
+  theme(axis.text.x = element_blank(), 
+        axis.title.x = element_blank())
+
+pi_plot <- window_df_tot %>% ggplot(aes(BPtot, tP/50000, color = CHR)) +
+    geom_point(size = 0.5, show.legend = F) +
+    scale_color_manual(values = c(rep(c("black", "grey"), 15))) +
+      ylim(c(0,0.025)) +
+  theme(axis.text.x = element_blank(), 
+        axis.title.x = element_blank())
+
+tajima_plot <- window_df_tot %>% ggplot(aes(BPtot, tajD, color = CHR)) +
+    geom_hline(yintercept = 0) +
+    geom_point(size = 0.5, show.legend = F) +
+    scale_color_manual(values = c(rep(c("black", "grey"), 15))) + 
+      ylim(c(-3,3)) +
+  theme(axis.text.x = element_blank(), 
+        axis.title.x = element_blank())
+
+fst_plot <- window_df_tot %>% ggplot(aes(BPtot, Fst, color = CHR)) +
+    geom_point(size = 0.5, show.legend = F)  +
+    scale_color_manual(values = c(rep(c("black", "grey"), 15))) +
+  theme(axis.text.x = element_blank(), 
+        axis.title.x = element_blank())
+
+neutral_stats_window_plot <- theta_plot / pi_plot / tajima_plot 
+
+print(neutral_stats_window_plot)
+}
+dev.off()
+```
+
+```{r}
+dxy_df %>%  ggplot(aes(Fst, DxyAllSites)) + geom_point()
+```
+```{r}
+dxy_df %>%  ggplot(aes(wincenter, DxyAllSites)) + geom_point() + facet_grid(CHR ~ ., scales = "free")
+```
+
