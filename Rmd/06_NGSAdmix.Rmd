@@ -16,6 +16,7 @@ library("RColorBrewer")
 library("patchwork")
 # 
 source("./R/pocillopora_etp_gksim_functions.R")
+source("./R/bestKGPT.R")
 #
 # code adapted from: https://baylab.github.io/MarineGenomics/week-9-population-structure-using-ngsadmix.html and https://github.com/alexkrohn/AmargosaVoleTutorials/blob/master/ngsAdmix_tutorial.md
 ```
@@ -28,30 +29,22 @@ samples <- all_samples
 ```
 
 ## No-clones samples (w/ linked SNPs)
-### Choose best K
-```{r choose_best_K}
-# Choose best K - *P. grandis* reference
-logs <- read_delim("./outputs/ngsadmix/final_noclones/final_noclones_ngsadmix_likeKlogs.txt", trim_ws = TRUE, col_names = c("K", "value"), col_types = cols("K" = col_character(), "value" = col_double()))
+### Choose best K by Evanno
+```{r}
+bestKstats <- evanno_deltak("./outputs/ngsadmix/final_noclones/final_noclones_ngsadmix_likeKlogs.txt")
+bestK <- bestKstats$K[which.max(bestKstats$DeltaK)]
+```
 
-logKdf <- logs %>% group_by(K) %>% 
-  summarise(mK = (mean(abs(value), na.rm = T))/sd(abs(value), na.rm = T)) %>%  
-  arrange(mK)
-
-# Kvec <- c("K1", "K2", "K3", "K4", "K5", "K6", "K7", "K8", "K9", "K10", "K11", "K12")
-Kvec <- seq(1,12)
-
-logKdf$K <- factor(logKdf$K, levels = Kvec, ordered = T)
-
-bestK <- as.numeric(gsub("K", "", logKdf$K[1]))
-
+```{r}
 title <- expression("No-clones linked dataset: 229 samples, 5,587,480 SNPs")
 
-bestKplot <- logKdf %>% ggplot(aes(K, log(mK))) + 
+bestKplot <- ggplot(bestKstats, aes(x = K, y = DeltaK)) +
   geom_vline(xintercept = bestK, color = "grey50") +
+  geom_line() +
   geom_point() +
+  scale_x_continuous(breaks = seq(4, 10, by = 1)) +
+  labs(y = expression("Evanno's " * Delta * "K")) +
   ggtitle(title)
-
-print(bestKplot)
 ```
 
 ### Figure S7A
@@ -129,6 +122,7 @@ pdf("./outputs/figures/FigS##_ngsadmix_final_noclones_K4-7.pdf", width = 6.5, he
 plot_list[[4]] / plot_list[[5]] / plot_list [[6]] / plot_list[[7]]
 dev.off()
 ```
+
 ### Plot best K ancestry proportions
 ```{r print_plot_bestK}
 plot_list[[bestK]]
@@ -229,34 +223,25 @@ dev.off()
 ```
 
 ## No-clones samples (unlinked SNPs after LD pruning)
-### Choose best K
-```{r choose_best_K}
-# Choose best K - *P. grandis* reference
-logs <- read_delim("./outputs/ngsadmix/final_noclones/final_noclones_pgra_noLD_ngsadmix_likeKlogs.txt", trim_ws = TRUE, col_names = c("K", "value"), col_types = cols("K" = col_character(), "value" = col_double()))
+### Choose best K by Evanno
 
+```{r}
+bestKstats <- evanno_deltak("./outputs/ngsadmix/final_noclones/final_noclones_pgra_noLD_ngsadmix_likeKlogs.txt")
+bestK <- bestKstats$K[which.max(bestKstats$DeltaK)]
+```
 
-logKdf <- logs %>% group_by(K) %>% 
-  summarise(mK = (mean(abs(value), na.rm = T))/sd(abs(value), na.rm = T)) %>%  
-  arrange(mK)
-
-Kvec <- c("K1", "K2", "K3", "K4", "K5", "K6", "K7", "K8", "K9", "K10", "K11", "K12")
-Kvec <- seq(1,12)
-
-logKdf$K <- factor(logKdf$K, levels = Kvec, ordered = T)
-
-bestK <- as.numeric(gsub("K", "", logKdf$K[1]))
-
-
+```{r}
 title <- expression("No-clones unlinked dataset: 229 samples, 1,310,435 SNPs")
 
-bestKplot_noLD <- logKdf %>% ggplot(aes(K, log(mK))) + 
+bestKplot_noLD <- ggplot(bestKstats, aes(x = K, y = DeltaK)) +
   geom_vline(xintercept = bestK, color = "grey50") +
+  geom_line() +
   geom_point() +
+  scale_x_continuous(breaks = seq(4, 10, by = 1)) +
+  labs(y = expression("Evanno's " * Delta * "K")) +
   ggtitle(title)
-
-print(bestKplot_noLD)
-# K=5 is the "best" K
 ```
+
 ### Figure S7B
 ```{r figS7B_bestK_plot}
 pdf("./outputs/figures/FigS7B_ngsadmix_noLD_bestK_plot.pdf", width = 6.5, height = 2.5)
@@ -268,7 +253,7 @@ dev.off()
 figS7 <- (bestKplot / bestKplot_noLD) + plot_annotation(tag_levels = 'A') & 
   theme(plot.tag = element_text(size = 14, face = "bold"))
 
-pdf("./outputs/figures/FigS7_ngsadmix_bestK_plots.pdf", width = 6.5, height = 5.5)
+pdf("./outputs/figures/FigS7_ngsadmix_best_deltaK_plots.pdf", width = 6.5, height = 5.5)
 print(figS7)
 dev.off()
 ```
@@ -339,7 +324,7 @@ plot_list[[i]] <- q_pop_tidy_plot
 ```
 ```{r print_plots_K1-9}
 # just explore the assignments - prepare comparison figure for supplementary material below
-plot_list[[3]] / plot_list[[4]] / plot_list[[5]] / plot_list [[6]] / plot_list[[7]]
+plot_list[[3]] / plot_list[[4]] / plot_list[[5]] / plot_list [[6]] / plot_list[[7]] / plot_list[[8]] / plot_list[[9]] 
 ```
 
 ### Plot best K ancestry proportions
@@ -556,7 +541,7 @@ q_pop_k5 <- cbind(pop, q_k5) %>%
 q_pop_k5$`NGSAdmix K5 Spp Label` <- ngsadmix_spp_code[q_pop_k5$`NGSAdmix K5 Species`]
          
 q_pop_k5 <- q_pop_k5 %>% mutate(
-            "Sample ID" = fct_reorder2(`Sample ID`, `pop1`, `pop3`), 
+            "Sample ID" = fct_reorder2(`Sample ID`, `pop1`, `pop3`),
             "Sample ID" = fct_reorder(`Sample ID`, `pop5`),
             "Sample ID" = fct_reorder2(`Sample ID`, `pop3`, desc(`pop4`)),
             "Sample ID" = fct_reorder(`Sample ID`, `NGSAdmix K5 Spp Label`),
@@ -570,7 +555,7 @@ unassigned_samples <- samples_k5_assignments[samples_k5_assignments$`NGSAdmix K5
 q_pop_k5$`Sample ID2` <- ifelse(q_pop_k5$`Sample ID` %in% unassigned_samples, "*", "")
 label_vector <- ifelse(q_pop_k5$`Sample ID` %in% unassigned_samples, "*", "")
 
-# save Sample ID order for reordering factors in K = 6 plot and Fig S8
+# IMPORTANT: save Sample ID order for reordering factors in K = 6 plot and Fig S8
 sample_order <- q_pop_k5$`Sample ID`
   
 q_pop_tidy_k5 <- q_pop_k5 %>%
@@ -647,7 +632,7 @@ q_pop_tidy_plot_k6
 ```
 
 ```{r fig1B_ngsadmix_barplot_k5-6}
-pdf("./outputs/figures/Fig1B_ngsadmix_K5_barplot.pdf", width = 6.65, height = 1.5)
+pdf("./outputs/figures/Fig1B_ngsadmix_K5_barplot_Nov2025_A.pdf", width = 6.65, height = 1.5)
 q_pop_tidy_plot_k5 
 dev.off()
 ```
@@ -726,7 +711,7 @@ plot_list[[i]] <- q_pop_tidy_plot
 ```
 ```{r setup_colors_manually}
 
-ngsadmix_pop_colors_k6 <- c("purple3", "gold2", "darkorange", "darkorange3", "turquoise2", "orangered2", "brown")
+ngsadmix_pop_colors_k6 <- c("purple3", "gold2", "darkorange", "darkorange3", "turquoise2", "orangered2", "brown", "sandybrown")
 
 popcolors_k3 <- unname(ngsadmix_pop_colors_k6[c(1,3,5)])
 names(popcolors_k3) <- c("pop1", "pop2", "pop3")
@@ -743,6 +728,12 @@ names(popcolors_k6) <- c("pop1", "pop2", "pop3", "pop4", "pop5", "pop6")
 # popcolors_k7 <- unname(ngsadmix_pop_colors_k6[c(4,1,2,3,6,5,7)])
 popcolors_k7 <- unname(ngsadmix_pop_colors_k6[c(5,3,4,2,6,7,1)])
 names(popcolors_k7) <- c("pop1", "pop2", "pop3", "pop4", "pop5", "pop6", "pop7")
+
+popcolors_k8 <- unname(ngsadmix_pop_colors_k6)[c(4,2,8,5,6,3,7,1)]
+names(popcolors_k8) <- c("pop1", "pop2", "pop3", "pop4", "pop5", "pop6", "pop7", "pop8")
+
+popcolors_k8[4] <- "black"
+  # 1,3
 ```
 
 ```{r adjust_colors_plots_K3-7}
@@ -751,12 +742,14 @@ plot_k4 <- plot_list[[4]] + scale_fill_manual(values = popcolors_k4)
 plot_k5 <- plot_list[[5]] + scale_fill_manual(values = popcolors_k5)
 plot_k6 <- plot_list[[6]] + scale_fill_manual(values = popcolors_k6)
 plot_k7 <- plot_list[[7]] + scale_fill_manual(values = popcolors_k7)
+
+plot_k8 <- plot_list[[8]] + scale_fill_manual(values = popcolors_k8)
 ```
 
 ```{r figS8}
-pdf("./outputs/figures/FigS8_ngsadmix_final_noclones_noLD_K3-7.pdf", width = 6.5, height = 6.5)
+pdf("./outputs/figures/FigS8_ngsadmix_final_noclones_noLD_K3-8_Nov2025.pdf", width = 6.5, height = 8)
 
-plot_k3 / plot_k4 / plot_k5 / plot_k6 / plot_k7
+plot_k3 / plot_k4 / plot_k5 / plot_k6 / plot_k7 /plot_k8
 
 dev.off()
 ```

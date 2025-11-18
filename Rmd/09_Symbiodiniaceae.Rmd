@@ -63,15 +63,15 @@ zooxtype_df$Cluster <- gsub("Cluster ", "", names(ngsadmix_spp_clusters)[zooxtyp
 ```
 ```{r}
 zooxtype_cd_plot <- zooxtype_df %>% 
-  filter(Set == "STRI" & Country == "Panama", Region == "Panama") %>%
+  # filter(Set == "STRI" & Country == "Panama", Region == "Panama") %>%
   ggplot() + 
   geom_bar(aes(y = frac, x = sample, fill = Genus), stat = "identity") +
-  # facet_grid(. ~ `Cluster`, scales = "free",  space = "free") +
-  facet_grid(. ~`Cluster` + `Region` + `Site` , scales = "free",  space = "free") +
+  facet_grid(. ~ `Cluster`, scales = "free",  space = "free") +
+  # facet_grid(. ~`Cluster` + `Region` + `Site` , scales = "free",  space = "free") +
   scale_fill_brewer(palette = "Spectral", name = "Genus") +
   scale_y_continuous(breaks = c(0, 0.15, 0.5, 0.85, 1), expand = expansion(mult = c(0, 0))) + 
   theme_classic() +
-  ylab("Proportion Mapped Reads") +
+  ylab("Proportion of mapped reads") +
   xlab(NULL) +
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank(),
@@ -217,7 +217,7 @@ graftM_its2_relplot_ordered <- graftM_its2_relative_ordered %>%
   ggplot(aes(`Sample ID`, ITS2)) + geom_tile(aes(fill = proportion)) +
   scale_fill_gradient(low = "white", high = "navy") + 
   theme_classic() +
-  ylab("Proportion ITS2 sequences") +
+  ylab("Proportion of ITS2 sequences") +
   xlab(NULL) +
   facet_grid(. ~ `Cluster`, scales = "free", space = "free") +
   theme(axis.title = element_text(size = 10),
@@ -229,18 +229,19 @@ graftM_its2_relplot_ordered <- graftM_its2_relative_ordered %>%
         legend.margin = margin(0,0,0,-2, unit = "pt"),
         axis.text.x = element_blank(),
         axis.ticks.x = element_blank(),
-        strip.background.x = element_blank(),
-        strip.text.x = element_blank(),
+        # strip.background.x = element_blank(),
+        # strip.text.x = element_blank(),
         panel.spacing = unit(0.5, "mm"),
         plot.margin = margin(10,0,0,0, unit = "pt"))  
 ```
 
 ```{r}
 figAB <- (zooxtype_cd_plot/ graftM_its2_relplot_ordered) + plot_layout(heights = c(0.85,1))
+figAB
 ```
 ### Figure 4A/B
 ```{r}
-pdf("./outputs/figures/Fig#AB_zooxtype_graftM.pdf", width = 6.65, height = 4.5)
+pdf("./outputs/figures/Fig4AB_zooxtype_graftM_revised.pdf", width = 6.65, height = 4.5)
 (zooxtype_cd_plot/ graftM_its2_relplot_ordered) + plot_layout(heights = c(0.85,1))
 dev.off()
 ```
@@ -447,7 +448,7 @@ e <- eigen(C)
 ```{r pca_test_plot}
 plot(e$vectors[,1:2],xlab="PC1",ylab="PC2", main="individual allele frequency")
 #
-plot(e$vectors[,2:3],xlab="PC2",ylab="PC3", main="individual allele frequency")
+plot(e$vectors[,3:4],xlab="PC2",ylab="PC3", main="individual allele frequency")
 # 
 ```
 ```{r bamfile}
@@ -470,13 +471,14 @@ all(samples_C$`Sample ID` == bam_ids) # TRUE
 # combine pc coordinates with sample metadata
 pcs <- as.data.frame(e$vectors) %>% cbind(samples_C) %>% left_join(samples_k5_assignments, by = "Sample ID")
 # store variable with % variance explained by each PC
-pcvar <- round(e$values, 2)
-#
+pcvar <- (e$values / sum(e$values)) * 100
 ```
 ```{r screeplot}
-pcvardf <- data.frame("PC"=seq(1:length(pcvar)), pcvar)
-pcvardf %>% ggplot(aes(PC, pcvar)) + geom_col() #+ xlim(c(0,10))
-# only first 4 PCs have >5% variance explained
+pcvardf <- data.frame("PC"=seq(1:length(pcvar)), "pcvar" = round(pcvar, 2))
+pcvardf %>% ggplot(aes(PC, pcvar)) + geom_col() + xlim(c(0,10))
+# only first 4 PCs have >1% variance explained
+
+sum(pcvardf$pcvar)
 ```
 ```{r}
 # pdf(file="./outputs/figures/pcangsd_symC_species.pdf", width = 5.5, height = 3.75)
@@ -487,8 +489,8 @@ pca_C <- pcs %>% ggplot(aes(x = V1, y = V2)) +
   # facet_wrap(Region ~ .) +
   # facet_wrap(mtorf_type ~ .) +
   # coord_fixed(pcvar[2]/pcvar[1]) +
-  xlab(paste0( "PC1 (", pcvar[1], "%)")) + 
-  ylab(paste0( "PC2 (", pcvar[2], "%)")) +
+  xlab(paste0( "PC1 (", round(pcvar[1], 2), "%)")) + 
+  ylab(paste0( "PC2 (", round(pcvar[2], 2), "%)")) +
   ggtitle("Cladocopium-dominated samples") + 
   theme(plot.title = element_text(size = 10, hjust = 0),
         axis.title = element_text(size = 10),
@@ -509,7 +511,7 @@ e <- eigen(D)
 ```{r pca_test_plot}
 plot(e$vectors[,1:2],xlab="PC1",ylab="PC2", main="individual allele frequency")
 #
-plot(e$vectors[,2:3],xlab="PC2",ylab="PC3", main="individual allele frequency")
+plot(e$vectors[,3:4],xlab="PC2",ylab="PC3", main="individual allele frequency")
 # 
 ```
 ```{r bamfile}
@@ -532,13 +534,14 @@ all(samples_D$`Sample ID` == bam_ids) # TRUE
 # combine pc coordinates with sample metadata
 pcs <- as.data.frame(e$vectors) %>% cbind(samples_D) %>% left_join(samples_k5_assignments, by = "Sample ID")
 # store variable with % variance explained by each PC
-pcvar <- round(e$values, 2)
-#
+pcvar <- (e$values / sum(e$values)) * 100
 ```
 ```{r screeplot}
-pcvardf <- data.frame("PC"=seq(1:length(pcvar)), pcvar)
-pcvardf %>% ggplot(aes(PC, pcvar)) + geom_col() #+ xlim(c(0,10))
-# only first 4 PCs have >5% variance explained
+pcvardf <- data.frame("PC"=seq(1:length(pcvar)), "pcvar" = round(pcvar, 2))
+pcvardf %>% ggplot(aes(PC, pcvar)) + geom_col() + xlim(c(0,10))
+# only first 4 PCs have >1% variance explained
+
+sum(pcvardf$pcvar)
 ```
 ```{r}
 # pdf(file="./outputs/figures/sicb/pcangsd_species.pdf", width = 5.5, height = 3.75)
@@ -548,8 +551,8 @@ pca_D <- pcs %>% ggplot(aes(x = V1, y = V2)) +
   # facet_grid(Region ~ .) +
   # facet_wrap(mtorf_type ~ .) +
   # coord_fixed(pcvar[2]/pcvar[1]) +
-  xlab(paste0( "PC1 (", pcvar[1], "%)")) +
-  ylab(paste0( "PC2 (", pcvar[2], "%)")) +
+  xlab(paste0( "PC1 (", round(pcvar[1], 2), "%)")) +
+  ylab(paste0( "PC2 (", round(pcvar[2], 2), "%)")) +
   ggtitle("Durusdinium-dominated samples") + 
   theme(plot.title = element_text(size = 10, hjust = 0),
         axis.title = element_text(size = 10),
@@ -563,7 +566,7 @@ print(pca_D)
 
 ### Figure 4 C/D
 ```{r}
-pdf("./outputs/figures/Fig#CD_pcangsd.pdf", width = 6.65, height = 2.78)
+pdf("./outputs/figures/Fig4CD_pcangsd.pdf", width = 6.65, height = 2.78)
 (pca_C + pca_D)
 dev.off()
 ```
